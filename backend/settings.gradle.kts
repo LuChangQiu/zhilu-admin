@@ -1,1 +1,1 @@
-rootProject.name = "dbfirst"
+rootProject.name = "backend"
