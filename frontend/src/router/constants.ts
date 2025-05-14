@@ -1,0 +1,63 @@
+export enum RoutePath {
+	HOME = "/",
+	LOGIN = "/login",
+	DASHBOARD = "/dashboard",
+	GLOBAL_NOTFOUND = "/:pathMatch(.*)*",
+	NOTFOUND = ":pathMatch(.*)*",
+	OVERVIEW = "overview",
+	USERVIEW = "users",
+	ROLEVIEW = "roles",
+	BINDROLEVIEW = "bind-roles/:userId",
+	BINDPERMISSIONVIEW = "bind-permissions/:roleId",
+	BINDDEPARTMENTVIEW = "bind-departments/:userId",
+	BINDPOSITIONVIEW = "bind-positions/:userId",
+	PERMISSIONVIEW = "permissions",
+	DEPARTMENTVIEW = "departments",
+	POSITIONVIEW = "positions",
+	CREATEUSERVIEW = "create-user",
+	SCHEDULERVIEW = "scheduler",
+	UPSERTUSERVIEW = "upsert-user",
+	UPSERTROLEVIEW = "upsert-role",
+	UPSERTPERMISSIONVIEW = "upsert-permission",
+	UPSERTDEPARTMENTVIEW = "upsert-department",
+	UPSERTPOSITIONVIEW = "upsert-position",
+	SETTINGS = "settings",
+}
+
+export enum RouteName {
+	HOME = "home",
+	LOGIN = "login",
+	DASHBOARD = "dashboard",
+	OVERVIEW = "overview",
+	USERVIEW = "users",
+	ROLEVIEW = "roles",
+	BINDROLEVIEW = "bind-roles",
+	BINDPERMISSIONVIEW = "bind-permissions",
+	BINDDEPARTMENTVIEW = "bind-departments",
+	BINDPOSITIONVIEW = "bind-positions",
+	PERMISSIONVIEW = "permissions",
+	DEPARTMENTVIEW = "departments",
+	POSITIONVIEW = "positions",
+	CREATEUSERVIEW = "create-user",
+	SCHEDULERVIEW = "scheduler",
+	UPSERTUSERVIEW = "upsert-user",
+	UPSERTROLEVIEW = "upsert-role",
+	UPSERTPERMISSIONVIEW = "upsert-permission",
+	UPSERTDEPARTMENTVIEW = "upsert-department",
+	UPSERTPOSITIONVIEW = "upsert-position",
+	SETTINGS = "settings",
+	NOTFOUND = "notfound",
+	GLOBAL_NOTFOUND = "global-notfound",
+}
+
+export enum ROLE {
+	ADMIN = "ADMIN",
+	USER = "USER",
+}
+
+export enum PERMISSION {
+	USER_VIEW = "user:view",
+	USER_ADD = "user:add",
+	USER_EDIT = "user:edit",
+	USER_DELETE = "user:delete",
+}
