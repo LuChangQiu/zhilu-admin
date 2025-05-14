@@ -49,16 +49,14 @@ const { job, closeModal, onSubmit } = defineProps<{
 
 const alertStore = useAlertStore();
 
-const formData = ref({});
+const formData = ref();
 
 watch(
 	() => job,
 	(newJob) => {
-		if (newJob) {
 			formData.value = {
-				cronExpression: newJob.cronExpression,
+				cronExpression: newJob?.cronExpression,
 			};
-		}
 	},
 	{ immediate: true },
 );
