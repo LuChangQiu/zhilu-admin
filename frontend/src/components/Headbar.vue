@@ -14,12 +14,12 @@
               </path>
             </svg>
           </button>
-          <a href="https://www.mjga.cc" target="_blank" class="flex ms-2 md:me-24">
+          <a href="https://github.com/ccmjga/zhilu-admin" target="_blank" class="flex ms-2 md:me-24">
             <span class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">知路后台管理</span>
           </a>
         </div>
         <div class="flex items-center space-x-3">
-          <a href="https://github.com/ccmjga/mjga-scaffold" target="_blank"
+          <a href="https://github.com/ccmjga/zhilu-admin" target="_blank"
             class="flex items-center border rounded-sm border-gray-300">
             <span class=" bg-gray-200 rounded-r-none border-r border-r-gray-300">
               <svg class="me-0.5 inline pl-1.5 pb-1 w-6 h-6 text-gray-800 dark:text-white bg-gray-200 "
@@ -30,7 +30,7 @@
               </svg>
               <span class="text-sm pl-0.5 pr-2 font-medium">Star</span>
             </span>
-            <span class="text-sm py-0.5 px-2 font-medium">0.45k</span>
+            <span class="text-sm py-0.5 px-2 font-medium">0.1k</span>
           </a>
           <span class="flex space-x-2">
             <svg class="w-6 h-6 text-gray-500" fill="currentColor" viewBox="0 0 20 20"
