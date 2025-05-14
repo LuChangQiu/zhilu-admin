@@ -17,18 +17,17 @@
 
 ## 🥝 产品社群
 
-**加 QQ 群，获取一键部署脚本**
+加 QQ 群，获取一键部署脚本
 
-- QQ群：638254979
+- QQ群：638254979 (获取部署脚本)
 
-**加微信，获取 VIP 客户支持（喂饭级技术讲解+预购所有课程）**
+加微信，获取 VIP 客户支持（喂饭级技术讲解+预购所有视频课程）
 
 - 微信：Chuck9996
 
 ## 🍅 相关课程
 
-**已上线：**
-![class](/assets/class.png)
+已上线：
 
 - [《重构方法论与单元测试的艺术》](https://www.bilibili.com/cheese/play/ep1615343)
 
@@ -150,15 +149,8 @@
 
 [![掘金](https://img.shields.io/badge/Blog-red?style=social&logo=Bytedance&logoColor=%233C8CFF&label=%E6%8E%98%E9%87%91%E7%A8%80%E5%9C%9F)](https://juejin.cn/user/3916896531658368)
 
-https://juejin.cn/user/3916896531658368
-
 [![Bilibili](https://img.shields.io/badge/-white?style=social&logo=bilibili&label=bilibili)](https://space.bilibili.com/27689376)
-
-<https://space.bilibili.com/27689376>
 
 [![Github](https://img.shields.io/badge/-white?style=social&logo=github&label=github)](https://github.com/ccmjga)
 
-<https://github.com/ccmjga>
-
 [![QQ](https://img.shields.io/badge/-white?style=social&logo=QQ&label=QQ)](https://qm.qq.com/q/9mvVC57jPO)
-https://qm.qq.com/q/9mvVC57jPO
