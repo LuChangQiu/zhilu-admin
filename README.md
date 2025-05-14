@@ -20,6 +20,8 @@
 加 QQ 群，获取一键部署脚本
 
 - QQ群：638254979 (获取部署脚本)
+  
+[![点击按钮加入 QQ群](https://img.shields.io/badge/-white?style=social&logo=QQ&label=或点击按钮加入QQ群)](https://qm.qq.com/q/9mvVC57jPO)
 
 加微信，获取 VIP 客户支持（喂饭级技术讲解+预购所有视频课程）
 
@@ -46,7 +48,7 @@
 
 吃透这款脚手架与配套课程，从今以后就不是别人 Review 你的代码，而是你对别人的代码进行指摘。
 
-## 🍓 正确的业务设计与建模
+## 🍓 正确的业务建模
 
 大部分同类产品，为了规避某些复杂的业务逻辑，强行改变本来的业务形态：如强行把某些多对多关系的业务设计为一对多等等。**这叫做鸵鸟战术：即把头埋进沙子里面假装这件事情不存在。**
 
@@ -158,7 +160,7 @@
 | gradle  | 8.13  |
 | docker  | ^27  |
 
-## 🔮 防失联，关注各大社区同名账号
+## 🔮 防失联，关注各大社区账号
 
 [![掘金](https://img.shields.io/badge/Blog-red?style=social&logo=Bytedance&logoColor=%233C8CFF&label=%E6%8E%98%E9%87%91%E7%A8%80%E5%9C%9F)](https://juejin.cn/user/3916896531658368)
 
@@ -166,4 +168,4 @@
 
 [![Github](https://img.shields.io/badge/-white?style=social&logo=github&label=github)](https://github.com/ccmjga)
 
-[![QQ](https://img.shields.io/badge/-white?style=social&logo=QQ&label=QQ)](https://qm.qq.com/q/9mvVC57jPO)
+[![QQ](https://img.shields.io/badge/-white?style=social&logo=QQ&label=QQ群)](https://qm.qq.com/q/9mvVC57jPO)
