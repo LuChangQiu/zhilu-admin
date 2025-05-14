@@ -78,7 +78,7 @@ dependencies {
 }
 
 tasks.withType<BootJar> {
-    archiveFileName.set("dbfirst.jar")
+    archiveFileName.set("backend.jar")
 }
 
 tasks.withType<Test> {
