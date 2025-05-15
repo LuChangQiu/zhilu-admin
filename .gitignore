@@ -170,6 +170,7 @@ replay_pid*
 
 # docker
 docker-compose.yml
+compose.yaml
 Dockerfile
 Caddyfile
 start.sh

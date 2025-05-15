@@ -182,6 +182,7 @@ components.d.ts
 
 # docker
 docker-compose.yml
+compose.yaml
 Dockerfile
 Caddyfile
 start.sh

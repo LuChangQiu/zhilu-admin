@@ -227,6 +227,7 @@ db.d/store/*
 
 # docker
 docker-compose.yml
+compose.yaml
 Dockerfile
 Caddyfile
 start.sh
