@@ -20,7 +20,6 @@ const router = createRouter({
 
 router.onError((err) => {
 	console.error("router err:", err);
-	// TODO 增加一个错误页面
 	router.push(RouteName.USERVIEW);
 	return false;
 });

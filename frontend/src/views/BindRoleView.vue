@@ -95,7 +95,7 @@
           <td scope="row" class="px-6 py-4  whitespace-nowrap dark:text-white">
             {{ role.name }}
           </td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 max-w-sm overflow-hidden text-ellipsis">
             <div class="flex items-center">
               <div class="h-2.5 w-2.5 rounded-full me-2" :class="role.isBound ? 'bg-green-500' : 'bg-red-500'">
               </div> {{
@@ -118,18 +118,18 @@
 </template>
 
 <script setup lang="ts">
+import Breadcrumbs from "@/components/Breadcrumbs.vue";
 import BindModal from "@/components/PopupModal.vue";
 import UnModal from "@/components/PopupModal.vue";
 import TablePagination from "@/components/TablePagination.vue";
 import { useRolesQuery } from "@/composables/role/useRolesQuery";
 import { RouteName } from "@/router/constants";
+import { tr } from "@faker-js/faker";
 import { Modal, type ModalInterface, initFlowbite } from "flowbite";
 import { onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { useRoleBind } from "../composables/role/useRoleBind";
 import useAlertStore from "../composables/store/useAlertStore";
-import { tr } from "@faker-js/faker";
-import Breadcrumbs from "@/components/Breadcrumbs.vue";
 
 const roleName = ref<string>("");
 const checkedRoleIds = ref<number[]>([]);
@@ -137,7 +137,7 @@ const roleBindModal = ref<ModalInterface>();
 const roleUnbindModal = ref<ModalInterface>();
 const allChecked = ref<boolean>(false);
 const $route = useRoute();
-const bindState = ref<"BIND" | "ALL" | "UNBIND">("BIND");
+const bindState = ref<"BIND" | "ALL" | "UNBIND">("ALL");
 
 const alertStore = useAlertStore();
 const { total, roles, fetchRolesWith } = useRolesQuery();
@@ -150,6 +150,7 @@ const handleBindRoleSubmit = async () => {
 	});
 	roleBindModal.value?.hide();
 	clearCheckedRoleIds();
+	allChecked.value = false;
 	alertStore.showAlert({
 		content: "操作成功",
 		level: "success",
@@ -164,6 +165,7 @@ const handleBindRoleSubmit = async () => {
 const handleUnbindRoleSubmit = async () => {
 	await unbindRole(Number($route.params.userId), checkedRoleIds.value);
 	clearCheckedRoleIds();
+	allChecked.value = false;
 	roleUnbindModal.value?.hide();
 	alertStore.showAlert({
 		content: "操作成功",

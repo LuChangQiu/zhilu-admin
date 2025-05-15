@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { http, HttpResponse } from "msw";
-import { ROLE } from "../../router/constants";
+import { ERole } from "../../router/constants";
 
 export default [
 	http.get("/iam/user", () => {
@@ -13,7 +13,7 @@ export default [
 		const generateRole = () => ({
 			id: faker.number.int({ min: 1, max: 100 }),
 			code: faker.helpers.arrayElement([
-				ROLE.ADMIN,
+				ERole.ADMIN,
 				"editor",
 				"viewer",
 				"manager",
@@ -60,7 +60,7 @@ export default [
 
 		const generateRole = () => ({
 			id: faker.number.int({ min: 1, max: 100 }),
-			code: [ROLE.ADMIN, "editor", "viewer", "manager"],
+			code: [ERole.ADMIN, "editor", "viewer", "manager"],
 			name: faker.person.jobTitle(),
 			permissions: faker.helpers.multiple(generatePermission, {
 				count: { min: 1, max: 5 },
@@ -135,7 +135,7 @@ export default [
 
 		const generateRole = () => ({
 			id: faker.number.int({ min: 1, max: 100 }),
-			code: [ROLE.ADMIN, "editor", "viewer", "manager"],
+			code: [ERole.ADMIN, "editor", "viewer", "manager"],
 			name: faker.person.jobTitle(),
 			permissions: faker.helpers.multiple(generatePermission, {
 				count: { min: 1, max: 5 },

@@ -1,5 +1,5 @@
 <template>
-  <div class="relative overflow-x-auto px-4 pt-6 xl:grid-cols-3 xl:gap-4 sm:rounded-lg">
+  <div class="px-4 pt-6 xl:grid-cols-3 xl:gap-4 sm:rounded-lg">
     <div class="mb-4 col-span-full">
       <Breadcrumbs :names="['任务管理']" />
       <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">任务管理</h1>
@@ -27,86 +27,97 @@
       <!-- Create Modal toggle -->
     </div>
 
-    <table
-      class="w-full text-sm text-left rtl:text-right shadow-lg rounded-lg text-gray-500 dark:text-gray-400 overflow-x-auto">
-      <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-        <tr>
-          <th scope="col" class="p-4">
-            <div class="flex items-center">
-              <input id="checkbox-all-search" disabled type="checkbox"
-                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-              <label for="checkbox-all-search" class="sr-only">checkbox</label>
-            </div>
-          </th>
-          <th scope="col" class="px-6 py-3">任务</th>
-          <th scope="col" class="px-6 py-3">触发器</th>
-          <th scope="col" class="px-6 py-3">开始</th>
-          <th scope="col" class="px-6 py-3">结束</th>
-          <th scope="col" class="px-6 py-3">下次执行</th>
-          <th scope="col" class="px-6 py-3">上次执行</th>
-          <th scope="col" class="px-6 py-3">类型</th>
-          <th scope="col" class="px-6 py-3">Cron</th>
-          <th scope="col" class="px-6 py-3">状态</th>
-          <th scope="col" class="px-6 py-3">编辑</th>
-          <th scope="col" class="px-6 py-3">操作</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="job in jobs" :key="job.triggerName"
-          class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
-          <td class="w-4 p-4">
-            <div class="flex items-center">
-              <input :id="'checkbox-table-search-' + job.name" type="checkbox" disabled
-                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-              <label :for="'checkbox-table-search-' + job.name" class="sr-only">checkbox</label>
-            </div>
-          </td>
-          <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{
-            `${job.name}:${job.group}` }}</td>
-          <td class="px-6 py-4">{{ `${job.triggerName}:${job.triggerGroup}` }}</td>
-          <td class="px-6 py-4">{{ new Date(job.startTime!).toLocaleString() }}</td>
-          <td class="px-6 py-4">{{ job.endTime ? new Date(job.endTime).toLocaleString() : undefined }}</td>
-          <td class="px-6 py-4">{{ job.nextFireTime ? new Date(job.nextFireTime).toLocaleString() : undefined}}</td>
-          <td class="px-6 py-4">{{ job.previousFireTime && job.previousFireTime > 0 ? new
-            Date(job.previousFireTime).toLocaleString() :
-            undefined
-            }}
-          </td>
-          <td class="px-6 py-4">{{ job.schedulerType }}</td>
-          <td class="px-6 py-4">{{ job.cronExpression }}</td>
-          <td class="px-6 py-4">{{ job.triggerState }}</td>
-          <td class="px-6 py-4 whitespace-nowrap">
-            <div class="flex items-center gap-x-2">
-              <button @click="handleCronUpdateClick(job)" :disabled="job.schedulerType !== 'CRON'"
-                :class="['flex items-center gap-x-1 block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800' , { 'opacity-50 cursor-not-allowed': job.schedulerType !== 'CRON' }]"
-                type="button">
-                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path>
-                  <path fill-rule="evenodd"
-                    d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
-                    clip-rule="evenodd"></path>
-                </svg>
-                编辑
-              </button>
-            </div>
-          </td>
-          <td class="px-6 py-4 whitespace-nowrap">
-            <div class="flex items-center gap-x-2">
-              <button
-                :class="['text-white bg-green-700 hover:bg-green-800 focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-900  focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center']"
-                @click="handleResumeJobClick(job)" type="button">
-                恢复
-              </button>
-              <button
-                :class="['bg-red-700 hover:bg-red-800 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900 text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center']"
-                @click="handlePauseJobClick(job)" type="button">
-                暂停
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="relative overflow-x-auto">
+      <table
+        class="w-full text-sm text-left rtl:text-right shadow-lg rounded-lg text-gray-500 dark:text-gray-400 overflow-x-auto">
+        <thead class="text-xs uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <tr>
+            <th scope="col" class="p-4">
+              <div class="flex items-center">
+                <input id="checkbox-all-search" disabled type="checkbox"
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                <label for="checkbox-all-search" class="sr-only">checkbox</label>
+              </div>
+            </th>
+            <th scope="col" class="px-6 py-3">任务</th>
+            <th scope="col" class="px-6 py-3">触发器</th>
+            <th scope="col" class="px-6 py-3">开始</th>
+            <th scope="col" class="px-6 py-3">结束</th>
+            <th scope="col" class="px-6 py-3">下次执行</th>
+            <th scope="col" class="px-6 py-3">上次执行</th>
+            <th scope="col" class="px-6 py-3">类型</th>
+            <th scope="col" class="px-6 py-3">Cron</th>
+            <th scope="col" class="px-6 py-3">状态</th>
+            <th scope="col" class="px-6 py-3">编辑</th>
+            <th scope="col" class="px-6 py-3">操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="job in jobs" :key="job.triggerName"
+            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
+            <td class="w-4 p-4">
+              <div class="flex items-center">
+                <input :id="'checkbox-table-search-' + job.triggerName" type="checkbox" disabled
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                <label :for="'checkbox-table-search-' + job.triggerName" class="sr-only">checkbox</label>
+              </div>
+            </td>
+            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{
+              `${job.name}:${job.group}` }}</td>
+            <td class="px-6 py-4 max-w-sm overflow-hidden text-ellipsis">{{
+              `${job.triggerName}:${job.triggerGroup}` }}
+            </td>
+            <td class="px-6 py-4 max-w-sm overflow-hidden text-ellipsis">{{ new
+              Date(job.startTime!).toLocaleString() }}
+            </td>
+            <td class="px-6 py-4 max-w-sm overflow-hidden text-ellipsis">{{ job.endTime ? new
+              Date(job.endTime).toLocaleString() : undefined }}</td>
+            <td class="px-6 py-4 max-w-sm overflow-hidden text-ellipsis">{{ job.nextFireTime ? new
+              Date(job.nextFireTime).toLocaleString() : undefined}}</td>
+            <td class="px-6 py-4 max-w-sm overflow-hidden text-ellipsis">{{ job.previousFireTime &&
+              job.previousFireTime
+              > 0 ? new
+              Date(job.previousFireTime).toLocaleString() :
+              undefined
+              }}
+            </td>
+            <td class="px-6 py-4 max-w-sm overflow-hidden text-ellipsis">{{ job.schedulerType }}</td>
+            <td class="px-6 py-4 max-w-sm overflow-hidden text-ellipsis">{{ job.cronExpression }}</td>
+            <td class="px-6 py-4 max-w-sm overflow-hidden text-ellipsis">{{ job.triggerState }}</td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex items-center gap-x-2">
+                <button @click="handleCronUpdateClick(job)" :disabled="job.schedulerType !== 'CRON'"
+                  :class="['flex items-center justify-center gap-x-1  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800' , { 'opacity-50 cursor-not-allowed': job.schedulerType !== 'CRON' }]"
+                  type="button">
+                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path>
+                    <path fill-rule="evenodd"
+                      d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
+                      clip-rule="evenodd"></path>
+                  </svg>
+                  <span>编辑</span>
+                </button>
+              </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex items-center justify-center gap-x-2">
+                <button
+                  :class="['text-white bg-green-700 hover:bg-green-800 focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-900  focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center']"
+                  @click="handleResumeJobClick(job)" type="button">
+                  <span>恢复</span>
+                </button>
+                <button
+                  :class="['bg-red-700 hover:bg-red-800 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900 text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center']"
+                  @click="handlePauseJobClick(job)" type="button">
+                  <span>暂停</span>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
     <TablePagination :pageChange="handlePageChange" :total="total" />
   </div>
 
@@ -122,18 +133,17 @@
 </template>
 
 <script setup lang="ts">
-import SchedulerUpdateModal from "@/components/SchedulerUpdateModal.vue";
+import Breadcrumbs from "@/components/Breadcrumbs.vue";
 import PopupModal from "@/components/PopupModal.vue";
+import SchedulerUpdateModal from "@/components/SchedulerUpdateModal.vue";
 import TablePagination from "@/components/TablePagination.vue";
 import { useJobControl } from "@/composables/job/useJobControl";
 import { useJobsPaginationQuery } from "@/composables/job/useJobQuery";
 import { useJobUpdate } from "@/composables/job/useJobUpdate";
 import useAlertStore from "@/composables/store/useAlertStore";
-import { RouteName } from "@/router/constants";
 import { Modal, type ModalInterface, initFlowbite } from "flowbite";
 import { nextTick, onMounted, ref } from "vue";
 import type { components } from "../api/types/schema";
-import Breadcrumbs from "@/components/Breadcrumbs.vue";
 
 const jobName = ref<string>("");
 const jobResumeModal = ref<ModalInterface>();

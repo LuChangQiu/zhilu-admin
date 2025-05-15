@@ -34,7 +34,7 @@
 								class="block mb-2 text-sm font-medium autocompletetext-gray-900 dark:text-white">密码</label>
 							<input type="password" id="password" autocomplete="new-password" v-model="formData.password"
 								class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-								placeholder="非必填" required />
+								placeholder="编辑时非必填" required />
 						</div>
 						<div class="col-span-2">
 							<label for="confirm_password"
@@ -42,7 +42,7 @@
 							<input type="password" id="confirm_password" autocomplete="new-password"
 								v-model="formData.confirmPassword"
 								class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-								required placeholder="非必填" />
+								required placeholder="编辑时非必填" />
 						</div>
 						<div class="col-span-2 sm:col-span-1">
 							<label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">状态</label>
@@ -81,21 +81,19 @@ const { user, onSubmit } = defineProps<{
 
 const formData = ref();
 
-watch(
-	() => user,
-	(newUser) => {
-		formData.value = {
-			id: newUser?.id,
-			username: newUser?.username,
-			password: undefined,
-			enable: newUser?.enable,
-			confirmPassword: undefined,
-		};
-	},
-	{
-		immediate: true,
-	},
-);
+const updateFormData = (newUser: typeof user) => {
+	formData.value = {
+		id: newUser?.id,
+		username: newUser?.username,
+		password: undefined,
+		enable: newUser?.enable,
+		confirmPassword: undefined,
+	};
+};
+
+watch(() => user, updateFormData, {
+	immediate: true,
+});
 
 const handleSubmit = async () => {
 	const userSchema = z
@@ -105,19 +103,22 @@ const handleSubmit = async () => {
 				.string({
 					message: "用户名不能为空",
 				})
-				.min(4, "用户名至少4个字符"),
+				.min(4, "用户名至少4个字符")
+				.max(15, "用户名最多15个字符"),
 			enable: z.boolean(),
 			password: z
 				.string({
 					message: "密码不能为空",
 				})
 				.min(5, "密码至少5个字符")
+				.max(20, "密码最多20个字符")
 				.optional(),
 			confirmPassword: z
 				.string({
 					message: "密码不能为空",
 				})
 				.min(5, "密码至少5个字符")
+				.max(20, "密码最多20个字符")
 				.optional(),
 		})
 		.refine(
@@ -133,6 +134,7 @@ const handleSubmit = async () => {
 	try {
 		const validatedData = userSchema.parse(formData.value);
 		await onSubmit(validatedData);
+		updateFormData(undefined);
 	} catch (error) {
 		if (error instanceof z.ZodError) {
 			alertStore.showAlert({

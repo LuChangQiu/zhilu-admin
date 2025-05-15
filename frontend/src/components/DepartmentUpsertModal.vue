@@ -34,7 +34,7 @@
               <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">上级部门</label>
               <select id="category" v-model="formData.parentId"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                <option v-for="department in allDepartments" :key="department.id" :value="department.id"
+                <option v-for="department in availableDepartments" :key="department.id" :value="department.id"
                   :selected="department.id === formData.parentId">{{
                   department.name
                   }}</option>
@@ -61,26 +61,23 @@ import type { DepartmentUpsertModel } from "../types/department";
 
 const alertStore = useAlertStore();
 
-const { department, allDepartments, onSubmit } = defineProps<{
+const { department, availableDepartments, onSubmit } = defineProps<{
 	department?: components["schemas"]["Department"];
-	allDepartments: components["schemas"]["Department"][];
+	availableDepartments?: components["schemas"]["Department"][];
 	closeModal: () => void;
 	onSubmit: (department: DepartmentUpsertModel) => Promise<void>;
 }>();
 
 const formData = ref();
 
-watch(
-	() => department,
-	(newDepartment) => {
-		formData.value = {
-			id: newDepartment?.id,
-			name: newDepartment?.name,
-			parentId: newDepartment?.parentId,
-		};
-	},
-	{ immediate: true },
-);
+const updateFormData = (newDepartment: typeof department) => {
+	formData.value = {
+		id: newDepartment?.id,
+		name: newDepartment?.name,
+		parentId: newDepartment?.parentId,
+	};
+};
+watch(() => department, updateFormData, { immediate: true });
 
 const handleSubmit = async () => {
 	const schema = z.object({
@@ -90,12 +87,14 @@ const handleSubmit = async () => {
 			.string({
 				message: "部门名称不能为空",
 			})
-			.min(2, "部门名称至少2个字符"),
+			.min(2, "部门名称至少2个字符")
+			.max(15, "部门名称最多15个字符"),
 	});
 
 	try {
 		const validatedData = schema.parse(formData.value);
 		await onSubmit(validatedData);
+		updateFormData(undefined);
 	} catch (error) {
 		if (error instanceof z.ZodError) {
 			alertStore.showAlert({

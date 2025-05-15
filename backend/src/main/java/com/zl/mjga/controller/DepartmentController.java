@@ -32,9 +32,9 @@ public class DepartmentController {
   }
 
   @PreAuthorize("hasAuthority(T(com.zl.mjga.model.urp.EPermission).READ_DEPARTMENT_PERMISSION)")
-  @GetMapping("/query")
-  List<Department> queryDepartments() {
-    return departmentRepository.findAll();
+  @GetMapping("/query-available")
+  List<Department> queryAvailableParentDepartmentsBy(@RequestParam(required = false) Long id) {
+    return departmentService.queryAvailableParentDepartmentsBy(id);
   }
 
   @PreAuthorize("hasAuthority(T(com.zl.mjga.model.urp.EPermission).WRITE_DEPARTMENT_PERMISSION)")

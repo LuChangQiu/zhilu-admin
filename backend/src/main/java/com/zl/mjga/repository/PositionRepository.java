@@ -31,7 +31,7 @@ public class PositionRepository extends PositionDao {
                 ? DSL.when(POSITION.ID.in(selectUsersPosition(positionQueryDto.getUserId())), true)
                     .otherwise(false)
                     .as("is_bound")
-                : noField(),
+                : noCondition(),
             DSL.count().over().as("total_position").convertFrom(Long::valueOf))
         .from(POSITION)
         .where(

@@ -48,7 +48,6 @@ import { onMounted, ref, watch } from "vue";
 import { z } from "zod";
 import type { components } from "../api/types/schema";
 import type { PositionUpsertModel } from "../types/position";
-import { tr } from "@faker-js/faker";
 
 const alertStore = useAlertStore();
 
@@ -60,17 +59,14 @@ const { id, position, onSubmit } = defineProps<{
 }>();
 
 const formData = ref();
+const updateFormData = (newPosition: typeof position) => {
+	formData.value = {
+		id: newPosition?.id,
+		name: newPosition?.name,
+	};
+};
 
-watch(
-	() => position,
-	(newPosition) => {
-		formData.value = {
-			id: newPosition?.id,
-			name: newPosition?.name,
-		};
-	},
-	{ immediate: true },
-);
+watch(() => position, updateFormData, { immediate: true });
 
 const handleSubmit = async () => {
 	const schema = z.object({
@@ -79,12 +75,14 @@ const handleSubmit = async () => {
 			.string({
 				message: "岗位名称不能为空",
 			})
-			.min(2, "岗位名称至少2个字符"),
+			.min(2, "岗位名称至少2个字符")
+			.max(15, "岗位名称最多15个字符"),
 	});
 
 	try {
 		const validatedData = schema.parse(formData.value);
 		await onSubmit(validatedData);
+		updateFormData(undefined);
 	} catch (error) {
 		if (error instanceof z.ZodError) {
 			alertStore.showAlert({

@@ -7,6 +7,7 @@ import com.zl.mjga.dto.permission.PermissionBindDto;
 import com.zl.mjga.dto.position.PositionBindDto;
 import com.zl.mjga.dto.role.RoleBindDto;
 import com.zl.mjga.dto.urp.*;
+import com.zl.mjga.repository.PermissionRepository;
 import com.zl.mjga.repository.RoleRepository;
 import com.zl.mjga.repository.UserRepository;
 import com.zl.mjga.service.IdentityAccessService;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.jooq.generated.mjga.tables.pojos.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.web.bind.annotation.*;
 
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
@@ -28,11 +30,15 @@ public class IdentityAccessController {
   private final IdentityAccessService identityAccessService;
   private final UserRepository userRepository;
   private final RoleRepository roleRepository;
+  private final PermissionRepository permissionRepository;
 
   @GetMapping("/me")
   UserRolePermissionDto currentUser(Principal principal) {
     String name = principal.getName();
     User user = userRepository.fetchOneByUsername(name);
+    if (!user.getEnable()) {
+      throw new DisabledException(String.format("用户 %s 被禁用", name));
+    }
     return identityAccessService.queryUniqueUserWithRolePermission(user.getId());
   }
 
@@ -46,7 +52,7 @@ public class IdentityAccessController {
 
   @PreAuthorize("hasAuthority(T(com.zl.mjga.model.urp.EPermission).WRITE_USER_ROLE_PERMISSION)")
   @PostMapping("/user")
-  void upsertUser(@RequestBody UserUpsertDto userUpsertDto) {
+  void upsertUser(@RequestBody @Valid UserUpsertDto userUpsertDto) {
     identityAccessService.upsertUser(userUpsertDto);
   }
 
@@ -56,7 +62,7 @@ public class IdentityAccessController {
     return identityAccessService.queryUniqueUserWithRolePermission(userId);
   }
 
-  @PreAuthorize("hasAuthority(T(com.zl.mjga.model.urp.EPermission).WRITE_USER_ROLE_PERMISSION)")
+  @PreAuthorize("hasAuthority(T(com.zl.mjga.model.urp.EPermission).DELETE_USER_ROLE_PERMISSION)")
   @DeleteMapping("/user")
   void deleteUser(@RequestParam Long userId) {
     userRepository.deleteById(userId);
@@ -89,7 +95,7 @@ public class IdentityAccessController {
   @PreAuthorize("hasAuthority(T(com.zl.mjga.model.urp.EPermission).WRITE_USER_ROLE_PERMISSION)")
   @DeleteMapping("/permission")
   void deletePermission(@RequestParam Long permissionId) {
-    roleRepository.deleteById(permissionId);
+    permissionRepository.deleteById(permissionId);
   }
 
   @PreAuthorize("hasAuthority(T(com.zl.mjga.model.urp.EPermission).READ_USER_ROLE_PERMISSION)")

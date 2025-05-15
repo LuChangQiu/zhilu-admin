@@ -4,7 +4,7 @@ import { RoutePath } from "../router/constants";
 import {
 	ForbiddenError,
 	InternalServerError,
-	SystemError,
+	RequestError,
 	UnAuthError,
 } from "../types/error";
 
@@ -34,7 +34,7 @@ const makeErrorHandler =
 				level: "error",
 				content: err.message,
 			});
-		} else if (err instanceof SystemError) {
+		} else if (err instanceof RequestError) {
 			showAlert({
 				level: "error",
 				content: err.message,

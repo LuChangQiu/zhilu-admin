@@ -436,14 +436,14 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
-	"/department/query": {
+	"/department/query-available": {
 		parameters: {
 			query?: never;
 			header?: never;
 			path?: never;
 			cookie?: never;
 		};
-		get: operations["queryDepartments"];
+		get: operations["queryAvailableParentDepartmentsBy"];
 		put?: never;
 		post?: never;
 		delete?: never;
@@ -1466,9 +1466,11 @@ export interface operations {
 			};
 		};
 	};
-	queryDepartments: {
+	queryAvailableParentDepartmentsBy: {
 		parameters: {
-			query?: never;
+			query?: {
+				id?: number;
+			};
 			header?: never;
 			path?: never;
 			cookie?: never;

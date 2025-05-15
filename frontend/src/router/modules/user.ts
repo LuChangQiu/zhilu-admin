@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from "vue-router";
-import { ROLE, RouteName, RoutePath } from "../constants";
+import { EPermission, ERole, RouteName, RoutePath } from "../constants";
 
 const userManagementRoutes: RouteRecordRaw[] = [
 	{
@@ -8,7 +8,7 @@ const userManagementRoutes: RouteRecordRaw[] = [
 		component: () => import("@/views/UserView.vue"),
 		meta: {
 			requiresAuth: true,
-			hasRole: ROLE.ADMIN,
+			hasPermission: EPermission.READ_USER_ROLE_PERMISSION,
 		},
 	},
 	{
@@ -17,7 +17,7 @@ const userManagementRoutes: RouteRecordRaw[] = [
 		component: () => import("@/views/RoleView.vue"),
 		meta: {
 			requiresAuth: true,
-			hasRole: ROLE.ADMIN,
+			hasPermission: EPermission.READ_USER_ROLE_PERMISSION,
 		},
 	},
 	{
@@ -26,7 +26,7 @@ const userManagementRoutes: RouteRecordRaw[] = [
 		component: () => import("@/views/BindRoleView.vue"),
 		meta: {
 			requiresAuth: true,
-			hasRole: ROLE.ADMIN,
+			hasPermission: EPermission.WRITE_USER_ROLE_PERMISSION,
 		},
 	},
 	{
@@ -35,7 +35,7 @@ const userManagementRoutes: RouteRecordRaw[] = [
 		component: () => import("@/views/BindDepartmentView.vue"),
 		meta: {
 			requiresAuth: true,
-			hasRole: ROLE.ADMIN,
+			hasPermission: EPermission.WRITE_USER_ROLE_PERMISSION,
 		},
 	},
 	{
@@ -44,7 +44,7 @@ const userManagementRoutes: RouteRecordRaw[] = [
 		component: () => import("@/views/BindPermissionView.vue"),
 		meta: {
 			requiresAuth: true,
-			hasRole: ROLE.ADMIN,
+			hasPermission: EPermission.WRITE_USER_ROLE_PERMISSION,
 		},
 	},
 	{
@@ -53,7 +53,7 @@ const userManagementRoutes: RouteRecordRaw[] = [
 		component: () => import("@/views/PermissionView.vue"),
 		meta: {
 			requiresAuth: true,
-			hasRole: ROLE.ADMIN,
+			hasPermission: EPermission.READ_USER_ROLE_PERMISSION,
 		},
 	},
 	{
@@ -62,7 +62,7 @@ const userManagementRoutes: RouteRecordRaw[] = [
 		component: () => import("@/views/BindPositionView.vue"),
 		meta: {
 			requiresAuth: true,
-			hasRole: ROLE.ADMIN,
+			hasPermission: EPermission.WRITE_USER_ROLE_PERMISSION,
 		},
 	},
 ];

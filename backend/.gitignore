@@ -221,9 +221,11 @@ Temporary Items
 .apdisk
 
 
-
 logs
 db.d/store/*
 .git
 
-
+# docker
+docker-compose.yaml
+Dockerfile
+Caddyfile

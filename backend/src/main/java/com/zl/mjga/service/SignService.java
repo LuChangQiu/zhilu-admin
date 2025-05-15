@@ -27,10 +27,13 @@ public class SignService {
   public Long signIn(SignInDto signInDto) {
     User user = userRepository.fetchOneByUsername(signInDto.getUsername());
     if (user == null) {
-      throw new BusinessException(String.format("%s user not found", signInDto.getUsername()));
+      throw new BusinessException("用户名不存在");
     }
     if (!passwordEncoder.matches(signInDto.getPassword(), user.getPassword())) {
-      throw new BusinessException("password invalid");
+      throw new BusinessException("密码错误");
+    }
+    if (!user.getEnable()) {
+      throw new BusinessException("用户被禁用");
     }
     return user.getId();
   }
@@ -38,8 +41,7 @@ public class SignService {
   @Transactional(rollbackFor = Throwable.class)
   public void signUp(SignUpDto signUpDto) {
     if (identityAccessService.isUsernameDuplicate(signUpDto.getUsername())) {
-      throw new BusinessException(
-          String.format("username %s already exist", signUpDto.getUsername()));
+      throw new BusinessException("用户名已存在");
     }
     User user = new User();
     user.setUsername(signUpDto.getUsername());

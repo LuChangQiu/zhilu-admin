@@ -904,12 +904,23 @@
         }
       }
     },
-    "/department/query": {
+    "/department/query-available": {
       "get": {
         "tags": [
           "department-controller"
         ],
-        "operationId": "queryDepartments",
+        "operationId": "queryAvailableParentDepartmentsBy",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",

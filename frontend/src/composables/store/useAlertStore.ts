@@ -17,7 +17,7 @@ const useAlertStore = defineStore("alertStore", () => {
 			serializer: StorageSerializers.object,
 		},
 	);
-
+	alertStorage.value.isShow = false;
 	const showAlert = ({
 		content: newContent,
 		level: newLevel,

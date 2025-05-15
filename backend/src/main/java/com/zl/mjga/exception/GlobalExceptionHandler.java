@@ -1,6 +1,7 @@
 package com.zl.mjga.exception;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.*;
 import org.springframework.lang.Nullable;
 import org.springframework.security.access.AccessDeniedException;
@@ -72,13 +73,31 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     throw ex;
   }
 
+  @ExceptionHandler(value = {DuplicateKeyException.class})
+  public ResponseEntity<Object> handleDuplicateException(
+      DuplicateKeyException ex, WebRequest request) {
+    log.error("DuplicateKeyException Handled  ===> ", ex);
+    ErrorResponseException errorResponseException =
+        new ErrorResponseException(
+            HttpStatus.INTERNAL_SERVER_ERROR,
+            ProblemDetail.forStatusAndDetail(
+                HttpStatus.INTERNAL_SERVER_ERROR, "您输入的内容已存在，请检查后重新提交"),
+            ex.getCause());
+    return handleExceptionInternal(
+        errorResponseException,
+        errorResponseException.getBody(),
+        errorResponseException.getHeaders(),
+        errorResponseException.getStatusCode(),
+        request);
+  }
+
   @ExceptionHandler(value = {Throwable.class})
   public ResponseEntity<Object> handleException(Throwable ex, WebRequest request) {
     log.error("System Error Handled  ===> ", ex);
     ErrorResponseException errorResponseException =
         new ErrorResponseException(
             HttpStatus.INTERNAL_SERVER_ERROR,
-            ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, "System Error"),
+            ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, "发生系统异常，请联系管理员"),
             ex.getCause());
     return handleExceptionInternal(
         errorResponseException,

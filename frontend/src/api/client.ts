@@ -2,7 +2,7 @@ import createClient, { type Middleware } from "openapi-fetch";
 import useAuthStore from "../composables/store/useAuthStore";
 import {
 	ForbiddenError,
-	SystemError,
+	RequestError,
 	UnAuthError,
 	InternalServerError,
 } from "../types/error";
@@ -22,10 +22,10 @@ const myMiddleware: Middleware = {
 			} else if (response.status === 403) {
 				handleForbiddenError(response);
 			} else {
-				handleSystemError(response);
+				handleRequestError(response);
 			}
 		} else if (response.status >= 500) {
-			await handleBusinessError(response);
+			await handleServerError(response);
 		} else {
 			return response;
 		}
@@ -57,11 +57,11 @@ const handleForbiddenError = (response: Response) => {
 	throw new ForbiddenError(response.status);
 };
 
-const handleSystemError = (response: Response) => {
-	throw new SystemError(response.status);
+const handleRequestError = (response: Response) => {
+	throw new RequestError(response.status);
 };
 
-const handleBusinessError = async (response: Response) => {
+const handleServerError = async (response: Response) => {
 	const data = await response.json();
 	throw new InternalServerError(response.status, data.detail);
 };

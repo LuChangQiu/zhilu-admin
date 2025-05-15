@@ -41,7 +41,7 @@ public class RoleRepository extends RoleDao {
                 ? when(ROLE.ID.in(selectUsersRoleIds(roleQueryDto.getUserId())), true)
                     .otherwise(false)
                     .as("is_bound")
-                : noField(),
+                : noCondition(),
             multiset(select(ROLE.permission().asterisk()).from(ROLE.permission()))
                 .convertFrom(r -> r.into(Permission.class))
                 .as("permissions"),

@@ -4,12 +4,18 @@ import type { components } from "../../api/types/schema";
 
 export const useDepartmentQuery = () => {
 	const total = ref<number>(0);
-	const departments = ref<components["schemas"]["DepartmentRespDto"][]>([]);
-	const allDepartments = ref<components["schemas"]["Department"][]>([]);
+	const departments = ref<components["schemas"]["DepartmentRespDto"][]>();
+	const availableDepartments = ref<components["schemas"]["Department"][]>();
 
-	const fetchAllDepartments = async () => {
-		const { data } = await client.GET("/department/query");
-		allDepartments.value = data ?? [];
+	const fetchAvailableDepartments = async (id?: number) => {
+		const { data } = await client.GET("/department/query-available", {
+			params: {
+				query: {
+					id,
+				},
+			},
+		});
+		availableDepartments.value = data ?? [];
 	};
 	const fetchDepartmentWith = async (
 		param: {
@@ -38,8 +44,8 @@ export const useDepartmentQuery = () => {
 	return {
 		total,
 		departments,
-		allDepartments,
+		availableDepartments,
 		fetchDepartmentWith,
-		fetchAllDepartments,
+		fetchAvailableDepartments,
 	};
 };

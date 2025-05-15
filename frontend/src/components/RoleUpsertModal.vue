@@ -60,17 +60,15 @@ const { role, onSubmit } = defineProps<{
 
 const formData = ref();
 
-watch(
-	() => role,
-	(newRole) => {
-		formData.value = {
-			id: newRole?.id,
-			name: newRole?.name,
-			code: newRole?.code,
-		};
-	},
-	{ immediate: true },
-);
+const updateFormData = (newRole: typeof role) => {
+	formData.value = {
+		id: newRole?.id,
+		name: newRole?.name,
+		code: newRole?.code,
+	};
+};
+
+watch(() => role, updateFormData, { immediate: true });
 
 const handleSubmit = async () => {
 	const roleSchema = z.object({
@@ -79,17 +77,20 @@ const handleSubmit = async () => {
 			.string({
 				message: "角色名称不能为空",
 			})
-			.min(2, "角色名称至少2个字符"),
+			.min(2, "角色名称至少2个字符")
+			.max(15, "角色名称最多15个字符"),
 		code: z
 			.string({
 				message: "角色代码不能为空",
 			})
-			.min(2, "角色代码至少2个字符"),
+			.min(2, "角色代码至少2个字符")
+			.max(15, "角色代码最多15个字符"),
 	});
 
 	try {
 		const validatedData = roleSchema.parse(formData.value);
 		await onSubmit(validatedData);
+		updateFormData(undefined);
 	} catch (error) {
 		if (error instanceof z.ZodError) {
 			alertStore.showAlert({

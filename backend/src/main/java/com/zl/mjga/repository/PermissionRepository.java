@@ -36,7 +36,7 @@ public class PermissionRepository extends PermissionDao {
                         true)
                     .otherwise(false)
                     .as("is_bound")
-                : noField(),
+                : noCondition(),
             DSL.count().over().as("total_permission"))
         .from(PERMISSION)
         .where(

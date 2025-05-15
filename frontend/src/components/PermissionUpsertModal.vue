@@ -60,17 +60,15 @@ const alertStore = useAlertStore();
 
 const formData = ref();
 
-watch(
-	() => permission,
-	(newPermission) => {
-		formData.value = {
-			id: newPermission?.id,
-			name: newPermission?.name,
-			code: newPermission?.code,
-		};
-	},
-	{ immediate: true },
-);
+const updateFormData = (newPermission: typeof permission) => {
+	formData.value = {
+		id: newPermission?.id,
+		name: newPermission?.name,
+		code: newPermission?.code,
+	};
+};
+
+watch(() => permission, updateFormData, { immediate: true });
 
 const handleSubmit = async () => {
 	const permissionSchema = z.object({
@@ -79,17 +77,20 @@ const handleSubmit = async () => {
 			.string({
 				message: "权限名称不能为空",
 			})
-			.min(2, "权限名称至少2个字符"),
+			.min(2, "权限名称至少2个字符")
+			.max(15, "权限名称最多15个字符"),
 		code: z
 			.string({
 				message: "权限代码不能为空",
 			})
-			.min(2, "权限代码至少2个字符"),
+			.min(2, "权限代码至少2个字符")
+			.max(15, "权限代码最多15个字符"),
 	});
 
 	try {
 		const validatedData = permissionSchema.parse(formData.value);
 		await onSubmit(validatedData);
+		updateFormData(undefined);
 	} catch (error) {
 		if (error instanceof z.ZodError) {
 			alertStore.showAlert({

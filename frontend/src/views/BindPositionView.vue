@@ -93,7 +93,7 @@
           <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
             {{ position.name }}
           </td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 max-w-sm overflow-hidden text-ellipsis">
             <div class="flex items-center">
               <div class="h-2.5 w-2.5 rounded-full me-2" :class="position.isBound ? 'bg-green-500' : 'bg-red-500'">
               </div> {{
@@ -116,6 +116,7 @@
 </template>
 
 <script setup lang="ts">
+import Breadcrumbs from "@/components/Breadcrumbs.vue";
 import BindModal from "@/components/PopupModal.vue";
 import UnModal from "@/components/PopupModal.vue";
 import TablePagination from "@/components/TablePagination.vue";
@@ -126,7 +127,6 @@ import { Modal, type ModalInterface, initFlowbite } from "flowbite";
 import { onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import useAlertStore from "../composables/store/useAlertStore";
-import Breadcrumbs from "@/components/Breadcrumbs.vue";
 
 const positionName = ref<string>("");
 const checkedPositionIds = ref<number[]>([]);
@@ -134,7 +134,7 @@ const positionBindModal = ref<ModalInterface>();
 const positionUnbindModal = ref<ModalInterface>();
 const allChecked = ref<boolean>(false);
 const $route = useRoute();
-const bindState = ref<"BIND" | "ALL" | "UNBIND">("BIND");
+const bindState = ref<"BIND" | "ALL" | "UNBIND">("ALL");
 
 const alertStore = useAlertStore();
 
@@ -155,6 +155,7 @@ const handleBindPositionSubmit = async () => {
 		bindState: bindState.value,
 	});
 	clearCheckedPositionIds();
+	allChecked.value = false;
 };
 
 const handleUnbindPositionSubmit = async () => {
@@ -170,6 +171,7 @@ const handleUnbindPositionSubmit = async () => {
 		bindState: bindState.value,
 	});
 	clearCheckedPositionIds();
+	allChecked.value = false;
 };
 
 onMounted(async () => {

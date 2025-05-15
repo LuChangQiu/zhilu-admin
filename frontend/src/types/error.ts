@@ -1,7 +1,7 @@
 class HttpError extends Error {
 	status: number;
-	detail: string | undefined;
-	constructor(message: string, status: number, detail: string | undefined) {
+	detail?: string;
+	constructor(message: string, status: number, detail?: string) {
 		super(message);
 		this.name = "HttpError";
 		this.status = status;
@@ -10,44 +10,31 @@ class HttpError extends Error {
 }
 
 class UnAuthError extends HttpError {
-	constructor(status: number, detail?: string) {
-		super("身份认证异常", status, detail);
+	constructor(status: number) {
+		super("当前用户身份认证异常", status);
 		this.name = "UnAuthError";
 	}
 }
 
 class ForbiddenError extends HttpError {
-	constructor(status: number, detail?: string) {
-		super("权限校验异常", status, detail);
+	constructor(status: number) {
+		super("您没有对应的权限", status);
 		this.name = "ForbiddenError";
 	}
 }
 
-class SystemError extends HttpError {
-	constructor(status: number, detail?: string) {
-		super("系统错误，请稍候再试", status, detail);
-		this.name = "SystemError";
+class RequestError extends HttpError {
+	constructor(status: number) {
+		super("请求发生异常，请检查您的输入或稍后再试", status);
+		this.name = "RequestError";
 	}
 }
 
 class InternalServerError extends HttpError {
-	constructor(status: number, detail?: string) {
-		super("服务器错误，请稍候再试", status, detail);
+	constructor(status: number, detail: string) {
+		super(detail, status, detail);
 		this.name = "InternalServerError";
 	}
 }
 
-class BadRequestError extends HttpError {
-	constructor(status: number, detail?: string) {
-		super("请求非法", status, detail);
-		this.name = "BadRequestError";
-	}
-}
-
-export {
-	UnAuthError,
-	ForbiddenError,
-	SystemError,
-	InternalServerError,
-	BadRequestError,
-};
+export { UnAuthError, ForbiddenError, RequestError, InternalServerError };

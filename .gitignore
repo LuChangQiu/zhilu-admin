@@ -168,5 +168,8 @@ fabric.properties
 hs_err_pid*
 replay_pid*
 
-
-# 如何在这个地方引用 backend 和 frontend 下级目录中的 .gitignore 中的规则？我需要全部给他们前面加上 backend/ 和 frontend/ 前缀吗？
+# docker
+docker-compose.yaml
+Dockerfile
+Caddyfile
+start.sh

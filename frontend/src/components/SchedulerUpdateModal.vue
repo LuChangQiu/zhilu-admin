@@ -54,9 +54,9 @@ const formData = ref();
 watch(
 	() => job,
 	(newJob) => {
-			formData.value = {
-				cronExpression: newJob?.cronExpression,
-			};
+		formData.value = {
+			cronExpression: newJob?.cronExpression,
+		};
 	},
 	{ immediate: true },
 );

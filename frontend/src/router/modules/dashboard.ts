@@ -1,7 +1,7 @@
 import type { RouteRecordRaw } from "vue-router";
 import Dashboard from "../../components/Dashboard.vue";
 import OverView from "../../views/OverView.vue";
-import { ROLE, RouteName, RoutePath } from "../constants";
+import { EPermission, ERole, RouteName, RoutePath } from "../constants";
 import userManagementRoutes from "./user";
 
 const dashboardRoutes: RouteRecordRaw = {
@@ -40,7 +40,7 @@ const dashboardRoutes: RouteRecordRaw = {
 			component: () => import("@/views/SchedulerView.vue"),
 			meta: {
 				requiresAuth: true,
-				hasRole: ROLE.ADMIN,
+				hasPermission: EPermission.READ_SCHEDULER_PERMISSION,
 			},
 		},
 		{
@@ -49,7 +49,7 @@ const dashboardRoutes: RouteRecordRaw = {
 			component: () => import("@/views/DepartmentView.vue"),
 			meta: {
 				requiresAuth: true,
-				hasRole: ROLE.ADMIN,
+				hasPermission: EPermission.READ_DEPARTMENT_PERMISSION,
 			},
 		},
 		{
@@ -58,7 +58,7 @@ const dashboardRoutes: RouteRecordRaw = {
 			component: () => import("@/views/PositionView.vue"),
 			meta: {
 				requiresAuth: true,
-				hasRole: ROLE.ADMIN,
+				hasPermission: EPermission.READ_POSITION_PERMISSION,
 			},
 		},
 	],

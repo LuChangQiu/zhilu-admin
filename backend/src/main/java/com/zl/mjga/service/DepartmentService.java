@@ -6,12 +6,14 @@ import com.zl.mjga.dto.PageRequestDto;
 import com.zl.mjga.dto.PageResponseDto;
 import com.zl.mjga.dto.department.DepartmentQueryDto;
 import com.zl.mjga.dto.department.DepartmentRespDto;
+import com.zl.mjga.dto.department.DepartmentWithParentDto;
 import com.zl.mjga.repository.DepartmentRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Record;
 import org.jooq.Result;
+import org.jooq.generated.mjga.tables.pojos.Department;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,6 +22,30 @@ import org.springframework.stereotype.Service;
 public class DepartmentService {
 
   private final DepartmentRepository departmentRepository;
+
+  public List<Department> queryAvailableParentDepartmentsBy(Long id) {
+    List<Department> allDepartments = departmentRepository.findAll();
+    if (id != null) {
+      List<DepartmentWithParentDto> departmentWithParentList = queryDepartmentAndSubsBy(id);
+      allDepartments.removeIf(
+          department -> {
+            return departmentWithParentList.stream()
+                .anyMatch(
+                    (departmentWithParentDto -> {
+                      return departmentWithParentDto.getId().equals(department.getId());
+                    }));
+          });
+    }
+    return allDepartments;
+  }
+
+  public void upsertDepartment(Department department) {
+    departmentRepository.merge(department);
+  }
+
+  public List<DepartmentWithParentDto> queryDepartmentAndSubsBy(Long id) {
+    return departmentRepository.queryDepartmentAndSubsBy(id);
+  }
 
   public PageResponseDto<List<DepartmentRespDto>> pageQueryDepartment(
       PageRequestDto pageRequestDto, DepartmentQueryDto departmentQueryDto) {

@@ -97,7 +97,7 @@
           <td scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
             {{ permission.name }}
           </td>
-          <td class="px-6 py-4">
+          <td class="px-6 py-4 max-w-sm overflow-hidden text-ellipsis">
             <div class="flex items-center">
               <div class="h-2.5 w-2.5 rounded-full me-2" :class="permission.isBound ? 'bg-green-500' : 'bg-red-500'">
               </div> {{
@@ -120,6 +120,7 @@
 </template>
 
 <script setup lang="ts">
+import Breadcrumbs from "@/components/Breadcrumbs.vue";
 import BindModal from "@/components/PopupModal.vue";
 import UnModal from "@/components/PopupModal.vue";
 import TablePagination from "@/components/TablePagination.vue";
@@ -130,7 +131,6 @@ import { useRoute } from "vue-router";
 import { usePermissionBind } from "../composables/permission/usePermissionBind";
 import usePermissionsQuery from "../composables/permission/usePermissionQuery";
 import useAlertStore from "../composables/store/useAlertStore";
-import Breadcrumbs from "@/components/Breadcrumbs.vue";
 
 const permissionName = ref<string>("");
 const checkedPermissionIds = ref<number[]>([]);
@@ -138,7 +138,7 @@ const permissionBindModal = ref<ModalInterface>();
 const permissionUnbindModal = ref<ModalInterface>();
 const allChecked = ref<boolean>(false);
 const $route = useRoute();
-const bindState = ref<"BIND" | "ALL" | "UNBIND">("BIND");
+const bindState = ref<"BIND" | "ALL" | "UNBIND">("ALL");
 
 const alertStore = useAlertStore();
 const { total, permissions, fetchPermissionsWith } = usePermissionsQuery();
@@ -155,6 +155,7 @@ const handleBindPermissionSubmit = async () => {
 		level: "success",
 	});
 	clearCheckedRoleIds();
+  allChecked.value = false;
 	await fetchPermissionsWith({
 		name: permissionName.value,
 		roleId: Number($route.params.roleId),
@@ -173,6 +174,7 @@ const handleUnbindPermissionSubmit = async () => {
 		level: "success",
 	});
 	clearCheckedRoleIds();
+  allChecked.value = false;
 	await fetchPermissionsWith({
 		name: permissionName.value,
 		roleId: Number($route.params.roleId),

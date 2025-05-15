@@ -1,15 +1,16 @@
 package com.zl.mjga.repository;
 
 import static org.jooq.generated.mjga.Tables.*;
-import static org.jooq.impl.DSL.noCondition;
-import static org.jooq.impl.DSL.noField;
+import static org.jooq.impl.DSL.*;
+import static org.jooq.impl.SQLDataType.VARCHAR;
 
 import com.zl.mjga.dto.PageRequestDto;
 import com.zl.mjga.dto.department.DepartmentQueryDto;
+import com.zl.mjga.dto.department.DepartmentWithParentDto;
+import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.*;
 import org.jooq.Record;
-import org.jooq.generated.mjga.tables.Department;
 import org.jooq.generated.mjga.tables.daos.DepartmentDao;
 import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +24,39 @@ public class DepartmentRepository extends DepartmentDao {
     super(configuration);
   }
 
+  public List<DepartmentWithParentDto> queryDepartmentAndSubsBy(Long id) {
+    CommonTableExpression<?> cte =
+        name("parent_department")
+            .fields("id", "name", "parent_name", "parent_id", "path")
+            .as(
+                select(
+                        DEPARTMENT.ID,
+                        DEPARTMENT.NAME,
+                        DEPARTMENT.NAME,
+                        DEPARTMENT.PARENT_ID,
+                        DEPARTMENT.NAME.cast(VARCHAR))
+                    .from(DEPARTMENT)
+                    .where(DEPARTMENT.ID.eq(id))
+                    .unionAll(
+                        select(
+                                DEPARTMENT.ID,
+                                DEPARTMENT.NAME,
+                                field(name("parent_department", "name"), VARCHAR),
+                                DEPARTMENT.PARENT_ID,
+                                field(name("parent_department", "path"), VARCHAR)
+                                    .concat("->")
+                                    .concat(DEPARTMENT.NAME))
+                            .from(table(name("parent_department")))
+                            .join(DEPARTMENT)
+                            .on(
+                                field(name("parent_department", "id"), Long.class)
+                                    .eq(DEPARTMENT.PARENT_ID))));
+    return ctx().withRecursive(cte).selectFrom(cte).fetch().into(DepartmentWithParentDto.class);
+  }
+
   public Result<Record> pageFetchBy(
       PageRequestDto pageRequestDto, DepartmentQueryDto departmentQueryDto) {
-    Department parent = DEPARTMENT.as("parent");
+    org.jooq.generated.mjga.tables.Department parent = DEPARTMENT.as("parent");
     return ctx()
         .select(
             DEPARTMENT.asterisk(),
@@ -36,7 +67,7 @@ public class DepartmentRepository extends DepartmentDao {
                         true)
                     .otherwise(false)
                     .as("is_bound")
-                : noField(),
+                : noCondition(),
             DSL.count().over().as("total_department").convertFrom(Long::valueOf))
         .from(DEPARTMENT)
         .leftJoin(parent)
