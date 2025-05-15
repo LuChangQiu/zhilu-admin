@@ -169,7 +169,7 @@ hs_err_pid*
 replay_pid*
 
 # docker
-docker-compose.yaml
+docker-compose.yml
 Dockerfile
 Caddyfile
 start.sh

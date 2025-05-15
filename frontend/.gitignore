@@ -181,7 +181,7 @@ auto-imports.d.ts
 components.d.ts
 
 # docker
-docker-compose.yaml
+docker-compose.yml
 Dockerfile
 Caddyfile
 start.sh

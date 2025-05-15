@@ -226,7 +226,7 @@ db.d/store/*
 .git
 
 # docker
-docker-compose.yaml
+docker-compose.yml
 Dockerfile
 Caddyfile
 start.sh
