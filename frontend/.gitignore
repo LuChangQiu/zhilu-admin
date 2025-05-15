@@ -179,3 +179,9 @@ fabric.properties
 # Auto-generated type declarations
 auto-imports.d.ts
 components.d.ts
+
+# docker
+docker-compose.yaml
+Dockerfile
+Caddyfile
+start.sh
