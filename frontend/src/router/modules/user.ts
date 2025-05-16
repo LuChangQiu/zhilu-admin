@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from "vue-router";
-import { EPermission, ERole, RouteName, RoutePath } from "../constants";
+import { EPermission, RouteName, RoutePath } from "../constants";
 
 const userManagementRoutes: RouteRecordRaw[] = [
 	{

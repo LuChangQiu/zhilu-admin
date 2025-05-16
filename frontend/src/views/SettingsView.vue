@@ -1,50 +1,46 @@
 <template>
-  <div class="grid grid-cols-1 px-4 pt-6 xl:grid-cols-3 xl:gap-4 dark:bg-gray-900 ">
+  <div class="grid grid-cols-1 px-4 pt-6 xl:grid-cols-3 xl:gap-4  ">
     <div class="mb-4 col-span-full xl:mb-2">
       <Breadcrumbs :names="['用户设置']" />
-      <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl dark:text-white">用户设置</h1>
+      <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl ">用户设置</h1>
     </div>
     <!-- Right Content -->
     <div class="col-span-full xl:col-auto">
     </div>
     <div class="col-span-1 row-start-3">
-      <div
-        class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
-        <h3 class="mb-4 text-xl font-semibold dark:text-white">个人信息</h3>
+      <div class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2  sm:p-6 ">
+        <h3 class="mb-4 text-xl font-semibold ">个人信息</h3>
         <form action="#">
           <div class="grid grid-cols-6 gap-6">
             <div class="col-span-6 ">
-              <label for="current-username"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">用户名</label>
+              <label for="current-username" class="block mb-2 text-sm font-medium text-gray-900 ">用户名</label>
               <input type="text" name="current-username" id="current-username" v-model="userForm.username"
-                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5      "
                 required>
             </div>
             <div class="col-span-6 ">
-              <label for="current-password"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">密码</label>
+              <label for="current-password" class="block mb-2 text-sm font-medium text-gray-900 ">密码</label>
               <input type="password" name="current-password" id="current-password" v-model="userForm.password"
-                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5      "
                 placeholder="非必填" required>
             </div>
             <div class="col-span-6 ">
-              <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">确认密码</label>
+              <label for="password" class="block mb-2 text-sm font-medium text-gray-900 ">确认密码</label>
               <input type="password" id="password" v-model="userForm.confirmPassword"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5      "
                 placeholder="非必填" required>
             </div>
             <div class="col-span-6 ">
-              <label for="category" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">状态</label>
-              <select id="category" disabled v-model="userForm.enable"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 
-                opacity-50 cursor-not-allowed dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+              <label for="category" class="block mb-2 text-sm font-medium text-gray-900 ">状态</label>
+              <select id="category" disabled v-model="userForm.enable" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 
+                opacity-50 cursor-not-allowed      ">
                 <option :value=true>启用</option>
                 <option :value=false>禁用</option>
               </select>
             </div>
             <div class="col-span-6 sm:col-full">
               <button
-                class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center   "
                 @click.prevent="handleUpdateClick" type="submit">保存</button>
             </div>
           </div>

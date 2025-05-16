@@ -16,7 +16,7 @@ export default [
 		};
 		return HttpResponse.json(mockData);
 	}),
-	http.get("/department/query", () => {
+	http.get("/department/query-available", () => {
 		const generateDepartment = () => ({
 			id: faker.number.int({ min: 1, max: 30 }),
 			name: faker.company.name(),

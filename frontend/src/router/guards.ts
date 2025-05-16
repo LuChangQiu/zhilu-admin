@@ -24,6 +24,7 @@ export const permissionGuard: NavigationGuard = (to) => {
 			routeMeta.hasPermission,
 		);
 		if (!hasPermission) {
+			console.error(`您没有请求页面的相关权限：${to.path}`);
 			return false;
 		}
 	}
@@ -35,6 +36,7 @@ export const roleGuard: NavigationGuard = (to) => {
 	if (routeMeta.hasRole) {
 		const hasRole = userStore.roleCodes?.includes(routeMeta.hasRole);
 		if (!hasRole) {
+			console.error(`您没有请求页面的相关角色：${to.path}`);
 			return false;
 		}
 	}

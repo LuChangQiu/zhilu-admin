@@ -23,6 +23,10 @@ router.onError((err) => {
 	router.push(RouteName.USERVIEW);
 	return false;
 });
-setupGuards(router);
+
+const isMockEnabled = import.meta.env.VITE_ENABLE_MOCK === "true";
+if (!isMockEnabled) {
+	setupGuards(router);
+}
 
 export default router;
