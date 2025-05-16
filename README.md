@@ -172,3 +172,8 @@ https://admin.mjga.cc/
 [![Github](https://img.shields.io/badge/-white?style=social&logo=github&label=github)](https://github.com/ccmjga)
 
 [![QQ](https://img.shields.io/badge/-white?style=social&logo=QQ&label=QQ群)](https://qm.qq.com/q/9mvVC57jPO)
+
+## 💌 微信打赏
+知路管理后台的发展离不开您的支持；再次对所有支持本项目的人们致以诚挚的谢意～
+
+![pay](/assets/pay.png)
