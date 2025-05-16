@@ -68,11 +68,16 @@ public class PageRequestDto {
   }
 
   public List<SortField<Object>> getSortFields() {
-    return sortBy.entrySet().stream()
-        .map(
-            (entry) ->
-                field(name(entry.getKey())).sort(SortOrder.valueOf(entry.getValue().getKeyword())))
-        .toList();
+    List<SortField<Object>> sortFields = sortBy.entrySet().stream()
+            .map(
+                    (entry) ->
+                            field(name(entry.getKey())).sort(SortOrder.valueOf(entry.getValue().getKeyword())))
+            .toList();
+    if (sortFields.isEmpty()) {
+      return List.of(field(name("id")).sort(SortOrder.ASC));
+    } else {
+      return sortFields;
+    }
   }
 
   private void checkPageAndSize(int page, int size) {

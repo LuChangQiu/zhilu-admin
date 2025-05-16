@@ -38,7 +38,7 @@ public class QrtzJobRepository extends QrtzJobDetailsDao {
             StringUtils.isNotEmpty(queryDto.name())
                 ? QRTZ_JOB_DETAILS.SCHED_NAME.eq(queryDto.name())
                 : noCondition())
-        .orderBy(pageRequestDto.getSortFields())
+        .orderBy(QRTZ_JOB_DETAILS.qrtzTriggers().TRIGGER_NAME)
         .limit(pageRequestDto.getSize())
         .offset(pageRequestDto.getOffset())
         .fetch();
