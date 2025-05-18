@@ -544,9 +544,11 @@ export interface components {
 			page?: number;
 			/** Format: int64 */
 			size?: number;
-			sortBy?: {
-				[key: string]: "ASC" | "DESC";
-			};
+			/**
+			 * @description 排序字段
+			 * @example name:asc,age:desc
+			 */
+			sortBy?: string;
 			/** Format: int64 */
 			offset?: number;
 			sortFields?: components["schemas"]["SortFieldObject"][];

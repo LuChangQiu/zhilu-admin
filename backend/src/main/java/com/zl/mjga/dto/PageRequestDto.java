@@ -1,8 +1,10 @@
 package com.zl.mjga.dto;
 
+import static com.zl.mjga.utils.StringCaseUtils.convertCamelCaseToSnake;
 import static org.jooq.impl.DSL.field;
 import static org.jooq.impl.DSL.name;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,11 +19,12 @@ public class PageRequestDto {
 
   public static final String REGEX = "^[a-zA-Z][a-zA-Z0-9_]*$";
 
-  public static final String SPACE = " ";
+  public static final String COLON = ":";
 
   private long page;
   private long size;
 
+  @Schema(description = "排序字段", example = "name:asc,age:desc", type = "string")
   private Map<String, Direction> sortBy = new HashMap<>();
 
   public PageRequestDto(int page, int size) {
@@ -68,10 +71,12 @@ public class PageRequestDto {
   }
 
   public List<SortField<Object>> getSortFields() {
-    List<SortField<Object>> sortFields = sortBy.entrySet().stream()
+    List<SortField<Object>> sortFields =
+        sortBy.entrySet().stream()
             .map(
-                    (entry) ->
-                            field(name(entry.getKey())).sort(SortOrder.valueOf(entry.getValue().getKeyword())))
+                (entry) ->
+                    field(name(convertCamelCaseToSnake(entry.getKey())))
+                        .sort(SortOrder.valueOf(entry.getValue().getKeyword())))
             .toList();
     if (sortFields.isEmpty()) {
       return List.of(field(name("id")).sort(SortOrder.ASC));
@@ -108,7 +113,7 @@ public class PageRequestDto {
       return result;
     }
     for (String fieldSpaceDirection : sortBy.split(",")) {
-      String[] fieldDirectionArray = fieldSpaceDirection.split(SPACE);
+      String[] fieldDirectionArray = fieldSpaceDirection.split(COLON);
       if (fieldDirectionArray.length != 2) {
         throw new IllegalArgumentException(
             String.format(

@@ -24,6 +24,7 @@ export const useUserQuery = () => {
 		},
 		page = 1,
 		size = 10,
+		sortBy = "id:desc",
 	) => {
 		const { data } = await client.GET("/iam/users", {
 			params: {
@@ -31,6 +32,7 @@ export const useUserQuery = () => {
 					pageRequestDto: {
 						page,
 						size,
+						sortBy,
 					},
 					userQueryDto: param,
 				},

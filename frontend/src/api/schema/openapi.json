@@ -1219,14 +1219,9 @@
             "format": "int64"
           },
           "sortBy": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string",
-              "enum": [
-                "ASC",
-                "DESC"
-              ]
-            }
+            "type": "string",
+            "description": "排序字段",
+            "example": "name:asc,age:desc"
           },
           "offset": {
             "type": "integer",

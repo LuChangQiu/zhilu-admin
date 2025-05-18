@@ -25,7 +25,7 @@
       </form>
       <!-- Create Modal toggle -->
       <button @click="handleUpsertUserClick(undefined)"
-        class="flex items-center block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center    absolute right-5 bottom-2"
+        class="flex items-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center    absolute right-5 bottom-2"
         type="button">
         新增用户
       </button>
@@ -42,7 +42,12 @@
               </div>
             </th>
             <th scope="col" class="px-6 py-3">用户名</th>
-            <th scope="col" class="px-6 py-3">创建时间</th>
+            <th scope="col" class="px-6 py-3 cursor-pointer" @click="handleSortClick('createTime')">
+              <div class="flex items-center">
+                <span>创建时间</span> 
+                <SortIcon :sortField="getSortField('createTime')" />
+              </div>
+            </th>
             <th scope="col" class="px-6 py-3">状态</th>
             <th scope="col" class="px-6 py-3">分配</th>
             <th scope="col" class="px-6 py-3">操作</th>
@@ -147,18 +152,18 @@ import { useRouter } from "vue-router";
 import type { components } from "../api/types/schema";
 import useAlertStore from "../composables/store/useAlertStore";
 import { useUserUpsert } from "../composables/user/useUserUpsert";
+import { useSort } from "@/composables/sort";
+import SortIcon from "@/components/SortIcon.vue";
 
 const username = ref<string>("");
 const selectedUser = ref<components["schemas"]["UserRolePermissionDto"]>();
 const userUpsertModal = ref<ModalInterface>();
 const userDeleteModal = ref<ModalInterface>();
 const router = useRouter();
-
 const { total, users, fetchUsersWith } = useUserQuery();
-
 const { deleteUser } = useUserDelete();
 const userUpsert = useUserUpsert();
-
+const { sortFields, sortBy, handleSort, getSortField } = useSort();
 const alertStore = useAlertStore();
 
 onMounted(async () => {
@@ -193,9 +198,14 @@ const handleUpsertUserSubmit = async (data: UserUpsertSubmitModel) => {
 		content: "操作成功",
 		level: "success",
 	});
-	await fetchUsersWith({
-		username: username.value,
-	});
+	await fetchUsersWith(
+		{
+			username: username.value,
+		},
+		1,
+		10,
+		sortBy.value,
+	);
 };
 
 const handleUpsertUserClick = async (
@@ -240,6 +250,18 @@ const handleBindPositionClick = async (
 	});
 };
 
+const handleSortClick = async (field: string) => {
+	handleSort(field);
+	await fetchUsersWith(
+		{
+			username: username.value,
+		},
+		1,
+		10,
+		sortBy.value,
+	);
+};
+
 const handleDeleteUserSubmit = async () => {
 	if (!selectedUser?.value?.id) return;
 	await deleteUser(selectedUser.value.id);
@@ -248,9 +270,14 @@ const handleDeleteUserSubmit = async () => {
 		content: "删除成功",
 		level: "success",
 	});
-	await fetchUsersWith({
-		username: username.value,
-	});
+	await fetchUsersWith(
+		{
+			username: username.value,
+		},
+		1,
+		10,
+		sortBy.value,
+	);
 };
 
 const handleDeleteUserClick = async (
@@ -263,9 +290,14 @@ const handleDeleteUserClick = async (
 };
 
 const handleSearch = async () => {
-	await fetchUsersWith({
-		username: username.value,
-	});
+	await fetchUsersWith(
+		{
+			username: username.value,
+		},
+		1,
+		10,
+		sortBy.value,
+	);
 };
 
 const handlePageChange = async (page: number, pageSize: number) => {
@@ -275,6 +307,7 @@ const handlePageChange = async (page: number, pageSize: number) => {
 		},
 		page,
 		pageSize,
+		sortBy.value,
 	);
 };
 </script>

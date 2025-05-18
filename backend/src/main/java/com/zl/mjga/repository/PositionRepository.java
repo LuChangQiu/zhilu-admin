@@ -2,7 +2,6 @@ package com.zl.mjga.repository;
 
 import static org.jooq.generated.mjga.Tables.*;
 import static org.jooq.impl.DSL.noCondition;
-import static org.jooq.impl.DSL.noField;
 
 import com.zl.mjga.dto.PageRequestDto;
 import com.zl.mjga.dto.position.PositionQueryDto;

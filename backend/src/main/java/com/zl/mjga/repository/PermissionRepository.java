@@ -3,7 +3,6 @@ package com.zl.mjga.repository;
 import static org.jooq.generated.mjga.tables.Permission.PERMISSION;
 import static org.jooq.generated.mjga.tables.Role.ROLE;
 import static org.jooq.impl.DSL.*;
-import static org.jooq.impl.DSL.noField;
 
 import com.zl.mjga.dto.PageRequestDto;
 import com.zl.mjga.dto.urp.PermissionQueryDto;
