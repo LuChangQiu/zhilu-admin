@@ -44,7 +44,7 @@
 						<div class="col-span-2 sm:col-span-1">
 							<label for="category" class="block mb-2 text-sm font-medium text-gray-900 ">状态</label>
 							<select id="category" v-model="formData.enable"
-								class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5      ">
+								class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5">
 								<option :value=true>启用</option>
 								<option :value=false>禁用</option>
 							</select>
@@ -83,7 +83,7 @@ const updateFormData = (newUser: typeof user) => {
 		id: newUser?.id,
 		username: newUser?.username,
 		password: undefined,
-		enable: newUser?.enable,
+		enable: newUser?.enable ?? true,
 		confirmPassword: undefined,
 	};
 };
@@ -102,7 +102,9 @@ const handleSubmit = async () => {
 				})
 				.min(4, "用户名至少4个字符")
 				.max(15, "用户名最多15个字符"),
-			enable: z.boolean(),
+			enable: z.boolean({
+				message: "状态不能为空",
+			}),
 			password: z
 				.string({
 					message: "密码不能为空",
