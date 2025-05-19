@@ -14,9 +14,9 @@ public class PageRequestDtoUnitTest {
 
   @Test
   void setSortBy_whenSortByFieldIsExpectFormat_thenDeserializeCorrect() {
-    String sortBy1 = "id asc,name desc";
-    String sortBy2 = "id asc";
-    String sortBy3 = "id asc,";
+    String sortBy1 = "id:asc,name:desc";
+    String sortBy2 = "id:asc";
+    String sortBy3 = "id:asc,";
     String sortBy4 = ",";
     String sortBy5 = "";
     PageRequestDto pageRequestDto1 = new PageRequestDto();

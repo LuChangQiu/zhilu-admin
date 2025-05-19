@@ -14,6 +14,7 @@ import com.zl.mjga.controller.IdentityAccessController;
 import com.zl.mjga.controller.SignController;
 import com.zl.mjga.dto.sign.SignInDto;
 import com.zl.mjga.model.urp.EPermission;
+import com.zl.mjga.repository.PermissionRepository;
 import com.zl.mjga.repository.RoleRepository;
 import com.zl.mjga.repository.UserRepository;
 import com.zl.mjga.service.IdentityAccessService;
@@ -47,6 +48,7 @@ public class AuthenticationAndAuthorityTest {
 
   @MockBean private UserRepository userRepository;
   @MockBean private RoleRepository roleRepository;
+  @MockBean private PermissionRepository permissionRepository;
 
   @Test
   public void givenRequestOnPublicService_shouldSucceedWith200() throws Exception {

@@ -36,6 +36,7 @@ public class SignUnitTest {
     // arrange
     User stubUser = new User();
     stubUser.setId(1L);
+    stubUser.setEnable(true);
     stubUser.setUsername("testUserName");
     stubUser.setPassword("GjFH2fzRB2y7DDrO");
     when(userRepository.fetchOneByUsername("testUserName")).thenReturn(stubUser);

@@ -41,10 +41,15 @@
                 <label for="checkbox-all-search" class="sr-only">checkbox</label>
               </div>
             </th>
-            <th scope="col" class="px-6 py-3">用户名</th>
+            <th scope="col" class="px-6 py-3 cursor-pointer" @click="handleSortClick('username')">
+              <div class="flex items-center">
+                <span>用户名</span>
+                <SortIcon :sortField="getSortField('username')" />
+              </div>
+            </th>
             <th scope="col" class="px-6 py-3 cursor-pointer" @click="handleSortClick('createTime')">
               <div class="flex items-center">
-                <span>创建时间</span> 
+                <span>创建时间</span>
                 <SortIcon :sortField="getSortField('createTime')" />
               </div>
             </th>

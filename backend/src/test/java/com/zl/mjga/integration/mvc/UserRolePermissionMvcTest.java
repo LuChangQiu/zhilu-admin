@@ -46,6 +46,7 @@ class UserRolePermissionMvcTest {
     stubUserRolePermissionDto.setUsername(stubUsername);
     User stubUser = new User();
     stubUser.setId(1L);
+    stubUser.setEnable(Boolean.TRUE);
     when(userRepository.fetchOneByUsername(anyString())).thenReturn(stubUser);
     when(identityAccessService.queryUniqueUserWithRolePermission(anyLong()))
         .thenReturn(stubUserRolePermissionDto);
