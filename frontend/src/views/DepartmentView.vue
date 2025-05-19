@@ -5,7 +5,7 @@
       <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl ">部门管理</h1>
     </div>
     <div class="relative">
-      <form class="max-w-sm mb-4">
+      <form class="max-w-xs mb-4">
         <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only ">Search</label>
         <div class="relative">
           <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">

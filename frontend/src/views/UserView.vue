@@ -5,7 +5,7 @@
       <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl ">用户管理</h1>
     </div>
     <div class="relative">
-      <form class="max-w-sm mb-4 ">
+      <form class="max-w-xs mb-4 ">
         <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only ">Search</label>
         <div class="relative">
           <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -72,7 +72,7 @@
               {{ user.username }}
             </td>
             <td class="px-6 py-4 max-w-sm overflow-hidden text-ellipsis">
-              {{ user.createTime }}
+              {{ dayjs(user.createTime).format("llll") }}
             </td>
             <td class="px-6 py-4 max-w-sm overflow-hidden text-ellipsis">
               <div class="flex items-center">
@@ -145,20 +145,21 @@
 <script setup lang="ts">
 import Breadcrumbs from "@/components/Breadcrumbs.vue";
 import UserDeleteModal from "@/components/PopupModal.vue";
+import SortIcon from "@/components/SortIcon.vue";
 import TablePagination from "@/components/TablePagination.vue";
 import UserUpsertModal from "@/components/UserUpsertModal.vue";
+import { useSort } from "@/composables/sort";
 import useUserDelete from "@/composables/user/useUserDelete";
 import { useUserQuery } from "@/composables/user/useUserQuery";
 import { RouteName } from "@/router/constants";
 import type { UserUpsertSubmitModel } from "@/types/user";
+import dayjs from "@/utils/dateUtil";
 import { Modal, type ModalInterface, initFlowbite } from "flowbite";
 import { nextTick, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import type { components } from "../api/types/schema";
 import useAlertStore from "../composables/store/useAlertStore";
 import { useUserUpsert } from "../composables/user/useUserUpsert";
-import { useSort } from "@/composables/sort";
-import SortIcon from "@/components/SortIcon.vue";
 
 const username = ref<string>("");
 const selectedUser = ref<components["schemas"]["UserRolePermissionDto"]>();

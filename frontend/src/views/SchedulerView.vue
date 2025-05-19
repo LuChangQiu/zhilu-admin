@@ -5,7 +5,7 @@
       <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl ">任务管理</h1>
     </div>
     <div class="relative">
-      <form class="max-w-sm mb-4 ">
+      <form class="max-w-xs mb-4 ">
         <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only ">Search</label>
         <div class="relative">
           <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -59,22 +59,21 @@
                 <label :for="'checkbox-table-search-' + job.triggerName" class="sr-only">checkbox</label>
               </div>
             </td>
-            <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">{{
+            <td class="px-6 py-4 max-w-sm overflow-hidden text-ellipsis font-medium text-gray-900 whitespace-nowrap ">{{
               `${job.name}:${job.group}` }}</td>
             <td class="px-6 py-4 max-w-sm overflow-hidden text-ellipsis">{{
               `${job.triggerName}:${job.triggerGroup}` }}
             </td>
-            <td class="px-6 py-4 max-w-sm overflow-hidden text-ellipsis">{{ new
-              Date(job.startTime!).toLocaleString() }}
+            <td class="px-6 py-4 min-w-3xs max-w-sm overflow-hidden text-ellipsis">{{
+              dayjs(job.startTime!).format("llll") }}
             </td>
-            <td class="px-6 py-4 max-w-sm overflow-hidden text-ellipsis">{{ job.endTime ? new
-              Date(job.endTime).toLocaleString() : undefined }}</td>
-            <td class="px-6 py-4 max-w-sm overflow-hidden text-ellipsis">{{ job.nextFireTime ? new
-              Date(job.nextFireTime).toLocaleString() : undefined}}</td>
-            <td class="px-6 py-4 max-w-sm overflow-hidden text-ellipsis">{{ job.previousFireTime &&
+            <td class="px-6 py-4 min-w-3xs max-w-sm overflow-hidden text-ellipsis">{{ job.endTime ?
+              dayjs(job.endTime).format("llll") : undefined }}</td>
+            <td class="px-6 py-4 min-w-3xs max-w-sm overflow-hidden text-ellipsis">{{ job.nextFireTime ?
+              dayjs(job.nextFireTime).format("llll") : undefined}}</td>
+            <td class="px-6 py-4 min-w-3xs max-w-sm overflow-hidden text-ellipsis">{{ job.previousFireTime &&
               job.previousFireTime
-              > 0 ? new
-              Date(job.previousFireTime).toLocaleString() :
+              > 0 ? dayjs(job.previousFireTime).format("llll") :
               undefined
               }}
             </td>
@@ -138,6 +137,7 @@ import { useJobControl } from "@/composables/job/useJobControl";
 import { useJobsPaginationQuery } from "@/composables/job/useJobQuery";
 import { useJobUpdate } from "@/composables/job/useJobUpdate";
 import useAlertStore from "@/composables/store/useAlertStore";
+import dayjs from "@/utils/dateUtil";
 import { Modal, type ModalInterface, initFlowbite } from "flowbite";
 import { nextTick, onMounted, ref } from "vue";
 import type { components } from "../api/types/schema";
