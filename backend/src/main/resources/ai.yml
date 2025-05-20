@@ -1,0 +1,6 @@
+deep-seek:
+  base-url: "https://api.deepseek.com"
+  api-key: "sk-3633b0cd40884b27aa8402a1c5dc029d"
+  model-name: "deepseek-chat"
+  prompt:
+    system: "你是一个名叫「知路智能体」的企业级AI助手，能帮助用户解决各种问题。"
