@@ -1,31 +1,54 @@
+import { fetchEventSource } from "@microsoft/fetch-event-source";
 import { ref } from "vue";
-import client from "../../api/client";
+import useAuthStore from "../store/useAuthStore";
+
+const authStore = useAuthStore();
 
 export const useAiChat = () => {
 	const messages = ref<string[]>([]);
 	const isLoading = ref(false);
 
+	let currentController: AbortController | null = null;
+
 	const chat = async (message: string) => {
 		isLoading.value = true;
+		messages.value.push(message);
+		messages.value.push("");
+		const ctrl = new AbortController();
+		currentController = ctrl;
+
 		try {
-			const { response } = await client.POST("/ai/chat", {
+			const baseUrl = `${import.meta.env.VITE_BASE_URL}`;
+
+			await fetchEventSource(`${baseUrl}/ai/chat`, {
+				method: "POST",
+				headers: {
+					Authorization: authStore.get(),
+					"Content-Type": "application/json",
+				},
 				body: message,
-				parseAs: "stream",
+				signal: ctrl.signal,
+				onmessage(ev) {
+					messages.value[messages.value.length - 1] += ev.data;
+				},
+				onclose() {
+					console.log("onclose");
+				},
+				onerror(err) {
+					throw err;
+				},
 			});
-			const reader = response.body?.getReader();
-			if (reader) {
-				const decoder = new TextDecoder();
-				while (true) {
-					const { done, value } = await reader.read();
-					if (done) break;
-					messages.value.push(decoder.decode(value, { stream: true }));
-					console.log(decoder.decode(value));
-				}
-				return;
-			}
 		} finally {
 			isLoading.value = false;
 		}
 	};
-	return { messages, chat, isLoading };
+
+	const cancel = () => {
+		if (currentController) {
+			currentController.abort();
+			currentController = null;
+		}
+	};
+
+	return { messages, chat, isLoading, cancel };
 };

@@ -5,9 +5,9 @@
         class="flex items-start gap-2.5">
         <img class="w-8 h-8 rounded-full" src="/trump.jpg" alt="Jese image">
         <div
-          class="flex flex-col leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl dark:bg-gray-700">
+          :class="['flex flex-col leading-1.5 p-4 border-gray-200 rounded-e-xl rounded-es-xl dark:bg-gray-700', chatElement.isUser ? 'bg-gray-100' : 'bg-blue-100']">
           <div class="flex items-center space-x-2 rtl:space-x-reverse">
-            <span class="text-sm font-semibold text-gray-900 dark:text-white">{{ user.username }}</span>
+            <span class="text-sm font-semibold text-gray-900 dark:text-white">{{ chatElement.username }}</span>
           </div>
           <p class="text-base font-normal py-2.5 text-gray-900 dark:text-white">{{ chatElement.content }}</p>
         </div>
@@ -61,12 +61,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, ref, watch } from "vue";
+import { computed, nextTick, onUnmounted, ref, watch } from "vue";
 import Button from "../components/Button.vue";
 import { useAiChat } from "../composables/ai/useAiChat";
 import useUserStore from "../composables/store/useUserStore";
 
-const { messages, chat, isLoading } = useAiChat();
+const { messages, chat, isLoading, cancel } = useAiChat();
 const { user } = useUserStore();
 const inputMessage = ref("");
 const chatContainer = ref<HTMLElement | null>(null);
@@ -76,7 +76,7 @@ const chatElements = computed(() => {
 		return {
 			content: message,
 			username: index % 2 === 0 ? user.username : "DeepSeek",
-			isUser: index % 2 === 0,
+			isUser: index % 2 !== 0,
 		};
 	});
 });
@@ -90,7 +90,6 @@ watch(
 	{ deep: true },
 );
 
-// 滚动到底部的函数
 const scrollToBottom = () => {
 	if (chatContainer.value) {
 		chatContainer.value.scrollTop = chatContainer.value.scrollHeight;
@@ -98,8 +97,12 @@ const scrollToBottom = () => {
 };
 
 const handleSendClick = async (event: Event) => {
-	await chat(inputMessage.value);
+  chat(inputMessage.value);
 	inputMessage.value = "";
 	scrollToBottom();
 };
+
+onUnmounted(() => {
+	cancel();
+});
 </script>
