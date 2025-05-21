@@ -1,50 +1,30 @@
 <template>
-  <div class="flex flex-col w-1/2 mx-auto box-border pt-14 min-h-screen">
+  <div class="flex flex-col px-80 box-border pt-14 min-h-screen max-h-screen overflow-auto" ref="chatContainer">
     <div class="flex flex-col gap-y-5 flex-1 pt-14">
-      <div class="flex items-start gap-2.5 ">
+      <li v-for="chatElement in chatElements" :key="chatElement.content" :dir="chatElement.isUser ? 'rtl' : 'ltr'"
+        class="flex items-start gap-2.5">
         <img class="w-8 h-8 rounded-full" src="/trump.jpg" alt="Jese image">
         <div
           class="flex flex-col leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl dark:bg-gray-700">
           <div class="flex items-center space-x-2 rtl:space-x-reverse">
-            <span class="text-sm font-semibold text-gray-900 dark:text-white">Bonnie Green</span>
-            <span class="text-sm font-normal text-gray-500 dark:text-gray-400">11:46</span>
+            <span class="text-sm font-semibold text-gray-900 dark:text-white">{{ user.username }}</span>
           </div>
-          <p class="text-sm font-normal py-2.5 text-gray-900 dark:text-white">That's awesome. I think our users will
-            really
-            appreciate the improvements.</p>
-          <span class="text-sm font-normal text-gray-500 dark:text-gray-400">Delivered</span>
+          <p class="text-base font-normal py-2.5 text-gray-900 dark:text-white">{{ chatElement.content }}</p>
         </div>
-      </div>
-      <div dir="rtl" class="flex items-start gap-2.5">
-        <img class="w-8 h-8 rounded-full" src="/trump.jpg" alt="Jese image">
-        <div
-          class="flex flex-col  leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl dark:bg-gray-700">
-          <div class="flex items-center space-x-2">
-            <span class="text-sm font-semibold text-gray-900 dark:text-white">Bonnie Green</span>
-            <span class="text-sm font-normal text-gray-500 dark:text-gray-400">11:46</span>
-          </div>
-          <p dir="ltr" class="text-sm font-normal py-2.5 text-gray-900 dark:text-white">That's awesome. I think our
-            users
-            will
-            really appreciate the improvements.</p>
-          <span class="text-sm font-normal text-gray-500 dark:text-gray-400">Delivered</span>
-        </div>
-      </div>
+      </li>
     </div>
 
-    <form class="flex-none pb-2">
-      <div class="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
+    <form class="sticky bottom-4 mt-14">
+      <div class="w-full border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
         <div class="px-4 py-2 bg-white rounded-t-lg dark:bg-gray-800">
-          <label for="comment" class="sr-only">Your comment</label>
-          <textarea id="comment" rows="4"
-            class="w-full px-0 text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
+          <label for="comment" class="sr-only"></label>
+          <textarea id="comment" rows="3" v-model="inputMessage"
+            class="w-full px-0  text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
             placeholder="给知路智能体发送消息" required></textarea>
         </div>
         <div class="flex items-center justify-between px-3 py-2 border-t dark:border-gray-600 border-gray-200">
-          <button type="submit"
-            class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
-            Post comment
-          </button>
+          <Button :disabled="inputMessage === ''" :isLoading="isLoading" :loadingContent="'发送中...'"
+            :submitContent="'发送'" :disabledStyle="'bg-blue-400'" :handleClick="handleSendClick" />
           <div class="flex ps-0 space-x-1 rtl:space-x-reverse sm:ps-2">
             <button type="button"
               class="inline-flex justify-center items-center p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
@@ -79,3 +59,47 @@
     </form>
   </div>
 </template>
+
+<script setup lang="ts">
+import { computed, nextTick, ref, watch } from "vue";
+import Button from "../components/Button.vue";
+import { useAiChat } from "../composables/ai/useAiChat";
+import useUserStore from "../composables/store/useUserStore";
+
+const { messages, chat, isLoading } = useAiChat();
+const { user } = useUserStore();
+const inputMessage = ref("");
+const chatContainer = ref<HTMLElement | null>(null);
+
+const chatElements = computed(() => {
+	return messages.value.map((message, index) => {
+		return {
+			content: message,
+			username: index % 2 === 0 ? user.username : "DeepSeek",
+			isUser: index % 2 === 0,
+		};
+	});
+});
+
+watch(
+	chatElements,
+	async () => {
+		await nextTick();
+		scrollToBottom();
+	},
+	{ deep: true },
+);
+
+// 滚动到底部的函数
+const scrollToBottom = () => {
+	if (chatContainer.value) {
+		chatContainer.value.scrollTop = chatContainer.value.scrollHeight;
+	}
+};
+
+const handleSendClick = async (event: Event) => {
+	await chat(inputMessage.value);
+	inputMessage.value = "";
+	scrollToBottom();
+};
+</script>

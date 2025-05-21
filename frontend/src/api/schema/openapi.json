@@ -691,6 +691,39 @@
         }
       }
     },
+    "/ai/chat": {
+      "post": {
+        "tags": [
+          "ai-controller"
+        ],
+        "operationId": "chat",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/event-stream": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/scheduler/page-query": {
       "get": {
         "tags": [

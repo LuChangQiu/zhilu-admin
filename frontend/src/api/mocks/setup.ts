@@ -6,6 +6,7 @@ import roleHandlers from "./roleHandlers";
 import userHandlers from "./userHandlers";
 import departmentHandlers from "./departmentHandlers";
 import positionHandlers from "./positionHandlers";
+import aiHandlers from "./aiHandlers";
 export const worker = setupWorker(
 	...userHandlers,
 	...authHandlers,
@@ -14,4 +15,5 @@ export const worker = setupWorker(
 	...jobHandlers,
 	...departmentHandlers,
 	...positionHandlers,
+	...aiHandlers,
 );
