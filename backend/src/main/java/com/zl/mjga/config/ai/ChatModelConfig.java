@@ -26,7 +26,7 @@ public class ChatModelConfig {
   public DeepSeekChatAssistant deepSeekChatAssistant(OpenAiStreamingChatModel deepSeekChatModel) {
     return AiServices.builder(DeepSeekChatAssistant.class)
         .streamingChatModel(deepSeekChatModel)
-        .systemMessageProvider(chatMemoryId -> "你是一个叫做「知路 AI」的企业级 AI 助手，能帮助用户回答任何问题。")
+        .systemMessageProvider(chatMemoryId -> deepSeekConfiguration.getPrompt().getSystem())
         .chatMemoryProvider(memoryId -> MessageWindowChatMemory.withMaxMessages(10))
         .build();
   }

@@ -1,15 +1,19 @@
 <template>
-  <div class="flex flex-col px-80 box-border pt-14 min-h-screen max-h-screen overflow-auto" ref="chatContainer">
+  <div class="flex flex-col px-96 box-border pt-14 min-h-screen max-h-screen overflow-auto" ref="chatContainer">
     <div class="flex flex-col gap-y-5 flex-1 pt-14">
-      <li v-for="chatElement in chatElements" :key="chatElement.content" :dir="chatElement.isUser ? 'rtl' : 'ltr'"
-        class="flex items-start gap-2.5">
+      <li v-for="chatElement in chatElements" :key="chatElement.content"
+        :class="['flex items-start gap-2.5', chatElement.isUser ? 'flex-row-reverse' : 'flex-row']">
         <img class="w-8 h-8 rounded-full" src="/trump.jpg" alt="Jese image">
         <div
-          :class="['flex flex-col leading-1.5 p-4 border-gray-200 rounded-e-xl rounded-es-xl dark:bg-gray-700', chatElement.isUser ? 'bg-gray-100' : 'bg-blue-100']">
+          :class="['flex flex-col leading-1.5 p-4 border-gray-200 rounded-e-xl rounded-es-xl dark:bg-gray-700', chatElement.isUser ? 'bg-blue-100' : 'bg-gray-100']">
           <div class="flex items-center space-x-2 rtl:space-x-reverse">
             <span class="text-sm font-semibold text-gray-900 dark:text-white">{{ chatElement.username }}</span>
+            <LoadingIcon textColor="text-gray-900"
+              v-if="isLoading && !chatElement.isUser && chatElement.content === ''" />
           </div>
-          <p class="text-base font-normal py-2.5 text-gray-900 dark:text-white">{{ chatElement.content }}</p>
+          <p class="text-base font-normal py-2.5 text-gray-900 dark:text-white">
+            {{ chatElement.content }}
+          </p>
         </div>
       </li>
     </div>
@@ -19,12 +23,12 @@
         <div class="px-4 py-2 bg-white rounded-t-lg dark:bg-gray-800">
           <label for="comment" class="sr-only"></label>
           <textarea id="comment" rows="3" v-model="inputMessage"
-            class="w-full px-0  text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
+            class="w-full px-0 text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
             placeholder="给知路智能体发送消息" required></textarea>
         </div>
         <div class="flex items-center justify-between px-3 py-2 border-t dark:border-gray-600 border-gray-200">
-          <Button :disabled="inputMessage === ''" :isLoading="isLoading" :loadingContent="'发送中...'"
-            :submitContent="'发送'" :disabledStyle="'bg-blue-400'" :handleClick="handleSendClick" />
+          <Button :disabled="isLoading" :isLoading="isLoading" :loadingContent="'发送中...'" :submitContent="'发送'"
+            :disabledStyle="'bg-blue-400'" :handleClick="handleSendClick" />
           <div class="flex ps-0 space-x-1 rtl:space-x-reverse sm:ps-2">
             <button type="button"
               class="inline-flex justify-center items-center p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
@@ -65,6 +69,7 @@ import { computed, nextTick, onUnmounted, ref, watch } from "vue";
 import Button from "../components/Button.vue";
 import { useAiChat } from "../composables/ai/useAiChat";
 import useUserStore from "../composables/store/useUserStore";
+import LoadingIcon from "@/components/icons/LoadingIcon.vue";
 
 const { messages, chat, isLoading, cancel } = useAiChat();
 const { user } = useUserStore();
@@ -76,7 +81,7 @@ const chatElements = computed(() => {
 		return {
 			content: message,
 			username: index % 2 === 0 ? user.username : "DeepSeek",
-			isUser: index % 2 !== 0,
+			isUser: index % 2 === 0,
 		};
 	});
 });
@@ -97,7 +102,7 @@ const scrollToBottom = () => {
 };
 
 const handleSendClick = async (event: Event) => {
-  chat(inputMessage.value);
+  await chat(inputMessage.value);
 	inputMessage.value = "";
 	scrollToBottom();
 };
@@ -105,4 +110,8 @@ const handleSendClick = async (event: Event) => {
 onUnmounted(() => {
 	cancel();
 });
+
+const handleStopClick = () => {
+  cancel();
+}
 </script>

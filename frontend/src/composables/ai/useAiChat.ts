@@ -19,7 +19,6 @@ export const useAiChat = () => {
 
 		try {
 			const baseUrl = `${import.meta.env.VITE_BASE_URL}`;
-
 			await fetchEventSource(`${baseUrl}/ai/chat`, {
 				method: "POST",
 				headers: {
