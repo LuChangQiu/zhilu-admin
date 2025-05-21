@@ -1,5 +1,5 @@
 <template>
-  <div class="px-4 pt-6 xl:grid-cols-3 xl:gap-4 sm:rounded-lg">
+  <div class="px-4 pt-6 xl:grid-cols-3 xl:gap-4 sm:rounded-lg mt-14">
     <div class="mb-4 col-span-full">
       <Breadcrumbs :names="['用户管理']" />
       <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl ">用户管理</h1>
@@ -71,10 +71,10 @@
               class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap  max-w-sm overflow-hidden text-ellipsis">
               {{ user.username }}
             </td>
-            <td class="px-6 py-4 max-w-sm overflow-hidden text-ellipsis">
+            <td class="px-6 py-4 max-w-sm whitespace-nowrap overflow-hidden text-ellipsis">
               {{ dayjs(user.createTime).format("llll") }}
             </td>
-            <td class="px-6 py-4 max-w-sm overflow-hidden text-ellipsis">
+            <td class="px-6 py-4 max-w-sm whitespace-nowrap overflow-hidden text-ellipsis">
               <div class="flex items-center">
                 <div class="h-2.5 w-2.5 rounded-full me-2" :class="user.enable ? 'bg-blue-500' : 'bg-red-500'"></div> {{
                 user.enable === true ? "启用" : "禁用" }}
@@ -83,17 +83,17 @@
             <td class="px-6 py-4 max-w-sm overflow-hidden text-ellipsis">
               <div class="flex items-center gap-x-2">
                 <button
-                  class="text-gray-900 bg-white border min-w-25 border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-4 py-2.5       "
+                  class="text-gray-900 bg-white border whitespace-nowrap border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-4 py-2.5       "
                   @click="handleBindRoleClick(user)" type="button">
                   分配角色
                 </button>
                 <button
-                  class="text-gray-900 bg-white border min-w-25 border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-4 py-2.5       "
+                  class="text-gray-900 bg-white border whitespace-nowrap border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-4 py-2.5       "
                   @click="handleBindPositionClick(user)" type="button">
                   分配岗位
                 </button>
                 <button
-                  class="text-gray-900 bg-white border min-w-25 border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-4 py-2.5       "
+                  class="text-gray-900 bg-white border whitespace-nowrap border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-4 py-2.5       "
                   @click="handleBindDepartmentClick(user)" type="button">
                   分配部门
                 </button>
@@ -103,7 +103,7 @@
               <!-- Edit Modal toggle -->
               <div class="flex items-center gap-x-2">
                 <button @click="handleUpsertUserClick(user)"
-                  class="flex items-center justify-center min-w-25 gap-x-1 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5   "
+                  class="flex items-center justify-center whitespace-nowrap gap-x-1 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5   "
                   type="button">
                   <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path>
@@ -113,7 +113,7 @@
                   </svg>
                   <span>编辑</span>
                 </button>
-                <button class="flex items-center justify-center min-w-25 gap-x-1
+                <button class="flex items-center justify-center whitespace-nowrap gap-x-1
               bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-red-300  
                 text-white focus:ring-4 focus:outline-nonefont-medium rounded-lg text-sm px-4 py-2.5"
                   @click="handleDeleteUserClick(user)" type="button">

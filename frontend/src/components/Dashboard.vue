@@ -8,7 +8,7 @@ import Sidebar from "./Sidebar.vue";
   <Headbar></Headbar>
   <Sidebar>
   </Sidebar>
-  <article class="ml-64 mt-14">
+  <article class="ml-64">
     <RouterView></RouterView>
   </article>
 </template>

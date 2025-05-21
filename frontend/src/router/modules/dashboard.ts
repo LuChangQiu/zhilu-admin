@@ -3,6 +3,7 @@ import Dashboard from "../../components/Dashboard.vue";
 import OverView from "../../views/OverView.vue";
 import { EPermission, ERole, RouteName, RoutePath } from "../constants";
 import userManagementRoutes from "./user";
+import aiRoutes from "./ai";
 
 const dashboardRoutes: RouteRecordRaw = {
 	path: RoutePath.DASHBOARD,
@@ -29,6 +30,7 @@ const dashboardRoutes: RouteRecordRaw = {
 			},
 		},
 		...userManagementRoutes,
+		...aiRoutes,
 		{
 			path: RoutePath.NOTFOUND,
 			name: RouteName.NOTFOUND,

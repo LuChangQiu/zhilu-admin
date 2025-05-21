@@ -30,8 +30,8 @@ import PositionIcon from "./icons/PositionIcon.vue";
 import RoleIcon from "./icons/RoleIcon.vue";
 import SchedulerIcon from "./icons/SchedulerIcon.vue";
 import SettingsIcon from "./icons/SettingsIcon.vue";
-// 导入图标组件
 import UsersIcon from "./icons/UsersIcon.vue";
+import AiChatIcon from "./icons/AiChatIcon.vue";
 
 // 菜单配置
 const menuItems = [
@@ -70,11 +70,15 @@ const menuItems = [
 		path: `${RoutePath.DASHBOARD}/${RoutePath.SCHEDULERVIEW}`,
 		icon: SchedulerIcon,
 	},
+	{
+		title: "AI 对话",
+		path: `${RoutePath.DASHBOARD}/${RoutePath.AICHATVIEW}`,
+		icon: AiChatIcon,
+	},
 ];
 
 const route = useRoute();
 
-// 判断当前路由是否激活
 const isActive = (path: string) => {
 	return route.path === path;
 };

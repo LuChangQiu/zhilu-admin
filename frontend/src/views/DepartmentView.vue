@@ -1,5 +1,5 @@
 <template>
-  <div class="px-4 pt-6 xl:grid-cols-3 xl:gap-4 sm:rounded-lg">
+  <div class="px-4 pt-6 xl:grid-cols-3 xl:gap-4 sm:rounded-lg mt-14">
     <div class="mb-4 col-span-full">
       <Breadcrumbs :names="['部门管理']" />
       <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl ">部门管理</h1>
@@ -65,7 +65,7 @@
             <td class="px-6 py-4 max-w-sm overflow-hidden text-ellipsis">
               <div class="flex items-center gap-x-2">
                 <button @click="handleUpsertDepartmentClick(department)"
-                  class="flex items-center justify-center min-w-25 gap-x-1  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5      "
+                  class="flex items-center justify-center whitespace-nowrap gap-x-1  text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5      "
                   type="button">
                   <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path>
@@ -76,7 +76,7 @@
                   <span>编辑</span>
                 </button>
                 <button
-                  class="flex items-center justify-center min-w-25 gap-x-1
+                  class="flex items-center justify-center whitespace-nowrap gap-x-1
               bg-red-700 hover:bg-red-800   
               focus:ring-red-500  text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5"
                   @click="handleDeleteDepartmentClick(department)" type="button">
