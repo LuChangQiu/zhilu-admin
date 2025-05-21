@@ -27,8 +27,8 @@
             placeholder="给知路智能体发送消息" required></textarea>
         </div>
         <div class="flex items-center justify-between px-3 py-2 border-t dark:border-gray-600 border-gray-200">
-          <Button :disabled="isLoading" :isLoading="isLoading" :loadingContent="'发送中...'" :submitContent="'发送'"
-            :disabledStyle="'bg-blue-400'" :handleClick="handleSendClick" />
+          <Button :abortable="true" :disabled="isLoading" :isLoading="isLoading" :submitContent="'发送'"
+            :handleClick="handleSendClick" />
           <div class="flex ps-0 space-x-1 rtl:space-x-reverse sm:ps-2">
             <button type="button"
               class="inline-flex justify-center items-center p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
