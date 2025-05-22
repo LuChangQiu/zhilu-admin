@@ -8,7 +8,7 @@
           :class="['flex flex-col leading-1.5 p-4 border-gray-200 rounded-e-xl rounded-es-xl dark:bg-gray-700', chatElement.isUser ? 'bg-blue-100' : 'bg-gray-100']">
           <div class="flex items-center space-x-2 rtl:space-x-reverse">
             <span class="text-sm font-semibold text-gray-900 dark:text-white">{{ chatElement.username }}</span>
-            <LoadingIcon textColor="text-gray-900"
+            <LoadingIcon :textColor="'text-gray-900'"
               v-if="isLoading && !chatElement.isUser && chatElement.content === ''" />
           </div>
           <p class="text-base font-normal py-2.5 text-gray-900 dark:text-white">
@@ -24,10 +24,10 @@
           <label for="comment" class="sr-only"></label>
           <textarea id="comment" rows="3" v-model="inputMessage"
             class="w-full px-0 text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
-            placeholder="给知路智能体发送消息" required></textarea>
+            placeholder="发送消息" required></textarea>
         </div>
         <div class="flex items-center justify-between px-3 py-2 border-t dark:border-gray-600 border-gray-200">
-          <Button :abortable="true" :disabled="isLoading" :isLoading="isLoading" :submitContent="'发送'"
+          <Button :abortable="true" :isLoading="isLoading" :loadingContent="'中止'" :submitContent="'发送'"
             :handleClick="handleSendClick" />
           <div class="flex ps-0 space-x-1 rtl:space-x-reverse sm:ps-2">
             <button type="button"
@@ -38,15 +38,6 @@
                   d="M1 6v8a5 5 0 1 0 10 0V4.5a3.5 3.5 0 1 0-7 0V13a2 2 0 0 0 4 0V6" />
               </svg>
               <span class="sr-only">Attach file</span>
-            </button>
-            <button type="button"
-              class="inline-flex justify-center items-center p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
-              <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                viewBox="0 0 16 20">
-                <path
-                  d="M8 0a7.992 7.992 0 0 0-6.583 12.535 1 1 0 0 0 .12.183l.12.146c.112.145.227.285.326.4l5.245 6.374a1 1 0 0 0 1.545-.003l5.092-6.205c.206-.222.4-.455.578-.7l.127-.155a.934.934 0 0 0 .122-.192A8.001 8.001 0 0 0 8 0Zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z" />
-              </svg>
-              <span class="sr-only">Set location</span>
             </button>
             <button type="button"
               class="inline-flex justify-center items-center p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
@@ -70,11 +61,14 @@ import Button from "../components/Button.vue";
 import { useAiChat } from "../composables/ai/useAiChat";
 import useUserStore from "../composables/store/useUserStore";
 import LoadingIcon from "@/components/icons/LoadingIcon.vue";
+import { z } from "zod";
+import useAlertStore from "@/composables/store/useAlertStore";
 
 const { messages, chat, isLoading, cancel } = useAiChat();
 const { user } = useUserStore();
 const inputMessage = ref("");
 const chatContainer = ref<HTMLElement | null>(null);
+const alertStore = useAlertStore();
 
 const chatElements = computed(() => {
 	return messages.value.map((message, index) => {
@@ -101,17 +95,40 @@ const scrollToBottom = () => {
 	}
 };
 
-const handleSendClick = async (event: Event) => {
-  await chat(inputMessage.value);
-	inputMessage.value = "";
-	scrollToBottom();
+const abortChat = () => {
+	cancel();
+};
+
+const sendMessage = async () => {
+	try {
+		const validInputMessage = z
+			.string({ message: "消息不能为空" })
+			.min(1, "消息不能为空")
+			.parse(inputMessage.value);
+		scrollToBottom();
+		inputMessage.value = "";
+		await chat(validInputMessage);
+	} catch (error) {
+		if (error instanceof z.ZodError) {
+			alertStore.showAlert({
+				level: "error",
+				content: error.errors[0].message,
+			});
+		} else {
+			throw error;
+		}
+	}
+};
+
+const handleSendClick = async () => {
+	if (isLoading.value) {
+		abortChat();
+	} else {
+		sendMessage();
+	}
 };
 
 onUnmounted(() => {
 	cancel();
 });
-
-const handleStopClick = () => {
-  cancel();
-}
 </script>
