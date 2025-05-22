@@ -5,9 +5,9 @@
         :class="['flex items-start gap-2.5', chatElement.isUser ? 'flex-row-reverse' : 'flex-row']">
         <img class="w-8 h-8 rounded-full" src="/trump.jpg" alt="Jese image">
         <div
-          :class="['flex flex-col leading-1.5 p-4 border-gray-200 rounded-e-xl rounded-es-xl dark:bg-gray-700', chatElement.isUser ? 'bg-blue-100' : 'bg-gray-100']">
+          :class="['flex flex-col leading-1.5 p-4 border-gray-200 rounded-e-xl rounded-es-xl ', chatElement.isUser ? 'bg-blue-100' : 'bg-gray-100']">
           <div class="flex items-center space-x-2 rtl:space-x-reverse">
-            <span class="text-sm font-semibold text-gray-900 dark:text-white">{{ chatElement.username }}</span>
+            <span class="text-sm font-semibold text-gray-900 ">{{ chatElement.username }}</span>
             <LoadingIcon :textColor="'text-gray-900'"
               v-if="isLoading && !chatElement.isUser && chatElement.content === ''" />
           </div>
@@ -19,19 +19,19 @@
     </div>
 
     <form class="sticky bottom-4 mt-14">
-      <div class="w-full border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
-        <div class="px-4 py-2 bg-white rounded-t-lg dark:bg-gray-800">
+      <div class="w-full border border-gray-200 rounded-lg bg-gray-50  ">
+        <div class="px-4 py-2 bg-white rounded-t-lg ">
           <label for="comment" class="sr-only"></label>
           <textarea id="comment" rows="3" v-model="inputMessage"
-            class="w-full px-0 text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
+            class="w-full px-0 text-gray-900 bg-white border-0  focus:ring-0  "
             placeholder="发送消息" required></textarea>
         </div>
-        <div class="flex items-center justify-between px-3 py-2 border-t dark:border-gray-600 border-gray-200">
+        <div class="flex items-center justify-between px-3 py-2 border-t  border-gray-200">
           <Button :abortable="true" :isLoading="isLoading" :loadingContent="'中止'" :submitContent="'发送'"
             :handleClick="handleSendClick" />
           <div class="flex ps-0 space-x-1 rtl:space-x-reverse sm:ps-2">
             <button type="button"
-              class="inline-flex justify-center items-center p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
+              class="inline-flex justify-center items-center p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100   ">
               <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                 viewBox="0 0 12 20">
                 <path stroke="currentColor" stroke-linejoin="round" stroke-width="2"
@@ -40,7 +40,7 @@
               <span class="sr-only">Attach file</span>
             </button>
             <button type="button"
-              class="inline-flex justify-center items-center p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
+              class="inline-flex justify-center items-center p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100   ">
               <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                 viewBox="0 0 20 18">
                 <path
@@ -56,15 +56,15 @@
 </template>
 
 <script setup lang="ts">
+import LoadingIcon from "@/components/icons/LoadingIcon.vue";
+import useAlertStore from "@/composables/store/useAlertStore";
+import DOMPurify from 'dompurify';
+import { marked } from 'marked';
 import { computed, nextTick, onUnmounted, ref, watch } from "vue";
+import { z } from "zod";
 import Button from "../components/Button.vue";
 import { useAiChat } from "../composables/ai/useAiChat";
 import useUserStore from "../composables/store/useUserStore";
-import LoadingIcon from "@/components/icons/LoadingIcon.vue";
-import { z } from "zod";
-import useAlertStore from "@/composables/store/useAlertStore";
-import { marked } from 'marked';
-import DOMPurify from 'dompurify';
 
 const { messages, chat, isLoading, cancel } = useAiChat();
 const { user } = useUserStore();

@@ -2,7 +2,6 @@ package com.zl.mjga.controller;
 
 import com.zl.mjga.service.DeepSeekAiService;
 import dev.langchain4j.service.TokenStream;
-
 import java.security.Principal;
 import java.time.Duration;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +31,6 @@ public class AiController {
             })
         .onError(sink::tryEmitError)
         .start();
-      return sink.asFlux()
-              .timeout(Duration.ofSeconds(120));
+    return sink.asFlux().timeout(Duration.ofSeconds(120));
   }
 }

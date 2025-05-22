@@ -11,7 +11,6 @@
       'py-2.5': true,
       'text-center': true,
       'me-2': true,
-      'dark:bg-blue-600': true,
       'inline-flex': true,
       'items-center': true,
       'bg-blue-700 hover:bg-blue-800': !isLoading,

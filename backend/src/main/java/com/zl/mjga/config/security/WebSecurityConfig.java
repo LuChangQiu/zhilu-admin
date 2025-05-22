@@ -62,9 +62,7 @@ public class WebSecurityConfig {
                     .permitAll()
                     .anyRequest()
                     .authenticated())
-            .securityContext(securityContext -> securityContext
-                    .requireExplicitSave(false)
-            )
+        .securityContext(securityContext -> securityContext.requireExplicitSave(false))
         .exceptionHandling(
             (exceptionHandling) ->
                 exceptionHandling
