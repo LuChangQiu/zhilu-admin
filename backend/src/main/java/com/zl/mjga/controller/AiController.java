@@ -8,7 +8,6 @@ import java.time.Duration;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
@@ -34,8 +33,6 @@ public class AiController {
         .onError(sink::tryEmitError)
         .start();
       return sink.asFlux()
-              .timeout(Duration.ofSeconds(120))
-              .doOnCancel(SecurityContextHolder::clearContext)
-              .doOnTerminate(SecurityContextHolder::clearContext);
+              .timeout(Duration.ofSeconds(120));
   }
 }

@@ -11,9 +11,9 @@
             <LoadingIcon :textColor="'text-gray-900'"
               v-if="isLoading && !chatElement.isUser && chatElement.content === ''" />
           </div>
-          <p class="text-base font-normal py-2.5 text-gray-900 dark:text-white">
-            {{ chatElement.content }}
-          </p>
+          <div class="markdown-content text-base font-normal py-2.5 text-gray-900 dark:text-white"
+            v-html="renderMarkdown(chatElement.content)">
+          </div>
         </div>
       </li>
     </div>
@@ -63,12 +63,26 @@ import useUserStore from "../composables/store/useUserStore";
 import LoadingIcon from "@/components/icons/LoadingIcon.vue";
 import { z } from "zod";
 import useAlertStore from "@/composables/store/useAlertStore";
+import { marked } from 'marked';
+import DOMPurify from 'dompurify';
 
 const { messages, chat, isLoading, cancel } = useAiChat();
 const { user } = useUserStore();
 const inputMessage = ref("");
 const chatContainer = ref<HTMLElement | null>(null);
 const alertStore = useAlertStore();
+
+marked.setOptions({
+  gfm: true,        
+  breaks: true,    
+});
+
+
+const renderMarkdown = (content: string) => {
+  if (!content) return '';
+  const rawHtml = marked(content);
+  return DOMPurify.sanitize(rawHtml as string);
+};
 
 const chatElements = computed(() => {
 	return messages.value.map((message, index) => {
@@ -79,6 +93,11 @@ const chatElements = computed(() => {
 		};
 	});
 });
+
+watch(messages, (newVal) => {
+  console.log('原始消息:', newVal[newVal.length - 1]);
+  console.log('处理后HTML:', renderMarkdown(newVal[newVal.length - 1]));
+}, { deep: true });
 
 watch(
 	chatElements,
@@ -132,3 +151,5 @@ onUnmounted(() => {
 	cancel();
 });
 </script>
+
+
