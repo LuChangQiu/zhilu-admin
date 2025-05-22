@@ -6,8 +6,8 @@ import org.springframework.stereotype.Component;
 
 @Data
 @Component
-@ConfigurationProperties(prefix = "deep-seek")
-public class DeepSeekConfiguration {
+@ConfigurationProperties(prefix = "zhipu")
+public class ZhiPuConfiguration {
 
   private String baseUrl;
   private String apiKey;

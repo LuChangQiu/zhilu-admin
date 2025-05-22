@@ -1,6 +1,6 @@
 package com.zl.mjga.controller;
 
-import com.zl.mjga.service.DeepSeekAiService;
+import com.zl.mjga.service.AiChatService;
 import dev.langchain4j.service.TokenStream;
 import java.security.Principal;
 import java.time.Duration;
@@ -17,12 +17,12 @@ import reactor.core.publisher.Sinks;
 @Slf4j
 public class AiController {
 
-  private final DeepSeekAiService deepSeekAiService;
+  private final AiChatService aiChatService;
 
   @PostMapping(value = "/chat", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
   public Flux<String> chat(Principal principal, @RequestBody String userMessage) {
     Sinks.Many<String> sink = Sinks.many().unicast().onBackpressureBuffer();
-    TokenStream chat = deepSeekAiService.chat(principal.getName(), userMessage);
+    TokenStream chat = aiChatService.chatWithZhiPu(principal.getName(), userMessage);
     chat.onPartialResponse(text -> sink.tryEmitNext(text.replace(" ", "␣").replace("\t", "⇥")))
         .onCompleteResponse(
             r -> {

@@ -80,16 +80,15 @@ marked.setOptions({
 const renderMarkdown = (content: string) => {
   if (!content) return '';
   
-  // 替换所有空白占位符（包括前后端约定的特殊字符）
   const restoredContent = content
-    .replace(/␣/g, ' ')    // 普通空格
-    .replace(/⇥/g, '\t')   // 制表符
-    .replace(/␤/g, '\n');  // 如果后端也处理了换行符
+    .replace(/␣/g, ' ')    
+    .replace(/⇥/g, '\t')   
+    .replace(/␤/g, '\n');  
   
-  // 处理Markdown中的代码块缩进
+  
   const processedContent = restoredContent
-    .replace(/^(\s*)(`{3,})/gm, '$1$2') // 保留代码块前的空格
-    .replace(/(\s+)`/g, '$1`');         // 保留代码内联前的空格
+    .replace(/^(\s*)(`{3,})/gm, '$1$2') 
+    .replace(/(\s+)`/g, '$1`');         
 
   const rawHtml = marked(processedContent);
   return DOMPurify.sanitize(rawHtml as string);
@@ -104,10 +103,10 @@ const chatElements = computed(() => {
 	});
 });
 
-watch(messages, (newVal) => {
-  console.log('原始消息:', newVal[newVal.length - 1]);
-  console.log('处理后HTML:', renderMarkdown(newVal[newVal.length - 1]));
-}, { deep: true });
+// watch(messages, (newVal) => {
+//   console.log('原始消息:', newVal[newVal.length - 1]);
+//   console.log('处理后HTML:', renderMarkdown(newVal[newVal.length - 1]));
+// }, { deep: true });
 
 watch(
 	chatElements,
