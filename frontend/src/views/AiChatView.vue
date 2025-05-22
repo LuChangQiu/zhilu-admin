@@ -11,7 +11,7 @@
             <LoadingIcon :textColor="'text-gray-900'"
               v-if="isLoading && !chatElement.isUser && chatElement.content === ''" />
           </div>
-          <div class="markdown-content text-base font-normal py-2.5 text-gray-900 dark:text-white"
+          <div class="markdown-content markdown-body text-base font-normal py-2.5 text-gray-900 "
             v-html="renderMarkdown(chatElement.content)">
           </div>
         </div>
@@ -152,4 +152,10 @@ onUnmounted(() => {
 });
 </script>
 
+<style lang="css">
+@import "github-markdown-css/github-markdown.css";
 
+.markdown-body {
+  background: transparent !important;
+}
+</style>
