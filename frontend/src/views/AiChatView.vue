@@ -97,7 +97,7 @@ const chatElements = computed(() => {
 	return messages.value.map((message, index) => {
 		return {
 			content: message,
-			username: index % 2 === 0 ? user.username : "DeepSeek",
+			username: index % 2 === 0 ? user.username : "知路智能体",
 			isUser: index % 2 === 0,
 		};
 	});
