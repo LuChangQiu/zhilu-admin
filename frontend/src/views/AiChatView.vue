@@ -23,8 +23,7 @@
         <div class="px-4 py-2 bg-white rounded-t-lg ">
           <label for="comment" class="sr-only"></label>
           <textarea id="comment" rows="3" v-model="inputMessage"
-            class="w-full px-0 text-gray-900 bg-white border-0  focus:ring-0  "
-            placeholder="发送消息" required></textarea>
+            class="w-full px-0 text-gray-900 bg-white border-0  focus:ring-0  " placeholder="发送消息" required></textarea>
         </div>
         <div class="flex items-center justify-between px-3 py-2 border-t  border-gray-200">
           <Button :abortable="true" :isLoading="isLoading" :loadingContent="'中止'" :submitContent="'发送'"
@@ -80,10 +79,21 @@ marked.setOptions({
 
 const renderMarkdown = (content: string) => {
   if (!content) return '';
-  const rawHtml = marked(content);
+  
+  // 替换所有空白占位符（包括前后端约定的特殊字符）
+  const restoredContent = content
+    .replace(/␣/g, ' ')    // 普通空格
+    .replace(/⇥/g, '\t')   // 制表符
+    .replace(/␤/g, '\n');  // 如果后端也处理了换行符
+  
+  // 处理Markdown中的代码块缩进
+  const processedContent = restoredContent
+    .replace(/^(\s*)(`{3,})/gm, '$1$2') // 保留代码块前的空格
+    .replace(/(\s+)`/g, '$1`');         // 保留代码内联前的空格
+
+  const rawHtml = marked(processedContent);
   return DOMPurify.sanitize(rawHtml as string);
 };
-
 const chatElements = computed(() => {
 	return messages.value.map((message, index) => {
 		return {
@@ -157,5 +167,14 @@ onUnmounted(() => {
 
 .markdown-body {
   background: transparent !important;
+}
+
+.markdown-body pre code {
+  white-space: pre !important;
+  tab-size: 2;
+}
+
+.markdown-body p {
+  white-space: pre-wrap;
 }
 </style>

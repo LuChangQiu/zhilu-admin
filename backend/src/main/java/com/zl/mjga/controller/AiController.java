@@ -23,7 +23,7 @@ public class AiController {
   public Flux<String> chat(Principal principal, @RequestBody String userMessage) {
     Sinks.Many<String> sink = Sinks.many().unicast().onBackpressureBuffer();
     TokenStream chat = deepSeekAiService.chat(principal.getName(), userMessage);
-    chat.onPartialResponse(sink::tryEmitNext)
+    chat.onPartialResponse(text -> sink.tryEmitNext(text.replace(" ", "␣").replace("\t", "⇥")))
         .onCompleteResponse(
             r -> {
               sink.tryEmitComplete();
