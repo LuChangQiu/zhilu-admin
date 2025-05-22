@@ -1,6 +1,6 @@
 deep-seek:
   base-url: "https://api.deepseek.com"
-  api-key: "sk-3633b0cd40884b27aa8402a1c5dc029d"
+  api-key: ""
   model-name: "deepseek-chat"
 zhipu:
   base-url: "https://open.bigmodel.cn/"
