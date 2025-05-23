@@ -30,5 +30,5 @@ VALUES (1, 1),
 
 INSERT INTO mjga.ai_llm_config (name,code,model_name, api_key, url, enable, priority)
 VALUES
-    ('DeepSeek','DEEP_SEEK','deepseek-chat','', 'https://api.deepseek.com', false, 0),
-    ('智谱清言','ZHI_PU','glm-4-flash', '', 'https://open.bigmodel.cn/', false, 1);
+    ('DeepSeek','DEEP_SEEK','deepseek-chat','your_api_key', 'https://api.deepseek.com', false, 0),
+    ('智谱清言','ZHI_PU','glm-4-flash', 'your_api_key', 'https://open.bigmodel.cn/', false, 1);

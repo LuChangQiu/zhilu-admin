@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Record;
 import org.jooq.Result;
-import org.jooq.generated.default_schema.enums.LlmCodeEnum;
+import org.jooq.generated.mjga.enums.LlmCodeEnum;
 import org.jooq.generated.mjga.tables.pojos.AiLlmConfig;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;

@@ -66,7 +66,7 @@ CREATE TABLE mjga.user_position_map (
                                         FOREIGN KEY (position_id) REFERENCES mjga.position(id) ON UPDATE NO ACTION ON DELETE RESTRICT
 );
 
-CREATE TYPE "llm_code_enum" AS ENUM (
+CREATE TYPE mjga.llm_code_enum AS ENUM (
 	'DEEP_SEEK',
 	'ZHI_PU'
 );
@@ -75,7 +75,7 @@ CREATE TYPE "llm_code_enum" AS ENUM (
 CREATE TABLE mjga.ai_llm_config (
                                  id BIGSERIAL NOT NULL UNIQUE,
                                  name VARCHAR(255) NOT NULL UNIQUE,
-                                 code LLM_CODE_ENUM NOT NULL UNIQUE,
+                                 code mjga.llm_code_enum NOT NULL UNIQUE,
                                  model_name VARCHAR(255) NOT NULL,
                                  api_key VARCHAR(255) NOT NULL,
                                  url VARCHAR(255) NOT NULL,
