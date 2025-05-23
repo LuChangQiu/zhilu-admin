@@ -15,8 +15,6 @@ cors:
   allowedHeaders: ${ALLOWED_HEADERS}
   allowedExposeHeaders: ${ALLOWED_EXPOSE_HEADERS}
 spring:
-  config:
-    import: classpath:ai.yml
   datasource:
     url: jdbc:postgresql://${DATABASE_HOST_PORT}/${DATABASE_DB}
     username: ${DATABASE_USER}

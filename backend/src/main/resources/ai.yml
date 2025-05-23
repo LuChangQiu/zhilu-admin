@@ -1,8 +1,0 @@
-deep-seek:
-  base-url: "https://api.deepseek.com"
-  api-key: ""
-  model-name: "deepseek-chat"
-zhipu:
-  base-url: "https://open.bigmodel.cn/"
-  api-key: ""
-  model-name: "glm-4-flash"

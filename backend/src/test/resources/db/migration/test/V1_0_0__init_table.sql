@@ -65,3 +65,13 @@ CREATE TABLE mjga.user_position_map (
                                         FOREIGN KEY (user_id) REFERENCES mjga.user(id) ON UPDATE NO ACTION ON DELETE RESTRICT,
                                         FOREIGN KEY (position_id) REFERENCES mjga.position(id) ON UPDATE NO ACTION ON DELETE RESTRICT
 );
+
+CREATE TABLE mjga.ai_llm_config (
+                                    id BIGSERIAL NOT NULL UNIQUE,
+                                    name VARCHAR(255) NOT NULL UNIQUE,
+                                    api_key VARCHAR(255) NOT NULL,
+                                    url VARCHAR(255) NOT NULL,
+                                    enable BOOLEAN NOT NULL DEFAULT true,
+                                    priority SMALLINT NOT NULL DEFAULT 0,
+                                    PRIMARY KEY(id)
+);
