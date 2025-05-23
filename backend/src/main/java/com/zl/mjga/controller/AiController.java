@@ -1,15 +1,20 @@
 package com.zl.mjga.controller;
 
-import com.zl.mjga.dto.ai.LlmUpdateDto;
+import com.zl.mjga.dto.PageRequestDto;
+import com.zl.mjga.dto.PageResponseDto;
+import com.zl.mjga.dto.ai.LlmVm;
 import com.zl.mjga.service.AiChatService;
 import com.zl.mjga.service.LlmService;
 import dev.langchain4j.service.TokenStream;
 import jakarta.validation.Valid;
 import java.security.Principal;
 import java.time.Duration;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
@@ -38,8 +43,16 @@ public class AiController {
     return sink.asFlux().timeout(Duration.ofSeconds(120));
   }
 
+  @PreAuthorize("hasAuthority(T(com.zl.mjga.model.urp.EPermission).WRITE_LLM_CONFIG_PERMISSION)")
   @PutMapping(value = "/llm")
-  public void updateLlm(@RequestBody @Valid LlmUpdateDto llmUpdateDto) {
-    llmService.update(llmUpdateDto);
+  public void updateLlm(@RequestBody @Valid LlmVm llmVm) {
+    llmService.update(llmVm);
+  }
+
+  @PreAuthorize("hasAuthority(T(com.zl.mjga.model.urp.EPermission).READ_LLM_CONFIG_PERMISSION)")
+  @GetMapping("/llm/page-query")
+  @ResponseStatus(HttpStatus.OK)
+  public PageResponseDto<List<LlmVm>> pageQueryLlm(@ModelAttribute PageRequestDto pageRequestDto) {
+    return llmService.pageQueryLlm(pageRequestDto);
   }
 }

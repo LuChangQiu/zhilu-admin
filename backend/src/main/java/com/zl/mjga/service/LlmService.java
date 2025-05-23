@@ -1,13 +1,16 @@
 package com.zl.mjga.service;
 
-import com.zl.mjga.dto.ai.LlmUpdateDto;
+import com.zl.mjga.dto.PageRequestDto;
+import com.zl.mjga.dto.PageResponseDto;
+import com.zl.mjga.dto.ai.LlmVm;
+import com.zl.mjga.repository.LlmRepository;
 import java.util.List;
 import java.util.Objects;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jooq.Record;
+import org.jooq.Result;
 import org.jooq.generated.default_schema.enums.LlmCodeEnum;
-import org.jooq.generated.mjga.tables.daos.AiLlmConfigDao;
 import org.jooq.generated.mjga.tables.pojos.AiLlmConfig;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -17,25 +20,35 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class LlmService {
 
-  private final AiLlmConfigDao aiLlmConfigDao;
+  private final LlmRepository llmRepository;
 
   public AiLlmConfig loadConfig(LlmCodeEnum llmCodeEnum) {
-    return aiLlmConfigDao.fetchOneByCode(llmCodeEnum);
+    return llmRepository.fetchOneByCode(llmCodeEnum);
   }
 
   public AiLlmConfig getPrecedenceLlmBy(Boolean enable) {
-    List<AiLlmConfig> aiLlmConfigs = aiLlmConfigDao.fetchByEnable(enable);
+    List<AiLlmConfig> aiLlmConfigs = llmRepository.fetchByEnable(enable);
     //noinspection OptionalGetWithoutIsPresent
     return aiLlmConfigs.stream()
         .max((o1, o2) -> o2.getPriority().compareTo(o1.getPriority()))
         .get();
   }
 
-  public void update(LlmUpdateDto llmUpdateDto) {
+  public PageResponseDto<List<LlmVm>> pageQueryLlm(PageRequestDto pageRequestDto) {
+    Result<Record> records = llmRepository.pageFetchBy(pageRequestDto);
+    if (records.isEmpty()) {
+      return PageResponseDto.empty();
+    }
+    List<LlmVm> llmVms = records.into(LlmVm.class);
+    Long totalLlm = records.get(0).getValue("total_llm", Long.class);
+    return new PageResponseDto<>(totalLlm, llmVms);
+  }
+
+  public void update(LlmVm llmVm) {
     AiLlmConfig aiLlmConfig = new AiLlmConfig();
-    BeanUtils.copyProperties(llmUpdateDto, aiLlmConfig);
-    AiLlmConfig byId = aiLlmConfigDao.findById(llmUpdateDto.getId());
+    BeanUtils.copyProperties(llmVm, aiLlmConfig);
+    AiLlmConfig byId = llmRepository.findById(llmVm.getId());
     aiLlmConfig.setCode(Objects.requireNonNull(byId).getCode());
-    aiLlmConfigDao.merge(aiLlmConfig);
+    llmRepository.merge(aiLlmConfig);
   }
 }
