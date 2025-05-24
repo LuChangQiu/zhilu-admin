@@ -16,6 +16,7 @@ export enum RoutePath {
 	POSITIONVIEW = "positions",
 	CREATEUSERVIEW = "create-user",
 	AICHATVIEW = "ai/chat",
+	LLMCONFIGVIEW = "llm/config",
 	SCHEDULERVIEW = "scheduler",
 	UPSERTUSERVIEW = "upsert-user",
 	UPSERTROLEVIEW = "upsert-role",
@@ -41,6 +42,7 @@ export enum RouteName {
 	POSITIONVIEW = "positions",
 	CREATEUSERVIEW = "create-user",
 	AICHATVIEW = "ai/chat",
+	LLMCONFIGVIEW = "llm/config",
 	SCHEDULERVIEW = "scheduler",
 	UPSERTUSERVIEW = "upsert-user",
 	UPSERTROLEVIEW = "upsert-role",
@@ -67,4 +69,6 @@ export enum EPermission {
 	WRITE_USER_ROLE_PERMISSION = "WRITE_USER_ROLE_PERMISSION",
 	DELETE_USER_ROLE_PERMISSION = "DELETE_USER_ROLE_PERMISSION",
 	READ_USER_ROLE_PERMISSION = "READ_USER_ROLE_PERMISSION",
+	READ_LLM_CONFIG_PERMISSION = "READ_LLM_CONFIG_PERMISSION",
+	WRITE_LLM_CONFIG_PERMISSION = "WRITE_LLM_CONFIG_PERMISSION",
 }

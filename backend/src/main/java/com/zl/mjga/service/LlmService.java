@@ -2,10 +2,12 @@ package com.zl.mjga.service;
 
 import com.zl.mjga.dto.PageRequestDto;
 import com.zl.mjga.dto.PageResponseDto;
+import com.zl.mjga.dto.ai.LlmQueryDto;
 import com.zl.mjga.dto.ai.LlmVm;
 import com.zl.mjga.repository.LlmRepository;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Record;
@@ -26,16 +28,14 @@ public class LlmService {
     return llmRepository.fetchOneByCode(llmCodeEnum);
   }
 
-  public AiLlmConfig getPrecedenceLlmBy(Boolean enable) {
+  public Optional<AiLlmConfig> getPrecedenceLlmBy(Boolean enable) {
     List<AiLlmConfig> aiLlmConfigs = llmRepository.fetchByEnable(enable);
-    //noinspection OptionalGetWithoutIsPresent
-    return aiLlmConfigs.stream()
-        .max((o1, o2) -> o2.getPriority().compareTo(o1.getPriority()))
-        .get();
+    return aiLlmConfigs.stream().max((o1, o2) -> o2.getPriority().compareTo(o1.getPriority()));
   }
 
-  public PageResponseDto<List<LlmVm>> pageQueryLlm(PageRequestDto pageRequestDto) {
-    Result<Record> records = llmRepository.pageFetchBy(pageRequestDto);
+  public PageResponseDto<List<LlmVm>> pageQueryLlm(
+      PageRequestDto pageRequestDto, LlmQueryDto llmQueryDto) {
+    Result<Record> records = llmRepository.pageFetchBy(pageRequestDto, llmQueryDto);
     if (records.isEmpty()) {
       return PageResponseDto.empty();
     }

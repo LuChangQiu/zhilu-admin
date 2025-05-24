@@ -2,6 +2,7 @@ package com.zl.mjga.controller;
 
 import com.zl.mjga.dto.PageRequestDto;
 import com.zl.mjga.dto.PageResponseDto;
+import com.zl.mjga.dto.ai.LlmQueryDto;
 import com.zl.mjga.dto.ai.LlmVm;
 import com.zl.mjga.service.AiChatService;
 import com.zl.mjga.service.LlmService;
@@ -52,7 +53,8 @@ public class AiController {
   @PreAuthorize("hasAuthority(T(com.zl.mjga.model.urp.EPermission).READ_LLM_CONFIG_PERMISSION)")
   @GetMapping("/llm/page-query")
   @ResponseStatus(HttpStatus.OK)
-  public PageResponseDto<List<LlmVm>> pageQueryLlm(@ModelAttribute PageRequestDto pageRequestDto) {
-    return llmService.pageQueryLlm(pageRequestDto);
+  public PageResponseDto<List<LlmVm>> pageQueryLlm(
+      @ModelAttribute PageRequestDto pageRequestDto, @ModelAttribute LlmQueryDto llmQueryDto) {
+    return llmService.pageQueryLlm(pageRequestDto, llmQueryDto);
   }
 }

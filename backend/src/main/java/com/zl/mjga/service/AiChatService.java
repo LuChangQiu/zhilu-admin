@@ -1,7 +1,9 @@
 package com.zl.mjga.service;
 
 import com.zl.mjga.config.ai.AiChatAssistant;
+import com.zl.mjga.exception.BusinessException;
 import dev.langchain4j.service.TokenStream;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.generated.mjga.enums.LlmCodeEnum;
@@ -26,8 +28,9 @@ public class AiChatService {
   }
 
   public TokenStream chatPrecedenceLlmWith(String sessionIdentifier, String userMessage) {
-    AiLlmConfig precedenceLlmBy = llmService.getPrecedenceLlmBy(true);
-    LlmCodeEnum code = precedenceLlmBy.getCode();
+    Optional<AiLlmConfig> precedenceLlmBy = llmService.getPrecedenceLlmBy(true);
+    AiLlmConfig aiLlmConfig = precedenceLlmBy.orElseThrow(() -> new BusinessException("没有开启的大模型"));
+    LlmCodeEnum code = aiLlmConfig.getCode();
     return switch (code) {
       case ZHI_PU -> zhiPuChatAssistant.chat(sessionIdentifier, userMessage);
       case DEEP_SEEK -> deepSeekChatAssistant.chat(sessionIdentifier, userMessage);

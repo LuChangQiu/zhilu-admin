@@ -1,6 +1,7 @@
 import { fetchEventSource } from "@microsoft/fetch-event-source";
 import { ref } from "vue";
 import useAuthStore from "../store/useAuthStore";
+import useAlertStore from "../store/useAlertStore";
 
 const authStore = useAuthStore();
 

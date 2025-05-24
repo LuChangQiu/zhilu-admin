@@ -57,8 +57,8 @@
 <script setup lang="ts">
 import LoadingIcon from "@/components/icons/LoadingIcon.vue";
 import useAlertStore from "@/composables/store/useAlertStore";
-import DOMPurify from 'dompurify';
-import { marked } from 'marked';
+import DOMPurify from "dompurify";
+import { marked } from "marked";
 import { computed, nextTick, onUnmounted, ref, watch } from "vue";
 import { z } from "zod";
 import Button from "../components/Button.vue";
@@ -72,26 +72,24 @@ const chatContainer = ref<HTMLElement | null>(null);
 const alertStore = useAlertStore();
 
 marked.setOptions({
-  gfm: true,        
-  breaks: true,    
+	gfm: true,
+	breaks: true,
 });
 
-
 const renderMarkdown = (content: string) => {
-  if (!content) return '';
-  
-  const restoredContent = content
-    .replace(/␣/g, ' ')    
-    .replace(/⇥/g, '\t')   
-    .replace(/␤/g, '\n');  
-  
-  
-  const processedContent = restoredContent
-    .replace(/^(\s*)(`{3,})/gm, '$1$2') 
-    .replace(/(\s+)`/g, '$1`');         
+	if (!content) return "";
 
-  const rawHtml = marked(processedContent);
-  return DOMPurify.sanitize(rawHtml as string);
+	const restoredContent = content
+		.replace(/␣/g, " ")
+		.replace(/⇥/g, "\t")
+		.replace(/␤/g, "\n");
+
+	const processedContent = restoredContent
+		.replace(/^(\s*)(`{3,})/gm, "$1$2")
+		.replace(/(\s+)`/g, "$1`");
+
+	const rawHtml = marked(processedContent);
+	return DOMPurify.sanitize(rawHtml as string);
 };
 const chatElements = computed(() => {
 	return messages.value.map((message, index) => {

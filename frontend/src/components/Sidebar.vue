@@ -32,6 +32,7 @@ import SchedulerIcon from "./icons/SchedulerIcon.vue";
 import SettingsIcon from "./icons/SettingsIcon.vue";
 import UsersIcon from "./icons/UsersIcon.vue";
 import AiChatIcon from "./icons/AiChatIcon.vue";
+import LlmConfigIcon from "./icons/LlmConfigIcon.vue";
 
 // 菜单配置
 const menuItems = [
@@ -74,6 +75,11 @@ const menuItems = [
 		title: "AI 对话",
 		path: `${RoutePath.DASHBOARD}/${RoutePath.AICHATVIEW}`,
 		icon: AiChatIcon,
+	},
+	{
+		title: "大模型管理",
+		path: `${RoutePath.DASHBOARD}/${RoutePath.LLMCONFIGVIEW}`,
+		icon: LlmConfigIcon,
 	},
 ];
 

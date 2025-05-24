@@ -20,6 +20,22 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
+	"/ai/llm": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put: operations["updateLlm"];
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/scheduler/trigger/resume": {
 		parameters: {
 			query?: never;
@@ -484,6 +500,22 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
+	"/ai/llm/page-query": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get: operations["pageQueryLlm"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -491,6 +523,17 @@ export interface components {
 		TriggerKeyDto: {
 			name: string;
 			group: string;
+		};
+		LlmVm: {
+			/** Format: int64 */
+			id: number;
+			name: string;
+			modelName: string;
+			apiKey: string;
+			url: string;
+			enable: boolean;
+			/** Format: int32 */
+			priority: number;
 		};
 		JobKeyDto: {
 			name: string;
@@ -714,6 +757,14 @@ export interface components {
 			total?: number;
 			data?: components["schemas"]["DepartmentRespDto"][];
 		};
+		LlmQueryDto: {
+			name?: string;
+		};
+		PageResponseDtoListLlmVm: {
+			/** Format: int64 */
+			total?: number;
+			data?: components["schemas"]["LlmVm"][];
+		};
 	};
 	responses: never;
 	parameters: never;
@@ -735,6 +786,28 @@ export interface operations {
 		requestBody: {
 			content: {
 				"application/json": components["schemas"]["TriggerKeyDto"];
+			};
+		};
+		responses: {
+			/** @description OK */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
+	updateLlm: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["LlmVm"];
 			};
 		};
 		responses: {
@@ -1549,6 +1622,29 @@ export interface operations {
 				};
 				content: {
 					"*/*": components["schemas"]["PageResponseDtoListDepartmentRespDto"];
+				};
+			};
+		};
+	};
+	pageQueryLlm: {
+		parameters: {
+			query: {
+				pageRequestDto: components["schemas"]["PageRequestDto"];
+				llmQueryDto: components["schemas"]["LlmQueryDto"];
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description OK */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"*/*": components["schemas"]["PageResponseDtoListLlmVm"];
 				};
 			};
 		};

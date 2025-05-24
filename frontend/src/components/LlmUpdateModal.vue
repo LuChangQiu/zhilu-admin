@@ -8,7 +8,7 @@
 				<!-- Modal header -->
 				<div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t  border-gray-200">
 					<h3 class="text-lg font-semibold text-gray-900 ">
-						用户管理
+						大模型管理
 					</h3>
 					<button type="button" @click="closeModal"
 						class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center  ">
@@ -23,23 +23,28 @@
 				<form class="p-4 md:p-5">
 					<div class="grid gap-4 mb-4 grid-cols-2">
 						<div class="col-span-2">
-							<label for="name" class="block mb-2 text-sm font-medium text-gray-900 ">用户名</label>
-							<input type="text" name="用户名" id="name" v-model="formData.username"
+							<label for="name" class="block mb-2 text-sm font-medium text-gray-900 ">名称</label>
+							<input type="text" name="名称" id="name" v-model="formData.name"
 								class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5      "
 								required="true">
 						</div>
 						<div class="col-span-2">
-							<label for="password" class="block mb-2 text-sm font-medium autocompletetext-gray-900 ">密码</label>
-							<input type="password" id="password" autocomplete="new-password" v-model="formData.password"
+							<label for="modelName" class="block mb-2 text-sm font-medium autocomplete text-gray-900 ">模型名称</label>
+							<input type="text" id="modelName" autocomplete="new-password" v-model="formData.modelName"
 								class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5      "
-								placeholder="编辑时非必填" required />
+								required />
 						</div>
 						<div class="col-span-2">
-							<label for="confirm_password" class="block mb-2 text-sm font-medium text-gray-900 ">确认密码</label>
-							<input type="password" id="confirm_password" autocomplete="new-password"
-								v-model="formData.confirmPassword"
+							<label for="apiKey" class="block mb-2 text-sm font-medium autocomplete text-gray-900 ">apiKey</label>
+							<input type="text" id="apiKey" autocomplete="new-password" v-model="formData.apiKey"
+								class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+								required />
+						</div>
+						<div class="col-span-2">
+							<label for="url" class="block mb-2 text-sm font-medium text-gray-900 ">url</label>
+							<input type="text" id="url" autocomplete="new-password" v-model="formData.url"
 								class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5      "
-								required placeholder="编辑时非必填" />
+								required />
 						</div>
 						<div class="col-span-2 sm:col-span-1">
 							<label for="status" class="block mb-2 text-sm font-medium text-gray-900 ">状态</label>
@@ -49,9 +54,15 @@
 								<option :value=false>禁用</option>
 							</select>
 						</div>
+						<div class="col-span-2">
+							<label for="priority" class="block mb-2 text-sm font-medium autocomplete text-gray-900 ">优先级</label>
+							<input type="text" id="priority" autocomplete="new-password" v-model="formData.priority"
+								class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+								required />
+						</div>
 					</div>
 					<button type="submit" @click.prevent="handleSubmit"
-						class="text-white flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center    self-start mt-5">
+						class="text-white flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center self-start mt-5">
 						保存
 					</button>
 				</form>
@@ -62,76 +73,56 @@
 </template>
 <script setup lang="ts">
 import useAlertStore from "@/composables/store/useAlertStore";
-import type { UserUpsertSubmitModel } from "@/types/user";
 import { initFlowbite } from "flowbite";
 import { onMounted, ref, watch } from "vue";
 import { z } from "zod";
 import type { components } from "../api/types/schema";
 
 const alertStore = useAlertStore();
-
-const { user, onSubmit } = defineProps<{
-	user?: components["schemas"]["UserRolePermissionDto"];
+const { llm, onSubmit } = defineProps<{
+	llm?: components["schemas"]["LlmVm"];
 	closeModal: () => void;
-	onSubmit: (data: UserUpsertSubmitModel) => Promise<void>;
+	onSubmit: (data: components["schemas"]["LlmVm"]) => Promise<void>;
 }>();
 
 const formData = ref();
 
-const updateFormData = (newUser: typeof user) => {
+const updateFormData = (newLlm: typeof llm) => {
 	formData.value = {
-		id: newUser?.id,
-		username: newUser?.username,
-		password: undefined,
-		enable: newUser?.enable ?? true,
-		confirmPassword: undefined,
+		...newLlm,
 	};
 };
 
-watch(() => user, updateFormData, {
+watch(() => llm, updateFormData, {
 	immediate: true,
 });
 
 const handleSubmit = async () => {
-	const userSchema = z
-		.object({
-			id: z.number().optional(),
-			username: z
-				.string({
-					message: "用户名不能为空",
-				})
-				.min(4, "用户名至少4个字符")
-				.max(15, "用户名最多15个字符"),
+	try {
+		const llmSchema = z.object({
+			id: z.number({
+				message: "id不能为空",
+			}),
+			name: z.string({
+				message: "名称不能为空",
+			}),
+			modelName: z.string({
+				message: "模型名称不能为空",
+			}),
+			apiKey: z.string({
+				message: "apiKey不能为空",
+			}),
+			url: z.string({
+				message: "url不能为空",
+			}),
 			enable: z.boolean({
 				message: "状态不能为空",
 			}),
-			password: z
-				.string({
-					message: "密码不能为空",
-				})
-				.min(5, "密码至少5个字符")
-				.max(20, "密码最多20个字符")
-				.optional(),
-			confirmPassword: z
-				.string({
-					message: "密码不能为空",
-				})
-				.min(5, "密码至少5个字符")
-				.max(20, "密码最多20个字符")
-				.optional(),
-		})
-		.refine(
-			(data) => {
-				if (!data.password) return true;
-				return data.password === data.confirmPassword;
-			},
-			{
-				message: "密码输入不一致。",
-			},
-		);
-
-	try {
-		const validatedData = userSchema.parse(formData.value);
+			priority: z.number({
+				message: "优先级必须为数字",
+			}),
+		});
+		const validatedData = llmSchema.parse(formData.value);
 		await onSubmit(validatedData);
 		updateFormData(undefined);
 	} catch (error) {
