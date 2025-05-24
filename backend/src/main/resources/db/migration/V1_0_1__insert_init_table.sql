@@ -13,7 +13,10 @@ VALUES   ('READ_POSITION_PERMISSION', 'READ_POSITION_PERMISSION'),
          ('READ_SCHEDULER_PERMISSION', 'READ_SCHEDULER_PERMISSION'),
          ('WRITE_SCHEDULER_PERMISSION', 'WRITE_SCHEDULER_PERMISSION'),
          ('WRITE_USER_ROLE_PERMISSION', 'WRITE_USER_ROLE_PERMISSION'),
-         ('READ_USER_ROLE_PERMISSION', 'READ_USER_ROLE_PERMISSION');
+         ('READ_USER_ROLE_PERMISSION', 'READ_USER_ROLE_PERMISSION'),
+         ('READ_LLM_CONFIG_PERMISSION', 'READ_LLM_CONFIG_PERMISSION'),
+         ('WRITE_LLM_CONFIG_PERMISSION', 'WRITE_LLM_CONFIG_PERMISSION');
+
 
 INSERT INTO mjga.user_role_map (user_id, role_id)
 VALUES (1, 1);
@@ -26,7 +29,9 @@ VALUES (1, 1),
        (1, 5),
        (1, 6),
        (1, 7),
-       (1, 8);
+       (1, 8),
+       (1, 9),
+       (1, 10);
 
 INSERT INTO mjga.ai_llm_config (name,code,model_name, api_key, url, enable, priority)
 VALUES
