@@ -1,5 +1,6 @@
 package com.zl.mjga.config.ai;
 
+import com.zl.mjga.service.LlmService;
 import dev.langchain4j.community.model.zhipu.ZhipuAiEmbeddingModel;
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.model.embedding.EmbeddingModel;
@@ -7,6 +8,8 @@ import dev.langchain4j.store.embedding.EmbeddingStore;
 import dev.langchain4j.store.embedding.pgvector.PgVectorEmbeddingStore;
 import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
+import org.jooq.generated.mjga.enums.LlmCodeEnum;
+import org.jooq.generated.mjga.tables.pojos.AiLlmConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
@@ -14,16 +17,26 @@ import org.springframework.core.env.Environment;
 
 @Configuration
 @RequiredArgsConstructor
-public class EmbeddingConfig {
+public class EmbeddingInitializer {
 
   @Resource private Environment env;
+  private final LlmService llmService;
 
   @Bean
   @DependsOn("flywayInitializer")
-  public EmbeddingModel zhipuEmbeddingModel(ZhiPuConfiguration zhiPuConfiguration) {
+  public ZhiPuEmbeddingModelConfig zhiPuEmbeddingModelConfig() {
+    ZhiPuEmbeddingModelConfig zhiPuEmbeddingModelConfig = new ZhiPuEmbeddingModelConfig();
+    AiLlmConfig aiLlmConfig = llmService.loadConfig(LlmCodeEnum.ZHI_PU_EMBEDDING);
+    zhiPuEmbeddingModelConfig.init(aiLlmConfig);
+    return zhiPuEmbeddingModelConfig;
+  }
+
+  @Bean
+  @DependsOn("flywayInitializer")
+  public EmbeddingModel zhipuEmbeddingModel(ZhiPuEmbeddingModelConfig zhiPuEmbeddingModelConfig) {
     return ZhipuAiEmbeddingModel.builder()
-        .apiKey(zhiPuConfiguration.getApiKey())
-        .model(zhiPuConfiguration.getEmbeddingModel())
+        .apiKey(zhiPuEmbeddingModelConfig.getApiKey())
+        .model(zhiPuEmbeddingModelConfig.getModelName())
         .dimensions(2048)
         .build();
   }

@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jooq.Configuration;
 import org.jooq.Record;
 import org.jooq.Result;
+import org.jooq.generated.default_schema.enums.LlmTypeEnum;
 import org.jooq.generated.mjga.tables.daos.AiLlmConfigDao;
 import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,10 @@ public class LlmRepository extends AiLlmConfigDao {
         .where(
             StringUtils.isNotEmpty(llmQueryDto.name())
                 ? AI_LLM_CONFIG.NAME.eq(llmQueryDto.name())
+                : noCondition())
+        .and(
+            StringUtils.isNotEmpty(llmQueryDto.type())
+                ? AI_LLM_CONFIG.TYPE.eq(LlmTypeEnum.lookupLiteral(llmQueryDto.type()))
                 : noCondition())
         .orderBy(pageRequestDto.getSortFields())
         .limit(pageRequestDto.getSize())

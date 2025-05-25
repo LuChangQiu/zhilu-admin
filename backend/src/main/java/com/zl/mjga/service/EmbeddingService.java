@@ -2,6 +2,7 @@ package com.zl.mjga.service;
 
 import static dev.langchain4j.store.embedding.filter.MetadataFilterBuilder.metadataKey;
 
+import com.zl.mjga.config.ai.ZhiPuEmbeddingModelConfig;
 import com.zl.mjga.model.urp.Actions;
 import dev.langchain4j.data.document.Metadata;
 import dev.langchain4j.data.embedding.Embedding;
@@ -27,6 +28,8 @@ public class EmbeddingService {
 
   private final EmbeddingStore<TextSegment> zhiPuEmbeddingStore;
 
+  private final ZhiPuEmbeddingModelConfig zhiPuEmbeddingModelConfig;
+
   public Map<String, Object> searchAction(String message) {
     Map<String, Object> result = new HashMap<>();
     EmbeddingSearchRequest embeddingSearchRequest =
@@ -43,6 +46,9 @@ public class EmbeddingService {
 
   @PostConstruct
   public void initActionIndex() {
+    if (!zhiPuEmbeddingModelConfig.getEnable()) {
+      return;
+    }
     for (Actions action : Actions.values()) {
       Embedding queryEmbedding = zhipuEmbeddingModel.embed(action.getContent()).content();
       Filter createUserFilter = metadataKey(Actions.INDEX_KEY).isEqualTo(action.getCode());

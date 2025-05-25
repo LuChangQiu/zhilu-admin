@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Record;
 import org.jooq.Result;
+import org.jooq.generated.default_schema.enums.LlmTypeEnum;
 import org.jooq.generated.mjga.enums.LlmCodeEnum;
 import org.jooq.generated.mjga.tables.pojos.AiLlmConfig;
 import org.springframework.beans.BeanUtils;
@@ -28,9 +29,11 @@ public class LlmService {
     return llmRepository.fetchOneByCode(llmCodeEnum);
   }
 
-  public Optional<AiLlmConfig> getPrecedenceLlmBy(Boolean enable) {
+  public Optional<AiLlmConfig> getPrecedenceChatLlmBy(Boolean enable) {
     List<AiLlmConfig> aiLlmConfigs = llmRepository.fetchByEnable(enable);
-    return aiLlmConfigs.stream().max((o1, o2) -> o2.getPriority().compareTo(o1.getPriority()));
+    return aiLlmConfigs.stream()
+        .filter(aiLlmConfig -> LlmTypeEnum.CHAT.equals(aiLlmConfig.getType()))
+        .max((o1, o2) -> o2.getPriority().compareTo(o1.getPriority()));
   }
 
   public PageResponseDto<List<LlmVm>> pageQueryLlm(

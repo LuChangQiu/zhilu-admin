@@ -28,12 +28,13 @@ public class AiChatService {
   }
 
   public TokenStream chatPrecedenceLlmWith(String sessionIdentifier, String userMessage) {
-    Optional<AiLlmConfig> precedenceLlmBy = llmService.getPrecedenceLlmBy(true);
+    Optional<AiLlmConfig> precedenceLlmBy = llmService.getPrecedenceChatLlmBy(true);
     AiLlmConfig aiLlmConfig = precedenceLlmBy.orElseThrow(() -> new BusinessException("没有开启的大模型"));
     LlmCodeEnum code = aiLlmConfig.getCode();
     return switch (code) {
       case ZHI_PU -> zhiPuChatAssistant.chat(sessionIdentifier, userMessage);
       case DEEP_SEEK -> deepSeekChatAssistant.chat(sessionIdentifier, userMessage);
+      default -> throw new BusinessException(String.format("无效的模型代码 %s", code));
     };
   }
 }

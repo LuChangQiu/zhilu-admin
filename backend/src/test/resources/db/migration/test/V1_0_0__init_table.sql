@@ -66,9 +66,23 @@ CREATE TABLE mjga.user_position_map (
                                         FOREIGN KEY (position_id) REFERENCES mjga.position(id) ON UPDATE NO ACTION ON DELETE RESTRICT
 );
 
+CREATE TYPE mjga.llm_code_enum AS ENUM (
+	'DEEP_SEEK',
+	'ZHI_PU',
+    'ZHI_PU_EMBEDDING'
+);
+
+CREATE TYPE "llm_type_enum" AS ENUM (
+	'CHAT',
+	'EMBEDDING'
+);
+
 CREATE TABLE mjga.ai_llm_config (
                                     id BIGSERIAL NOT NULL UNIQUE,
                                     name VARCHAR(255) NOT NULL UNIQUE,
+                                    code mjga.llm_code_enum NOT NULL UNIQUE,
+                                    model_name VARCHAR(255) NOT NULL,
+                                    type LLM_TYPE_ENUM NOT NULL,
                                     api_key VARCHAR(255) NOT NULL,
                                     url VARCHAR(255) NOT NULL,
                                     enable BOOLEAN NOT NULL DEFAULT true,
