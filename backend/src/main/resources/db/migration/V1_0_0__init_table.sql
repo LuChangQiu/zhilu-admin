@@ -77,6 +77,7 @@ CREATE TABLE mjga.ai_llm_config (
                                  name VARCHAR(255) NOT NULL UNIQUE,
                                  code mjga.llm_code_enum NOT NULL UNIQUE,
                                  model_name VARCHAR(255) NOT NULL,
+                                 embedding_model VARCHAR(255) NOT NULL,
                                  api_key VARCHAR(255) NOT NULL,
                                  url VARCHAR(255) NOT NULL,
                                  enable BOOLEAN NOT NULL DEFAULT true,

@@ -11,10 +11,12 @@ public class ZhiPuConfiguration {
   private String baseUrl;
   private String apiKey;
   private String modelName;
+  private String embeddingModel;
 
   public void init(AiLlmConfig config) {
     this.baseUrl = config.getUrl();
     this.apiKey = config.getApiKey();
     this.modelName = config.getModelName();
+    this.embeddingModel = config.getEmbeddingModel();
   }
 }
