@@ -21,7 +21,7 @@ const makeErrorHandler =
 		}) => void,
 	) =>
 	(err: unknown, instance: ComponentPublicInstance | null, info: string) => {
-	console.error(err);
+		console.error(err);
 		if (err instanceof UnAuthError) {
 			signOut();
 			router.push(RoutePath.LOGIN);
@@ -43,6 +43,11 @@ const makeErrorHandler =
 			showAlert({
 				level: "error",
 				content: err.detail ?? err.message,
+			});
+		} else {
+			showAlert({
+				level: "error",
+				content: "发生异常，请稍候再试",
 			});
 		}
 	};

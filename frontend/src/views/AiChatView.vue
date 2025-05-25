@@ -19,8 +19,23 @@
     </div>
 
     <form class="sticky bottom-4 mt-14">
-      <div class="w-full border border-gray-200 rounded-lg bg-gray-50  ">
-        <div class="px-4 py-2 bg-white rounded-t-lg ">
+      <button @click.prevent="toggleCommandMode"
+        class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group focus:ring-4 focus:outline-none focus:ring-lime-200"
+        :class="[
+          isCommandMode
+            ? 'bg-gradient-to-br from-teal-300 to-lime-300 '
+            : 'bg-gradient-to-br from-gray-300 to-gray-300 group-hover:from-teal-300 group-hover:to-lime-300'
+        ]">
+        <span class="relative px-3 py-2 transition-all ease-in duration-75 rounded-md" :class="[
+            isCommandMode
+              ? 'bg-transparent'
+              : 'bg-white  group-hover:bg-transparent'
+          ]">
+          命令模式
+        </span>
+      </button>
+      <div class="w-full border border-gray-200 rounded-lg bg-gray-50">
+        <div class="px-4 py-2 bg-white rounded-t-lg">
           <label for="comment" class="sr-only"></label>
           <textarea id="comment" rows="3" v-model="inputMessage"
             class="w-full px-0 text-gray-900 bg-white border-0  focus:ring-0  " placeholder="发送消息" required></textarea>
@@ -65,11 +80,16 @@ import Button from "../components/Button.vue";
 import { useAiChat } from "../composables/ai/useAiChat";
 import useUserStore from "../composables/store/useUserStore";
 
-const { messages, chat, isLoading, cancel } = useAiChat();
+const { messages, chat, isLoading, cancel, actionChat } = useAiChat();
 const { user } = useUserStore();
 const inputMessage = ref("");
 const chatContainer = ref<HTMLElement | null>(null);
 const alertStore = useAlertStore();
+const isCommandMode = ref(false);
+
+const toggleCommandMode = () => {
+	isCommandMode.value = !isCommandMode.value;
+};
 
 marked.setOptions({
 	gfm: true,
@@ -125,7 +145,19 @@ const abortChat = () => {
 	cancel();
 };
 
-const sendMessage = async () => {
+const chatByMode = async (message: string) => {
+	if (isCommandMode.value) {
+		await actionChat(message);
+	} else {
+		if (isLoading.value) {
+			abortChat();
+		} else {
+			await chat(message);
+		}
+	}
+};
+
+const handleSendClick = async () => {
 	try {
 		const validInputMessage = z
 			.string({ message: "消息不能为空" })
@@ -133,7 +165,7 @@ const sendMessage = async () => {
 			.parse(inputMessage.value);
 		scrollToBottom();
 		inputMessage.value = "";
-		await chat(validInputMessage);
+		await chatByMode(validInputMessage);
 	} catch (error) {
 		if (error instanceof z.ZodError) {
 			alertStore.showAlert({
@@ -143,14 +175,6 @@ const sendMessage = async () => {
 		} else {
 			throw error;
 		}
-	}
-};
-
-const handleSendClick = async () => {
-	if (isLoading.value) {
-		abortChat();
-	} else {
-		sendMessage();
 	}
 };
 

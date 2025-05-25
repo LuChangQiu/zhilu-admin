@@ -1,7 +1,7 @@
 import { fetchEventSource } from "@microsoft/fetch-event-source";
 import { ref } from "vue";
 import useAuthStore from "../store/useAuthStore";
-import useAlertStore from "../store/useAlertStore";
+import client from "../../api/client";
 
 const authStore = useAuthStore();
 
@@ -43,6 +43,21 @@ export const useAiChat = () => {
 		}
 	};
 
+	const actionChat = async (message: string) => {
+		messages.value.push(message);
+		messages.value.push("");
+		isLoading.value = true;
+		try {
+			const { data } = await client.POST("/ai/action/chat", {
+				body: message,
+			});
+			messages.value[messages.value.length - 1] += "接收到指令，请您执行。";
+			return data;
+		} finally {
+			isLoading.value = false;
+		}
+	};
+
 	const cancel = () => {
 		if (currentController) {
 			currentController.abort();
@@ -50,5 +65,5 @@ export const useAiChat = () => {
 		}
 	};
 
-	return { messages, chat, isLoading, cancel };
+	return { messages, chat, isLoading, cancel, actionChat };
 };
