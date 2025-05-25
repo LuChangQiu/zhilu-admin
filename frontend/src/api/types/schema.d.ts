@@ -545,6 +545,7 @@ export interface components {
             id: number;
             name: string;
             modelName: string;
+            type: string;
             apiKey: string;
             url: string;
             enable: boolean;

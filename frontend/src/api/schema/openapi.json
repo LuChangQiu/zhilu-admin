@@ -1129,6 +1129,7 @@
           "modelName",
           "name",
           "priority",
+          "type",
           "url"
         ],
         "type": "object",
@@ -1141,6 +1142,9 @@
             "type": "string"
           },
           "modelName": {
+            "type": "string"
+          },
+          "type": {
             "type": "string"
           },
           "apiKey": {

@@ -18,6 +18,8 @@ import org.jooq.generated.mjga.tables.pojos.AiLlmConfig;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import static org.jooq.generated.mjga.Tables.AI_LLM_CONFIG;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -42,7 +44,11 @@ public class LlmService {
     if (records.isEmpty()) {
       return PageResponseDto.empty();
     }
-    List<LlmVm> llmVms = records.into(LlmVm.class);
+    List<LlmVm> llmVms = records.map((record) -> {
+      LlmVm into = record.into(LlmVm.class);
+      into.setType(record.get(AI_LLM_CONFIG.TYPE).getLiteral());
+      return into;
+    });
     Long totalLlm = records.get(0).getValue("total_llm", Long.class);
     return new PageResponseDto<>(totalLlm, llmVms);
   }

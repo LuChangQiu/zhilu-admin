@@ -34,6 +34,14 @@
 								class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5      "
 								required />
 						</div>
+						<div class="col-span-2 sm:col-span-1">
+							<label for="type" class="block mb-2 text-sm font-medium text-gray-900 ">类型</label>
+							<select id="type" v-model="formData.type"
+								class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5">
+								<option :value="'CHAT'">聊天</option>
+								<option :value="'EMBEDDING'">嵌入</option>
+							</select>
+						</div>
 						<div class="col-span-2">
 							<label for="apiKey" class="block mb-2 text-sm font-medium autocomplete text-gray-900 ">apiKey</label>
 							<input type="text" id="apiKey" autocomplete="new-password" v-model="formData.apiKey"
@@ -120,6 +128,9 @@ const handleSubmit = async () => {
 			}),
 			priority: z.number({
 				message: "优先级必须为数字",
+			}),
+			type: z.string({
+				message: "类型不能为空",
 			}),
 		});
 		const validatedData = llmSchema.parse(formData.value);
