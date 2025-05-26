@@ -1,23 +1,34 @@
 import { fetchEventSource } from "@microsoft/fetch-event-source";
 import { ref } from "vue";
+import client from "../../api/client";
 import useAuthStore from "../store/useAuthStore";
-import useAlertStore from "../store/useAlertStore";
 
 const authStore = useAuthStore();
 
 export const useAiChat = () => {
-	const messages = ref<string[]>([]);
+	const messages = ref<
+		{
+			content: string;
+			type: "chat" | "action";
+			isUser: boolean;
+			username: string;
+			command?: string;
+		}[]
+	>([]);
 	const isLoading = ref(false);
 
 	let currentController: AbortController | null = null;
 
 	const chat = async (message: string) => {
 		isLoading.value = true;
-		messages.value.push(message);
-		messages.value.push("");
 		const ctrl = new AbortController();
 		currentController = ctrl;
-
+		messages.value.push({
+			content: "",
+			type: "chat",
+			isUser: false,
+			username: "知路智能体",
+		});
 		try {
 			const baseUrl = `${import.meta.env.VITE_BASE_URL}`;
 			await fetchEventSource(`${baseUrl}/ai/chat`, {
@@ -29,7 +40,7 @@ export const useAiChat = () => {
 				body: message,
 				signal: ctrl.signal,
 				onmessage(ev) {
-					messages.value[messages.value.length - 1] += ev.data;
+					messages.value[messages.value.length - 1].content += ev.data;
 				},
 				onclose() {
 					console.log("onclose");
@@ -38,6 +49,29 @@ export const useAiChat = () => {
 					throw err;
 				},
 			});
+		} catch (error) {
+			messages.value.pop();
+		} finally {
+			isLoading.value = false;
+		}
+	};
+
+	const actionChat = async (message: string) => {
+		isLoading.value = true;
+		try {
+			const { data } = await client.POST("/ai/action/chat", {
+				body: message,
+			});
+			messages.value.push({
+				content: data?.action
+					? "接收到指令，请您执行。"
+					: "未找到有效指令，请重新输入。",
+				type: "action",
+				isUser: false,
+				username: "知路智能体",
+				command: data?.action,
+			});
+			return data;
 		} finally {
 			isLoading.value = false;
 		}
@@ -50,5 +84,5 @@ export const useAiChat = () => {
 		}
 	};
 
-	return { messages, chat, isLoading, cancel };
+	return { messages, chat, isLoading, cancel, actionChat };
 };

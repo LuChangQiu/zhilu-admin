@@ -2,11 +2,9 @@ package com.zl.mjga.config.ai;
 
 import lombok.Data;
 import org.jooq.generated.mjga.tables.pojos.AiLlmConfig;
-import org.springframework.stereotype.Component;
 
 @Data
-@Component
-public class ZhiPuConfiguration {
+public class ZhiPuChatModelConfig {
 
   private String baseUrl;
   private String apiKey;

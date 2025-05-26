@@ -747,6 +747,39 @@
         }
       }
     },
+    "/ai/action/chat": {
+      "post": {
+        "tags": [
+          "ai-controller"
+        ],
+        "operationId": "actionChat",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/scheduler/page-query": {
       "get": {
         "tags": [
@@ -1096,6 +1129,7 @@
           "modelName",
           "name",
           "priority",
+          "type",
           "url"
         ],
         "type": "object",
@@ -1108,6 +1142,9 @@
             "type": "string"
           },
           "modelName": {
+            "type": "string"
+          },
+          "type": {
             "type": "string"
           },
           "apiKey": {
@@ -1787,6 +1824,9 @@
         "type": "object",
         "properties": {
           "name": {
+            "type": "string"
+          },
+          "type": {
             "type": "string"
           }
         }

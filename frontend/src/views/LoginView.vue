@@ -45,26 +45,19 @@ const handleLogin = async () => {
 		password: z.string().min(1, "密码至少1个字符"),
 	});
 
-	try {
-		const validatedData = userSchema.parse({
-			username: username.value,
-			password: password.value,
-		});
-		await userAuth.signIn(validatedData.username, validatedData.password);
-		alertStore.showAlert({
-			level: "success",
-			content: "登录成功",
-		});
-		const redirectPath =
-			(route.query.redirect as string) ||
-			`${RoutePath.DASHBOARD}/${RoutePath.USERVIEW}`;
-		router.push(redirectPath);
-	} catch (e) {
-		alertStore.showAlert({
-			level: "error",
-			content: e instanceof z.ZodError ? e.errors[0].message : "账号或密码错误",
-		});
-	}
+	const validatedData = userSchema.parse({
+		username: username.value,
+		password: password.value,
+	});
+	await userAuth.signIn(validatedData.username, validatedData.password);
+	alertStore.showAlert({
+		level: "success",
+		content: "登录成功",
+	});
+	const redirectPath =
+		(route.query.redirect as string) ||
+		`${RoutePath.DASHBOARD}/${RoutePath.USERVIEW}`;
+	router.push(redirectPath);
 };
 
 onMounted(() => {

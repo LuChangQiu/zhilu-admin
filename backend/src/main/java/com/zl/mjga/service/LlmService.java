@@ -12,10 +12,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Record;
 import org.jooq.Result;
+import org.jooq.generated.default_schema.enums.LlmTypeEnum;
 import org.jooq.generated.mjga.enums.LlmCodeEnum;
 import org.jooq.generated.mjga.tables.pojos.AiLlmConfig;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+
+import static org.jooq.generated.mjga.Tables.AI_LLM_CONFIG;
 
 @Service
 @RequiredArgsConstructor
@@ -28,9 +31,11 @@ public class LlmService {
     return llmRepository.fetchOneByCode(llmCodeEnum);
   }
 
-  public Optional<AiLlmConfig> getPrecedenceLlmBy(Boolean enable) {
+  public Optional<AiLlmConfig> getPrecedenceChatLlmBy(Boolean enable) {
     List<AiLlmConfig> aiLlmConfigs = llmRepository.fetchByEnable(enable);
-    return aiLlmConfigs.stream().max((o1, o2) -> o2.getPriority().compareTo(o1.getPriority()));
+    return aiLlmConfigs.stream()
+        .filter(aiLlmConfig -> LlmTypeEnum.CHAT.equals(aiLlmConfig.getType()))
+        .max((o1, o2) -> o2.getPriority().compareTo(o1.getPriority()));
   }
 
   public PageResponseDto<List<LlmVm>> pageQueryLlm(
@@ -39,7 +44,11 @@ public class LlmService {
     if (records.isEmpty()) {
       return PageResponseDto.empty();
     }
-    List<LlmVm> llmVms = records.into(LlmVm.class);
+    List<LlmVm> llmVms = records.map((record) -> {
+      LlmVm into = record.into(LlmVm.class);
+      into.setType(record.get(AI_LLM_CONFIG.TYPE).getLiteral());
+      return into;
+    });
     Long totalLlm = records.get(0).getValue("total_llm", Long.class);
     return new PageResponseDto<>(totalLlm, llmVms);
   }

@@ -69,17 +69,7 @@ const handleSubmit = async () => {
 			.min(5, "表达式的长度非法"),
 	});
 
-	try {
-		const validatedData = jobSchema.parse(formData.value);
-		await onSubmit(validatedData.cronExpression);
-	} catch (error) {
-		if (error instanceof z.ZodError) {
-			alertStore.showAlert({
-				level: "error",
-				content: error.errors[0].message,
-			});
-		}
-		throw error;
-	}
+	const validatedData = jobSchema.parse(formData.value);
+	await onSubmit(validatedData.cronExpression);
 };
 </script>

@@ -372,6 +372,22 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
+	"/ai/action/chat": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		post: operations["actionChat"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/scheduler/page-query": {
 		parameters: {
 			query?: never;
@@ -529,6 +545,7 @@ export interface components {
 			id: number;
 			name: string;
 			modelName: string;
+			type: string;
 			apiKey: string;
 			url: string;
 			enable: boolean;
@@ -759,6 +776,7 @@ export interface components {
 		};
 		LlmQueryDto: {
 			name?: string;
+			type?: string;
 		};
 		PageResponseDtoListLlmVm: {
 			/** Format: int64 */
@@ -1442,6 +1460,32 @@ export interface operations {
 				};
 				content: {
 					"text/event-stream": string[];
+				};
+			};
+		};
+	};
+	actionChat: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": string;
+			};
+		};
+		responses: {
+			/** @description OK */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"*/*": {
+						[key: string]: string;
+					};
 				};
 			};
 		};

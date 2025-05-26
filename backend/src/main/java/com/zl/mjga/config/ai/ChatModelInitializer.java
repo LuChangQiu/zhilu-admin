@@ -14,17 +14,17 @@ import org.springframework.context.annotation.DependsOn;
 
 @Configuration
 @RequiredArgsConstructor
-public class ChatModelConfig {
+public class ChatModelInitializer {
 
   private final LlmService llmService;
   private final PromptConfiguration promptConfiguration;
 
   @Bean
   @DependsOn("flywayInitializer")
-  public ZhipuAiStreamingChatModel zhipuChatModel(ZhiPuConfiguration zhiPuConfiguration) {
+  public ZhipuAiStreamingChatModel zhipuChatModel(ZhiPuChatModelConfig zhiPuChatModelConfig) {
     return ZhipuAiStreamingChatModel.builder()
-        .model(zhiPuConfiguration.getModelName())
-        .apiKey(zhiPuConfiguration.getApiKey())
+        .model(zhiPuChatModelConfig.getModelName())
+        .apiKey(zhiPuChatModelConfig.getApiKey())
         .logRequests(true)
         .logResponses(true)
         .build();
@@ -32,11 +32,12 @@ public class ChatModelConfig {
 
   @Bean
   @DependsOn("flywayInitializer")
-  public OpenAiStreamingChatModel deepSeekChatModel(DeepSeekConfiguration deepSeekConfiguration) {
+  public OpenAiStreamingChatModel deepSeekChatModel(
+      DeepSeekChatModelConfig deepSeekChatModelConfig) {
     return OpenAiStreamingChatModel.builder()
-        .baseUrl(deepSeekConfiguration.getBaseUrl())
-        .apiKey(deepSeekConfiguration.getApiKey())
-        .modelName(deepSeekConfiguration.getModelName())
+        .baseUrl(deepSeekChatModelConfig.getBaseUrl())
+        .apiKey(deepSeekChatModelConfig.getApiKey())
+        .modelName(deepSeekChatModelConfig.getModelName())
         .build();
   }
 
@@ -62,19 +63,19 @@ public class ChatModelConfig {
 
   @Bean
   @DependsOn("flywayInitializer")
-  public DeepSeekConfiguration deepSeekConfiguration() {
-    DeepSeekConfiguration deepSeekConfiguration = new DeepSeekConfiguration();
+  public DeepSeekChatModelConfig deepSeekConfiguration() {
+    DeepSeekChatModelConfig deepSeekChatModelConfig = new DeepSeekChatModelConfig();
     AiLlmConfig deepSeek = llmService.loadConfig(LlmCodeEnum.DEEP_SEEK);
-    deepSeekConfiguration.init(deepSeek);
-    return deepSeekConfiguration;
+    deepSeekChatModelConfig.init(deepSeek);
+    return deepSeekChatModelConfig;
   }
 
   @Bean
   @DependsOn("flywayInitializer")
-  public ZhiPuConfiguration zhiPuConfiguration() {
-    ZhiPuConfiguration zhiPuConfiguration = new ZhiPuConfiguration();
+  public ZhiPuChatModelConfig zhiPuConfiguration() {
+    ZhiPuChatModelConfig zhiPuChatModelConfig = new ZhiPuChatModelConfig();
     AiLlmConfig aiLlmConfig = llmService.loadConfig(LlmCodeEnum.ZHI_PU);
-    zhiPuConfiguration.init(aiLlmConfig);
-    return zhiPuConfiguration;
+    zhiPuChatModelConfig.init(aiLlmConfig);
+    return zhiPuChatModelConfig;
   }
 }

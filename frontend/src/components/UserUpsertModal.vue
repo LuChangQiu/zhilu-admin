@@ -61,14 +61,11 @@
 
 </template>
 <script setup lang="ts">
-import useAlertStore from "@/composables/store/useAlertStore";
 import type { UserUpsertSubmitModel } from "@/types/user";
 import { initFlowbite } from "flowbite";
 import { onMounted, ref, watch } from "vue";
 import { z } from "zod";
 import type { components } from "../api/types/schema";
-
-const alertStore = useAlertStore();
 
 const { user, onSubmit } = defineProps<{
 	user?: components["schemas"]["UserRolePermissionDto"];
@@ -130,19 +127,9 @@ const handleSubmit = async () => {
 			},
 		);
 
-	try {
-		const validatedData = userSchema.parse(formData.value);
-		await onSubmit(validatedData);
-		updateFormData(undefined);
-	} catch (error) {
-		if (error instanceof z.ZodError) {
-			alertStore.showAlert({
-				level: "error",
-				content: error.errors[0].message,
-			});
-		}
-		throw error;
-	}
+	const validatedData = userSchema.parse(formData.value);
+	await onSubmit(validatedData);
+	updateFormData(undefined);
 };
 
 onMounted(() => {

@@ -4,7 +4,7 @@ import lombok.Data;
 import org.jooq.generated.mjga.tables.pojos.AiLlmConfig;
 
 @Data
-public class DeepSeekConfiguration {
+public class DeepSeekChatModelConfig {
 
   private String baseUrl;
   private String apiKey;

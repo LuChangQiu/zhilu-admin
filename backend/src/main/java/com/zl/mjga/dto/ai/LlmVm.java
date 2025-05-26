@@ -12,6 +12,8 @@ public class LlmVm {
 
   @NotEmpty(message = "模型名称不能为空") private String modelName;
 
+  @NotEmpty(message = "模型类型不能为空") private String type;
+
   @NotEmpty(message = "apikey 不能为空") private String apiKey;
 
   @NotEmpty(message = "url 不能为空") private String url;

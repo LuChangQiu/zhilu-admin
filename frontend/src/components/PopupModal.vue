@@ -12,12 +12,12 @@
           <span class="sr-only">Close modal</span>
         </button>
         <div class="p-4 md:p-5 text-center flex flex-col items-center gap-y-3">
-          <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-            fill="none" viewBox="0 0 20 20">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+          <svg class="w-16 h-16 mx-auto text-red-600 mt-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
           </svg>
-          <h3 class="mb-5 text-lg font-normal text-gray-500 ">
+          <h3 class="mb-3 text-lg font-normal text-gray-500 ">
             {{ title }}
           </h3>
           <span>

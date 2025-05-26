@@ -40,6 +40,7 @@
             </th>
             <th scope="col" class="px-6 py-3">名称</th>
             <th scope="col" class="px-6 py-3">模型名称</th>
+            <th scope="col" class="px-6 py-3">类型</th>
             <th scope="col" class="px-6 py-3">apiKey</th>
             <th scope="col" class="px-6 py-3">url</th>
             <th scope="col" class="px-6 py-3">状态</th>
@@ -61,6 +62,9 @@
               `${llm.name}` }}</td>
             <td class="px-6 py-4 max-w-sm  overflow-hidden text-ellipsis">{{
               `${llm.modelName}` }}
+            </td>
+            <td class="px-6 py-4 max-w-sm  overflow-hidden text-ellipsis">{{
+              llm.type === 'CHAT' ? '聊天' : '嵌入' }}
             </td>
             <td class="px-6 py-4 max-w-sm  overflow-hidden text-ellipsis">{{
               llm.apiKey }}

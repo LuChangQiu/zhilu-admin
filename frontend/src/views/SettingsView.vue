@@ -78,47 +78,38 @@ onMounted(() => {
 
 const handleUpdateClick = async () => {
 	let validatedData = undefined;
-	try {
-		validatedData = z
-			.object({
-				username: z
-					.string({
-						message: "用户名不能为空",
-					})
-					.min(4, "用户名长度不能小于4个字符"),
-				password: z
-					.string()
-					.min(5, "密码长度不能小于5个字符")
-					.optional()
-					.nullable(),
-				confirmPassword: z.string().optional().nullable(),
-				enable: z.boolean({
-					message: "状态不能为空",
-				}),
-			})
-			.refine(
-				(data) => {
-					if (data.password) {
-						return data.password === data.confirmPassword;
-					}
-					return true;
-				},
-				{ message: "密码输入不一致。" },
-			)
-			.parse(userForm.value);
-		await upsertCurrentUser(validatedData);
-		alertStore.showAlert({
-			content: "操作成功",
-			level: "success",
-		});
-	} catch (error) {
-		if (error instanceof z.ZodError) {
-			alertStore.showAlert({
-				level: "error",
-				content: error.errors[0].message,
-			});
-		}
-		throw error;
-	}
+
+	validatedData = z
+		.object({
+			username: z
+				.string({
+					message: "用户名不能为空",
+				})
+				.min(4, "用户名长度不能小于4个字符"),
+			password: z
+				.string()
+				.min(5, "密码长度不能小于5个字符")
+				.optional()
+				.nullable(),
+			confirmPassword: z.string().optional().nullable(),
+			enable: z.boolean({
+				message: "状态不能为空",
+			}),
+		})
+		.refine(
+			(data) => {
+				if (data.password) {
+					return data.password === data.confirmPassword;
+				}
+				return true;
+			},
+			{ message: "密码输入不一致。" },
+		)
+		.parse(userForm.value);
+	await upsertCurrentUser(validatedData);
+	alertStore.showAlert({
+		content: "操作成功",
+		level: "success",
+	});
 };
 </script>

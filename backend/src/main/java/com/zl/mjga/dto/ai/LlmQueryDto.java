@@ -1,3 +1,3 @@
 package com.zl.mjga.dto.ai;
 
-public record LlmQueryDto(String name) {}
+public record LlmQueryDto(String name, String type) {}
