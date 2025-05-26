@@ -63,7 +63,9 @@ export const useAiChat = () => {
 				body: message,
 			});
 			messages.value.push({
-				content: "接收到指令，请您执行。",
+				content: data?.action
+					? "接收到指令，请您执行。"
+					: "未找到有效指令，请重新输入。",
 				type: "action",
 				isUser: false,
 				username: "知路智能体",
