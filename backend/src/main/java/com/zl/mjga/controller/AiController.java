@@ -65,7 +65,7 @@ public class AiController {
   }
 
   @PostMapping("/action/chat")
-  public Map<String, Object> actionChat(@RequestBody String message) {
+  public Map<String, String> actionChat(@RequestBody String message) {
     AiLlmConfig aiLlmConfig = llmService.loadConfig(LlmCodeEnum.ZHI_PU);
     if (!aiLlmConfig.getEnable()) {
       throw new BusinessException("命令模型未启用，请开启后再试。");

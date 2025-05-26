@@ -30,8 +30,8 @@ public class EmbeddingService {
 
   private final ZhiPuEmbeddingModelConfig zhiPuEmbeddingModelConfig;
 
-  public Map<String, Object> searchAction(String message) {
-    Map<String, Object> result = new HashMap<>();
+  public Map<String, String> searchAction(String message) {
+    Map<String, String> result = new HashMap<>();
     EmbeddingSearchRequest embeddingSearchRequest =
         EmbeddingSearchRequest.builder()
             .queryEmbedding(zhipuEmbeddingModel.embed(message).content())
@@ -39,7 +39,8 @@ public class EmbeddingService {
     EmbeddingSearchResult<TextSegment> embeddingSearchResult =
         zhiPuEmbeddingStore.search(embeddingSearchRequest);
     if (!embeddingSearchResult.matches().isEmpty()) {
-      result = embeddingSearchResult.matches().getFirst().embedded().metadata().toMap();
+      Metadata metadata = embeddingSearchResult.matches().getFirst().embedded().metadata();
+      result.put(Actions.INDEX_KEY, metadata.getString(Actions.INDEX_KEY));
     }
     return result;
   }

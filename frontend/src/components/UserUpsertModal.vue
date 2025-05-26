@@ -130,19 +130,10 @@ const handleSubmit = async () => {
 			},
 		);
 
-	try {
 		const validatedData = userSchema.parse(formData.value);
 		await onSubmit(validatedData);
 		updateFormData(undefined);
-	} catch (error) {
-		if (error instanceof z.ZodError) {
-			alertStore.showAlert({
-				level: "error",
-				content: error.errors[0].message,
-			});
-		}
-		throw error;
-	}
+	
 };
 
 onMounted(() => {

@@ -7,6 +7,7 @@ import {
 	RequestError,
 	UnAuthError,
 } from "../types/error";
+import { z } from "zod";
 
 const makeErrorHandler =
 	(
@@ -43,6 +44,11 @@ const makeErrorHandler =
 			showAlert({
 				level: "error",
 				content: err.detail ?? err.message,
+			});
+		} else if (err instanceof z.ZodError) {
+			showAlert({
+				level: "error",
+				content: err.errors[0].message,
 			});
 		} else {
 			showAlert({
