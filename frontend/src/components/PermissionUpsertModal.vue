@@ -42,7 +42,6 @@
 </template>
 
 <script setup lang="ts">
-import useAlertStore from "@/composables/store/useAlertStore";
 import type { PermissionUpsertModel } from "@/types/permission";
 import { ref, watch } from "vue";
 import { z } from "zod";
@@ -54,8 +53,6 @@ const { permission, onSubmit, closeModal } = defineProps<{
 	closeModal: () => void;
 	onSubmit: (data: PermissionUpsertModel) => Promise<void>;
 }>();
-
-const alertStore = useAlertStore();
 
 const formData = ref();
 
