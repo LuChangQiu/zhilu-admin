@@ -58,8 +58,6 @@ import { z } from "zod";
 import type { components } from "../api/types/schema";
 import type { DepartmentUpsertModel } from "../types/department";
 
-const alertStore = useAlertStore();
-
 const { department, availableDepartments, onSubmit } = defineProps<{
 	department?: components["schemas"]["Department"];
 	availableDepartments?: components["schemas"]["Department"][];

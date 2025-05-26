@@ -169,7 +169,7 @@ const router = useRouter();
 const { total, users, fetchUsersWith } = useUserQuery();
 const { deleteUser } = useUserDelete();
 const userUpsert = useUserUpsert();
-const {  sortBy, handleSort, getSortField } = useSort();
+const { sortBy, handleSort, getSortField } = useSort();
 const alertStore = useAlertStore();
 
 onMounted(async () => {

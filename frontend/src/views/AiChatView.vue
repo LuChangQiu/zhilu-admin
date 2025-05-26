@@ -79,6 +79,11 @@
     userUpsertModal!.hide();
   }">
   </UserUpsertModal>
+  <DepartmentUpsertModal :id="'department-upsert-modal'" :onSubmit="handleUpsertDepartmentSubmit" :closeModal="() => {
+    availableDepartments = undefined
+    departmentUpsertModal!.hide();
+  }" :availableDepartments="availableDepartments">
+  </DepartmentUpsertModal>
 </template>
 
 <script setup lang="ts">
@@ -90,29 +95,42 @@ import { marked } from "marked";
 import { nextTick, onMounted, onUnmounted, ref, watch } from "vue";
 import { z } from "zod";
 import Button from "../components/Button.vue";
+import DepartmentUpsertModal from "../components/DepartmentUpsertModal.vue";
 import UserUpsertModal from "../components/UserUpsertModal.vue";
 import { useAiChat } from "../composables/ai/useAiChat";
 import useUserStore from "../composables/store/useUserStore";
 import { useUserUpsert } from "../composables/user/useUserUpsert";
 import type { UserUpsertSubmitModel } from "../types/user";
+import { useDepartmentQuery } from "@/composables/department/useDepartmentQuery";
+import { useDepartmentUpsert } from "@/composables/department/useDepartmentUpsert";
+import type { DepartmentUpsertModel } from "@/types/department";
 
 const { messages, chat, isLoading, cancel, actionChat } = useAiChat();
 const { user } = useUserStore();
 const userUpsertModal = ref<ModalInterface>();
+const departmentUpsertModal = ref<ModalInterface>();
 const inputMessage = ref("");
 const chatContainer = ref<HTMLElement | null>(null);
 const alertStore = useAlertStore();
 const isCommandMode = ref(false);
 const userUpsert = useUserUpsert();
+const departmentUpsert = useDepartmentUpsert();
+
+const { availableDepartments,fetchAvailableDepartments } = useDepartmentQuery();
 
 const commandActionMap: Record<string, () => void> = {
 	CREATE_USER: () => {
 		userUpsertModal.value?.show();
 	},
+  CREATE_DEPARTMENT: () => {
+    fetchAvailableDepartments();
+    departmentUpsertModal.value?.show();
+  },
 };
 
 const commandContentMap: Record<string, string> = {
-	CREATE_USER: "创建新用户",
+	CREATE_USER: "创建用户",
+  CREATE_DEPARTMENT: "创建部门",
 };
 
 const toggleMode = () => {
@@ -154,6 +172,17 @@ const handleUpsertUserSubmit = async (data: UserUpsertSubmitModel) => {
 	});
 };
 
+const handleUpsertDepartmentSubmit = async (
+	department: DepartmentUpsertModel,
+) => {
+	await departmentUpsert.upsertDepartment(department);
+	departmentUpsertModal.value?.hide();
+	alertStore.showAlert({
+		content: "操作成功",
+		level: "success",
+	});
+};
+
 watch(
 	messages,
 	async () => {
@@ -183,17 +212,17 @@ const chatByMode = async (message: string) => {
 	});
 	if (isCommandMode.value) {
 		await actionChat(message);
-	} else {	
+	} else {
 		await chat(message);
 	}
 };
 
 const handleSendClick = async () => {
 	scrollToBottom();
-  if (isLoading.value) {
-    abortChat();
-    return;
-  }
+	if (isLoading.value) {
+		abortChat();
+		return;
+	}
 	const validInputMessage = z
 		.string({ message: "消息不能为空" })
 		.min(1, "消息不能为空")
@@ -214,6 +243,15 @@ onMounted(async () => {
 		{},
 		{
 			id: "user-upsert-modal",
+		},
+	);
+	const $departmentUpsertModalElement: HTMLElement | null =
+		document.querySelector("#department-upsert-modal");
+	departmentUpsertModal.value = new Modal(
+		$departmentUpsertModalElement,
+		{},
+		{
+			id: "department-upsert-modal",
 		},
 	);
 });
