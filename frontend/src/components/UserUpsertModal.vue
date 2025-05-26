@@ -130,10 +130,9 @@ const handleSubmit = async () => {
 			},
 		);
 
-		const validatedData = userSchema.parse(formData.value);
-		await onSubmit(validatedData);
-		updateFormData(undefined);
-	
+	const validatedData = userSchema.parse(formData.value);
+	await onSubmit(validatedData);
+	updateFormData(undefined);
 };
 
 onMounted(() => {

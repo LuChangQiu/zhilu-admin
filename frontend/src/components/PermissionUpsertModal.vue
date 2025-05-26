@@ -86,18 +86,8 @@ const handleSubmit = async () => {
 			.max(15, "权限代码最多15个字符"),
 	});
 
-	try {
-		const validatedData = permissionSchema.parse(formData.value);
-		await onSubmit(validatedData);
-		updateFormData(undefined);
-	} catch (error) {
-		if (error instanceof z.ZodError) {
-			alertStore.showAlert({
-				level: "error",
-				content: error.errors[0].message,
-			});
-		}
-		throw error;
-	}
+	const validatedData = permissionSchema.parse(formData.value);
+	await onSubmit(validatedData);
+	updateFormData(undefined);
 };
 </script>

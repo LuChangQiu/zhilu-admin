@@ -106,45 +106,35 @@ watch(() => llm, updateFormData, {
 });
 
 const handleSubmit = async () => {
-	try {
-		const llmSchema = z.object({
-			id: z.number({
-				message: "id不能为空",
-			}),
-			name: z.string({
-				message: "名称不能为空",
-			}),
-			modelName: z.string({
-				message: "模型名称不能为空",
-			}),
-			apiKey: z.string({
-				message: "apiKey不能为空",
-			}),
-			url: z.string({
-				message: "url不能为空",
-			}),
-			enable: z.boolean({
-				message: "状态不能为空",
-			}),
-			priority: z.number({
-				message: "优先级必须为数字",
-			}),
-			type: z.string({
-				message: "类型不能为空",
-			}),
-		});
-		const validatedData = llmSchema.parse(formData.value);
-		await onSubmit(validatedData);
-		updateFormData(undefined);
-	} catch (error) {
-		if (error instanceof z.ZodError) {
-			alertStore.showAlert({
-				level: "error",
-				content: error.errors[0].message,
-			});
-		}
-		throw error;
-	}
+	const llmSchema = z.object({
+		id: z.number({
+			message: "id不能为空",
+		}),
+		name: z.string({
+			message: "名称不能为空",
+		}),
+		modelName: z.string({
+			message: "模型名称不能为空",
+		}),
+		apiKey: z.string({
+			message: "apiKey不能为空",
+		}),
+		url: z.string({
+			message: "url不能为空",
+		}),
+		enable: z.boolean({
+			message: "状态不能为空",
+		}),
+		priority: z.number({
+			message: "优先级必须为数字",
+		}),
+		type: z.string({
+			message: "类型不能为空",
+		}),
+	});
+	const validatedData = llmSchema.parse(formData.value);
+	await onSubmit(validatedData);
+	updateFormData(undefined);
 };
 
 onMounted(() => {

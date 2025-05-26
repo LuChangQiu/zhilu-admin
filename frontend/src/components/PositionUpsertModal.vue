@@ -78,19 +78,9 @@ const handleSubmit = async () => {
 			.max(15, "岗位名称最多15个字符"),
 	});
 
-	try {
-		const validatedData = schema.parse(formData.value);
-		await onSubmit(validatedData);
-		updateFormData(undefined);
-	} catch (error) {
-		if (error instanceof z.ZodError) {
-			alertStore.showAlert({
-				level: "error",
-				content: error.errors[0].message,
-			});
-		}
-		throw error;
-	}
+	const validatedData = schema.parse(formData.value);
+	await onSubmit(validatedData);
+	updateFormData(undefined);
 };
 
 onMounted(() => {

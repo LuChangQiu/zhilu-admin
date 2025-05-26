@@ -87,7 +87,7 @@ import useAlertStore from "@/composables/store/useAlertStore";
 import DOMPurify from "dompurify";
 import { Modal, type ModalInterface, initFlowbite } from "flowbite";
 import { marked } from "marked";
-import {  nextTick, onMounted, onUnmounted, ref, watch } from "vue";
+import { nextTick, onMounted, onUnmounted, ref, watch } from "vue";
 import { z } from "zod";
 import Button from "../components/Button.vue";
 import UserUpsertModal from "../components/UserUpsertModal.vue";
@@ -193,23 +193,12 @@ const chatByMode = async (message: string) => {
 };
 
 const handleSendClick = async () => {
-	try {
-		scrollToBottom();
-		const validInputMessage = z
-			.string({ message: "消息不能为空" })
-			.min(1, "消息不能为空")
-			.parse(inputMessage.value);
-		await chatByMode(validInputMessage);
-	} catch (error) {
-		if (error instanceof z.ZodError) {
-			alertStore.showAlert({
-				level: "error",
-				content: error.errors[0].message,
-			});
-		} else {
-			throw error;
-		}
-	}
+	scrollToBottom();
+	const validInputMessage = z
+		.string({ message: "消息不能为空" })
+		.min(1, "消息不能为空")
+		.parse(inputMessage.value);
+	await chatByMode(validInputMessage);
 };
 
 onUnmounted(() => {
