@@ -61,14 +61,11 @@
 
 </template>
 <script setup lang="ts">
-import useAlertStore from "@/composables/store/useAlertStore";
 import type { UserUpsertSubmitModel } from "@/types/user";
 import { initFlowbite } from "flowbite";
 import { onMounted, ref, watch } from "vue";
 import { z } from "zod";
 import type { components } from "../api/types/schema";
-
-const alertStore = useAlertStore();
 
 const { user, onSubmit } = defineProps<{
 	user?: components["schemas"]["UserRolePermissionDto"];
