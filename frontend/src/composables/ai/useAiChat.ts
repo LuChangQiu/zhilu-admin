@@ -51,6 +51,7 @@ export const useAiChat = () => {
 			});
 		} catch (error) {
 			messages.value.pop();
+			throw error;
 		} finally {
 			isLoading.value = false;
 		}
@@ -65,7 +66,7 @@ export const useAiChat = () => {
 			messages.value.push({
 				content: data?.action
 					? "接收到指令，请您执行。"
-					: "未找到有效指令，请重新输入。",
+					: "未找到有效指令，请告诉我更加准确的信息。",
 				type: "action",
 				isUser: false,
 				username: "知路智能体",

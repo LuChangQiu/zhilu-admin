@@ -35,6 +35,7 @@ public class EmbeddingService {
     EmbeddingSearchRequest embeddingSearchRequest =
         EmbeddingSearchRequest.builder()
             .queryEmbedding(zhipuEmbeddingModel.embed(message).content())
+                .minScore(0.9)
             .build();
     EmbeddingSearchResult<TextSegment> embeddingSearchResult =
         zhiPuEmbeddingStore.search(embeddingSearchRequest);

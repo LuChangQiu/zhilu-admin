@@ -183,17 +183,17 @@ const chatByMode = async (message: string) => {
 	});
 	if (isCommandMode.value) {
 		await actionChat(message);
-	} else {
-		if (isLoading.value) {
-			abortChat();
-		} else {
-			await chat(message);
-		}
+	} else {	
+		await chat(message);
 	}
 };
 
 const handleSendClick = async () => {
 	scrollToBottom();
+  if (isLoading.value) {
+    abortChat();
+    return;
+  }
 	const validInputMessage = z
 		.string({ message: "消息不能为空" })
 		.min(1, "消息不能为空")
