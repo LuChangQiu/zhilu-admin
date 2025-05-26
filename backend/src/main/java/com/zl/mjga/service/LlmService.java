@@ -58,6 +58,7 @@ public class LlmService {
     BeanUtils.copyProperties(llmVm, aiLlmConfig);
     AiLlmConfig byId = llmRepository.findById(llmVm.getId());
     aiLlmConfig.setCode(Objects.requireNonNull(byId).getCode());
+    aiLlmConfig.setType(LlmTypeEnum.lookupLiteral(llmVm.getType()));
     llmRepository.merge(aiLlmConfig);
   }
 }
