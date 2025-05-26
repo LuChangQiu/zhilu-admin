@@ -26,22 +26,40 @@
       </li>
     </div>
 
-    <form class="sticky bottom-4 mt-14">
+    <form class="sticky bottom-4 pt-14">
       <button @click.prevent="toggleMode"
-        class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group focus:ring-4 focus:outline-none focus:ring-lime-200"
+        class="absolute left-1 top-2 inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium rounded-lg group focus:ring-4 focus:outline-none focus:ring-cyan-200"
         :class="[
           isCommandMode
-            ? 'bg-gradient-to-br from-teal-300 to-lime-300 '
-            : 'bg-gradient-to-br from-gray-300 to-gray-300 group-hover:from-teal-300 group-hover:to-lime-300'
+            ? 'bg-gradient-to-br from-cyan-500 to-blue-500 text-white'
+            : 'bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 text-gray-900'
         ]">
-        <span class="relative px-3 py-2 transition-all ease-in duration-75 rounded-md" :class="[
+        <span class="relative px-3 py-2 transition-all ease-in duration-75 rounded-md hover:text-white" :class="[
             isCommandMode
               ? 'bg-transparent'
               : 'bg-white  group-hover:bg-transparent'
           ]">
-          命令模式
+          指令模式
         </span>
       </button>
+      <div class="absolute right-1 top-2">
+        <button @click.prevent="() => handleSendClick('请帮我创建用户', true)" class=" inline-flex items-center justify-center p-0.5
+          mb-2 me-2 overflow-hidden font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-500
+          to-pink-500 group-hover:from-purple-500 group-hover:to-pink-500 hover:text-white dark:text-white focus:ring-4
+          focus:outline-none focus:ring-purple-200 cursor-pointer dark:focus:ring-purple-800">
+          <span
+            class="px-3 py-2 text-xs transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
+            帮我创建用户?
+          </span>
+        </button>
+        <button @click.prevent="() => handleSendClick('请帮我创建部门', true)" class="inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-500 to-pink-500 group-hover:from-purple-500 group-hover:to-pink-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-purple-200 
+        cursor-pointer dark:focus:ring-purple-800">
+          <span
+            class="px-3 py-2 text-xs transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
+            帮我创建部门?
+          </span>
+        </button>
+      </div>
       <div class="w-full border border-gray-200 rounded-lg bg-gray-50">
         <div class="px-4 py-2 bg-white rounded-t-lg">
           <label for="comment" class="sr-only"></label>
@@ -50,7 +68,7 @@
         </div>
         <div class="flex items-center justify-between px-3 py-2 border-t  border-gray-200">
           <Button :abortable="true" :isLoading="isLoading" :loadingContent="'中止'" :submitContent="'发送'"
-            :handleClick="handleSendClick" />
+            :handleClick="() => handleSendClick(inputMessage, isCommandMode)" />
           <div class="flex ps-0 space-x-1 rtl:space-x-reverse sm:ps-2">
             <button type="button"
               class="inline-flex justify-center items-center p-2 text-gray-500 rounded-sm cursor-pointer hover:text-gray-900 hover:bg-gray-100   ">
@@ -202,7 +220,7 @@ const abortChat = () => {
 	cancel();
 };
 
-const chatByMode = async (message: string) => {
+const chatByMode = async (message: string, mode: boolean) => {
 	inputMessage.value = "";
 	messages.value.push({
 		content: message,
@@ -210,14 +228,14 @@ const chatByMode = async (message: string) => {
 		isUser: true,
 		username: user.username!,
 	});
-	if (isCommandMode.value) {
+	if (mode) {
 		await actionChat(message);
 	} else {
 		await chat(message);
 	}
 };
 
-const handleSendClick = async () => {
+const handleSendClick = async (message:string, mode: boolean) => {
 	scrollToBottom();
 	if (isLoading.value) {
 		abortChat();
@@ -226,8 +244,8 @@ const handleSendClick = async () => {
 	const validInputMessage = z
 		.string({ message: "消息不能为空" })
 		.min(1, "消息不能为空")
-		.parse(inputMessage.value);
-	await chatByMode(validInputMessage);
+		.parse(message);
+	await chatByMode(validInputMessage, mode);
 };
 
 onUnmounted(() => {
