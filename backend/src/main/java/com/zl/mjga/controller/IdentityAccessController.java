@@ -7,6 +7,7 @@ import com.zl.mjga.dto.permission.PermissionBindDto;
 import com.zl.mjga.dto.position.PositionBindDto;
 import com.zl.mjga.dto.role.RoleBindDto;
 import com.zl.mjga.dto.urp.*;
+import com.zl.mjga.exception.BusinessException;
 import com.zl.mjga.repository.PermissionRepository;
 import com.zl.mjga.repository.RoleRepository;
 import com.zl.mjga.repository.UserRepository;
@@ -65,6 +66,9 @@ public class IdentityAccessController {
   @PreAuthorize("hasAuthority(T(com.zl.mjga.model.urp.EPermission).DELETE_USER_ROLE_PERMISSION)")
   @DeleteMapping("/user")
   void deleteUser(@RequestParam Long userId) {
+    if (userId == 1) {
+      throw new BusinessException("演示系统不允许操作管理员角色");
+    }
     userRepository.deleteById(userId);
   }
 
@@ -77,6 +81,9 @@ public class IdentityAccessController {
   @PreAuthorize("hasAuthority(T(com.zl.mjga.model.urp.EPermission).WRITE_USER_ROLE_PERMISSION)")
   @DeleteMapping("/role")
   void deleteRole(@RequestParam Long roleId) {
+    if (roleId == 1) {
+      throw new BusinessException("演示系统不允许删除管理员角色");
+    }
     roleRepository.deleteById(roleId);
   }
 
@@ -95,6 +102,9 @@ public class IdentityAccessController {
   @PreAuthorize("hasAuthority(T(com.zl.mjga.model.urp.EPermission).WRITE_USER_ROLE_PERMISSION)")
   @DeleteMapping("/permission")
   void deletePermission(@RequestParam Long permissionId) {
+    if (permissionId < 10) {
+      throw new BusinessException("演示系统不允许删除原有权限");
+    }
     permissionRepository.deleteById(permissionId);
   }
 
@@ -134,6 +144,9 @@ public class IdentityAccessController {
   @PostMapping("/role/unbind")
   @ResponseStatus(HttpStatus.OK)
   void unBindRoleBy(@RequestBody @Valid RoleBindDto roleBindDto) {
+    if (roleBindDto.userId() == 1) {
+      throw new BusinessException("演示系统不允许操作管理员");
+    }
     identityAccessService.unBindRoleToUser(roleBindDto.userId(), roleBindDto.roleIds());
   }
 
@@ -149,6 +162,9 @@ public class IdentityAccessController {
   @PostMapping("/permission/unbind")
   @ResponseStatus(HttpStatus.OK)
   void unBindPermissionBy(@RequestBody @Valid PermissionBindDto permissionBindDto) {
+    if (permissionBindDto.roleId() == 1) {
+      throw new BusinessException("演示系统不允许操作管理员角色");
+    }
     identityAccessService.unBindPermissionBy(
         permissionBindDto.roleId(), permissionBindDto.permissionIds());
   }
