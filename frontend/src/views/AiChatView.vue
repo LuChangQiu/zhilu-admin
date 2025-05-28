@@ -1,9 +1,11 @@
 <template>
-  <div class="flex flex-col px-96 box-border pt-14 min-h-screen max-h-screen overflow-auto" ref="chatContainer">
+  <div
+    class="flex flex-col px-4 sm:px-8 md:px-16 lg:px-32 xl:px-48 2xl:px-72 box-border pt-14 min-h-screen max-h-screen overflow-auto"
+    ref="chatContainer">
     <div class="flex flex-col gap-y-5 flex-1 pt-14">
       <li v-for="chatElement in messages" :key="chatElement.content"
         :class="['flex items-start gap-2.5', chatElement.isUser ? 'flex-row-reverse' : 'flex-row']">
-        <img class="w-8 h-8 rounded-full" src="/trump.jpg" alt="Jese image">
+        <img class="w-8 h-8 rounded-full" :src="chatElement.isUser ? '/java.svg' : '/trump.jpg'" alt="avatar">
         <div
           :class="['flex flex-col leading-1.5 p-4 border-gray-200 rounded-e-xl rounded-es-xl ', chatElement.isUser ? 'bg-blue-100' : 'bg-gray-100']">
           <div class="flex items-center space-x-2 rtl:space-x-reverse">
@@ -134,21 +136,22 @@ const isCommandMode = ref(false);
 const userUpsert = useUserUpsert();
 const departmentUpsert = useDepartmentUpsert();
 
-const { availableDepartments,fetchAvailableDepartments } = useDepartmentQuery();
+const { availableDepartments, fetchAvailableDepartments } =
+	useDepartmentQuery();
 
 const commandActionMap: Record<string, () => void> = {
 	CREATE_USER: () => {
 		userUpsertModal.value?.show();
 	},
-  CREATE_DEPARTMENT: () => {
-    fetchAvailableDepartments();
-    departmentUpsertModal.value?.show();
-  },
+	CREATE_DEPARTMENT: () => {
+		fetchAvailableDepartments();
+		departmentUpsertModal.value?.show();
+	},
 };
 
 const commandContentMap: Record<string, string> = {
 	CREATE_USER: "创建用户",
-  CREATE_DEPARTMENT: "创建部门",
+	CREATE_DEPARTMENT: "创建部门",
 };
 
 const toggleMode = () => {
@@ -235,7 +238,7 @@ const chatByMode = async (message: string, mode: boolean) => {
 	}
 };
 
-const handleSendClick = async (message:string, mode: boolean) => {
+const handleSendClick = async (message: string, mode: boolean) => {
 	scrollToBottom();
 	if (isLoading.value) {
 		abortChat();
