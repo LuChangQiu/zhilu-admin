@@ -15,6 +15,7 @@ import org.jooq.generated.mjga.tables.daos.DepartmentDao;
 import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class DepartmentRepository extends DepartmentDao {
@@ -94,5 +95,10 @@ public class DepartmentRepository extends DepartmentDao {
         .from(USER)
         .innerJoin(USER.department())
         .where(USER.ID.eq(userId));
+  }
+
+  @Transactional
+  public void deleteByName(String name) {
+    ctx().deleteFrom(DEPARTMENT).where(DEPARTMENT.NAME.eq(name)).execute();
   }
 }

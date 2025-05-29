@@ -63,7 +63,7 @@ public class IdentityAccessController {
     return identityAccessService.queryUniqueUserWithRolePermission(userId);
   }
 
-  @PreAuthorize("hasAuthority(T(com.zl.mjga.model.urp.EPermission).DELETE_USER_ROLE_PERMISSION)")
+  @PreAuthorize("hasAuthority(T(com.zl.mjga.model.urp.EPermission).WRITE_USER_ROLE_PERMISSION)")
   @DeleteMapping("/user")
   void deleteUser(@RequestParam Long userId) {
     if (userId == 1) {

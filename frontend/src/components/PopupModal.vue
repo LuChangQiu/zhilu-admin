@@ -43,7 +43,7 @@ defineProps<{
 	title: string;
 	id: string;
 	closeModal: () => void;
-	onSubmit: (event: Event) => Promise<void>;
+	onSubmit: () => Promise<void>;
 }>();
 
 onMounted(() => {

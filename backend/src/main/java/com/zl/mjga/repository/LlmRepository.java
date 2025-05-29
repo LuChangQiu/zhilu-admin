@@ -26,8 +26,7 @@ public class LlmRepository extends AiLlmConfigDao {
   public Result<Record> pageFetchBy(PageRequestDto pageRequestDto, LlmQueryDto llmQueryDto) {
     return ctx()
         .select(
-            AI_LLM_CONFIG.asterisk(),
-                DSL.count().over().as("total_llm").convertFrom(Long::valueOf))
+            AI_LLM_CONFIG.asterisk(), DSL.count().over().as("total_llm").convertFrom(Long::valueOf))
         .from(AI_LLM_CONFIG)
         .where(
             StringUtils.isNotEmpty(llmQueryDto.name())

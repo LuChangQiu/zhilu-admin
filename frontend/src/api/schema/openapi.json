@@ -1102,6 +1102,52 @@
           }
         }
       }
+    },
+    "/ai/action/user": {
+      "delete": {
+        "tags": [
+          "ai-controller"
+        ],
+        "operationId": "deleteUser_1",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/ai/action/department": {
+      "delete": {
+        "tags": [
+          "ai-controller"
+        ],
+        "operationId": "deleteDepartment_1",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {

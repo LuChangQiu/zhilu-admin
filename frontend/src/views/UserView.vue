@@ -114,8 +114,8 @@
                   <span>编辑</span>
                 </button>
                 <button class="flex items-center justify-center whitespace-nowrap gap-x-1
-              bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-red-300  
-                text-white focus:ring-4 focus:outline-nonefont-medium rounded-lg text-sm px-4 py-2.5"
+              bg-red-700 hover:bg-red-800 focus:ring-red-300  
+                text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-4 py-2.5"
                   @click="handleDeleteUserClick(user)" type="button">
                   <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd"
