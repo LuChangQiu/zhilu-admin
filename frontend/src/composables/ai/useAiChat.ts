@@ -3,8 +3,6 @@ import { ref } from "vue";
 import client from "../../api/client";
 import useAuthStore from "../store/useAuthStore";
 
-const authStore = useAuthStore();
-
 export const useAiChat = () => {
 	const messages = ref<
 		{
@@ -21,6 +19,7 @@ export const useAiChat = () => {
 
 	const chat = async (message: string) => {
 		isLoading.value = true;
+		const authStore = useAuthStore();
 		const ctrl = new AbortController();
 		currentController = ctrl;
 		messages.value.push({
