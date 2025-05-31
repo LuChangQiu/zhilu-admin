@@ -40,7 +40,7 @@
   
 [![点击按钮加入 QQ群](https://img.shields.io/badge/-white?style=social&logo=QQ&label=或点击按钮加入QQ群)](https://qm.qq.com/q/9mvVC57jPO)
 
-加微信，获取 VIP 客户支持（喂饭级技术讲解+预购所有视频课程）
+实在没有 QQ 的可以加微信
 
 - 微信：Chuck9996
 
