@@ -64,7 +64,7 @@
 						</div>
 						<div class="col-span-2">
 							<label for="priority" class="block mb-2 text-sm font-medium autocomplete text-gray-900 ">优先级</label>
-							<input type="text" id="priority" autocomplete="new-password" v-model="formData.priority"
+							<input type="number" id="priority" autocomplete="new-password" v-model="formData.priority"
 								class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
 								required />
 						</div>
@@ -80,13 +80,11 @@
 
 </template>
 <script setup lang="ts">
-import useAlertStore from "@/composables/store/useAlertStore";
 import { initFlowbite } from "flowbite";
 import { onMounted, ref, watch } from "vue";
 import { z } from "zod";
 import type { components } from "../api/types/schema";
 
-const alertStore = useAlertStore();
 const { llm, onSubmit } = defineProps<{
 	llm?: components["schemas"]["LlmVm"];
 	closeModal: () => void;

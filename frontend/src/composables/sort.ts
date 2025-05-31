@@ -13,9 +13,9 @@ export const useSort = () => {
 	};
 
 	const sortBy = computed(() => {
-		return sortFields.value
-			.map((item) => `${item.field}:${item.order}`)
-			.join(",");
+		return sortFields.value.length
+			? sortFields.value.map((item) => `${item.field}:${item.order}`).join(",")
+			: undefined;
 	});
 
 	const handleSort = async (field: string) => {

@@ -7,6 +7,8 @@ import com.zl.mjga.dto.PageResponseDto;
 import com.zl.mjga.dto.ai.LlmQueryDto;
 import com.zl.mjga.dto.ai.LlmVm;
 import com.zl.mjga.repository.LlmRepository;
+
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -35,7 +37,7 @@ public class LlmService {
     List<AiLlmConfig> aiLlmConfigs = llmRepository.fetchByEnable(enable);
     return aiLlmConfigs.stream()
         .filter(aiLlmConfig -> LlmTypeEnum.CHAT.equals(aiLlmConfig.getType()))
-        .max((o1, o2) -> o2.getPriority().compareTo(o1.getPriority()));
+            .max(Comparator.comparingInt(AiLlmConfig::getPriority));
   }
 
   public PageResponseDto<List<LlmVm>> pageQueryLlm(
