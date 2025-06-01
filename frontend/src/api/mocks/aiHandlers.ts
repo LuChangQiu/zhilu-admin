@@ -3,8 +3,19 @@ import { http, HttpResponse } from "msw";
 
 export default [
 	http.post("/ai/chat", () => {
+		const response = new HttpResponse(
+			`data: ${faker.lorem.sentence({ min: 10, max: 100 })}\n\n`,
+			{
+				headers: {
+					"Content-Type": "text/event-stream",
+				},
+			},
+		);
+		return response;
+	}),
+	http.post("/ai/action/chat", () => {
 		const response = HttpResponse.json({
-			message: faker.lorem.sentence({ min: 100, max: 300 }),
+			action: "CREATE_USER",
 		});
 		return response;
 	}),

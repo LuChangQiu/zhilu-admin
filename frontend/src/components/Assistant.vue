@@ -1,8 +1,7 @@
 <template>
-	<div
-		class="flex flex-col box-border px-3 scroll-auto overflow-auto fixed top-0 right-0 w-64 border-gray-200 border-l min-h-screen"
+	<div class="h-[calc(100vh-3.5rem)] flex flex-col box-border p-3 overflow-y-auto w-72 border-gray-200 border-l"
 		ref="chatContainer">
-		<div class="flex flex-col gap-y-5 flex-1">
+		<div class="flex flex-col gap-y-5 flex-1 pb-2">
 			<li v-for="chatElement in messages" :key="chatElement.content"
 				:class="['flex items-start gap-2.5', chatElement.isUser ? 'flex-row-reverse' : 'flex-row']">
 				<img class="w-8 h-8 rounded-full" :src="chatElement.isUser ? '/java.svg' : '/trump.jpg'" alt="avatar">
@@ -141,10 +140,6 @@ const commandContentMap: Record<string, string> = {
 	CREATE_DEPARTMENT: "创建部门",
 	DELETE_USER: "删除用户",
 	DELETE_DEPARTMENT: "删除部门",
-};
-
-const toggleMode = () => {
-	isCommandMode.value = !isCommandMode.value;
 };
 
 marked.setOptions({

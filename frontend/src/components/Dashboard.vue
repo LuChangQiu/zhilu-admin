@@ -9,8 +9,13 @@ import Assistant from "./Assistant.vue";
   <Headbar></Headbar>
   <Sidebar>
   </Sidebar>
-  <article class="flex flex-row ml-44 mr-64 scroll-auto overflow-auto mt-14">
-    <RouterView></RouterView>
-  </article>
-  <Assistant></Assistant>
+  <!-- 主内容区域 -->
+  <div class="flex flex-row h-[calc(100vh-3.5rem)] mt-14"> <!-- 减去Headbar高度 -->
+    <!-- 文章内容区域 -->
+    <article class="flex-1 ml-44 overflow-y-auto">
+      <RouterView></RouterView>
+    </article>
+    <Assistant></Assistant>
+  </div>
+
 </template>
