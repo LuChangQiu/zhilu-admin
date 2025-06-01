@@ -72,11 +72,6 @@ const menuItems = [
 		icon: SchedulerIcon,
 	},
 	{
-		title: "AI 对话",
-		path: `${RoutePath.DASHBOARD}/${RoutePath.AICHATVIEW}`,
-		icon: AiChatIcon,
-	},
-	{
 		title: "大模型管理",
 		path: `${RoutePath.DASHBOARD}/${RoutePath.LLMCONFIGVIEW}`,
 		icon: LlmConfigIcon,

@@ -1,13 +1,14 @@
 <template>
-	<div class="h-[calc(100vh-3.5rem)] flex flex-col box-border p-3 overflow-y-auto w-72 border-gray-200 border-l"
+	<div
+		class="h-[calc(100vh-3.5rem)] flex flex-col box-border p-3 overflow-y-auto w-80 overflow-x-hidden border-gray-200 border-l"
 		ref="chatContainer">
 		<div class="flex flex-col gap-y-5 flex-1 pb-2">
 			<li v-for="chatElement in messages" :key="chatElement.content"
-				:class="['flex items-start gap-2.5', chatElement.isUser ? 'flex-row-reverse' : 'flex-row']">
+				:class="['flex items-start gap-2.5', chatElement.isUser ? 'flex-row-reverse max-w-full break-words' : 'flex-row']">
 				<img class="w-8 h-8 rounded-full" :src="chatElement.isUser ? '/java.svg' : '/trump.jpg'" alt="avatar">
 				<div
 					:class="['flex flex-col leading-1.5 p-4 border-gray-200 rounded-e-xl rounded-es-xl ', chatElement.isUser ? 'bg-blue-100' : 'bg-gray-100']">
-					<div class="flex items-center space-x-2 rtl:space-x-reverse">
+					<div class="flex items-center space-x-2">
 						<span class="text-sm font-semibold text-gray-900 ">{{ chatElement.username }}</span>
 						<LoadingIcon :textColor="'text-gray-900'"
 							v-if="isLoading && !chatElement.isUser && chatElement.content === ''" />
@@ -41,7 +42,8 @@
 				<div class="px-4 py-2 bg-white rounded-t-lg">
 					<label for="comment" class="sr-only"></label>
 					<textarea id="comment" rows="3" v-model="inputMessage"
-						class="w-full px-0 text-gray-900 bg-white border-0  focus:ring-0  " placeholder="发送消息" required></textarea>
+						class="w-full px-0 text-gray-900 bg-white border-0  focus:ring-0"
+						:placeholder="isCommandMode ? '输入创建用户/删除用户试试看' : '随便聊聊'" required></textarea>
 				</div>
 				<div class="flex justify-between px-2 py-2 border-t border-gray-200">
 					<form>
