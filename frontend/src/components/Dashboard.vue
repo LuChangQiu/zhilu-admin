@@ -9,10 +9,8 @@ import Assistant from "./Assistant.vue";
   <Headbar></Headbar>
   <Sidebar>
   </Sidebar>
-  <article class="ml-64 mr-96 scroll-auto overflow-auto">
+  <article class="flex flex-row ml-44 mr-64 scroll-auto overflow-auto mt-14">
     <RouterView></RouterView>
   </article>
-  <div class="fixed top-0 right-0 w-1/5 border-gray-200 border-l">
-    <Assistant></Assistant>
-  </div>
+  <Assistant></Assistant>
 </template>
