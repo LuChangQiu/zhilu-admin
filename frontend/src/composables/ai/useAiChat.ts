@@ -56,16 +56,55 @@ export const useAiChat = () => {
 		}
 	};
 
-	const actionChat = async (message: string) => {
+	const executeAction = async (message: string) => {
+		isLoading.value = true;
+		const authStore = useAuthStore();
+		const ctrl = new AbortController();
+		currentController = ctrl;
+		messages.value.push({
+			content: "",
+			type: "chat",
+			isUser: false,
+			username: "知路智能体",
+		});
+		try {
+			const baseUrl = `${import.meta.env.VITE_BASE_URL}`;
+			await fetchEventSource(`${baseUrl}/ai/action/execute`, {
+				method: "POST",
+				headers: {
+					Authorization: authStore.get(),
+					"Content-Type": "application/json",
+				},
+				body: message,
+				signal: ctrl.signal,
+				onmessage(ev) {
+					messages.value[messages.value.length - 1].content += ev.data;
+				},
+				onclose() {
+					console.log("onclose");
+				},
+				onerror(err) {
+					throw err;
+				},
+			});
+		} catch (error) {
+			messages.value.pop();
+			throw error;
+		} finally {
+			isLoading.value = false;
+		}
+	};
+
+	const searchAction = async (message: string) => {
 		isLoading.value = true;
 		try {
-			const { data } = await client.POST("/ai/action/chat", {
+			const { data } = await client.POST("/ai/action/search", {
 				body: message,
 			});
 			messages.value.push({
 				content: data?.action
-					? "接收到指令，请您执行。"
-					: "未找到有效指令，请告诉我更加准确的信息。",
+					? "搜索到功能，请您执行。"
+					: "未搜索到指定功能，请告诉我更加准确的信息。",
 				type: "action",
 				isUser: false,
 				username: "知路智能体",
@@ -84,5 +123,5 @@ export const useAiChat = () => {
 		}
 	};
 
-	return { messages, chat, isLoading, cancel, actionChat };
+	return { messages, chat, isLoading, cancel, searchAction, executeAction };
 };

@@ -42,19 +42,21 @@
 				<div class="px-4 py-2 bg-white rounded-t-lg">
 					<label for="comment" class="sr-only"></label>
 					<textarea id="comment" rows="3" v-model="inputMessage"
-						class="w-full px-0 text-gray-900 bg-white border-0  focus:ring-0"
-						:placeholder="isCommandMode ? '输入创建用户/删除用户试试看' : '随便聊聊'" required></textarea>
+						class="w-full px-0 text-gray-900 bg-white border-0  focus:ring-0" :placeholder="
+						commandPlaceholderMap[commandMode]
+						" required></textarea>
 				</div>
 				<div class="flex justify-between px-2 py-2 border-t border-gray-200">
 					<form>
-						<select id="countries" v-model="isCommandMode"
+						<select id="countries" v-model="commandMode"
 							class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block">
-							<option selected :value="false">询问模式</option>
-							<option :value="true">指令模式</option>
+							<option selected :value="'chat'">询问模式</option>
+							<option :value="'search'">搜索模式</option>
+							<option :value="'execute'">指令模式</option>
 						</select>
 					</form>
 					<Button :abortable="true" :isLoading="isLoading" :loadingContent="'中止'" :submitContent="'发送'"
-						:handleClick="() => handleSendClick(inputMessage, isCommandMode)" />
+						:handleClick="() => handleSendClick(inputMessage, commandMode)" />
 				</div>
 
 			</div>
@@ -102,14 +104,14 @@ import { useAiAction } from "@/composables/ai/useAiAction";
 import DepartmentDeleteModal from "@/components/PopupModal.vue";
 import InputButton from "@/components/InputButton.vue";
 
-const { messages, chat, isLoading, cancel, actionChat } = useAiChat();
+const { messages, chat, isLoading, cancel, searchAction, executeAction } = useAiChat();
 const { user } = useUserStore();
 const userUpsertModal = ref<ModalInterface>();
 const departmentUpsertModal = ref<ModalInterface>();
 const inputMessage = ref("");
 const chatContainer = ref<HTMLElement | null>(null);
 const alertStore = useAlertStore();
-const isCommandMode = ref(false);
+const commandMode = ref<"chat" | "search" | "execute">("chat");
 const userUpsert = useUserUpsert();
 const departmentUpsert = useDepartmentUpsert();
 const userDeleteModal = ref<ModalInterface>();
@@ -120,6 +122,12 @@ const currentDeleteDepartmentName = ref<string>();
 
 const { availableDepartments, fetchAvailableDepartments } =
 	useDepartmentQuery();
+
+const commandPlaceholderMap: Record<string, string> = {
+	chat: "随便聊聊",
+	search: "搜索创建用户、删除部门等功能",
+	execute: "帮我创建一个名为 mjga 的用户",
+};
 
 const commandActionMap: Record<string, () => void> = {
 	CREATE_USER: () => {
@@ -241,7 +249,7 @@ const abortChat = () => {
 	cancel();
 };
 
-const chatByMode = async (message: string, mode: boolean) => {
+const chatByMode = async (message: string, mode: "chat" | "search" | "execute") => {
 	inputMessage.value = "";
 	messages.value.push({
 		content: message,
@@ -249,14 +257,16 @@ const chatByMode = async (message: string, mode: boolean) => {
 		isUser: true,
 		username: user.username!,
 	});
-	if (mode) {
-		await actionChat(message);
+	if (mode === "search") {
+		await searchAction(message);
+	} else if (mode === "execute") {
+		await executeAction(message);
 	} else {
 		await chat(message);
 	}
 };
 
-const handleSendClick = async (message: string, mode: boolean) => {
+const handleSendClick = async (message: string, mode: "chat" | "search" | "execute") => {
 	scrollToBottom();
 	if (isLoading.value) {
 		abortChat();

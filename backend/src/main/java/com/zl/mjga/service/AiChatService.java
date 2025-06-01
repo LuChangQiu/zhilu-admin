@@ -1,6 +1,7 @@
 package com.zl.mjga.service;
 
 import com.zl.mjga.config.ai.AiChatAssistant;
+import com.zl.mjga.config.ai.SystemToolAssistant;
 import com.zl.mjga.exception.BusinessException;
 import dev.langchain4j.service.TokenStream;
 import java.util.Optional;
@@ -17,6 +18,7 @@ public class AiChatService {
 
   private final AiChatAssistant deepSeekChatAssistant;
   private final AiChatAssistant zhiPuChatAssistant;
+  private final SystemToolAssistant zhiPuToolAssistant;
   private final LlmService llmService;
 
   public TokenStream chatWithDeepSeek(String sessionIdentifier, String userMessage) {
@@ -27,14 +29,22 @@ public class AiChatService {
     return zhiPuChatAssistant.chat(sessionIdentifier, userMessage);
   }
 
+  public TokenStream actionExecuteWithZhiPu(String sessionIdentifier, String userMessage) {
+    return zhiPuToolAssistant.ask(sessionIdentifier, userMessage);
+  }
+
   public TokenStream chatPrecedenceLlmWith(String sessionIdentifier, String userMessage) {
-    Optional<AiLlmConfig> precedenceLlmBy = llmService.getPrecedenceChatLlmBy(true);
-    AiLlmConfig aiLlmConfig = precedenceLlmBy.orElseThrow(() -> new BusinessException("没有开启的大模型"));
-    LlmCodeEnum code = aiLlmConfig.getCode();
+    LlmCodeEnum code = getPrecedenceLlmCode();
     return switch (code) {
       case ZHI_PU -> zhiPuChatAssistant.chat(sessionIdentifier, userMessage);
       case DEEP_SEEK -> deepSeekChatAssistant.chat(sessionIdentifier, userMessage);
       default -> throw new BusinessException(String.format("无效的模型代码 %s", code));
     };
+  }
+
+  private LlmCodeEnum getPrecedenceLlmCode() {
+    Optional<AiLlmConfig> precedenceLlmBy = llmService.getPrecedenceChatLlmBy(true);
+    AiLlmConfig aiLlmConfig = precedenceLlmBy.orElseThrow(() -> new BusinessException("没有开启的大模型"));
+    return aiLlmConfig.getCode();
   }
 }

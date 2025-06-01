@@ -42,11 +42,34 @@ public class AiController {
   private final UserRepository userRepository;
   private final DepartmentRepository departmentRepository;
 
+  @PostMapping(value = "/action/execute", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+  public Flux<String> actionExecute(Principal principal, @RequestBody String userMessage) {
+    Sinks.Many<String> sink = Sinks.many().unicast().onBackpressureBuffer();
+    TokenStream chat = aiChatService.actionExecuteWithZhiPu(principal.getName(), userMessage);
+    chat.onPartialResponse(
+            text ->
+                sink.tryEmitNext(
+                    StringUtils.isNotEmpty(text) ? text.replace(" ", "␣").replace("\t", "⇥") : ""))
+        .onToolExecuted(
+            toolExecution -> log.debug("当前请求 {} 成功执行函数调用: {}", userMessage, toolExecution))
+        .onCompleteResponse(
+            r -> {
+              sink.tryEmitComplete();
+              sink.emitComplete(Sinks.EmitFailureHandler.FAIL_FAST);
+            })
+        .onError(sink::tryEmitError)
+        .start();
+    return sink.asFlux().timeout(Duration.ofSeconds(120));
+  }
+
   @PostMapping(value = "/chat", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
   public Flux<String> chat(Principal principal, @RequestBody String userMessage) {
     Sinks.Many<String> sink = Sinks.many().unicast().onBackpressureBuffer();
     TokenStream chat = aiChatService.chatPrecedenceLlmWith(principal.getName(), userMessage);
-    chat.onPartialResponse(text -> sink.tryEmitNext(text.replace(" ", "␣").replace("\t", "⇥")))
+    chat.onPartialResponse(
+            text ->
+                sink.tryEmitNext(
+                    StringUtils.isNotEmpty(text) ? text.replace(" ", "␣").replace("\t", "⇥") : ""))
         .onCompleteResponse(
             r -> {
               sink.tryEmitComplete();
@@ -71,8 +94,8 @@ public class AiController {
     return llmService.pageQueryLlm(pageRequestDto, llmQueryDto);
   }
 
-  @PostMapping("/action/chat")
-  public Map<String, String> actionChat(@RequestBody String message) {
+  @PostMapping("/action/search")
+  public Map<String, String> searchAction(@RequestBody String message) {
     AiLlmConfig aiLlmConfig = llmService.loadConfig(LlmCodeEnum.ZHI_PU);
     if (!aiLlmConfig.getEnable()) {
       throw new BusinessException("命令模型未启用，请开启后再试。");

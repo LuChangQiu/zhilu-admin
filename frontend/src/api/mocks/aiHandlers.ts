@@ -13,7 +13,7 @@ export default [
 		);
 		return response;
 	}),
-	http.post("/ai/action/chat", () => {
+	http.post("/ai/action/search", () => {
 		const response = HttpResponse.json({
 			action: "CREATE_USER",
 		});

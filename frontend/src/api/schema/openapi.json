@@ -747,12 +747,12 @@
         }
       }
     },
-    "/ai/action/chat": {
+    "/ai/action/search": {
       "post": {
         "tags": [
           "ai-controller"
         ],
-        "operationId": "actionChat",
+        "operationId": "searchAction",
         "requestBody": {
           "content": {
             "application/json": {
@@ -771,6 +771,39 @@
                 "schema": {
                   "type": "object",
                   "additionalProperties": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ai/action/execute": {
+      "post": {
+        "tags": [
+          "ai-controller"
+        ],
+        "operationId": "actionExecute",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/event-stream": {
+                "schema": {
+                  "type": "array",
+                  "items": {
                     "type": "string"
                   }
                 }

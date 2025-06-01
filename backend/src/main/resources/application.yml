@@ -4,6 +4,10 @@ logging:
   file:
     path: /var/log
   level:
+    dev:
+      langchain4j: debug
+    com:
+      zl: debug
     org:
       springframework:
         security: debug
