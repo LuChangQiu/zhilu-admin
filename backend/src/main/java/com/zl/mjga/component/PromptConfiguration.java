@@ -1,4 +1,4 @@
-package com.zl.mjga.config.ai;
+package com.zl.mjga.component;
 
 import jakarta.annotation.PostConstruct;
 import java.io.IOException;

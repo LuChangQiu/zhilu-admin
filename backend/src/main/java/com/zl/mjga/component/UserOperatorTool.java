@@ -1,4 +1,4 @@
-package com.zl.mjga.config.ai;
+package com.zl.mjga.component;
 
 import com.zl.mjga.dto.urp.UserUpsertDto;
 import com.zl.mjga.exception.BusinessException;

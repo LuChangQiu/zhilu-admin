@@ -1,5 +1,7 @@
 package com.zl.mjga.config.ai;
 
+import com.zl.mjga.component.DepartmentOperatorTool;
+import com.zl.mjga.component.UserOperatorTool;
 import dev.langchain4j.community.model.zhipu.ZhipuAiStreamingChatModel;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import dev.langchain4j.service.AiServices;
