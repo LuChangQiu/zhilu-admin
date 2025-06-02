@@ -3,7 +3,7 @@
   <Sidebar>
   </Sidebar>
   <div class="flex flex-row h-[calc(100vh-3.5rem)] mt-14">
-    <article class="flex-1 ml-44 overflow-y-auto">
+    <article class="flex-1 sm:ml-44 overflow-y-auto">
       <RouterView></RouterView>
     </article>
     <Assistant v-if="isAssistantVisible"></Assistant>

@@ -37,25 +37,22 @@
 			</li>
 		</div>
 
-		<form class="sticky">
+		<form class="sticky bottom-0 z-10">
 			<div class="w-full border border-gray-200 rounded-lg bg-gray-50">
-				<div class="px-4 py-2 bg-white rounded-t-lg">
-					<label for="comment" class="sr-only"></label>
-					<textarea id="comment" rows="3" v-model="inputMessage"
-						class="w-full px-0 text-gray-900 bg-white border-0  focus:ring-0" :placeholder="
-						commandPlaceholderMap[commandMode]
-						" required></textarea>
+				<div class="px-3 py-2 sm:px-4 sm:py-2 bg-white rounded-t-lg">
+					<label for="comment" class="sr-only">你的消息</label>
+					<textarea id="comment" :rows="2" v-model="inputMessage"
+						class="w-full px-0 text-sm sm:text-base text-gray-900 bg-white border-0 focus:ring-0 resize-none"
+						:placeholder="commandPlaceholderMap[commandMode]" required></textarea>
 				</div>
-				<div class="flex justify-between px-2 py-2 border-t border-gray-200">
-					<form>
-						<select id="countries" v-model="commandMode"
-							class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block">
-							<option selected :value="'chat'">询问模式</option>
-							<option :value="'search'">搜索模式</option>
-							<option :value="'execute'">指令模式</option>
-						</select>
-					</form>
-					<Button :abortable="true" :isLoading="isLoading" :loadingContent="'中止'" :submitContent="'发送'"
+				<div class="flex items-center justify-between px-2 py-2 sm:px-3 sm:py-2 border-t border-gray-200">
+					<select id="commandModeSelect" v-model="commandMode"
+						class="bg-white border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 sm:p-2.5">
+						<option selected :value="'chat'">询问模式</option>
+						<option :value="'search'">搜索模式</option>
+						<option :value="'execute'">指令模式</option>
+					</select>
+					<Button size="sm" :abortable="true" :isLoading="isLoading" :loadingContent="'中止'" :submitContent="'发送'"
 						:handleClick="() => handleSendClick(inputMessage, commandMode)" />
 				</div>
 
