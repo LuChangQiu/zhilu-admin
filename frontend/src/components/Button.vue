@@ -9,6 +9,7 @@
     'text-center',
     'inline-flex',
     'items-center',
+    'justify-center',
     isLoading && !abortable ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-700 hover:bg-blue-800',
     sizeClasses
   ]">

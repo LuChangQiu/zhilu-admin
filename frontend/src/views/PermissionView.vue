@@ -24,11 +24,15 @@
         </div>
       </form>
       <!-- Create Modal toggle -->
-      <button @click="handleUpsertPermissionClick(undefined)"
-        class="flex items-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-        type="button">
-        新增权限
-      </button>
+      <Button :handleClick="() => handleUpsertPermissionClick(undefined)" :isLoading="false" :abortable="false"
+        submitContent="新增权限" size="sm" class="w-full sm:w-auto">
+        <template #icon>
+          <svg class="w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+          </svg>
+        </template>
+      </Button>
     </div>
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
       <table class="w-full text-sm text-left rtl:text-right text-gray-500">
@@ -107,6 +111,7 @@
 </template>
 
 <script setup lang="ts">
+import Button from "@/components/Button.vue";
 import PermissionUpsertModal from "@/components/PermissionUpsertModal.vue";
 import PermissionDeleteModal from "@/components/PopupModal.vue";
 import usePermissionDelete from "@/composables/permission/usePermissionDelete";
