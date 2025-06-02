@@ -1,17 +1,7 @@
 <template>
-	<div :class="[
-      'fixed top-0 right-0 h-full z-50 bg-white shadow-lg transform transition-transform duration-300 ease-in-out',
-      'flex flex-col box-border overflow-y-auto w-full sm:w-96',
-      isVisible ? 'translate-x-0' : 'translate-x-full'
-    ]" ref="chatContainer">
-		<div class="flex items-center justify-between p-3 border-b">
-			<h2 class="text-lg font-semibold text-gray-900">助手</h2>
-			<button @click="closeAssistant" class="text-gray-500 hover:text-gray-700">
-				<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-				</svg>
-			</button>
-		</div>
+	<div
+		class="h-[calc(100vh-3.5rem)] flex flex-col box-border p-3 overflow-y-auto md:w-80 w-full overflow-x-hidden border-gray-200 border-l"
+		ref="chatContainer">
 		<div class="flex flex-col gap-y-5 flex-1 pb-2">
 			<li v-for="chatElement in messages" :key="chatElement.content"
 				:class="['flex items-start gap-2.5', chatElement.isUser ? 'flex-row-reverse max-w-full break-words' : 'flex-row']">
@@ -47,22 +37,25 @@
 			</li>
 		</div>
 
-		<form class="sticky bottom-0 z-10">
+		<form class="sticky">
 			<div class="w-full border border-gray-200 rounded-lg bg-gray-50">
-				<div class="px-3 py-2 sm:px-4 sm:py-2 bg-white rounded-t-lg">
-					<label for="comment" class="sr-only">你的消息</label>
-					<textarea id="comment" :rows="2" v-model="inputMessage"
-						class="w-full px-0 text-sm sm:text-base text-gray-900 bg-white border-0 focus:ring-0 resize-none"
-						:placeholder="commandPlaceholderMap[commandMode]" required></textarea>
+				<div class="px-4 py-2 bg-white rounded-t-lg">
+					<label for="comment" class="sr-only"></label>
+					<textarea id="comment" rows="3" v-model="inputMessage"
+						class="w-full px-0 text-gray-900 bg-white border-0  focus:ring-0" :placeholder="
+						commandPlaceholderMap[commandMode]
+						" required></textarea>
 				</div>
-				<div class="flex items-center justify-between px-2 py-2 sm:px-3 sm:py-2 border-t border-gray-200">
-					<select id="commandModeSelect" v-model="commandMode"
-						class="bg-white border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2 sm:p-2.5">
-						<option selected :value="'chat'">询问模式</option>
-						<option :value="'search'">搜索模式</option>
-						<option :value="'execute'">指令模式</option>
-					</select>
-					<Button size="sm" :abortable="true" :isLoading="isLoading" :loadingContent="'中止'" :submitContent="'发送'"
+				<div class="flex justify-between px-2 py-2 border-t border-gray-200">
+					<form>
+						<select id="countries" v-model="commandMode"
+							class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block">
+							<option selected :value="'chat'">询问模式</option>
+							<option :value="'search'">搜索模式</option>
+							<option :value="'execute'">指令模式</option>
+						</select>
+					</form>
+					<Button :abortable="true" :isLoading="isLoading" :loadingContent="'中止'" :submitContent="'发送'"
 						:handleClick="() => handleSendClick(inputMessage, commandMode)" />
 				</div>
 
@@ -329,16 +322,6 @@ onMounted(async () => {
 		},
 	);
 });
-
-const props = defineProps<{
-	isVisible: boolean;
-}>();
-
-const emit = defineEmits(['close']);
-
-const closeAssistant = () => {
-	emit('close');
-};
 </script>
 
 <style lang="css">

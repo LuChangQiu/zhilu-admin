@@ -31,7 +31,6 @@ import RoleIcon from "./icons/RoleIcon.vue";
 import SchedulerIcon from "./icons/SchedulerIcon.vue";
 import SettingsIcon from "./icons/SettingsIcon.vue";
 import UsersIcon from "./icons/UsersIcon.vue";
-import AiChatIcon from "./icons/AiChatIcon.vue";
 import LlmConfigIcon from "./icons/LlmConfigIcon.vue";
 
 // 菜单配置
