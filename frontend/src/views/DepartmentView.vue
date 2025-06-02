@@ -23,11 +23,15 @@
             @click.prevent="handleSearch">搜索</button>
         </div>
       </form>
-      <button @click="handleUpsertDepartmentClick()"
-        class="flex items-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-        type="button">
-        新增部门
-      </button>
+      <Button :handleClick="() => handleUpsertDepartmentClick()" :isLoading="false" :abortable="false"
+        submitContent="新增部门" size="sm" class="w-full sm:w-auto">
+        <template #icon>
+          <svg class="w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+          </svg>
+        </template>
+      </Button>
     </div>
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
       <table class="w-full text-sm text-left rtl:text-right text-gray-500">
@@ -108,6 +112,7 @@
 
 <script setup lang="ts">
 import Breadcrumbs from "@/components/Breadcrumbs.vue";
+import Button from "@/components/Button.vue";
 import DepartmentUpsertModal from "@/components/DepartmentUpsertModal.vue";
 import DepartmentDeleteModal from "@/components/PopupModal.vue";
 import TablePagination from "@/components/TablePagination.vue";

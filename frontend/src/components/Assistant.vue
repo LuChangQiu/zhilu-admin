@@ -1,7 +1,17 @@
 <template>
-	<div
-		class="h-[calc(100vh-3.5rem)] flex flex-col box-border p-3 overflow-y-auto w-80 overflow-x-hidden border-gray-200 border-l"
-		ref="chatContainer">
+	<div :class="[
+      'fixed top-0 right-0 h-full z-50 bg-white shadow-lg transform transition-transform duration-300 ease-in-out',
+      'flex flex-col box-border overflow-y-auto w-full sm:w-96',
+      isVisible ? 'translate-x-0' : 'translate-x-full'
+    ]" ref="chatContainer">
+		<div class="flex items-center justify-between p-3 border-b">
+			<h2 class="text-lg font-semibold text-gray-900">助手</h2>
+			<button @click="closeAssistant" class="text-gray-500 hover:text-gray-700">
+				<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+				</svg>
+			</button>
+		</div>
 		<div class="flex flex-col gap-y-5 flex-1 pb-2">
 			<li v-for="chatElement in messages" :key="chatElement.content"
 				:class="['flex items-start gap-2.5', chatElement.isUser ? 'flex-row-reverse max-w-full break-words' : 'flex-row']">
@@ -319,6 +329,16 @@ onMounted(async () => {
 		},
 	);
 });
+
+const props = defineProps<{
+	isVisible: boolean;
+}>();
+
+const emit = defineEmits(['close']);
+
+const closeAssistant = () => {
+	emit('close');
+};
 </script>
 
 <style lang="css">

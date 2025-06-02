@@ -1,5 +1,5 @@
 <template>
-  <button :disabled="disabled" @click="handleClick" type="button" :class="[
+	<button :disabled="disabled" @click="handleClick" type="button" :class="[
     'text-white',
     'focus:ring-4',
     'focus:outline-none',
@@ -12,18 +12,20 @@
     isLoading && !abortable ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-700 hover:bg-blue-800',
     sizeClasses
   ]">
-    <LoadingIcon v-if="isLoading && !abortable" :class="iconSizeClasses" />
-    <StopIcon v-else-if="isLoading && abortable" :class="iconSizeClasses" />
-    <span v-if="iconOnly && isLoading" class="sr-only">{{ loadingContent }}</span>
-    <span v-else-if="iconOnly && !isLoading" class="sr-only">{{ submitContent }}</span>
-    <template v-else>
-      {{ isLoading ? loadingContent : submitContent }}
-    </template>
-  </button>
+		<LoadingIcon v-if="isLoading && !abortable" :class="[iconSizeClasses, iconOnly ? '' : 'me-2']" />
+		<StopIcon v-else-if="isLoading && abortable" :class="[iconSizeClasses, iconOnly ? '' : 'me-2']" />
+		<slot v-else-if="!isLoading && $slots.icon" name="icon" :iconSizeClasses="iconSizeClasses"></slot>
+
+		<span v-if="iconOnly && isLoading" class="sr-only">{{ loadingContent }}</span>
+		<span v-else-if="iconOnly && !isLoading && !$slots.icon" class="sr-only">{{ submitContent }}</span>
+		<template v-else-if="!iconOnly">
+			{{ isLoading ? loadingContent : submitContent }}
+		</template>
+	</button>
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, useSlots } from "vue";
 import LoadingIcon from "./icons/LoadingIcon.vue";
 import StopIcon from "./icons/StopIcon.vue";
 
@@ -37,8 +39,10 @@ const props = defineProps<{
 	iconOnly?: boolean;
 }>();
 
+const slots = useSlots();
+
 const sizeClasses = computed(() => {
-	if (props.iconOnly) {
+	if (props.iconOnly && slots.icon) {
 		switch (props.size) {
 			case 'xs': return 'p-1.5';
 			case 'sm': return 'p-2';
@@ -60,11 +64,11 @@ const sizeClasses = computed(() => {
 const iconSizeClasses = computed(() => {
 	switch (props.size) {
 		case 'xs': return 'w-3 h-3';
-		case 'sm': return 'w-3.5 h-3.5';
+		case 'sm': return 'w-4 h-4';
 		case 'lg': return 'w-5 h-5';
 		case 'xl': return 'w-6 h-6';
 		default:
-			return 'w-4 h-4';
+			return 'w-5 h-5';
 	}
 });
 
