@@ -35,4 +35,23 @@ public class DepartmentOperatorTool {
     }
     departmentService.upsertDepartment(new Department(null, departmentName, null));
   }
+
+  @Tool(value = "更新部门/绑定上级部门/解绑上级部门")
+  void updateDepartment(
+      @P(value = "部门名称") String departmentName,
+      @P(value = "上级部门名称", required = false) String parentDepartmentName) {
+    Department exist = departmentRepository.fetchOneByName(departmentName);
+    if (exist == null) {
+      throw new BusinessException("不存在的部门");
+    }
+    Department department = new Department(null, departmentName, null);
+    if (StringUtils.isNotEmpty(parentDepartmentName)) {
+      Department parent = departmentRepository.fetchOneByName(parentDepartmentName);
+      if (parent == null) {
+        throw new BusinessException("上级部门不存在");
+      }
+      department.setParentId(parent.getId());
+    }
+    departmentService.upsertDepartment(department);
+  }
 }

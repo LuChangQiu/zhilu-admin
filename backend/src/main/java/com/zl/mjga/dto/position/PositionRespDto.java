@@ -14,6 +14,5 @@ import lombok.NoArgsConstructor;
 public class PositionRespDto {
   @NotNull private Long id;
   @NotEmpty private String name;
-  private Long parentId;
   private Boolean isBound;
 }

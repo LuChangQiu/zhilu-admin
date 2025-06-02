@@ -1,7 +1,8 @@
 package com.zl.mjga.config.ai;
 
 import com.zl.mjga.component.DepartmentOperatorTool;
-import com.zl.mjga.component.UserOperatorTool;
+import com.zl.mjga.component.PositionOperatorTool;
+import com.zl.mjga.component.UserRolePermissionOperatorTool;
 import dev.langchain4j.community.model.zhipu.ZhipuAiStreamingChatModel;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import dev.langchain4j.service.AiServices;
@@ -14,8 +15,9 @@ import org.springframework.context.annotation.DependsOn;
 @RequiredArgsConstructor
 public class ToolsInitializer {
 
-  private final UserOperatorTool userOperatorTool;
+  private final UserRolePermissionOperatorTool userRolePermissionOperatorTool;
   private final DepartmentOperatorTool departmentOperatorTool;
+  private final PositionOperatorTool positionOperatorTool;
 
   @Bean
   @DependsOn("flywayInitializer")
@@ -23,7 +25,7 @@ public class ToolsInitializer {
     return AiServices.builder(SystemToolAssistant.class)
         .streamingChatModel(zhipuChatModel)
         .chatMemoryProvider(memoryId -> MessageWindowChatMemory.withMaxMessages(10))
-        .tools(userOperatorTool, departmentOperatorTool)
+        .tools(userRolePermissionOperatorTool, departmentOperatorTool, positionOperatorTool)
         .build();
   }
 }
