@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="h-[calc(100vh-3.5rem)] flex flex-col box-border p-3 overflow-y-auto w-80 overflow-x-hidden border-gray-200 border-l"
+		class="h-[calc(100vh-3.5rem)] flex flex-col box-border p-3 overflow-y-auto md:w-80 w-full overflow-x-hidden border-gray-200 border-l"
 		ref="chatContainer">
 		<div class="flex flex-col gap-y-5 flex-1 pb-2">
 			<li v-for="chatElement in messages" :key="chatElement.content"
