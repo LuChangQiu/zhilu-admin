@@ -1,5 +1,6 @@
 package com.zl.mjga.dto.urp;
 
+import java.time.LocalDateTime;
 import lombok.*;
 
 @AllArgsConstructor
@@ -7,4 +8,6 @@ import lombok.*;
 @Data
 public class UserQueryDto {
   private String username;
+  private LocalDateTime starDate;
+  private LocalDateTime endDate;
 }

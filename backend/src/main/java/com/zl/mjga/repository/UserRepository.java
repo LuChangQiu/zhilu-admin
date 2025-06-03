@@ -9,6 +9,7 @@ import com.zl.mjga.dto.urp.PermissionRespDto;
 import com.zl.mjga.dto.urp.RoleDto;
 import com.zl.mjga.dto.urp.UserQueryDto;
 import com.zl.mjga.dto.urp.UserRolePermissionDto;
+import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.*;
 import org.jooq.Record;
@@ -53,6 +54,28 @@ public class UserRepository extends UserDao {
             DSL.field(DSL.name("newUser", "password"), String.class),
             DSL.field(DSL.name("newUser", "enable"), Boolean.class))
         .execute();
+  }
+
+  public SelectConditionStep<Record> selectBy(UserQueryDto userQueryDto) {
+    return ctx()
+        .select(asterisk(), DSL.count().over().as("total_user"))
+        .from(USER)
+        .where(
+            userQueryDto.getUsername() != null
+                ? USER.USERNAME.like("%" + userQueryDto.getUsername() + "%")
+                : noCondition())
+        .and(
+            userQueryDto.getStarDate() != null
+                ? USER.CREATE_TIME.ge(userQueryDto.getStarDate())
+                : noCondition())
+        .and(
+            userQueryDto.getEndDate() != null
+                ? USER.CREATE_TIME.le(userQueryDto.getEndDate())
+                : noCondition());
+  }
+
+  public List<User> fetchBy(UserQueryDto userQueryDto) {
+    return selectBy(userQueryDto).fetchInto(User.class);
   }
 
   public Result<Record> pageFetchBy(PageRequestDto pageRequestDto, UserQueryDto userQueryDto) {
