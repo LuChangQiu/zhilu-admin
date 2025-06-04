@@ -67,7 +67,7 @@
   }">
 	</UserUpsertModal>
 	<UserDeleteModal :id="'user-delete-modal'" :closeModal="() => {
-    currentDeleteUsername = undefined
+		currentDeleteUsername = undefined
     userDeleteModal!.hide();
   }" :onSubmit="handleDeleteUserSubmit" title="确定删除该用户吗" content="删除用户"></UserDeleteModal>
 	<DepartmentUpsertModal :id="'department-upsert-modal'" :onSubmit="handleUpsertDepartmentSubmit" :closeModal="() => {
@@ -94,7 +94,7 @@ import type { DepartmentUpsertModel } from "@/types/department";
 import DOMPurify from "dompurify";
 import { Modal, type ModalInterface, initFlowbite } from "flowbite";
 import { marked } from "marked";
-import { nextTick, onMounted, onUnmounted, ref, watch } from "vue";
+import { onMounted, onUnmounted, ref, watch } from "vue";
 import { z } from "zod";
 import Button from "../components/Button.vue";
 import DepartmentUpsertModal from "../components/DepartmentUpsertModal.vue";
@@ -181,16 +181,12 @@ const renderMarkdown = (content: string | undefined) => {
 
 const handleDeleteUserClick = (input: string) => {
 	currentDeleteUsername.value = input;
-	nextTick(() => {
-		userDeleteModal.value?.show();
-	});
+	userDeleteModal.value?.show();
 };
 
 const handleDeleteDepartmentClick = (input: string) => {
 	currentDeleteDepartmentName.value = input;
-	nextTick(() => {
-		departmentDeleteModal.value?.show();
-	});
+	departmentDeleteModal.value?.show();
 };
 
 const handleUpsertUserSubmit = async (data: UserUpsertSubmitModel) => {
@@ -233,8 +229,7 @@ const handleDeleteDepartmentSubmit = async () => {
 
 watch(
 	messages,
-	async () => {
-		await nextTick();
+	() => {
 		scrollToBottom();
 	},
 	{ deep: true },
@@ -303,6 +298,9 @@ onMounted(async () => {
 	userDeleteModal.value = new Modal(
 		$userDeleteModalElement,
 		{},
+		{
+			id: "user-delete-modal",
+		},
 	);
 	const $departmentDeleteModalElement: HTMLElement | null =
 		document.querySelector("#department-delete-modal");

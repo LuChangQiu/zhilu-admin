@@ -1,6 +1,6 @@
 <template>
   <div :id tabindex="-1"
-    class="bg-gray-900/50 hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    class="bg-gray-900/50 hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full h-[calc(100%-1rem)] max-h-full">
     <div class="relative p-4 w-full max-w-xs sm:max-w-sm md:max-w-md max-h-full">
       <div class="relative bg-white rounded-lg shadow-sm">
         <button type="button" @click="closeModal"
@@ -39,7 +39,7 @@
 import { initFlowbite } from "flowbite";
 import { onMounted } from "vue";
 
-defineProps<{
+const { title, id, closeModal, onSubmit } = defineProps<{
 	title: string;
 	id: string;
 	closeModal: () => void;

@@ -19,6 +19,9 @@ export default [
 		});
 		return response;
 	}),
+	http.delete("/ai/action/user", () => {
+		return HttpResponse.json({ success: true });
+	}),
 	http.get("/ai/llm/page-query", () => {
 		const generateLlm = () => ({
 			id: faker.number.int({ min: 1, max: 100 }),
