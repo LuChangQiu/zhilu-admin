@@ -120,13 +120,13 @@ public class UserRolePermissionOperatorTool {
         new PositionBindDto(user.getId(), positions.stream().map(Position::getId).toList()));
   }
 
-  @Tool(value = "给用户解绑/撤销职位")
+  @Tool(value = "给用户解绑/撤销岗位")
   void unbindPositionToUser(
-      @P(value = "用户名") String username, @P(value = "职位名称列表") List<String> positionNames) {
+      @P(value = "用户名") String username, @P(value = "岗位名称列表") List<String> positionNames) {
     User user = checkUserExistBy(username);
     List<Position> positions = positionRepository.fetchByName(positionNames.toArray(String[]::new));
     if (positions.isEmpty()) {
-      throw new BusinessException("指定职位不存在");
+      throw new BusinessException("指定岗位不存在");
     }
     identityAccessService.unBindPositionBy(
         new PositionBindDto(user.getId(), positions.stream().map(Position::getId).toList()));
