@@ -1,7 +1,7 @@
 <template>
 	<aside id="logo-sidebar"
-		class="fixed top-0 left-0 z-30 px-1 w-44 min-h-screen overflow-y-auto pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0"
-		aria-label="Sidebar" tabindex="-1" data-drawer-backdrop="true">
+		class="fixed top-0 left-0 px-1 w-44 min-h-screen overflow-y-auto pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0"
+		aria-label="Sidebar" tabindex="-1">
 		<div class="h-full px-3 pb-4 overflow-y-auto bg-white ">
 			<ul class="space-y-2 font-medium">
 				<li v-for="item in menuItems" :key="item.path">
@@ -16,22 +16,28 @@
 			</ul>
 		</div>
 	</aside>
+	<!-- 添加遮罩层 -->
+	<div id="drawer-backdrop" :class="isDrawerVisible ? 'block' : 'hidden'"
+		class="bg-gray-900 bg-opacity-50 fixed inset-0 z-50 sm:hidden" @click="closeSidebar">
+	</div>
 </template>
 
 <script setup lang="ts">
 import { RoutePath } from "@/router/constants";
 import { initFlowbite } from "flowbite";
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import { RouterLink, useRoute } from "vue-router";
 
 import DepartmentIcon from "./icons/DepartmentIcon.vue";
+import LlmConfigIcon from "./icons/LlmConfigIcon.vue";
 import PermissionIcon from "./icons/PermissionIcon.vue";
 import PositionIcon from "./icons/PositionIcon.vue";
 import RoleIcon from "./icons/RoleIcon.vue";
 import SchedulerIcon from "./icons/SchedulerIcon.vue";
 import SettingsIcon from "./icons/SettingsIcon.vue";
 import UsersIcon from "./icons/UsersIcon.vue";
-import LlmConfigIcon from "./icons/LlmConfigIcon.vue";
+
+const isDrawerVisible = ref(false);
 
 // 菜单配置
 const menuItems = [
@@ -81,6 +87,10 @@ const route = useRoute();
 
 const isActive = (path: string) => {
 	return route.path === path;
+};
+
+const closeSidebar = () => {
+	isDrawerVisible.value = false;
 };
 
 onMounted(() => {

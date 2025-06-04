@@ -8,7 +8,7 @@
     <div class="col-span-full xl:col-auto">
       <!-- Placeholder for potential right content -->
     </div>
-    <div class="col-span-full xl:col-span-1 xl:row-start-2"> 
+    <div class="col-span-full xl:col-span-1 xl:row-start-2">
       <div class="p-4 sm:p-6 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm">
         <h3 class="mb-4 text-xl font-semibold">个人信息</h3>
         <form action="#">
@@ -41,7 +41,7 @@
             </div>
             <div class="col-span-1 sm:col-span-6">
               <button
-                class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-full sm:w-auto"
+                class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-auto"
                 @click.prevent="handleUpdateClick" type="submit">保存</button>
             </div>
           </div>

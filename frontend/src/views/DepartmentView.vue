@@ -154,20 +154,8 @@ onMounted(async () => {
 	const $deleteModalElement: HTMLElement | null = document.querySelector(
 		"#department-delete-modal",
 	);
-	departmentUpsertModal.value = new Modal(
-		$upsertModalElement,
-		{},
-		{
-			id: "department-upsert-modal",
-		},
-	);
-	departmentDeleteModal.value = new Modal(
-		$deleteModalElement,
-		{},
-		{
-			id: "department-delete-modal",
-		},
-	);
+	departmentUpsertModal.value = new Modal($upsertModalElement, {});
+	departmentDeleteModal.value = new Modal($deleteModalElement, {});
 });
 
 const handleUpsertDepartmentSubmit = async (

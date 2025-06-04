@@ -168,13 +168,7 @@ onMounted(async () => {
 	const $llmUpdateModalElement: HTMLElement | null =
 		document.querySelector("#llm-update-modal");
 
-	llmUpdateModal.value = new Modal(
-		$llmUpdateModalElement,
-		{},
-		{
-			id: "llm-update-modal",
-		},
-	);
+	llmUpdateModal.value = new Modal($llmUpdateModalElement, {});
 });
 </script>
 

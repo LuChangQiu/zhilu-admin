@@ -148,16 +148,8 @@ onMounted(async () => {
 	const $deleteModalElement: HTMLElement | null = document.querySelector(
 		"#permission-delete-modal",
 	);
-	permissionUpsertModal.value = new Modal(
-		$upsertModalElement,
-		{},
-		{ id: "permission-upsert-modal" },
-	);
-	permissionDeleteModal.value = new Modal(
-		$deleteModalElement,
-		{},
-		{ id: "permission-delete-modal" },
-	);
+	permissionUpsertModal.value = new Modal($upsertModalElement, {});
+	permissionDeleteModal.value = new Modal($deleteModalElement, {});
 });
 
 const handleUpsertModalSubmit = async (data: PermissionUpsertModel) => {

@@ -11,8 +11,8 @@
 </template>
 
 <script setup lang="ts">
-const { size = 'w-6 h-6' } = defineProps<{
-  size?: string;
+const { size = "w-6 h-6" } = defineProps<{
+	size?: string;
 }>();
 </script>
 

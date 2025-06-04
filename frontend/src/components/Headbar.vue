@@ -1,10 +1,10 @@
 <template>
-  <nav class="fixed top-0 z-40 w-full bg-white border-b border-gray-200">
+  <nav class="fixed top-0 z-1 w-full bg-white border-b border-gray-200">
     <div class="px-3 py-3 lg:px-5 lg:pl-3">
       <div class="flex items-center justify-between">
         <div class="flex items-center justify-start rtl:justify-end">
-          <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar"
-            type="button"
+          <button id="sidebar-toggle-btn" data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar"
+            aria-controls="logo-sidebar" type="button"
             class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200">
             <span class="sr-only">Open sidebar</span>
             <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
@@ -94,7 +94,7 @@
 </template>
 <script setup lang="ts">
 import useUserStore from "@/composables/store/useUserStore";
-import { Dropdown, initFlowbite, type DropdownInterface } from "flowbite";
+import { Dropdown, type DropdownInterface, initFlowbite } from "flowbite";
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import useUserAuth from "../composables/auth/useUserAuth";

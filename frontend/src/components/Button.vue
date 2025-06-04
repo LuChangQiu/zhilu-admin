@@ -36,7 +36,7 @@ const props = defineProps<{
 	isLoading: boolean;
 	abortable: boolean;
 	handleClick: (event: Event) => void;
-	size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+	size?: "xs" | "sm" | "md" | "lg" | "xl";
 	iconOnly?: boolean;
 }>();
 
@@ -45,36 +45,49 @@ const slots = useSlots();
 const sizeClasses = computed(() => {
 	if (props.iconOnly && slots.icon) {
 		switch (props.size) {
-			case 'xs': return 'p-1.5';
-			case 'sm': return 'p-2';
-			case 'lg': return 'p-3';
-			case 'xl': return 'p-3.5';
-			default: return 'p-2.5';
+			case "xs":
+				return "p-1.5";
+			case "sm":
+				return "p-2";
+			case "lg":
+				return "p-3";
+			case "xl":
+				return "p-3.5";
+			default:
+				return "p-2.5";
 		}
 	}
 	switch (props.size) {
-		case 'xs': return 'text-xs px-2.5 py-1.5';
-		case 'sm': return 'text-xs px-3 py-2';
-		case 'lg': return 'text-base px-5 py-3';
-		case 'xl': return 'text-base px-6 py-3.5';
+		case "xs":
+			return "text-xs px-2.5 py-1.5";
+		case "sm":
+			return "text-xs px-3 py-2";
+		case "lg":
+			return "text-base px-5 py-3";
+		case "xl":
+			return "text-base px-6 py-3.5";
 		default:
-			return 'text-sm px-4 py-2.5';
+			return "text-sm px-4 py-2.5";
 	}
 });
 
 const iconSizeClasses = computed(() => {
 	switch (props.size) {
-		case 'xs': return 'w-3 h-3';
-		case 'sm': return 'w-4 h-4';
-		case 'lg': return 'w-5 h-5';
-		case 'xl': return 'w-6 h-6';
+		case "xs":
+			return "w-3 h-3";
+		case "sm":
+			return "w-4 h-4";
+		case "lg":
+			return "w-5 h-5";
+		case "xl":
+			return "w-6 h-6";
 		default:
-			return 'w-5 h-5';
+			return "w-5 h-5";
 	}
 });
 
 const loadingStyle = computed<string>(() => {
-	return '';
+	return "";
 });
 
 const disabled = computed(() => {

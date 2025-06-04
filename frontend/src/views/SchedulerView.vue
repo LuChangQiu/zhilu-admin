@@ -275,27 +275,9 @@ onMounted(async () => {
 	const $jobUpdateModalElement: HTMLElement | null =
 		document.querySelector("#job-update-modal");
 
-	jobResumeModal.value = new Modal(
-		$jobResumeModalElement,
-		{},
-		{
-			id: "job-resume-modal",
-		},
-	);
-	jobPauseModal.value = new Modal(
-		$jobPauseModalElement,
-		{},
-		{
-			id: "job-pause-modal",
-		},
-	);
-	jobUpdateModal.value = new Modal(
-		$jobUpdateModalElement,
-		{},
-		{
-			id: "job-update-modal",
-		},
-	);
+	jobResumeModal.value = new Modal($jobResumeModalElement, {});
+	jobPauseModal.value = new Modal($jobPauseModalElement, {});
+	jobUpdateModal.value = new Modal($jobUpdateModalElement, {});
 });
 </script>
 

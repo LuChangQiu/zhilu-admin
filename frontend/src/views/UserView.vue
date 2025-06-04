@@ -192,20 +192,8 @@ onMounted(async () => {
 		document.querySelector("#user-upsert-modal");
 	const $deleteModalElement: HTMLElement | null =
 		document.querySelector("#user-delete-modal");
-	userUpsertModal.value = new Modal(
-		$upsertModalElement,
-		{},
-		{
-			id: "user-upsert-modal",
-		},
-	);
-	userDeleteModal.value = new Modal(
-		$deleteModalElement,
-		{},
-		{
-			id: "user-delete-modal",
-		},
-	);
+	userUpsertModal.value = new Modal($upsertModalElement, {});
+	userDeleteModal.value = new Modal($deleteModalElement, {});
 });
 
 const handleUpsertUserSubmit = async (data: UserUpsertSubmitModel) => {

@@ -147,20 +147,8 @@ onMounted(async () => {
 	const $deleteModalElement: HTMLElement | null = document.querySelector(
 		"#position-delete-modal",
 	);
-	positionUpsertModal.value = new Modal(
-		$upsertModalElement,
-		{},
-		{
-			id: "position-upsert-modal",
-		},
-	);
-	positionDeleteModal.value = new Modal(
-		$deleteModalElement,
-		{},
-		{
-			id: "position-delete-modal",
-		},
-	);
+	positionUpsertModal.value = new Modal($upsertModalElement, {});
+	positionDeleteModal.value = new Modal($deleteModalElement, {});
 });
 
 const handleUpsertPositionSubmit = async (

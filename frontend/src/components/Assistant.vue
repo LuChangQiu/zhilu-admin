@@ -104,7 +104,8 @@ import useUserStore from "../composables/store/useUserStore";
 import { useUserUpsert } from "../composables/user/useUserUpsert";
 import type { UserUpsertSubmitModel } from "../types/user";
 
-const { messages, chat, isLoading, cancel, searchAction, executeAction } = useAiChat();
+const { messages, chat, isLoading, cancel, searchAction, executeAction } =
+	useAiChat();
 const { user } = useUserStore();
 const userUpsertModal = ref<ModalInterface>();
 const departmentUpsertModal = ref<ModalInterface>();
@@ -249,7 +250,10 @@ const abortChat = () => {
 	cancel();
 };
 
-const chatByMode = async (message: string, mode: "chat" | "search" | "execute") => {
+const chatByMode = async (
+	message: string,
+	mode: "chat" | "search" | "execute",
+) => {
 	inputMessage.value = "";
 	messages.value.push({
 		content: message,
@@ -266,7 +270,10 @@ const chatByMode = async (message: string, mode: "chat" | "search" | "execute") 
 	}
 };
 
-const handleSendClick = async (message: string, mode: "chat" | "search" | "execute") => {
+const handleSendClick = async (
+	message: string,
+	mode: "chat" | "search" | "execute",
+) => {
 	scrollToBottom();
 	if (isLoading.value) {
 		abortChat();
