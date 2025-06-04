@@ -24,11 +24,11 @@
 							{{
 							commandContentMap[chatElement.command!]
 							}}</button>
-						<InputButton
+						<InputButton size="md"
 							bgColor="bg-red-700 hover:bg-red-800 focus:ring-red-300 text-white focus:ring-4 focus:outline-none"
 							:content="commandContentMap[chatElement.command!]" :handleSubmit="handleDeleteUserClick"
 							v-if="chatElement.command === 'DELETE_USER'" />
-						<InputButton
+						<InputButton size="md"
 							bgColor="bg-red-700 hover:bg-red-800 focus:ring-red-300 text-white focus:ring-4 focus:outline-none"
 							:content="commandContentMap[chatElement.command!]" :handleSubmit="handleDeleteDepartmentClick"
 							v-if="chatElement.command === 'DELETE_DEPARTMENT'" />

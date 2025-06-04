@@ -1,24 +1,29 @@
 <template>
 	<aside id="logo-sidebar"
-		class="fixed top-0 left-0 px-1 w-44 min-h-screen overflow-y-auto pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0"
-		aria-label="Sidebar" tabindex="-1">
-		<div class="h-full px-3 pb-4 overflow-y-auto bg-white ">
+		class="fixed top-0 left-0 px-1 w-44 min-h-screen overflow-y-auto pt-20 transform transition-transform duration-300 ease-in-out bg-white border-r border-gray-200"
+		:class="[
+			isDrawerVisible ? 'translate-x-0' : '-translate-x-full sm:translate-x-0',
+			isDrawerVisible ? 'z-40' : ''
+		]" aria-label="Sidebar">
+		<div class="h-full px-3 pb-4 overflow-y-auto bg-white">
 			<ul class="space-y-2 font-medium">
 				<li v-for="item in menuItems" :key="item.path">
 					<RouterLink :to="item.path"
-						class="flex items-center p-2 gap-x-2 text-gray-900 rounded-lg  hover:bg-gray-100  group"
-						:class="{ 'bg-gray-100 ': isActive(item.path) }">
+						class="flex items-center p-2 gap-x-2 text-gray-900 rounded-lg hover:bg-gray-100 group"
+						:class="{ 'bg-gray-100': isActive(item.path) }" @click="handleMenuClick">
 						<component :is="item.icon"
-							class="shrink-0 text-gray-500 transition duration-75  group-hover:text-gray-900 " />
+							class="shrink-0 text-gray-500 transition duration-75 group-hover:text-gray-900" />
 						<span>{{ item.title }}</span>
 					</RouterLink>
 				</li>
 			</ul>
 		</div>
 	</aside>
-	<!-- 添加遮罩层 -->
-	<div id="drawer-backdrop" :class="isDrawerVisible ? 'block' : 'hidden'"
-		class="bg-gray-900 bg-opacity-50 fixed inset-0 z-50 sm:hidden" @click="closeSidebar">
+
+	<!-- 遮罩层 -->
+	<div class="fixed inset-0 bg-gray-900/50 transition-all duration-300 sm:hidden z-30" :class="[
+			isDrawerVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'
+		]" @click="closeSidebar">
 	</div>
 </template>
 
@@ -38,6 +43,31 @@ import SettingsIcon from "./icons/SettingsIcon.vue";
 import UsersIcon from "./icons/UsersIcon.vue";
 
 const isDrawerVisible = ref(false);
+const emit = defineEmits(['menu-click']);
+
+// 菜单点击处理
+const handleMenuClick = () => {
+	emit('menu-click');
+};
+
+const toggleSidebar = () => {
+	isDrawerVisible.value = !isDrawerVisible.value;
+};
+
+const openSidebar = () => {
+	isDrawerVisible.value = true;
+};
+
+const closeSidebar = () => {
+	isDrawerVisible.value = false;
+};
+
+defineExpose({
+	toggleSidebar,
+	openSidebar,
+	closeSidebar,
+	isDrawerVisible
+});
 
 // 菜单配置
 const menuItems = [
@@ -89,11 +119,28 @@ const isActive = (path: string) => {
 	return route.path === path;
 };
 
-const closeSidebar = () => {
-	isDrawerVisible.value = false;
-};
-
 onMounted(() => {
 	initFlowbite();
 });
 </script>
+
+<style scoped>
+.invisible {
+	visibility: hidden;
+}
+
+.visible {
+	visibility: visible;
+}
+
+/* 添加移动端样式 */
+@media (max-width: 640px) {
+	.translate-x-0 {
+		transform: translateX(0);
+	}
+
+	.-translate-x-full {
+		transform: translateX(-100%);
+	}
+}
+</style>
