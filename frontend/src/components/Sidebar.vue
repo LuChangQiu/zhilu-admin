@@ -3,7 +3,7 @@
 		class="fixed top-0 left-0 px-1 w-44 min-h-screen overflow-y-auto pt-20 transform transition-transform duration-300 ease-in-out bg-white border-r border-gray-200"
 		:class="[
 			isDrawerVisible ? 'translate-x-0' : '-translate-x-full sm:translate-x-0',
-			isDrawerVisible ? 'z-40' : ''
+			isDrawerVisible ? 'z-30' : ''
 		]" aria-label="Sidebar">
 		<div class="h-full px-3 pb-4 overflow-y-auto bg-white">
 			<ul class="space-y-2 font-medium">
@@ -21,7 +21,7 @@
 	</aside>
 
 	<!-- 遮罩层 -->
-	<div class="fixed inset-0 bg-gray-900/50 transition-all duration-300 sm:hidden z-30" :class="[
+	<div class="fixed inset-0 bg-gray-900/50 transition-all duration-300 sm:hidden z-20" :class="[
 			isDrawerVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'
 		]" @click="closeSidebar">
 	</div>

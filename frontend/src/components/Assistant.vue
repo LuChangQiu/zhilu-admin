@@ -297,36 +297,24 @@ onMounted(async () => {
 	userUpsertModal.value = new Modal(
 		$upsertModalElement,
 		{},
-		{
-			id: "user-upsert-modal",
-		},
 	);
 	const $userDeleteModalElement: HTMLElement | null =
 		document.querySelector("#user-delete-modal");
 	userDeleteModal.value = new Modal(
 		$userDeleteModalElement,
 		{},
-		{
-			id: "user-delete-modal",
-		},
 	);
 	const $departmentDeleteModalElement: HTMLElement | null =
 		document.querySelector("#department-delete-modal");
 	departmentDeleteModal.value = new Modal(
 		$departmentDeleteModalElement,
 		{},
-		{
-			id: "department-delete-modal",
-		},
 	);
 	const $departmentUpsertModalElement: HTMLElement | null =
 		document.querySelector("#department-upsert-modal");
 	departmentUpsertModal.value = new Modal(
 		$departmentUpsertModalElement,
 		{},
-		{
-			id: "department-upsert-modal",
-		},
 	);
 });
 </script>
