@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="h-[calc(100vh-3.5rem)] flex flex-col box-border p-3 overflow-y-auto md:w-80 w-full overflow-x-hidden border-gray-200 border-l"
+		class="h-[calc(100vh-3.5rem)] flex flex-col box-border p-3 overflow-y-auto w-full lg:w-80 xl:w-96 overflow-x-hidden border-gray-200 border-l"
 		ref="chatContainer">
 		<div class="flex flex-col gap-y-5 flex-1 pb-2">
 			<li v-for="chatElement in messages" :key="chatElement.content"
@@ -26,11 +26,11 @@
 							}}</button>
 						<InputButton
 							bgColor="bg-red-700 hover:bg-red-800 focus:ring-red-300 text-white focus:ring-4 focus:outline-none"
-							size="sm" :content="commandContentMap[chatElement.command!]" :handleSubmit="handleDeleteUserClick"
+							:content="commandContentMap[chatElement.command!]" :handleSubmit="handleDeleteUserClick"
 							v-if="chatElement.command === 'DELETE_USER'" />
 						<InputButton
 							bgColor="bg-red-700 hover:bg-red-800 focus:ring-red-300 text-white focus:ring-4 focus:outline-none"
-							size="sm" :content="commandContentMap[chatElement.command!]" :handleSubmit="handleDeleteDepartmentClick"
+							:content="commandContentMap[chatElement.command!]" :handleSubmit="handleDeleteDepartmentClick"
 							v-if="chatElement.command === 'DELETE_DEPARTMENT'" />
 					</div>
 				</div>
@@ -82,8 +82,15 @@
 </template>
 
 <script setup lang="ts">
+import InputButton from "@/components/InputButton.vue";
+import UserDeleteModal from "@/components/PopupModal.vue";
+import DepartmentDeleteModal from "@/components/PopupModal.vue";
 import LoadingIcon from "@/components/icons/LoadingIcon.vue";
+import { useAiAction } from "@/composables/ai/useAiAction";
+import { useDepartmentQuery } from "@/composables/department/useDepartmentQuery";
+import { useDepartmentUpsert } from "@/composables/department/useDepartmentUpsert";
 import useAlertStore from "@/composables/store/useAlertStore";
+import type { DepartmentUpsertModel } from "@/types/department";
 import DOMPurify from "dompurify";
 import { Modal, type ModalInterface, initFlowbite } from "flowbite";
 import { marked } from "marked";
@@ -96,13 +103,6 @@ import { useAiChat } from "../composables/ai/useAiChat";
 import useUserStore from "../composables/store/useUserStore";
 import { useUserUpsert } from "../composables/user/useUserUpsert";
 import type { UserUpsertSubmitModel } from "../types/user";
-import { useDepartmentQuery } from "@/composables/department/useDepartmentQuery";
-import { useDepartmentUpsert } from "@/composables/department/useDepartmentUpsert";
-import type { DepartmentUpsertModel } from "@/types/department";
-import UserDeleteModal from "@/components/PopupModal.vue";
-import { useAiAction } from "@/composables/ai/useAiAction";
-import DepartmentDeleteModal from "@/components/PopupModal.vue";
-import InputButton from "@/components/InputButton.vue";
 
 const { messages, chat, isLoading, cancel, searchAction, executeAction } = useAiChat();
 const { user } = useUserStore();

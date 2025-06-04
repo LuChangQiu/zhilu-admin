@@ -15,6 +15,7 @@
             </svg>
           </button>
           <a href="https://github.com/ccmjga/zhilu-admin" target="_blank" class="flex items-center ms-2 md:me-24">
+            <img class="me-3" src="/logo.svg" alt="logo">
             <span class="self-center text-lg sm:text-xl md:text-2xl font-semibold whitespace-nowrap">知路后台管理</span>
           </a>
         </div>
@@ -33,16 +34,16 @@
           </a>
           <span class="flex space-x-2 sm:space-x-3">
             <button class="cursor-pointer p-1" @click="changeAssistantVisible">
-              <AiChatIcon class="w-7 h-7 text-gray-600 sm:w-5 sm:h-5" />
+              <AiChatIcon />
             </button>
           </span>
 
           <div class="flex items-center ms-2 sm:ms-3">
             <div>
               <button type="button" id="dropdown-button"
-                class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 " aria-expanded="false"
-                data-dropdown-toggle="dropdown-user">
-                <span class="sr-only">Open user menu</span>
+                class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 cursor-pointer"
+                aria-expanded="false" data-dropdown-toggle="dropdown-user">
+                <span class="sr-only">打开用户菜单</span>
                 <img class="w-8 h-8 rounded-full" src="/java.svg" alt="user photo">
               </button>
             </div>

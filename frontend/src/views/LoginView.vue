@@ -2,7 +2,10 @@
 	<div class="flex flex-col items-center justify-center h-screen bg-gray-100">
 		<div class="w-full max-w-xs sm:max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow-sm sm:p-6 md:p-8">
 			<form class="flex flex-col gap-y-4 sm:gap-y-5" action="#">
-				<h5 class="text-xl sm:text-2xl font-medium text-gray-900">知路管理后台</h5>
+				<h5 class="text-xl sm:text-2xl font-medium text-gray-900 flex items-center gap-x-2">
+					<img src="/logo.svg" alt="logo">
+					<span>知路管理后台</span>
+				</h5>
 				<div>
 					<label for="username" class="block mb-2 text-sm font-medium text-gray-900">用户名</label>
 					<input type="text" name="email" id="username" v-model="username"

@@ -25,7 +25,7 @@
       </form>
       <!-- Create Modal toggle -->
       <Button :handleClick="() => handleUpsertPositionClick()" :isLoading="false" :abortable="false"
-        submitContent="新增岗位" size="sm" class="w-full sm:w-auto">
+        submitContent="新增岗位" class="w-full sm:w-auto">
         <template #icon>
           <svg class="w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
             viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">

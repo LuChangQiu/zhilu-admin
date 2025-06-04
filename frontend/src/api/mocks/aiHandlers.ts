@@ -26,6 +26,7 @@ export default [
 			modelName: faker.lorem.word(),
 			apiKey: faker.string.uuid(),
 			url: faker.internet.url(),
+			type: faker.helpers.arrayElement(["CHAT", "EMBEDDING"]),
 			enable: faker.datatype.boolean(),
 			priority: faker.number.int({ min: 1, max: 10 }),
 		});

@@ -9,7 +9,7 @@
 						class="flex items-center p-2 gap-x-2 text-gray-900 rounded-lg  hover:bg-gray-100  group"
 						:class="{ 'bg-gray-100 ': isActive(item.path) }">
 						<component :is="item.icon"
-							class="shrink-0 text-gray-700 transition duration-75  group-hover:text-gray-900 " />
+							class="shrink-0 text-gray-500 transition duration-75  group-hover:text-gray-900 " />
 						<span>{{ item.title }}</span>
 					</RouterLink>
 				</li>
