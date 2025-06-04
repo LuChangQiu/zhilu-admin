@@ -15,7 +15,7 @@ export default [
 	}),
 	http.post("/ai/action/search", () => {
 		const response = HttpResponse.json({
-			action: "CREATE_USER",
+			action: "DELETE_USER",
 		});
 		return response;
 	}),

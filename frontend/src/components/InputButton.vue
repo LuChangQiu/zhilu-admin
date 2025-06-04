@@ -15,9 +15,9 @@
         ]" :placeholder="placeholder" required />
       <button type="submit" :class="[
           'text-white absolute end-2.5 font-medium rounded-lg',
-          size === 'sm' ? 'text-xs px-2.5 py-1.5 bottom-2' :
-          size === 'md' ? 'text-sm px-3 py-2 bottom-2.5' :
-          'text-base px-4 py-2.5 bottom-3',
+          size === 'sm' ? 'text-xs px-2.5 py-1.5 bottom-1.5' :
+          size === 'md' ? 'text-sm px-3 py-2 bottom-1.5' :
+          'text-base px-4 py-2.5 bottom-1.5',
           bgColor
         ]" @click.prevent="handleSubmitClick(bindInput)">{{ content }}</button>
     </div>
