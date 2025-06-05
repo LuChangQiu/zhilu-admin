@@ -163,8 +163,8 @@ public class UserRolePermissionOperatorTool {
   }
 
   @Tool(value = "删除角色")
-  void deleteRole(@P(value = "角色名称") String roleName) {
-    Role role = roleRepository.fetchOneByName(roleName);
+  void deleteRole(@P(value = "角色名称") String name) {
+    Role role = roleRepository.fetchOneByName(name);
     if (role == null) {
       throw new BusinessException("指定角色不存在");
     }
@@ -172,8 +172,8 @@ public class UserRolePermissionOperatorTool {
   }
 
   @Tool(value = "删除权限")
-  void deletePermission(@P(value = "权限名称") String permissionName) {
-    Permission permission = permissionRepository.fetchOneByName(permissionName);
+  void deletePermission(@P(value = "权限名称") String name) {
+    Permission permission = permissionRepository.fetchOneByName(name);
     if (permission == null) {
       throw new BusinessException("指定权限不存在");
     }
