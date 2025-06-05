@@ -51,8 +51,8 @@
 						<select id="countries" v-model="commandMode"
 							class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block">
 							<option selected :value="'chat'">询问模式</option>
-							<option :value="'search'">搜索模式</option>
 							<option :value="'execute'">指令模式</option>
+							<option :value="'search'">搜索模式</option>
 						</select>
 					</form>
 					<Button :abortable="true" :isLoading="isLoading" :loadingContent="'中止'" :submitContent="'发送'"
