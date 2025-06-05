@@ -30,12 +30,12 @@ public class UserRolePermissionOperatorTool {
   private final PositionRepository positionRepository;
 
   @Tool(value = {"创建用户", "入职申请", "开通账号"})
-  void createUser(@P(value = "用户名") String username) {
-    User user = userRepository.fetchOneByUsername(username);
+  void createUser(@P(value = "用户名") String name) {
+    User user = userRepository.fetchOneByUsername(name);
     if (user != null) {
       throw new BusinessException("用户已存在");
     }
-    identityAccessService.upsertUser(new UserUpsertDto(null, username, username, true));
+    identityAccessService.upsertUser(new UserUpsertDto(null, name, name, true));
   }
 
   //  @Tool(value = "查询用户")
@@ -50,15 +50,15 @@ public class UserRolePermissionOperatorTool {
     userRepository.deleteByUsername(username);
   }
 
-  @Tool(value = "编辑/更新/更改用户")
+  @Tool(value = {"编辑用户", "更新用户", "更改用户"})
   void updateUser(
-      @P(value = "用户名") String username,
+      @P(value = "用户名") String name,
       @P(value = "密码", required = false) String password,
       @P(value = "是否开启", required = false) Boolean enable) {
-    identityAccessService.upsertUser(new UserUpsertDto(null, username, password, enable));
+    identityAccessService.upsertUser(new UserUpsertDto(null, name, password, enable));
   }
 
-  @Tool(value = "给用户绑定/分配角色")
+  @Tool(value = {"给用户绑定角色", "给用户分配角色"})
   void bindRoleToUser(
       @P(value = "用户名") String username, @P(value = "角色名称") List<String> roleNames) {
     User user = checkUserExistBy(username);
@@ -66,7 +66,7 @@ public class UserRolePermissionOperatorTool {
     identityAccessService.bindRoleToUser(user.getId(), bindRoleIds);
   }
 
-  @Tool(value = "给用户解绑/撤销角色")
+  @Tool(value = {"给用户解绑角色", "给用户撤销角色"})
   void unbindRoleToUser(
       @P(value = "用户名") String username, @P(value = "角色名称") List<String> roleNames) {
     User user = checkUserExistBy(username);
@@ -74,7 +74,7 @@ public class UserRolePermissionOperatorTool {
     identityAccessService.unBindRoleToUser(user.getId(), bindRoleIds);
   }
 
-  @Tool(value = "给用户绑定/分配部门")
+  @Tool(value = {"给用户绑定部门", "给用户分配部门"})
   void bindDepartmentToUser(
       @P(value = "用户名") String username, @P(value = "部门名称列表") List<String> departmentNames) {
     User user = checkUserExistBy(username);
@@ -87,7 +87,7 @@ public class UserRolePermissionOperatorTool {
         new DepartmentBindDto(user.getId(), departments.stream().map(Department::getId).toList()));
   }
 
-  @Tool(value = "给用户绑定/分配部门")
+  @Tool(value = {"给用户解绑部门", "给用户撤销部门"})
   void unbindDepartmentToUser(
       @P(value = "用户名") String username, @P(value = "部门名称列表") List<String> departmentNames) {
     User user = checkUserExistBy(username);
@@ -108,7 +108,7 @@ public class UserRolePermissionOperatorTool {
     return user;
   }
 
-  @Tool(value = "给用户绑定/分配岗位")
+  @Tool(value = {"给用户绑定岗位", "给用户分配岗位"})
   void bindPositionToUser(
       @P(value = "用户名") String username, @P(value = "岗位名称列表") List<String> positionNames) {
     User user = checkUserExistBy(username);
@@ -120,7 +120,7 @@ public class UserRolePermissionOperatorTool {
         new PositionBindDto(user.getId(), positions.stream().map(Position::getId).toList()));
   }
 
-  @Tool(value = "给用户解绑/撤销岗位")
+  @Tool(value = {"给用户解绑岗位", "给用户撤销岗位"})
   void unbindPositionToUser(
       @P(value = "用户名") String username, @P(value = "岗位名称列表") List<String> positionNames) {
     User user = checkUserExistBy(username);
@@ -140,28 +140,26 @@ public class UserRolePermissionOperatorTool {
     return roles.stream().map(Role::getId).toList();
   }
 
-  @Tool(value = "创建角色")
+  @Tool(value = {"创建角色", "创建系统角色"})
   void createRole(
-      @P(value = "角色名称") String roleName, @P(value = "角色编码", required = false) String roleCode) {
-    if (StringUtils.isEmpty(roleCode)) {
-      roleCode = roleName;
+      @P(value = "角色名称") String name, @P(value = "角色编码", required = false) String code) {
+    if (StringUtils.isEmpty(code)) {
+      code = name;
     }
-    if (identityAccessService.isRoleDuplicate(roleCode, roleName)) {
+    if (identityAccessService.isRoleDuplicate(code, name)) {
       throw new BusinessException("角色已存在");
     }
-    identityAccessService.upsertRole(new RoleUpsertDto(null, roleName, roleCode));
+    identityAccessService.upsertRole(new RoleUpsertDto(null, name, code));
   }
 
   @Tool(value = "更新角色")
-  void updateRole(@P(value = "角色名称") String roleName, @P(value = "角色编码") String roleCode) {
-    identityAccessService.upsertRole(new RoleUpsertDto(null, roleName, roleCode));
+  void updateRole(@P(value = "角色名称") String name, @P(value = "角色编码") String code) {
+    identityAccessService.upsertRole(new RoleUpsertDto(null, name, code));
   }
 
   @Tool(value = "更新权限")
-  void updatePermission(
-      @P(value = "权限名称") String permissionName, @P(value = "权限编码") String permissionCode) {
-    identityAccessService.upsertPermission(
-        new PermissionUpsertDto(null, permissionName, permissionCode));
+  void updatePermission(@P(value = "权限名称") String name, @P(value = "权限编码") String code) {
+    identityAccessService.upsertPermission(new PermissionUpsertDto(null, name, code));
   }
 
   @Tool(value = "删除角色")
@@ -182,7 +180,7 @@ public class UserRolePermissionOperatorTool {
     permissionRepository.deleteById(permission.getId());
   }
 
-  @Tool(value = "给角色绑定/分配权限")
+  @Tool(value = {"给角色绑定权限", "给用户分配权限"})
   void bindPermissionToRole(
       @P(value = "角色名称") String roleName, @P(value = "权限名称") List<String> permissionNames) {
     Role role = roleRepository.fetchOneByName(roleName);
@@ -198,7 +196,7 @@ public class UserRolePermissionOperatorTool {
         role.getId(), permissions.stream().map(Permission::getId).toList());
   }
 
-  @Tool(value = "给角色解绑/撤销权限")
+  @Tool(value = {"给角色解绑权限", "给角色撤销权限"})
   void unBindPermissionToRole(
       @P(value = "角色名称") String roleName, @P(value = "权限名称") List<String> permissionNames) {
     Role role = roleRepository.fetchOneByName(roleName);
@@ -216,15 +214,13 @@ public class UserRolePermissionOperatorTool {
 
   @Tool(value = "创建权限")
   void createPermission(
-      @P(value = "权限名称") String permissionName,
-      @P(value = "权限编码", required = false) String permissionCode) {
-    if (StringUtils.isEmpty(permissionCode)) {
-      permissionCode = permissionName;
+      @P(value = "权限名称") String name, @P(value = "权限编码", required = false) String code) {
+    if (StringUtils.isEmpty(code)) {
+      code = name;
     }
-    if (identityAccessService.isPermissionDuplicate(permissionName, permissionName)) {
+    if (identityAccessService.isPermissionDuplicate(name, name)) {
       throw new BusinessException("权限已存在");
     }
-    identityAccessService.upsertPermission(
-        new PermissionUpsertDto(null, permissionName, permissionCode));
+    identityAccessService.upsertPermission(new PermissionUpsertDto(null, name, code));
   }
 }

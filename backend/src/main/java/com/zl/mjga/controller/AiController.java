@@ -47,17 +47,25 @@ public class AiController {
     Sinks.Many<String> sink = Sinks.many().unicast().onBackpressureBuffer();
     TokenStream chat = aiChatService.actionExecuteWithZhiPu(principal.getName(), userMessage);
     chat.onPartialResponse(
-            text ->
-                sink.tryEmitNext(
-                    StringUtils.isNotEmpty(text) ? text.replace(" ", "␣").replace("\t", "⇥") : ""))
+            (text) -> {
+              log.debug("ai action partialResponse: {}", text);
+              sink.tryEmitNext(
+                  StringUtils.isNotEmpty(text) ? text.replace(" ", "␣").replace("\t", "⇥") : "");
+            })
         .onToolExecuted(
             toolExecution -> log.debug("当前请求 {} 成功执行函数调用: {}", userMessage, toolExecution))
         .onCompleteResponse(
             r -> {
+              log.debug("ai action completeResponse: {}", r);
               sink.tryEmitComplete();
               sink.emitComplete(Sinks.EmitFailureHandler.FAIL_FAST);
             })
-        .onError(sink::tryEmitError)
+        .onError(
+            (e) -> {
+              sink.tryEmitError(e);
+              sink.tryEmitComplete();
+              sink.emitComplete(Sinks.EmitFailureHandler.FAIL_FAST);
+            })
         .start();
     return sink.asFlux().timeout(Duration.ofSeconds(120));
   }

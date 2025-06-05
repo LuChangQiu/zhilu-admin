@@ -21,32 +21,30 @@ public class DepartmentOperatorTool {
 
   @Tool(value = "创建部门")
   void createDepartment(
-      @P(value = "部门名称") String departmentName,
-      @P(value = "上级部门名称", required = false) String parentDepartmentName) {
-    Department exist = departmentRepository.fetchOneByName(departmentName);
+      @P(value = "部门名称") String name, @P(value = "上级部门名称", required = false) String parentName) {
+    Department exist = departmentRepository.fetchOneByName(name);
     if (exist != null) {
       throw new BusinessException("当前部门已存在");
     }
-    if (StringUtils.isNotEmpty(parentDepartmentName)) {
-      Department parent = departmentRepository.fetchOneByName(parentDepartmentName);
+    if (StringUtils.isNotEmpty(parentName)) {
+      Department parent = departmentRepository.fetchOneByName(parentName);
       if (parent == null) {
         throw new BusinessException("上级部门不存在");
       }
     }
-    departmentService.upsertDepartment(new Department(null, departmentName, null));
+    departmentService.upsertDepartment(new Department(null, name, null));
   }
 
   @Tool(value = "更新部门/绑定上级部门/解绑上级部门")
   void updateDepartment(
-      @P(value = "部门名称") String departmentName,
-      @P(value = "上级部门名称", required = false) String parentDepartmentName) {
-    Department exist = departmentRepository.fetchOneByName(departmentName);
+      @P(value = "部门名称") String name, @P(value = "上级部门名称", required = false) String parentName) {
+    Department exist = departmentRepository.fetchOneByName(name);
     if (exist == null) {
       throw new BusinessException("不存在的部门");
     }
-    Department department = new Department(null, departmentName, null);
-    if (StringUtils.isNotEmpty(parentDepartmentName)) {
-      Department parent = departmentRepository.fetchOneByName(parentDepartmentName);
+    Department department = new Department(null, name, null);
+    if (StringUtils.isNotEmpty(parentName)) {
+      Department parent = departmentRepository.fetchOneByName(parentName);
       if (parent == null) {
         throw new BusinessException("上级部门不存在");
       }

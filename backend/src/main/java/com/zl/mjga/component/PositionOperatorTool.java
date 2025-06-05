@@ -16,17 +16,17 @@ public class PositionOperatorTool {
   private final PositionRepository positionRepository;
 
   @Tool(value = "创建岗位")
-  void createPosition(@P("岗位名称") String positionName) {
-    Position position = positionRepository.fetchOneByName(positionName);
+  void createPosition(@P("岗位名称") String name) {
+    Position position = positionRepository.fetchOneByName(name);
     if (position != null) {
       throw new BusinessException("岗位已存在");
     }
-    positionRepository.merge(new Position(null, positionName));
+    positionRepository.merge(new Position(null, name));
   }
 
   @Tool(value = "删除岗位")
-  void deletePosition(@P("岗位名称") String positionName) {
-    Position position = positionRepository.fetchOneByName(positionName);
+  void deletePosition(@P("岗位名称") String name) {
+    Position position = positionRepository.fetchOneByName(name);
     if (position == null) {
       throw new BusinessException("岗位不存在");
     }
