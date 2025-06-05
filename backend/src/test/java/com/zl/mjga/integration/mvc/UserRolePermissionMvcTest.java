@@ -59,7 +59,7 @@ class UserRolePermissionMvcTest {
   @Test
   @WithMockUser
   void deleteUser_givenValidHttpRequest_shouldSucceedWith200() throws Exception {
-    Long stubUserId = 1L;
+    Long stubUserId = 2L;
     mockMvc
         .perform(
             delete(String.format("/iam/user?userId=%s", stubUserId))
@@ -152,7 +152,7 @@ class UserRolePermissionMvcTest {
     stubUserRolePermissionDto.setId(1L);
     stubUserRolePermissionDto.setUsername(stubUsername);
     when(identityAccessService.pageQueryUser(
-            PageRequestDto.of(1, 5), new UserQueryDto(stubUsername)))
+            PageRequestDto.of(1, 5), new UserQueryDto(stubUsername, null, null)))
         .thenReturn(new PageResponseDto<>(1, List.of(stubUserRolePermissionDto)));
     mockMvc
         .perform(

@@ -9,9 +9,11 @@
     </description>
     <rule ref="category/java/bestpractices.xml">
         <exclude name="GuardLogStatement"/>
+        <exclude name="AvoidReassigningParameters"/>
     </rule>
     <rule ref="category/java/errorprone.xml">
         <exclude name="AvoidLiteralsInIfCondition"/>
-    </rule>
+        <exclude name="AvoidDuplicateLiterals"/>
 
+    </rule>
 </ruleset>

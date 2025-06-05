@@ -32,7 +32,7 @@ public class SortByDALTest extends AbstractDataAccessLayerTest {
         "INSERT INTO mjga.user (id, username,password) VALUES (3, 'testC','qFVVFvPqs291k10')",
       })
   void userPageFetchWithNoSort() {
-    UserQueryDto rbacQueryDto = new UserQueryDto("test");
+    UserQueryDto rbacQueryDto = new UserQueryDto("test", null, null);
     Result<Record> records = userRepository.pageFetchBy(PageRequestDto.of(1, 10), rbacQueryDto);
     assertThat(records.get(0).get(USER.ID)).isEqualTo(1);
     assertThat(records.get(1).get(USER.ID)).isEqualTo(2);
@@ -48,7 +48,7 @@ public class SortByDALTest extends AbstractDataAccessLayerTest {
         "INSERT INTO mjga.user (id, username,password) VALUES (4, 'testD','3')",
       })
   void userPageFetchWithSort() {
-    UserQueryDto rbacQueryDto = new UserQueryDto("test");
+    UserQueryDto rbacQueryDto = new UserQueryDto("test", null, null);
     HashMap<String, PageRequestDto.Direction> sortByIdDesc = new HashMap<>();
     sortByIdDesc.put("id", PageRequestDto.Direction.DESC);
     Result<Record> records =

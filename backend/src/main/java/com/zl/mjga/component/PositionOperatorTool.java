@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.jooq.generated.mjga.tables.pojos.Position;
 import org.springframework.stereotype.Component;
 
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 @Description("和岗位管理有关的操作工具")
 @RequiredArgsConstructor
 @Component

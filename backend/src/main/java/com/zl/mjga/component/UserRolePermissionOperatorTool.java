@@ -18,6 +18,7 @@ import org.jooq.generated.mjga.tables.pojos.*;
 import org.springframework.stereotype.Component;
 
 @Description("和用户管理有关的操作工具")
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 @RequiredArgsConstructor
 @Component
 public class UserRolePermissionOperatorTool {

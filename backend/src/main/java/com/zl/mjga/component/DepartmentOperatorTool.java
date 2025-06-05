@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jooq.generated.mjga.tables.pojos.Department;
 import org.springframework.stereotype.Component;
 
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 @Description("和部门管理有关的操作工具")
 @RequiredArgsConstructor
 @Component

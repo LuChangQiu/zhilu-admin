@@ -46,7 +46,7 @@ public class JacksonAnnotationMvcTest {
     stubUserRolePermissionDto.setUsername(stubUsername);
     stubUserRolePermissionDto.setPassword(stubPassword);
     when(identityAccessService.pageQueryUser(
-            PageRequestDto.of(1, 5), new UserQueryDto(stubUsername)))
+            PageRequestDto.of(1, 5), new UserQueryDto(stubUsername, null, null)))
         .thenReturn(new PageResponseDto<>(1, List.of(stubUserRolePermissionDto)));
     mockMvc
         .perform(

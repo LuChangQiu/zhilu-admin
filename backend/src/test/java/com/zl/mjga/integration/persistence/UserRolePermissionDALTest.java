@@ -96,7 +96,7 @@ public class UserRolePermissionDALTest extends AbstractDataAccessLayerTest {
         "INSERT INTO mjga.user (id, username,password) VALUES (2, 'testB','NTjRCeUq2EqCy')",
       })
   void user_pageFetchBy() {
-    UserQueryDto rbacQueryDto = new UserQueryDto("test");
+    UserQueryDto rbacQueryDto = new UserQueryDto("test", null, null);
     Result<Record> records = userRepository.pageFetchBy(PageRequestDto.of(1, 10), rbacQueryDto);
     assertThat(records.size()).isEqualTo(2);
 

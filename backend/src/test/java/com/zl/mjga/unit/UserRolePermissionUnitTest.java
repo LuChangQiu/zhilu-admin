@@ -143,7 +143,7 @@ class UserRolePermissionUnitTest {
     // action
     PageResponseDto<List<UserRolePermissionDto>> result =
         identityAccessService.pageQueryUser(
-            PageRequestDto.of(1, 10), new UserQueryDto(stubUserName2));
+            PageRequestDto.of(1, 10), new UserQueryDto(stubUserName2, null, null));
 
     // assert
     List<UserRolePermissionDto> userRolePermissionDtoList = result.getData();
@@ -173,7 +173,7 @@ class UserRolePermissionUnitTest {
         .thenReturn(mockResult);
     PageResponseDto<List<UserRolePermissionDto>> result =
         identityAccessService.pageQueryUser(
-            PageRequestDto.of(1, 10), new UserQueryDto("agydCO1Yi99a"));
+            PageRequestDto.of(1, 10), new UserQueryDto("agydCO1Yi99a", null, null));
     assertThat(result.getTotal()).isEqualTo(0);
     assertThat(result.getData()).isNull();
   }

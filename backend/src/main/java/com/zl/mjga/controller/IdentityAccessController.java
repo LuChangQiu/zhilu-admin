@@ -66,9 +66,6 @@ public class IdentityAccessController {
   @PreAuthorize("hasAuthority(T(com.zl.mjga.model.urp.EPermission).WRITE_USER_ROLE_PERMISSION)")
   @DeleteMapping("/user")
   void deleteUser(@RequestParam Long userId) {
-    if (userId == 1) {
-      throw new BusinessException("演示系统不允许操作管理员角色");
-    }
     userRepository.deleteById(userId);
   }
 
@@ -81,9 +78,6 @@ public class IdentityAccessController {
   @PreAuthorize("hasAuthority(T(com.zl.mjga.model.urp.EPermission).WRITE_USER_ROLE_PERMISSION)")
   @DeleteMapping("/role")
   void deleteRole(@RequestParam Long roleId) {
-    if (roleId == 1) {
-      throw new BusinessException("演示系统不允许删除管理员角色");
-    }
     roleRepository.deleteById(roleId);
   }
 
@@ -102,9 +96,6 @@ public class IdentityAccessController {
   @PreAuthorize("hasAuthority(T(com.zl.mjga.model.urp.EPermission).WRITE_USER_ROLE_PERMISSION)")
   @DeleteMapping("/permission")
   void deletePermission(@RequestParam Long permissionId) {
-    if (permissionId < 10) {
-      throw new BusinessException("演示系统不允许删除原有权限");
-    }
     permissionRepository.deleteById(permissionId);
   }
 
