@@ -11,7 +11,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.jooq.generated.mjga.tables.pojos.Department;
 import org.springframework.stereotype.Component;
 
-@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 @Description("和部门管理有关的操作工具")
 @RequiredArgsConstructor
 @Component
@@ -24,33 +23,62 @@ public class DepartmentOperatorTool {
   void createDepartment(
       @P(value = "部门名称") String name, @P(value = "上级部门名称", required = false) String parentName) {
     Department exist = departmentRepository.fetchOneByName(name);
+    Department department = new Department(null, name, null);
     if (exist != null) {
       throw new BusinessException("当前部门已存在");
     }
     if (StringUtils.isNotEmpty(parentName)) {
       Department parent = departmentRepository.fetchOneByName(parentName);
       if (parent == null) {
-        throw new BusinessException("上级部门不存在");
+        throw new BusinessException("指定的上级部门不存在");
+      } else {
+        department.setParentId(parent.getId());
       }
     }
-    departmentService.upsertDepartment(new Department(null, name, null));
+    departmentService.upsertDepartment(department);
   }
 
-  @Tool(value = "更新部门/绑定上级部门/解绑上级部门")
-  void updateDepartment(
-      @P(value = "部门名称") String name, @P(value = "上级部门名称", required = false) String parentName) {
+  @Tool(value = {"更新部门信息"})
+  void updateDepartment(@P(value = "部门名称") String name) {
     Department exist = departmentRepository.fetchOneByName(name);
     if (exist == null) {
       throw new BusinessException("不存在的部门");
     }
-    Department department = new Department(null, name, null);
-    if (StringUtils.isNotEmpty(parentName)) {
-      Department parent = departmentRepository.fetchOneByName(parentName);
-      if (parent == null) {
-        throw new BusinessException("上级部门不存在");
-      }
-      department.setParentId(parent.getId());
+    exist.setName(name);
+    departmentService.upsertDepartment(exist);
+  }
+
+  @Tool(value = {"给指定部门绑定/分配上级部门"})
+  void bindParentDepartment(
+      @P(value = "部门名称") String name, @P(value = "上级部门名称") String parentName) {
+    Department exist = departmentRepository.fetchOneByName(name);
+    if (exist == null) {
+      throw new BusinessException("不存在的部门");
     }
-    departmentService.upsertDepartment(department);
+    Department parent = departmentRepository.fetchOneByName(parentName);
+    if (parent == null) {
+      throw new BusinessException("上级部门不存在");
+    }
+    exist.setParentId(parent.getId());
+    departmentService.upsertDepartment(exist);
+  }
+
+  @Tool(value = {"给指定部门解绑/撤销上级部门"})
+  void unbindParentDepartment(@P(value = "部门名称") String name) {
+    Department exist = departmentRepository.fetchOneByName(name);
+    if (exist == null) {
+      throw new BusinessException("不存在的部门");
+    }
+    exist.setParentId(null);
+    departmentService.upsertDepartment(exist);
+  }
+
+  @Tool(value = "删除指定部门")
+  void deleteDepartment(@P(value = "部门名称") String name) {
+    Department exist = departmentRepository.fetchOneByName(name);
+    if (exist == null) {
+      throw new BusinessException("不存在的部门");
+    }
+    departmentRepository.deleteById(exist.getId());
   }
 }
