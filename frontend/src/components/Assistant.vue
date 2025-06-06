@@ -47,14 +47,12 @@
 						" required></textarea>
 				</div>
 				<div class="flex justify-between px-2 py-2 border-t border-gray-200">
-					<form>
-						<select id="countries" v-model="commandMode"
-							class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block">
-							<option selected :value="'chat'">询问模式</option>
-							<option :value="'execute'">指令模式</option>
-							<option :value="'search'">搜索模式</option>
-						</select>
-					</form>
+					<select id="countries" v-model="commandMode"
+						class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block">
+						<option selected :value="'execute'">指令模式</option>
+						<option :value="'search'">搜索模式</option>
+						<option :value="'chat'">询问模式</option>
+					</select>
 					<Button :abortable="true" :isLoading="isLoading" :loadingContent="'中止'" :submitContent="'发送'"
 						:handleClick="() => handleSendClick(inputMessage, commandMode)" />
 				</div>
@@ -112,7 +110,7 @@ const departmentUpsertModal = ref<ModalInterface>();
 const inputMessage = ref("");
 const chatContainer = ref<HTMLElement | null>(null);
 const alertStore = useAlertStore();
-const commandMode = ref<"chat" | "search" | "execute">("chat");
+const commandMode = ref<"chat" | "search" | "execute">("execute");
 const userUpsert = useUserUpsert();
 const departmentUpsert = useDepartmentUpsert();
 const userDeleteModal = ref<ModalInterface>();
