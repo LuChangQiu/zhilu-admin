@@ -43,11 +43,11 @@ import SettingsIcon from "./icons/SettingsIcon.vue";
 import UsersIcon from "./icons/UsersIcon.vue";
 
 const isDrawerVisible = ref(false);
-const emit = defineEmits(['menu-click']);
+const emit = defineEmits(["menu-click"]);
 
 // 菜单点击处理
 const handleMenuClick = () => {
-	emit('menu-click');
+	emit("menu-click");
 };
 
 const toggleSidebar = () => {
@@ -66,7 +66,7 @@ defineExpose({
 	toggleSidebar,
 	openSidebar,
 	closeSidebar,
-	isDrawerVisible
+	isDrawerVisible,
 });
 
 // 菜单配置

@@ -45,6 +45,7 @@ export const useAiChat = () => {
 					console.log("onclose");
 				},
 				onerror(err) {
+					console.error(err);
 					throw err;
 				},
 			});

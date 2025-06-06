@@ -94,7 +94,7 @@ import type { DepartmentUpsertModel } from "@/types/department";
 import DOMPurify from "dompurify";
 import { Modal, type ModalInterface, initFlowbite } from "flowbite";
 import { marked } from "marked";
-import { onMounted, onUnmounted, ref, watch } from "vue";
+import { nextTick, onMounted, onUnmounted, ref, watch } from "vue";
 import { z } from "zod";
 import Button from "../components/Button.vue";
 import DepartmentUpsertModal from "../components/DepartmentUpsertModal.vue";
@@ -256,6 +256,9 @@ const chatByMode = async (
 		isUser: true,
 		username: user.username!,
 	});
+	await nextTick(() => {
+		scrollToBottom();
+	});
 	if (mode === "search") {
 		await searchAction(message);
 	} else if (mode === "execute") {
@@ -269,7 +272,6 @@ const handleSendClick = async (
 	message: string,
 	mode: "chat" | "search" | "execute",
 ) => {
-	scrollToBottom();
 	if (isLoading.value) {
 		abortChat();
 		return;
@@ -289,10 +291,7 @@ onMounted(async () => {
 	initFlowbite();
 	const $upsertModalElement: HTMLElement | null =
 		document.querySelector("#user-upsert-modal");
-	userUpsertModal.value = new Modal(
-		$upsertModalElement,
-		{},
-	);
+	userUpsertModal.value = new Modal($upsertModalElement, {});
 	const $userDeleteModalElement: HTMLElement | null =
 		document.querySelector("#user-delete-modal");
 	userDeleteModal.value = new Modal(
@@ -304,16 +303,10 @@ onMounted(async () => {
 	);
 	const $departmentDeleteModalElement: HTMLElement | null =
 		document.querySelector("#department-delete-modal");
-	departmentDeleteModal.value = new Modal(
-		$departmentDeleteModalElement,
-		{},
-	);
+	departmentDeleteModal.value = new Modal($departmentDeleteModalElement, {});
 	const $departmentUpsertModalElement: HTMLElement | null =
 		document.querySelector("#department-upsert-modal");
-	departmentUpsertModal.value = new Modal(
-		$departmentUpsertModalElement,
-		{},
-	);
+	departmentUpsertModal.value = new Modal($departmentUpsertModalElement, {});
 });
 </script>
 

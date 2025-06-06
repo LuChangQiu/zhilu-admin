@@ -101,12 +101,12 @@ import { RouteName, RoutePath } from "../router/constants";
 import AiChatIcon from "./icons/AiChatIcon.vue";
 
 const props = defineProps<{
-  changeAssistantVisible: () => void;
-  onSidebarToggle: () => void;
+	changeAssistantVisible: () => void;
+	onSidebarToggle: () => void;
 }>();
 
 const handleSidebarToggle = () => {
-  props.onSidebarToggle();
+	props.onSidebarToggle();
 };
 
 const userDropDownMenu = ref<DropdownInterface>();
@@ -115,19 +115,19 @@ const { user } = useUserStore();
 const { signOut } = useUserAuth();
 const router = useRouter();
 const handleLogoutClick = () => {
-  signOut();
-  router.push(RoutePath.LOGIN);
+	signOut();
+	router.push(RoutePath.LOGIN);
 };
 
 onMounted(() => {
-  initFlowbite();
-  const $dropdownUser = document.getElementById("dropdown-user");
-  const $dropdownButton = document.getElementById("dropdown-button");
-  userDropDownMenu.value = new Dropdown(
-    $dropdownUser,
-    $dropdownButton,
-    {},
-    { id: "dropdownMenu", override: true },
-  );
+	initFlowbite();
+	const $dropdownUser = document.getElementById("dropdown-user");
+	const $dropdownButton = document.getElementById("dropdown-button");
+	userDropDownMenu.value = new Dropdown(
+		$dropdownUser,
+		$dropdownButton,
+		{},
+		{ id: "dropdownMenu", override: true },
+	);
 });
 </script>
