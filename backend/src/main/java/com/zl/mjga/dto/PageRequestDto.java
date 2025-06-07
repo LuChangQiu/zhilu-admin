@@ -79,7 +79,7 @@ public class PageRequestDto {
                         .sort(SortOrder.valueOf(entry.getValue().getKeyword())))
             .toList();
     if (sortFields.isEmpty()) {
-      return List.of(field(name("id")).sort(SortOrder.ASC));
+      return List.of(field(name("id")).sort(SortOrder.DESC));
     } else {
       return sortFields;
     }
