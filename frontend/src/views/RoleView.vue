@@ -155,8 +155,12 @@ onMounted(async () => {
 		document.querySelector("#role-upsert-modal");
 	const $deleteModalElement: HTMLElement | null =
 		document.querySelector("#role-delete-modal");
-	roleUpsertModal.value = new Modal($upsertModalElement, {});
-	roleDeleteModal.value = new Modal($deleteModalElement, {});
+	if ($upsertModalElement) {
+		roleUpsertModal.value = new Modal($upsertModalElement, {});
+	}
+	if ($deleteModalElement) {
+		roleDeleteModal.value = new Modal($deleteModalElement, {});
+	}
 });
 
 const handleUpsertModalSubmit = async (data: RoleUpsertModel) => {
