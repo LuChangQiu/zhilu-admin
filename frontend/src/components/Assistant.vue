@@ -289,22 +289,30 @@ onMounted(async () => {
 	initFlowbite();
 	const $upsertModalElement: HTMLElement | null =
 		document.querySelector("#user-upsert-modal");
-	userUpsertModal.value = new Modal($upsertModalElement, {});
+	if ($upsertModalElement) {
+		userUpsertModal.value = new Modal($upsertModalElement, {});
+	}
 	const $userDeleteModalElement: HTMLElement | null =
 		document.querySelector("#user-delete-modal");
-	userDeleteModal.value = new Modal(
-		$userDeleteModalElement,
-		{},
-		{
-			id: "user-delete-modal",
-		},
-	);
+	if ($userDeleteModalElement) {
+		userDeleteModal.value = new Modal(
+			$userDeleteModalElement,
+			{},
+			{
+				id: "user-delete-modal",
+			},
+		);
+	}
 	const $departmentDeleteModalElement: HTMLElement | null =
 		document.querySelector("#department-delete-modal");
-	departmentDeleteModal.value = new Modal($departmentDeleteModalElement, {});
+	if ($departmentDeleteModalElement) {
+		departmentDeleteModal.value = new Modal($departmentDeleteModalElement, {});
+	}
 	const $departmentUpsertModalElement: HTMLElement | null =
 		document.querySelector("#department-upsert-modal");
-	departmentUpsertModal.value = new Modal($departmentUpsertModalElement, {});
+	if ($departmentUpsertModalElement) {
+		departmentUpsertModal.value = new Modal($departmentUpsertModalElement, {});
+	}
 });
 </script>
 

@@ -167,8 +167,9 @@ onMounted(async () => {
 	initFlowbite();
 	const $llmUpdateModalElement: HTMLElement | null =
 		document.querySelector("#llm-update-modal");
-
-	llmUpdateModal.value = new Modal($llmUpdateModalElement, {});
+	if ($llmUpdateModalElement) {
+		llmUpdateModal.value = new Modal($llmUpdateModalElement, {});
+	}
 });
 </script>
 

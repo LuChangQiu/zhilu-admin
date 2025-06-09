@@ -187,11 +187,9 @@ onMounted(async () => {
 	initFlowbite();
 	const $bindModalElement: HTMLElement | null =
 		document.querySelector("#role-bind-modal");
-	roleBindModal.value = new Modal(
-		$bindModalElement,
-		{},
-		{ id: "role-bind-modal" },
-	);
+	if ($bindModalElement) {
+		roleBindModal.value = new Modal($bindModalElement, {});
+	}
 	const $unbindModalElement: HTMLElement | null =
 		document.querySelector("#role-unbind-modal");
 	roleUnbindModal.value = new Modal(

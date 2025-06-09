@@ -116,7 +116,6 @@ import TablePagination from "@/components/TablePagination.vue";
 import usePositionDelete from "@/composables/position/usePositionDelete";
 import { usePositionQuery } from "@/composables/position/usePositionQuery";
 import { usePositionUpsert } from "@/composables/position/usePositionUpsert";
-import { RouteName } from "@/router/constants";
 import { Modal, type ModalInterface, initFlowbite } from "flowbite";
 import { nextTick, onMounted, ref } from "vue";
 import type { components } from "../api/types/schema";
@@ -147,8 +146,12 @@ onMounted(async () => {
 	const $deleteModalElement: HTMLElement | null = document.querySelector(
 		"#position-delete-modal",
 	);
-	positionUpsertModal.value = new Modal($upsertModalElement, {});
-	positionDeleteModal.value = new Modal($deleteModalElement, {});
+	if ($upsertModalElement) {
+		positionUpsertModal.value = new Modal($upsertModalElement, {});
+	}
+	if ($deleteModalElement) {
+		positionDeleteModal.value = new Modal($deleteModalElement, {});
+	}
 });
 
 const handleUpsertPositionSubmit = async (

@@ -274,10 +274,15 @@ onMounted(async () => {
 		document.querySelector("#job-pause-modal");
 	const $jobUpdateModalElement: HTMLElement | null =
 		document.querySelector("#job-update-modal");
-
-	jobResumeModal.value = new Modal($jobResumeModalElement, {});
-	jobPauseModal.value = new Modal($jobPauseModalElement, {});
-	jobUpdateModal.value = new Modal($jobUpdateModalElement, {});
+	if ($jobResumeModalElement) {
+		jobResumeModal.value = new Modal($jobResumeModalElement, {});
+	}
+	if ($jobPauseModalElement) {
+		jobPauseModal.value = new Modal($jobPauseModalElement, {});
+	}
+	if ($jobUpdateModalElement) {
+		jobUpdateModal.value = new Modal($jobUpdateModalElement, {});
+	}
 });
 </script>
 

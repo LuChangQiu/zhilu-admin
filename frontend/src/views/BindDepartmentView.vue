@@ -6,7 +6,7 @@
     </div>
     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-y-3 sm:gap-y-0">
       <form class="w-full sm:w-auto flex flex-col xs:flex-row gap-2 xs:gap-3 items-stretch xs:items-center">
-        <div class="flex-grow">
+        <div class="flex-grow"> 
           <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
           <div class="relative">
             <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -194,11 +194,9 @@ onMounted(async () => {
 	const $bindModalElement: HTMLElement | null = document.querySelector(
 		"#department-bind-modal",
 	);
-	departmentBindModal.value = new Modal(
-		$bindModalElement,
-		{},
-		{ id: "department-bind-modal" },
-	);
+	if ($bindModalElement) {
+		departmentBindModal.value = new Modal($bindModalElement, {});
+	}
 	const $unbindModalElement: HTMLElement | null = document.querySelector(
 		"#department-unbind-modal",
 	);

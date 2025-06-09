@@ -184,11 +184,9 @@ onMounted(async () => {
 	const $bindModalElement: HTMLElement | null = document.querySelector(
 		"#position-bind-modal",
 	);
-	positionBindModal.value = new Modal(
-		$bindModalElement,
-		{},
-		{ id: "position-bind-modal" },
-	);
+	if ($bindModalElement) {
+		positionBindModal.value = new Modal($bindModalElement, {});
+	}
 	const $unbindModalElement: HTMLElement | null = document.querySelector(
 		"#position-unbind-modal",
 	);

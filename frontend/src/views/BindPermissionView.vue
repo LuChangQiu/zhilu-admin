@@ -194,11 +194,9 @@ onMounted(async () => {
 	const $bindModalElement: HTMLElement | null = document.querySelector(
 		"#permission-bind-modal",
 	);
-	permissionBindModal.value = new Modal(
-		$bindModalElement,
-		{},
-		{ id: "permission-bind-modal" },
-	);
+	if ($bindModalElement) {
+		permissionBindModal.value = new Modal($bindModalElement, {});
+	}
 	const $unbindModalElement: HTMLElement | null = document.querySelector(
 		"#permission-unbind-modal",
 	);
