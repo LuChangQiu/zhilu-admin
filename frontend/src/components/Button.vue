@@ -59,9 +59,9 @@ const sizeClasses = computed(() => {
 	}
 	switch (props.size) {
 		case "xs":
-			return "text-xs px-2.5 py-1.5";
+			return "text-xs px-3 py-1.5";
 		case "sm":
-			return "text-xs px-3 py-2";
+			return "text-sm px-3.5 py-2";
 		case "lg":
 			return "text-base px-5 py-3";
 		case "xl":
@@ -74,7 +74,7 @@ const sizeClasses = computed(() => {
 const iconSizeClasses = computed(() => {
 	switch (props.size) {
 		case "xs":
-			return "w-3 h-3";
+			return "w-3.5 h-3.5";
 		case "sm":
 			return "w-4 h-4";
 		case "lg":
@@ -82,7 +82,7 @@ const iconSizeClasses = computed(() => {
 		case "xl":
 			return "w-6 h-6";
 		default:
-			return "w-5 h-5";
+			return "w-4.5 h-4.5";
 	}
 });
 

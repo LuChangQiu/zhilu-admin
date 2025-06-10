@@ -1,28 +1,24 @@
 <template>
-  <nav class="flex mb-3 sm:mb-4 md:mb-5" aria-label="Breadcrumb">
-    <ol class="inline-flex items-center space-x-1 text-xs sm:text-sm font-medium md:space-x-2">
+  <nav class="flex mb-4" aria-label="Breadcrumb">
+    <ol class="inline-flex items-center space-x-1 sm:space-x-2 text-sm">
       <li class="inline-flex items-center">
-        <RouterLink :to="{name: RouteName.USERVIEW}"
-          class="inline-flex items-center text-gray-700 hover:text-primary-600">
-          <svg class="w-4 h-4 sm:w-5 sm:h-5 me-1.5 sm:me-2 md:me-2.5" fill="currentColor" viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg">
+        <RouterLink to="/" class="inline-flex items-center font-medium text-gray-500 hover:text-blue-600">
+          <svg class="w-3.5 h-3.5 mr-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+            viewBox="0 0 20 20">
             <path
-              d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
-            </path>
+              d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z" />
           </svg>
           首页
         </RouterLink>
       </li>
-      <li v-for="name in names" :key="name">
+      <li v-for="(name, index) in names" :key="index">
         <div class="flex items-center">
-          <svg class="w-3 h-3 sm:w-4 sm:h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd"
-              d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-              clip-rule="evenodd"></path>
+          <svg class="w-3 h-3 text-gray-400 mx-1.5 sm:mx-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+            fill="none" viewBox="0 0 6 10">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="m1 9 4-4-4-4" />
           </svg>
-          <span class="ms-1 text-gray-400 hover:text-primary-600 md:ms-2">{{
-            name }}</span>
+          <span class="font-medium text-gray-500 truncate">{{ name }}</span>
         </div>
       </li>
     </ol>
