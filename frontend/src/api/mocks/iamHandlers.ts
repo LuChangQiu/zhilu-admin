@@ -40,7 +40,7 @@ export default [
 			roles: faker.helpers.multiple(generateRole, {
 				count: { min: 1, max: 3 },
 			}),
-			createTime: faker.date.recent({ days: 30 }).toISOString(),
+			createTime: faker.date.past().getTime(),
 			permissions: faker.helpers.multiple(generatePermission, {
 				count: { min: 1, max: 5 },
 			}),
@@ -83,7 +83,7 @@ export default [
 			roles: faker.helpers.multiple(generateRole, {
 				count: { min: 1, max: 3 },
 			}),
-			createTime: faker.date.recent({ days: 30 }).toISOString(),
+			createTime: faker.date.past().getTime(),
 			permissions: faker.helpers.multiple(generatePermission, {
 				count: { min: 1, max: 5 },
 			}),
@@ -158,7 +158,7 @@ export default [
 			roles: faker.helpers.multiple(generateRole, {
 				count: { min: 1, max: 3 },
 			}),
-			createTime: faker.date.recent({ days: 30 }).toISOString(),
+			createTime: faker.date.past().getTime(),
 			permissions: faker.helpers.multiple(generatePermission, {
 				count: { min: 1, max: 5 },
 			}),

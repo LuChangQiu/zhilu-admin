@@ -102,6 +102,9 @@
         <template #sort-icon="{ field }">
           <SortIcon :sortField="getSortField(field)" />
         </template>
+        <template #createTime="{ item }">
+          {{ dayjs(item.createTime).format("llll") }}
+        </template>
         <template #status="{ item }">
           <div class="flex items-center">
             <div class="h-2.5 w-2.5 rounded-full me-2" :class="item.enable ? 'bg-blue-500' : 'bg-red-500'"></div>

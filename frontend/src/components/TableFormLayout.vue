@@ -131,7 +131,6 @@ const getItemId = (item: T): string | number => {
 const getItemValue = (item: T, field: string): string => {
   if (!field) return '';
   
-  // 支持嵌套属性访问，如 "user.name"
   return String(field.split('.').reduce<unknown>((obj, key) => 
     obj && typeof obj === 'object' && key in (obj as Record<string, unknown>) 
       ? (obj as Record<string, unknown>)[key] 
