@@ -2,7 +2,8 @@
   <nav class="flex mb-4" aria-label="Breadcrumb">
     <ol class="inline-flex items-center space-x-1 sm:space-x-2 text-sm">
       <li class="inline-flex items-center">
-        <RouterLink to="/" class="inline-flex items-center font-medium text-gray-500 hover:text-blue-600">
+        <RouterLink :to="{ name: RouteName.HOME }"
+          class="inline-flex items-center font-medium text-gray-500 hover:text-blue-600">
           <svg class="w-3.5 h-3.5 mr-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
             viewBox="0 0 20 20">
             <path

@@ -119,6 +119,75 @@
   <UnModal :id="'permission-unbind-modal'" :closeModal="() => {
     permissionUnbindModal!.hide();
   }" :onSubmit="handleUnbindPermissionSubmit" title="确定解绑选中的权限吗"></UnModal>
+
+  <!-- 移动端卡片布局 -->
+  <div class="md:hidden space-y-4">
+    <div v-for="permission in permissions" :key="permission.id" class="p-4 bg-white rounded-lg shadow">
+      <div class="flex items-center justify-between mb-3">
+        <div class="flex items-center">
+          <input :id="'mobile-checkbox-' + permission.id" :value="permission.id" type="checkbox"
+            v-model="checkedPermissionIds"
+            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 focus:ring-2 mr-3">
+          <div class="font-medium text-gray-900">{{ permission.name }}</div>
+        </div>
+        <div class="flex items-center">
+          <div class="h-2.5 w-2.5 rounded-full me-2" :class="permission.isBound ? 'bg-green-500' : 'bg-red-500'"></div>
+          <span class="text-sm">{{ permission.isBound === true ? "已绑定" : "未绑定" }}</span>
+        </div>
+      </div>
+
+      <div>
+        <p class="text-xs font-medium text-gray-600">权限编码</p>
+        <p class="text-sm text-gray-900 mt-0.5">{{ permission.code }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PC端表格布局 -->
+  <div class="relative overflow-x-auto shadow-md sm:rounded-lg hidden md:block">
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+      <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+        <tr>
+          <th scope="col" class="p-4 w-4">
+            <div class="flex items-center">
+              <input id="checkbox-all-search" type="checkbox" v-model="allChecked"
+                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 focus:ring-2">
+              <label for="checkbox-all-search" class="sr-only">checkbox</label>
+            </div>
+          </th>
+          <th scope="col" class="px-4 py-3">权限编码</th>
+          <th scope="col" class="px-4 py-3">权限名称</th>
+          <th scope="col" class="px-4 py-3">绑定状态</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="permission in permissions" :key="permission.id"
+          class="bg-white border-b border-gray-200 hover:bg-gray-50">
+          <td class="w-4 p-4">
+            <div class="flex items-center">
+              <input :id="'checkbox-table-search-' + permission.id" :value="permission.id" type="checkbox"
+                v-model="checkedPermissionIds"
+                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 focus:ring-2">
+              <label :for="'checkbox-table-search-' + permission.id" class="sr-only">checkbox</label>
+            </div>
+          </td>
+          <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap">
+            {{ permission.code }}
+          </td>
+          <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap">
+            {{ permission.name }}
+          </td>
+          <td class="px-4 py-3 max-w-sm overflow-hidden text-ellipsis">
+            <div class="flex items-center">
+              <div class="h-2.5 w-2.5 rounded-full me-2" :class="permission.isBound ? 'bg-green-500' : 'bg-red-500'">
+              </div> {{
+              permission.isBound === true ? "已绑定" : "未绑定" }}
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -126,6 +195,7 @@ import Breadcrumbs from "@/components/Breadcrumbs.vue";
 import BindModal from "@/components/PopupModal.vue";
 import UnModal from "@/components/PopupModal.vue";
 import TablePagination from "@/components/TablePagination.vue";
+import { useMobileStyles } from "@/composables/useMobileStyles";
 import { RouteName } from "@/router/constants";
 import { Modal, type ModalInterface, initFlowbite } from "flowbite";
 import { onMounted, ref, watch } from "vue";

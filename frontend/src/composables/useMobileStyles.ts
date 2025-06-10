@@ -15,14 +15,14 @@ export function useMobileStyles() {
 	// 卡片内容容器样式
 	const cardContentClass = "text-sm text-gray-600 mb-3 space-y-2";
 
-	// 标签名称样式
-	const labelClass = "text-xs text-gray-500";
+	// 标签名称样式 - 更深的灰色以增强区分度
+	const labelClass = "text-xs font-medium text-gray-600";
 
-	// 标签值样式
-	const valueClass = "text-sm";
+	// 标签值样式 - 更深的颜色以突出显示值
+	const valueClass = "text-sm text-gray-900 mt-0.5";
 
 	// 卡片网格布局
-	const gridContainerClass = "grid grid-cols-2 gap-2";
+	const gridContainerClass = "grid grid-cols-2 gap-3";
 
 	// 按钮容器样式
 	const actionContainerClass = "flex justify-between items-center mt-4";
@@ -48,6 +48,9 @@ export function useMobileStyles() {
 	// 状态指示点样式
 	const statusDotClass = "h-2.5 w-2.5 rounded-full me-2";
 
+	// 卡片分组标题
+	const sectionTitleClass = "text-sm font-medium text-gray-700 mb-2";
+
 	return {
 		cardContainerClass,
 		cardHeaderClass,
@@ -63,5 +66,6 @@ export function useMobileStyles() {
 		secondaryButtonClass,
 		statusIndicatorClass,
 		statusDotClass,
+		sectionTitleClass,
 	};
-} 
+}

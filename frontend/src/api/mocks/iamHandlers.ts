@@ -169,11 +169,11 @@ export default [
 		const mockData = generateUser();
 		return HttpResponse.json(mockData);
 	}),
-	http.post("/department/unbind", () => {
+	http.post("/iam/department/unbind", () => {
 		console.log("Captured a 'POST /department/unbind' request");
 		return HttpResponse.json();
 	}),
-	http.post("/department/bind", () => {
+	http.post("/iam/department/bind", () => {
 		console.log("Captured a 'POST /department/bind' request");
 		return HttpResponse.json();
 	}),

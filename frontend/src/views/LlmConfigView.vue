@@ -27,7 +27,7 @@
 
     <!-- 移动端卡片布局 -->
     <div class="md:hidden">
-      <MobileCardList :items="llms as Array<components['schemas']['LlmVm']>">
+      <MobileCardList :items="llms">
         <template #title="{ item }">
           {{ item.name }}
         </template>
@@ -38,26 +38,26 @@
           </div>
         </template>
         <template #content="{ item }">
-          <div class="grid grid-cols-2 gap-2">
+          <div class="grid grid-cols-2 gap-3">
             <div>
-              <p class="text-xs text-gray-500">模型名称</p>
-              <p>{{ item.modelName }}</p>
+              <p class="text-xs font-medium text-gray-600">模型名称</p>
+              <p class="text-sm text-gray-900 mt-0.5">{{ item.modelName }}</p>
             </div>
             <div>
-              <p class="text-xs text-gray-500">类型</p>
-              <p>{{ item.type === 'CHAT' ? '聊天' : '嵌入' }}</p>
+              <p class="text-xs font-medium text-gray-600">类型</p>
+              <p class="text-sm text-gray-900 mt-0.5">{{ item.type === 'CHAT' ? '聊天' : '嵌入' }}</p>
             </div>
             <div>
-              <p class="text-xs text-gray-500">优先级</p>
-              <p>{{ item.priority }}</p>
+              <p class="text-xs font-medium text-gray-600">优先级</p>
+              <p class="text-sm text-gray-900 mt-0.5">{{ item.priority }}</p>
             </div>
             <div class="col-span-2">
-              <p class="text-xs text-gray-500">API Key</p>
-              <p class="truncate">{{ item.apiKey }}</p>
+              <p class="text-xs font-medium text-gray-600">API Key</p>
+              <p class="text-sm text-gray-900 mt-0.5 truncate">{{ item.apiKey }}</p>
             </div>
             <div class="col-span-2">
-              <p class="text-xs text-gray-500">URL</p>
-              <p class="truncate">{{ item.url }}</p>
+              <p class="text-xs font-medium text-gray-600">URL</p>
+              <p class="text-sm text-gray-900 mt-0.5 truncate">{{ item.url }}</p>
             </div>
           </div>
         </template>

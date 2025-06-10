@@ -6,7 +6,7 @@
     </div>
     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-y-3 sm:gap-y-0">
       <form class="w-full sm:w-auto flex flex-col xs:flex-row gap-2 xs:gap-3 items-stretch xs:items-center">
-        <div class="flex-grow"> 
+        <div class="flex-grow">
           <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
           <div class="relative">
             <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -62,27 +62,51 @@
         </button>
       </div>
     </div>
+    <!-- 移动端卡片布局 -->
+    <div class="md:hidden space-y-4">
+      <div v-for="department in departments" :key="department.id" class="p-4 bg-white rounded-lg shadow">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center">
+            <input :id="'mobile-checkbox-' + department.id" :value="department.id" type="checkbox"
+              v-model="checkedDepartmentIds"
+              class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 focus:ring-2 mr-3">
+            <div class="font-medium text-gray-900">{{ department.name }}</div>
+          </div>
+          <div class="flex items-center">
+            <div class="h-2.5 w-2.5 rounded-full me-2" :class="department.isBound ? 'bg-green-500' : 'bg-red-500'">
+            </div>
+            <span class="text-sm">{{ department.isBound === true ? "已绑定" : "未绑定" }}</span>
+          </div>
+        </div>
 
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <div>
+          <p class="text-xs font-medium text-gray-600">上级部门</p>
+          <p class="text-sm text-gray-900 mt-0.5">{{ !department.parentName ? '无' : department.parentName }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PC端表格布局 -->
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg hidden md:block">
       <table class="w-full text-sm text-left rtl:text-right text-gray-500">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50">
           <tr>
-            <th scope="col" class="p-2 sm:p-4 w-4">
+            <th scope="col" class="p-4 w-4">
               <div class="flex items-center">
                 <input id="checkbox-all-search" type="checkbox" v-model="allChecked"
                   class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 focus:ring-2">
                 <label for="checkbox-all-search" class="sr-only">checkbox</label>
               </div>
             </th>
-            <th scope="col" class="px-3 py-2 md:px-4 md:py-3">上级部门</th>
-            <th scope="col" class="px-3 py-2 md:px-4 md:py-3">部门名称</th>
-            <th scope="col" class="px-3 py-2 md:px-4 md:py-3">绑定状态</th>
+            <th scope="col" class="px-4 py-3">上级部门</th>
+            <th scope="col" class="px-4 py-3">部门名称</th>
+            <th scope="col" class="px-4 py-3">绑定状态</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="department in departments" :key="department.id"
             class="bg-white border-b border-gray-200 hover:bg-gray-50">
-            <td class="w-4 p-2 sm:p-4">
+            <td class="w-4 p-4">
               <div class="flex items-center">
                 <input :id="'checkbox-table-search-' + department.id" :value="department.id" type="checkbox"
                   v-model="checkedDepartmentIds"
@@ -90,13 +114,13 @@
                 <label :for="'checkbox-table-search-' + department.id" class="sr-only">checkbox</label>
               </div>
             </td>
-            <td scope="row" class="px-3 py-2 md:px-4 md:py-3 whitespace-nowrap">
+            <td scope="row" class="px-4 py-3 whitespace-nowrap">
               {{ !department.parentName ? '无' : department.parentName }}
             </td>
-            <td scope="row" class="px-3 py-2 md:px-4 md:py-3 whitespace-nowrap font-medium text-gray-900">
+            <td scope="row" class="px-4 py-3 whitespace-nowrap font-medium text-gray-900">
               {{ department.name }}
             </td>
-            <td class="px-3 py-2 md:px-4 md:py-3 max-w-xs sm:max-w-sm overflow-hidden text-ellipsis">
+            <td class="px-4 py-3 max-w-sm overflow-hidden text-ellipsis">
               <div class="flex items-center">
                 <div class="h-2.5 w-2.5 rounded-full me-2" :class="department.isBound ? 'bg-green-500' : 'bg-red-500'">
                 </div> {{
@@ -107,16 +131,15 @@
         </tbody>
       </table>
     </div>
-
     <TablePagination :pageChange="handlePageChange" :total="total" />
-  </div>
-
-  <BindModal :id="'department-bind-modal'" :closeModal="() => {
+    <BindModal :id="'department-bind-modal'" :closeModal="() => {
     departmentBindModal!.hide();
   }" :onSubmit="handleBindDepartmentSubmit" title="绑定选中的部门吗"></BindModal>
-  <UnModal :id="'department-unbind-modal'" :closeModal="() => {
+    <UnModal :id="'department-unbind-modal'" :closeModal="() => {
     departmentUnbindModal!.hide();
   }" :onSubmit="handleUnbindDepartmentSubmit" title="解绑选中的部门吗"></UnModal>
+  </div>
+
 </template>
 
 <script setup lang="ts">
@@ -125,7 +148,6 @@ import BindModal from "@/components/PopupModal.vue";
 import UnModal from "@/components/PopupModal.vue";
 import TablePagination from "@/components/TablePagination.vue";
 import { useDepartmentQuery } from "@/composables/department/useDepartmentQuery";
-import { RouteName } from "@/router/constants";
 import { Modal, type ModalInterface, initFlowbite } from "flowbite";
 import { onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
@@ -200,11 +222,7 @@ onMounted(async () => {
 	const $unbindModalElement: HTMLElement | null = document.querySelector(
 		"#department-unbind-modal",
 	);
-	departmentUnbindModal.value = new Modal(
-		$unbindModalElement,
-		{},
-		{ id: "department-unbind-modal" },
-	);
+	departmentUnbindModal.value = new Modal($unbindModalElement, {});
 });
 
 const handleSearch = async () => {

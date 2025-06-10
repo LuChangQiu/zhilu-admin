@@ -1,6 +1,5 @@
 import type { RouteRecordRaw } from "vue-router";
 import Dashboard from "../../components/Dashboard.vue";
-import OverView from "../../views/OverView.vue";
 import { EPermission, ERole, RouteName, RoutePath } from "../constants";
 import userManagementRoutes from "./user";
 import aiRoutes from "./ai";

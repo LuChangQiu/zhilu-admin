@@ -3,7 +3,7 @@ import authHandlers from "./authHandlers";
 import jobHandlers from "./schedulerHandlers";
 import permissionHandlers from "./permissionHandlers";
 import roleHandlers from "./roleHandlers";
-import userHandlers from "./userHandlers";
+import userHandlers from "./iamHandlers";
 import departmentHandlers from "./departmentHandlers";
 import positionHandlers from "./positionHandlers";
 import aiHandlers from "./aiHandlers";

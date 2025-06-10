@@ -25,7 +25,67 @@
       </form>
     </div>
 
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <!-- 移动端卡片布局 -->
+    <div class="md:hidden">
+      <MobileCardList :items="jobs as Array<components['schemas']['JobTriggerDto']>">
+        <template #title="{ item }">
+          {{ `${item.name}:${item.group}` }}
+        </template>
+        <template #status="{ item }">
+          <div class="flex items-center">
+            <div class="h-2.5 w-2.5 rounded-full me-2"
+              :class="item.triggerState === 'NORMAL' ? 'bg-green-500' : item.triggerState === 'PAUSED' ? 'bg-red-500' : 'bg-yellow-500'">
+            </div>
+            <span class="text-sm">{{ item.triggerState }}</span>
+          </div>
+        </template>
+        <template #content="{ item }">
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <p class="text-xs font-medium text-gray-600">类型</p>
+              <p class="text-sm text-gray-900 mt-0.5">{{ item.schedulerType }}</p>
+            </div>
+            <div v-if="item.schedulerType === 'CRON'">
+              <p class="text-xs font-medium text-gray-600">Cron表达式</p>
+              <p class="text-sm text-gray-900 mt-0.5">{{ item.cronExpression }}</p>
+            </div>
+            <div class="col-span-2">
+              <p class="text-xs font-medium text-gray-600">下次执行</p>
+              <p class="text-sm text-gray-900 mt-0.5">{{ item.nextFireTime ? dayjs(item.nextFireTime).format("llll") :
+                '无' }}</p>
+            </div>
+          </div>
+        </template>
+        <template #actions="{ item }">
+          <div class="flex gap-x-2">
+            <button @click="handleCronUpdateClick(item)" :disabled="item.schedulerType !== 'CRON'"
+              :class="['flex items-center justify-center gap-x-1 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs px-3 py-1.5' , { 'opacity-50 cursor-not-allowed': item.schedulerType !== 'CRON' }]"
+              type="button">
+              <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path>
+                <path fill-rule="evenodd"
+                  d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
+                  clip-rule="evenodd"></path>
+              </svg>
+              <span>编辑</span>
+            </button>
+            <button
+              class="text-white bg-green-700 hover:bg-green-800 focus:ring-green-300 focus:ring-4 focus:outline-none font-medium rounded-lg text-xs px-3 py-1.5"
+              @click="handleResumeJobClick(item)" type="button">
+              <span>恢复</span>
+            </button>
+            <button
+              class="bg-red-700 hover:bg-red-800 focus:ring-red-300 text-white focus:ring-4 focus:outline-none font-medium rounded-lg text-xs px-3 py-1.5"
+              @click="handlePauseJobClick(item)" type="button">
+              <span>暂停</span>
+            </button>
+          </div>
+        </template>
+      </MobileCardList>
+    </div>
+
+    <!-- PC端表格布局 -->
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg hidden md:block">
       <table class="w-full text-sm text-left rtl:text-right text-gray-500">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50">
           <tr>
@@ -148,6 +208,7 @@
 
 <script setup lang="ts">
 import Breadcrumbs from "@/components/Breadcrumbs.vue";
+import MobileCardList from "@/components/MobileCardList.vue";
 import PopupModal from "@/components/PopupModal.vue";
 import SchedulerUpdateModal from "@/components/SchedulerUpdateModal.vue";
 import TablePagination from "@/components/TablePagination.vue";
@@ -155,6 +216,7 @@ import { useJobControl } from "@/composables/job/useJobControl";
 import { useJobsPaginationQuery } from "@/composables/job/useJobQuery";
 import { useJobUpdate } from "@/composables/job/useJobUpdate";
 import useAlertStore from "@/composables/store/useAlertStore";
+import { useMobileStyles } from "@/composables/useMobileStyles";
 import dayjs from "@/utils/dateUtil";
 import { Modal, type ModalInterface, initFlowbite } from "flowbite";
 import { nextTick, onMounted, ref } from "vue";

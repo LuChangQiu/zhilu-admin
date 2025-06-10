@@ -78,8 +78,9 @@
           </div>
         </div>
 
-        <div class="text-xs text-gray-500">
-          角色编码: {{ role.code }}
+        <div>
+          <p class="text-xs font-medium text-gray-600">角色编码</p>
+          <p class="text-sm text-gray-900 mt-0.5">{{ role.code }}</p>
         </div>
       </div>
     </div>
@@ -146,6 +147,7 @@ import BindModal from "@/components/PopupModal.vue";
 import UnModal from "@/components/PopupModal.vue";
 import TablePagination from "@/components/TablePagination.vue";
 import { useRolesQuery } from "@/composables/role/useRolesQuery";
+import { useMobileStyles } from "@/composables/useMobileStyles";
 import { RouteName } from "@/router/constants";
 import { tr } from "@faker-js/faker";
 import { Modal, type ModalInterface, initFlowbite } from "flowbite";

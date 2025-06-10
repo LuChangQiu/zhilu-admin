@@ -37,14 +37,14 @@
 
     <!-- 移动端卡片布局 -->
     <div class="md:hidden">
-      <MobileCardList :items="permissions as Array<components['schemas']['PermissionRespDto']>">
+      <MobileCardList :items="permissions">
         <template #title="{ item }">
           {{ item.name }}
         </template>
         <template #content="{ item }">
           <div>
-            <p class="text-xs text-gray-500">权限编码</p>
-            <p>{{ item.code }}</p>
+            <p class="text-xs font-medium text-gray-600">权限编码</p>
+            <p class="text-sm text-gray-900 mt-0.5">{{ item.code }}</p>
           </div>
         </template>
         <template #actions="{ item }">

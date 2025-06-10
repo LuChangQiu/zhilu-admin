@@ -5,12 +5,19 @@ import { setupGuards } from "./guards";
 import authRoutes from "./modules/auth";
 import dashboardRoutes from "./modules/dashboard";
 import errorRoutes from "./modules/error";
-import { RouteName } from "./constants";
+import { RouteName, RoutePath } from "./constants";
 
 const routes: RouteRecordRaw[] = [
 	dashboardRoutes,
 	...authRoutes,
 	...errorRoutes,
+	{
+		path: RoutePath.HOME,
+		name: RouteName.HOME,
+		redirect: {
+			path: `${RoutePath.DASHBOARD}/${RoutePath.USERVIEW}`,
+		},
+	},
 ];
 
 const router = createRouter({

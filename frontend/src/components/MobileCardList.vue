@@ -1,7 +1,6 @@
 <template>
   <div class="space-y-4">
-    <slot name="empty" v-if="items.length === 0"></slot>
-    <div v-else v-for="(item, index) in items" :key="index"
+    <div v-for="(item, index) in items ?? []" :key="index"
       class="p-4 bg-white rounded-lg shadow relative border border-gray-100">
       <div class="flex justify-between items-start mb-3">
         <!-- 标题区域 -->
@@ -37,7 +36,7 @@
 
 <script setup generic="T" lang="ts">
 defineProps<{
-  items: T[];
-  hasCheckbox?: boolean;
+	items: T[] | undefined;
+	hasCheckbox?: boolean;
 }>();
 </script>
