@@ -31,103 +31,73 @@
           class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5"
           @click.prevent="handleSearch">搜索</button>
       </form>
-      <div class="flex items-center justify-end gap-2">
-        <button @click="() => {
-          if (checkedRoleIds.length === 0) {
-            alertStore.showAlert({
-              content: '没有选择角色',
-              level: 'error',
-            });
-          } else {
-            roleBindModal?.show();
-          }
-        }"
-          class="flex items-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center"
-          type="button">
+      <div class="flex gap-x-2">
+        <TableButton variant="primary" @click="() => {
+            if (checkedRoleIds.length === 0) {
+              alertStore.showAlert({
+                content: '没有选择角色',
+                level: 'error',
+              });
+            } else {
+              roleBindModal?.show();
+            }
+          }">
           绑定
-        </button>
-        <button @click="() => {
-          if (checkedRoleIds.length === 0) {
-            alertStore.showAlert({
-              content: '没有选择角色',
-              level: 'error',
-            });
-          } else {
-            roleUnbindModal?.show();
-          }
-        }"
-          class="flex items-center text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center"
-          type="button">
+        </TableButton>
+        <TableButton variant="danger" @click="() => {
+            if (checkedRoleIds.length === 0) {
+              alertStore.showAlert({
+                content: '没有选择角色',
+                level: 'error',
+              });
+            } else {
+              roleUnbindModal?.show();
+            }
+          }">
           解绑
-        </button>
+        </TableButton>
       </div>
     </div>
 
     <!-- 移动端卡片布局 -->
     <div class="md:hidden space-y-4">
-      <div v-for="role in roles" :key="role.id" class="p-4 bg-white rounded-lg shadow">
-        <div class="flex items-center justify-between mb-3">
+      <MobileCardListWithCheckbox :items="roles" v-model="checkedRoleIds">
+        <template #title="{ item }">
+          {{ item.name }}
+        </template>
+        <template #status="{ item }">
           <div class="flex items-center">
-            <input :id="'mobile-checkbox-' + role.id" :value="role.id" type="checkbox" v-model="checkedRoleIds"
-              class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 focus:ring-2 mr-3">
-            <div class="font-medium text-gray-900">{{ role.name }}</div>
+            <div class="h-2.5 w-2.5 rounded-full me-2" :class="item.isBound ? 'bg-green-500' : 'bg-red-500'"></div>
+            <span class="text-sm">{{ item.isBound === true ? "已绑定" : "未绑定" }}</span>
           </div>
-          <div class="flex items-center">
-            <div class="h-2.5 w-2.5 rounded-full me-2" :class="role.isBound ? 'bg-green-500' : 'bg-red-500'"></div>
-            <span class="text-sm">{{ role.isBound === true ? "已绑定" : "未绑定" }}</span>
+        </template>
+        <template #content="{ item }">
+          <div>
+            <p class="text-xs font-medium text-gray-600">角色编码</p>
+            <p class="text-sm text-gray-900 mt-0.5">{{ item.code }}</p>
           </div>
-        </div>
-
-        <div>
-          <p class="text-xs font-medium text-gray-600">角色编码</p>
-          <p class="text-sm text-gray-900 mt-0.5">{{ role.code }}</p>
-        </div>
-      </div>
+        </template>
+      </MobileCardListWithCheckbox>
     </div>
 
     <!-- PC端表格布局 -->
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg hidden md:block">
-      <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-          <tr>
-            <th scope="col" class="p-4 w-4">
-              <div class="flex items-center">
-                <input id="checkbox-all-search" type="checkbox" v-model="allChecked"
-                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 focus:ring-2">
-                <label for="checkbox-all-search" class="sr-only">checkbox</label>
-              </div>
-            </th>
-            <th scope="col" class="px-4 py-3">角色编码</th>
-            <th scope="col" class="px-4 py-3">角色名称</th>
-            <th scope="col" class="px-4 py-3">绑定状态</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="role in roles" :key="role.id" class="bg-white border-b border-gray-200 hover:bg-gray-50">
-            <td class="w-4 p-4">
-              <div class="flex items-center">
-                <input :id="'checkbox-table-search-' + role.id" :value="role.id" type="checkbox"
-                  v-model="checkedRoleIds"
-                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 focus:ring-2">
-                <label :for="'checkbox-table-search-' + role.id" class="sr-only">checkbox</label>
-              </div>
-            </td>
-            <td scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap">
-              {{ role.code }}
-            </td>
-            <td scope="row" class="px-4 py-3 whitespace-nowrap">
-              {{ role.name }}
-            </td>
-            <td class="px-4 py-3 max-w-xs sm:max-w-sm overflow-hidden text-ellipsis">
-              <div class="flex items-center">
-                <div class="h-2.5 w-2.5 rounded-full me-2" :class="role.isBound ? 'bg-green-500' : 'bg-red-500'">
-                </div> {{
-                role.isBound === true ? "已绑定" : "未绑定" }}
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="hidden md:block">
+      <TableFormLayout :items="roles || []" :columns="columns" :hasCheckbox="true" v-model="checkedRoleIds"
+        @all-checked-change="allChecked = $event">
+        <template #code="{ item }">
+          {{ item.code }}
+        </template>
+        <template #name="{ item }">
+          {{ item.name }}
+        </template>
+        <template #bindState="{ item }">
+          <div class="flex items-center">
+            <div class="h-2.5 w-2.5 rounded-full me-2" :class="item.isBound ? 'bg-green-500' : 'bg-red-500'">
+            </div>
+            {{ item.isBound === true ? "已绑定" : "未绑定" }}
+          </div>
+        </template>
+      </TableFormLayout>
     </div>
 
     <TablePagination :pageChange="handlePageChange" :total="total" />
@@ -143,8 +113,11 @@
 
 <script setup lang="ts">
 import Breadcrumbs from "@/components/Breadcrumbs.vue";
+import MobileCardListWithCheckbox from "@/components/MobileCardListWithCheckbox.vue";
 import BindModal from "@/components/PopupModal.vue";
 import UnModal from "@/components/PopupModal.vue";
+import TableButton from "@/components/TableButton.vue";
+import TableFormLayout from "@/components/TableFormLayout.vue";
 import TablePagination from "@/components/TablePagination.vue";
 import { useRolesQuery } from "@/composables/role/useRolesQuery";
 import { useMobileStyles } from "@/composables/useMobileStyles";
@@ -167,6 +140,13 @@ const bindState = ref<"BIND" | "ALL" | "UNBIND">("ALL");
 const alertStore = useAlertStore();
 const { total, roles, fetchRolesWith } = useRolesQuery();
 const { bindRole, unbindRole } = useRoleBind();
+
+// 定义表格列配置
+const columns = [
+  { title: '角色编码', field: 'code' },
+  { title: '角色名称', field: 'name' },
+  { title: '绑定状态', field: 'bindState' }
+];
 
 const handleBindRoleSubmit = async () => {
 	await bindRole({

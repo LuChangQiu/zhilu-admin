@@ -78,78 +78,48 @@
     </div>
 
     <!-- PC端表格布局 -->
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg hidden md:block">
-      <table class="w-full whitespace-nowrap text-sm text-left rtl:text-right text-gray-500">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-          <tr>
-            <th scope="col" class="p-4">
-              <div class="flex items-center">
-                <input id="checkbox-all-search" disabled type="checkbox"
-                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 focus:ring-2">
-                <label for="checkbox-all-search" class="sr-only">checkbox</label>
-              </div>
-            </th>
-            <th scope="col" class="px-6 py-3">名称</th>
-            <th scope="col" class="px-6 py-3">模型名称</th>
-            <th scope="col" class="px-6 py-3">类型</th>
-            <th scope="col" class="px-6 py-3 hidden lg:table-cell">apiKey</th>
-            <th scope="col" class="px-6 py-3 hidden lg:table-cell">url</th>
-            <th scope="col" class="px-6 py-3">状态</th>
-            <th scope="col" class="px-6 py-3">优先级</th>
-            <th scope="col" class="px-6 py-3">操作</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="llm in llms" :key="llm.id" class="bg-white border-b border-gray-200 hover:bg-gray-50">
-            <td class="w-4 p-4">
-              <div class="flex items-center">
-                <input :id="'checkbox-table-search-' + llm.id" type="checkbox" disabled
-                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 focus:ring-2">
-                <label :for="'checkbox-table-search-' + llm.id" class="sr-only">checkbox</label>
-              </div>
-            </td>
-            <td class="px-6 py-4 max-w-sm overflow-hidden text-ellipsis font-medium text-gray-900">
-              {{ llm.name }}
-            </td>
-            <td class="px-6 py-4 max-w-sm overflow-hidden text-ellipsis">
-              {{ llm.modelName }}
-            </td>
-            <td class="px-6 py-4 max-w-sm overflow-hidden text-ellipsis">
-              {{ llm.type === 'CHAT' ? '聊天' : '嵌入' }}
-            </td>
-            <td class="px-6 py-4 max-w-sm overflow-hidden text-ellipsis hidden lg:table-cell">
-              {{ llm.apiKey }}
-            </td>
-            <td class="px-6 py-4 max-w-sm overflow-hidden text-ellipsis hidden lg:table-cell">
-              {{ llm.url }}
-            </td>
-            <td class="px-6 py-4 max-w-sm overflow-hidden text-ellipsis">
-              <div class="flex items-center">
-                <div class="h-2.5 w-2.5 rounded-full me-2" :class="llm.enable ? 'bg-blue-500' : 'bg-red-500'"></div> {{
-                llm.enable === true ? "启用" : "禁用" }}
-              </div>
-            </td>
-            <td class="px-6 py-4 max-w-sm overflow-hidden text-ellipsis">
-              {{ llm.priority }}
-            </td>
-            <td class="px-6 py-4">
-              <div class="flex items-center gap-x-2">
-                <button @click="handleLlmUpdateClick(llm)"
-                  class="flex items-center justify-center whitespace-nowrap gap-x-1 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5"
-                  type="button">
-                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path>
-                    <path fill-rule="evenodd"
-                      d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
-                      clip-rule="evenodd"></path>
-                  </svg>
-                  <span>编辑</span>
-                </button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="hidden md:block">
+      <TableFormLayout :items="llms || []" :columns="columns">
+        <template #name="{ item }">
+          {{ item.name }}
+        </template>
+        <template #modelName="{ item }">
+          {{ item.modelName }}
+        </template>
+        <template #type="{ item }">
+          {{ item.type === 'CHAT' ? '聊天' : '嵌入' }}
+        </template>
+        <template #apiKey="{ item }">
+          {{ item.apiKey }}
+        </template>
+        <template #url="{ item }">
+          {{ item.url }}
+        </template>
+        <template #status="{ item }">
+          <div class="flex items-center">
+            <div class="h-2.5 w-2.5 rounded-full me-2" :class="item.enable ? 'bg-blue-500' : 'bg-red-500'"></div>
+            {{ item.enable === true ? "启用" : "禁用" }}
+          </div>
+        </template>
+        <template #priority="{ item }">
+          {{ item.priority }}
+        </template>
+        <template #actions="{ item }">
+          <div class="flex items-center gap-x-2">
+            <button @click="handleLlmUpdateClick(item)"
+              class="flex items-center justify-center whitespace-nowrap gap-x-1 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5"
+              type="button">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path>
+                <path fill-rule="evenodd"
+                  d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
+                  clip-rule="evenodd"></path>
+              </svg>
+              <span>编辑</span>
+            </button>
+          </div>
+        </template>
+      </TableFormLayout>
     </div>
 
     <TablePagination :pageChange="handlePageChange" :total="total" />
@@ -164,6 +134,7 @@
 import Breadcrumbs from "@/components/Breadcrumbs.vue";
 import LlmUpdateModal from "@/components/LlmUpdateModal.vue";
 import MobileCardList from "@/components/MobileCardList.vue";
+import TableFormLayout from "@/components/TableFormLayout.vue";
 import TablePagination from "@/components/TablePagination.vue";
 import { useLlmQuery } from "@/composables/ai/useLlmQuery";
 import { useLlmUpdate } from "@/composables/ai/useLlmUpdate";
@@ -180,6 +151,18 @@ const { llms, fetchLlmConfigs, total } = useLlmQuery();
 const { updateLlmConfig } = useLlmUpdate();
 
 const alertStore = useAlertStore();
+
+// 定义表格列配置
+const columns = [
+  { title: '名称', field: 'name' },
+  { title: '模型名称', field: 'modelName' },
+  { title: '类型', field: 'type' },
+  { title: 'apiKey', field: 'apiKey', class: 'hidden lg:table-cell' },
+  { title: 'url', field: 'url', class: 'hidden lg:table-cell' },
+  { title: '状态', field: 'status' },
+  { title: '优先级', field: 'priority' },
+  { title: '操作', field: 'actions' }
+];
 
 const handleUpdateModalSubmit = async (llm: components["schemas"]["LlmVm"]) => {
 	await updateLlmConfig(llm);
