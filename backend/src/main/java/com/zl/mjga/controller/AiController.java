@@ -45,7 +45,7 @@ public class AiController {
   @PostMapping(value = "/action/execute", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
   public Flux<String> actionExecute(Principal principal, @RequestBody String userMessage) {
     Sinks.Many<String> sink = Sinks.many().unicast().onBackpressureBuffer();
-    TokenStream chat = aiChatService.actionExecuteWithZhiPu(principal.getName(), userMessage);
+    TokenStream chat = aiChatService.actionPrecedenceExecuteWith(principal.getName(), userMessage);
     chat.onPartialResponse(
             (text) -> {
               log.debug("ai action partialResponse: {}", text);
