@@ -1,7 +1,7 @@
 <template>
   <div class="px-2 sm:px-4 pt-6 sm:rounded-lg">
     <div class="mb-4 sm:mb-6 col-span-full">
-      <Breadcrumbs :names="['角色分配']" />
+      <Breadcrumbs :names="['用户管理', '角色分配']" :routes="[{ name: RouteName.USERVIEW }]" />
       <h1 class="text-xl sm:text-2xl mb-4 sm:mb-6 font-semibold text-gray-900">角色分配</h1>
     </div>
     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-y-3 sm:gap-y-0">
@@ -120,9 +120,7 @@ import TableButton from "@/components/TableButton.vue";
 import TableFormLayout from "@/components/TableFormLayout.vue";
 import TablePagination from "@/components/TablePagination.vue";
 import { useRolesQuery } from "@/composables/role/useRolesQuery";
-import { useMobileStyles } from "@/composables/useMobileStyles";
 import { RouteName } from "@/router/constants";
-import { tr } from "@faker-js/faker";
 import { Modal, type ModalInterface, initFlowbite } from "flowbite";
 import { onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";

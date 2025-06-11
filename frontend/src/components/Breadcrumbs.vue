@@ -12,14 +12,17 @@
           首页
         </RouterLink>
       </li>
-      <li v-for="(name, index) in names" :key="index">
+      <li v-for="(item, index) in breadcrumbs" :key="index">
         <div class="flex items-center">
           <svg class="w-3 h-3 text-gray-400 mx-1.5 sm:mx-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
             fill="none" viewBox="0 0 6 10">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="m1 9 4-4-4-4" />
           </svg>
-          <span class="font-medium text-gray-500 truncate">{{ name }}</span>
+          <RouterLink v-if="item.route" :to="item.route" class="font-medium text-gray-500 hover:text-blue-600 truncate">
+            {{ item.name }}
+          </RouterLink>
+          <span v-else class="font-medium text-gray-500 truncate">{{ item.name }}</span>
         </div>
       </li>
     </ol>
@@ -28,8 +31,25 @@
 
 <script setup lang="ts">
 import { RouteName } from "@/router/constants";
+import { computed } from "vue";
+import type { RouteLocationRaw } from "vue-router";
 
-const { names } = defineProps<{
-	names: string[];
+interface BreadcrumbItem {
+  name: string;
+  route?: RouteLocationRaw;
+}
+
+const props = defineProps<{
+  names: string[];
+  routes?: RouteLocationRaw[];
 }>();
+
+const breadcrumbs = computed<BreadcrumbItem[]>(() => {
+  return props.names.map((name, index) => {
+    return {
+      name,
+      route: props.routes?.[index]
+    };
+  });
+});
 </script>
