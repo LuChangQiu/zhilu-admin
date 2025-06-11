@@ -31,12 +31,9 @@
             </span>
             <span class="text-sm py-0.5 px-2 font-medium">0.2k</span>
           </a>
-          <span class="flex space-x-2 sm:space-x-3">
-            <button class="cursor-pointer p-1" @click="changeAssistantVisible">
-              <AiChatIcon />
-            </button>
-          </span>
-
+          <button class="cursor-pointer pt-1" @click="changeAssistantVisible">
+            <AiChatIcon />
+          </button>
           <div class="flex items-center ms-2 sm:ms-3">
             <div>
               <button type="button" id="dropdown-button"
