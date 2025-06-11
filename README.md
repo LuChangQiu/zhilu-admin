@@ -40,9 +40,12 @@
   
 [![点击按钮加入 QQ群](https://img.shields.io/badge/-white?style=social&logo=QQ&label=或点击按钮加入QQ群)](https://qm.qq.com/q/9mvVC57jPO)
 
-实在没有 QQ 的可以加微信
+没有 QQ 的可以加微信我拉你进群
 
 - 微信：Chuck9996
+  
+或者直接扫码（若已过期可以加我 vx）
+![wechat](assets/wechat.png)
 
 ## 🍅 相关课程
 
@@ -70,11 +73,8 @@
 
 用户通过和知路智能体对话，便可完成所有核心业务操作，不再需要再去学习操作复杂的前端页面。使你在任何时间都可享受运筹帷幄，指点江山的人生乐趣！
 
-**企业问答**
-![aichat](assets/aichat.png)
-
-**操作业务功能**
-![actionChat](assets/action.png)
+![actionChat](assets/action1.png)
+![actionChat](assets/action2.png)
 
 **更多功能正在锐意制作中，敬请期待。。。**
 
