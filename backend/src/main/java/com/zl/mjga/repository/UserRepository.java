@@ -1,6 +1,5 @@
 package com.zl.mjga.repository;
 
-import static org.jooq.generated.mjga.Tables.*;
 import static org.jooq.generated.mjga.tables.User.USER;
 import static org.jooq.impl.DSL.*;
 
@@ -65,8 +64,8 @@ public class UserRepository extends UserDao {
                 ? USER.USERNAME.like("%" + userQueryDto.getUsername() + "%")
                 : noCondition())
         .and(
-            userQueryDto.getStarDate() != null
-                ? USER.CREATE_TIME.ge(userQueryDto.getStarDate())
+            userQueryDto.getStartDate() != null
+                ? USER.CREATE_TIME.ge(userQueryDto.getStartDate())
                 : noCondition())
         .and(
             userQueryDto.getEndDate() != null
@@ -79,13 +78,7 @@ public class UserRepository extends UserDao {
   }
 
   public Result<Record> pageFetchBy(PageRequestDto pageRequestDto, UserQueryDto userQueryDto) {
-    return ctx()
-        .select(asterisk(), DSL.count().over().as("total_user"))
-        .from(USER)
-        .where(
-            userQueryDto.getUsername() != null
-                ? USER.USERNAME.like("%" + userQueryDto.getUsername() + "%")
-                : noCondition())
+    return selectBy(userQueryDto)
         .orderBy(pageRequestDto.getSortFields())
         .limit(pageRequestDto.getSize())
         .offset(pageRequestDto.getOffset())

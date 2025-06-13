@@ -21,6 +21,8 @@ export const useUserQuery = () => {
 	const fetchUsersWith = async (
 		param: {
 			username?: string;
+			startDate?: string;
+			endDate?: string;
 		},
 		page = 1,
 		size = 10,

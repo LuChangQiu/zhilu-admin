@@ -8,6 +8,9 @@ import useUserAuth from "./composables/auth/useUserAuth";
 import useAlertStore from "./composables/store/useAlertStore";
 import router from "./router";
 import makeErrorHandler from "./utils/errorHandler";
+import VueDatePicker from "@vuepic/vue-datepicker";
+import "@vuepic/vue-datepicker/dist/main.css";
+import "./assets/datepicker.css";
 
 async function enableMocking() {
 	if (import.meta.env.VITE_ENABLE_MOCK === "false") {
@@ -29,5 +32,6 @@ enableMocking().then(() => {
 	app.use(router);
 	const errorHandler = makeErrorHandler(router, signOut, showAlert);
 	app.config.errorHandler = errorHandler;
+	app.component("VueDatePicker", VueDatePicker);
 	app.mount("#app");
 });

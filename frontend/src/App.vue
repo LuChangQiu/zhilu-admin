@@ -8,4 +8,6 @@ import Alert from "./components/Alert.vue";
   <Alert/> 
 </template>
 
-<style scoped></style>
+<style scoped>
+
+</style>
