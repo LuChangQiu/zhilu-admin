@@ -123,6 +123,7 @@ import { onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { useDepartmentBind } from "../composables/department/useDepartmentBind";
 import useAlertStore from "../composables/store/useAlertStore";
+import { useActionExcStore } from "@/composables/store/useActionExcStore";
 
 const departmentName = ref<string>("");
 const checkedDepartmentIds = ref<number[]>([]);
@@ -133,16 +134,16 @@ const $route = useRoute();
 const bindState = ref<"BIND" | "ALL" | "UNBIND">("ALL");
 
 const alertStore = useAlertStore();
-
+const actionExcStore = useActionExcStore();
 const { total, departments, fetchDepartmentWith } = useDepartmentQuery();
 
 const { bindDepartment, unbindDepartment } = useDepartmentBind();
 
 // 定义表格列配置
 const columns = [
-  { title: '上级部门', field: 'parentName' },
-  { title: '部门名称', field: 'name' },
-  { title: '绑定状态', field: 'bindState' }
+	{ title: "上级部门", field: "parentName" },
+	{ title: "部门名称", field: "name" },
+	{ title: "绑定状态", field: "bindState" },
 ];
 
 const handleBindDepartmentSubmit = async () => {
@@ -200,6 +201,11 @@ onMounted(async () => {
 		"#department-unbind-modal",
 	);
 	departmentUnbindModal.value = new Modal($unbindModalElement, {});
+	actionExcStore.setCallback((result) => {
+		if (result) {
+			handleSearch();
+		}
+	});
 });
 
 const handleSearch = async () => {

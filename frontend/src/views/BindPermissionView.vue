@@ -125,6 +125,7 @@ import { useRoute } from "vue-router";
 import { usePermissionBind } from "../composables/permission/usePermissionBind";
 import usePermissionsQuery from "../composables/permission/usePermissionQuery";
 import useAlertStore from "../composables/store/useAlertStore";
+import { useActionExcStore } from "@/composables/store/useActionExcStore";
 
 const permissionName = ref<string>("");
 const checkedPermissionIds = ref<number[]>([]);
@@ -135,14 +136,15 @@ const $route = useRoute();
 const bindState = ref<"BIND" | "ALL" | "UNBIND">("ALL");
 
 const alertStore = useAlertStore();
+const actionExcStore = useActionExcStore();
 const { total, permissions, fetchPermissionsWith } = usePermissionsQuery();
 const { bindPermission, unbindPermission } = usePermissionBind();
 
 // 定义表格列配置
 const columns = [
-  { title: '权限编码', field: 'code' },
-  { title: '权限名称', field: 'name' },
-  { title: '绑定状态', field: 'bindState' }
+	{ title: "权限编码", field: "code" },
+	{ title: "权限名称", field: "name" },
+	{ title: "绑定状态", field: "bindState" },
 ];
 
 const handleBindPermissionSubmit = async () => {
@@ -204,6 +206,11 @@ onMounted(async () => {
 		{},
 		{ id: "permission-unbind-modal" },
 	);
+	actionExcStore.setCallback((result) => {
+		if (result) {
+			handleSearch();
+		}
+	});
 });
 
 const handleSearch = async () => {

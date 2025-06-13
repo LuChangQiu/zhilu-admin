@@ -126,6 +126,7 @@ import { onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { useRoleBind } from "../composables/role/useRoleBind";
 import useAlertStore from "../composables/store/useAlertStore";
+import { useActionExcStore } from "@/composables/store/useActionExcStore";
 
 const roleName = ref<string>("");
 const checkedRoleIds = ref<number[]>([]);
@@ -138,12 +139,12 @@ const bindState = ref<"BIND" | "ALL" | "UNBIND">("ALL");
 const alertStore = useAlertStore();
 const { total, roles, fetchRolesWith } = useRolesQuery();
 const { bindRole, unbindRole } = useRoleBind();
-
+const actionExcStore = useActionExcStore();
 // 定义表格列配置
 const columns = [
-  { title: '角色编码', field: 'code' },
-  { title: '角色名称', field: 'name' },
-  { title: '绑定状态', field: 'bindState' }
+	{ title: "角色编码", field: "code" },
+	{ title: "角色名称", field: "name" },
+	{ title: "绑定状态", field: "bindState" },
 ];
 
 const handleBindRoleSubmit = async () => {
@@ -200,6 +201,11 @@ onMounted(async () => {
 		{},
 		{ id: "role-unbind-modal" },
 	);
+	actionExcStore.setCallback((result) => {
+		if (result) {
+			handleSearch();
+		}
+	});
 });
 
 const handleSearch = async () => {

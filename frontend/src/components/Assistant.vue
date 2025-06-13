@@ -87,6 +87,7 @@ import LoadingIcon from "@/components/icons/LoadingIcon.vue";
 import { useAiAction } from "@/composables/ai/useAiAction";
 import { useDepartmentQuery } from "@/composables/department/useDepartmentQuery";
 import { useDepartmentUpsert } from "@/composables/department/useDepartmentUpsert";
+import { useActionExcStore } from "@/composables/store/useActionExcStore";
 import useAlertStore from "@/composables/store/useAlertStore";
 import type { DepartmentUpsertModel } from "@/types/department";
 import DOMPurify from "dompurify";
@@ -118,7 +119,7 @@ const { deleteUserByUsername, deleteDepartmentByName } = useAiAction();
 const departmentDeleteModal = ref<ModalInterface>();
 const currentDeleteUsername = ref<string>();
 const currentDeleteDepartmentName = ref<string>();
-
+const actionExcStore = useActionExcStore();
 const { availableDepartments, fetchAvailableDepartments } =
 	useDepartmentQuery();
 
@@ -194,6 +195,7 @@ const handleUpsertUserSubmit = async (data: UserUpsertSubmitModel) => {
 		content: "操作成功",
 		level: "success",
 	});
+	actionExcStore.notify(true);
 };
 
 const handleUpsertDepartmentSubmit = async (
@@ -205,6 +207,7 @@ const handleUpsertDepartmentSubmit = async (
 		content: "操作成功",
 		level: "success",
 	});
+	actionExcStore.notify(true);
 };
 
 const handleDeleteUserSubmit = async () => {
@@ -214,6 +217,7 @@ const handleDeleteUserSubmit = async () => {
 		content: "操作成功",
 		level: "success",
 	});
+	actionExcStore.notify(true);
 };
 
 const handleDeleteDepartmentSubmit = async () => {
@@ -223,6 +227,7 @@ const handleDeleteDepartmentSubmit = async () => {
 		content: "操作成功",
 		level: "success",
 	});
+	actionExcStore.notify(true);
 };
 
 watch(
@@ -261,6 +266,7 @@ const chatByMode = async (
 		await searchAction(message);
 	} else if (mode === "execute") {
 		await executeAction(message);
+		actionExcStore.notify(true);
 	} else {
 		await chat(message);
 	}

@@ -141,6 +141,7 @@ import useDepartmentDelete from "../composables/department/useDepartmentDelete";
 import { useDepartmentQuery } from "../composables/department/useDepartmentQuery";
 import { useDepartmentUpsert } from "../composables/department/useDepartmentUpsert";
 import useAlertStore from "../composables/store/useAlertStore";
+import { useActionExcStore } from "@/composables/store/useActionExcStore";
 
 const name = ref<string>("");
 const selectedDepartment = ref<components["schemas"]["Department"]>();
@@ -159,12 +160,12 @@ const { deleteDepartment } = useDepartmentDelete();
 const { upsertDepartment } = useDepartmentUpsert();
 
 const alertStore = useAlertStore();
-
+const actionExcStore = useActionExcStore();
 // 定义表格列配置
 const columns = [
-  { title: '上级部门', field: 'parentName' },
-  { title: '部门名称', field: 'name' },
-  { title: '操作', field: 'actions' }
+	{ title: "上级部门", field: "parentName" },
+	{ title: "部门名称", field: "name" },
+	{ title: "操作", field: "actions" },
 ];
 
 onMounted(async () => {
@@ -184,6 +185,11 @@ onMounted(async () => {
 	if ($deleteModalElement) {
 		departmentDeleteModal.value = new Modal($deleteModalElement, {});
 	}
+	actionExcStore.setCallback((result) => {
+		if (result) {
+			handleSearch();
+		}
+	});
 });
 
 const handleUpsertDepartmentSubmit = async (

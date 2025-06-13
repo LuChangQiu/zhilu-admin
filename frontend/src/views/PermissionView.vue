@@ -142,6 +142,7 @@ import usePermissionsQuery from "../composables/permission/usePermissionQuery";
 import usePermissionUpsert from "../composables/permission/usePermissionUpsert";
 import useAlertStore from "../composables/store/useAlertStore";
 import type { PermissionUpsertModel } from "../types/permission";
+import { useActionExcStore } from "@/composables/store/useActionExcStore";
 
 const permissionName = ref<string>("");
 const selectedPermission = ref<components["schemas"]["PermissionRespDto"]>();
@@ -153,12 +154,12 @@ const { total, permissions, fetchPermissionsWith } = usePermissionsQuery();
 const { deletePermission } = usePermissionDelete();
 const permissionUpsert = usePermissionUpsert();
 const alertStore = useAlertStore();
-
+const actionExcStore = useActionExcStore();
 // 定义表格列配置
 const columns = [
-  { title: '权限名称', field: 'name' },
-  { title: '权限编码', field: 'code' },
-  { title: '操作', field: 'actions' }
+	{ title: "权限名称", field: "name" },
+	{ title: "权限编码", field: "code" },
+	{ title: "操作", field: "actions" },
 ];
 
 onMounted(async () => {
@@ -178,6 +179,11 @@ onMounted(async () => {
 	if ($deleteModalElement) {
 		permissionDeleteModal.value = new Modal($deleteModalElement, {});
 	}
+	actionExcStore.setCallback((result) => {
+		if (result) {
+			handleSearch();
+		}
+	});
 });
 
 const handleUpsertModalSubmit = async (data: PermissionUpsertModel) => {

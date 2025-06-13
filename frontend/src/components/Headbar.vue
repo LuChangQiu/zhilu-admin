@@ -4,7 +4,7 @@
       <div class="flex items-center justify-between">
         <div class="flex items-center justify-start rtl:justify-end">
           <button type="button" @click="handleSidebarToggle"
-            class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200">
+            class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100">
             <span class="sr-only">Open sidebar</span>
             <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg">
@@ -13,7 +13,7 @@
               </path>
             </svg>
           </button>
-          <a href="https://github.com/ccmjga/zhilu-admin" target="_blank" class="flex items-center ms-2 md:me-24">
+          <a href="https://github.com/ccmjga/zhilu-admin" target="_blank" class="flex items-center ms-2 md:me-24 ">
             <img class="me-3" src="/logo.svg" alt="logo">
             <span class="self-center text-lg sm:text-xl md:text-2xl font-semibold whitespace-nowrap">知路后台管理</span>
           </a>
@@ -36,8 +36,7 @@
           </button>
           <div class="flex items-center ms-2 sm:ms-3">
             <div>
-              <button type="button" id="dropdown-button"
-                class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 cursor-pointer"
+              <button type="button" id="dropdown-button" class="flex text-sm bg-gray-800 rounded-full cursor-pointer"
                 aria-expanded="false" data-dropdown-toggle="dropdown-user">
                 <span class="sr-only">打开用户菜单</span>
                 <img class="w-8 h-8 rounded-full" src="/java.svg" alt="user photo">

@@ -189,6 +189,7 @@ import { useRouter } from "vue-router";
 import type { components } from "../api/types/schema";
 import useAlertStore from "../composables/store/useAlertStore";
 import { useUserUpsert } from "../composables/user/useUserUpsert";
+import { useActionExcStore } from "@/composables/store/useActionExcStore";
 
 const username = ref<string>("");
 const selectedUser = ref<components["schemas"]["UserRolePermissionDto"]>();
@@ -200,14 +201,14 @@ const { deleteUser } = useUserDelete();
 const userUpsert = useUserUpsert();
 const { sortBy, handleSort, getSortField } = useSort();
 const alertStore = useAlertStore();
-
+const actionExcStore = useActionExcStore();
 // 定义表格列配置
 const columns = [
-  { title: '用户名', field: 'username', sortable: true },
-  { title: '创建时间', field: 'createTime', sortable: true },
-  { title: '状态', field: 'status' },
-  { title: '分配', field: 'assign' },
-  { title: '操作', field: 'actions' }
+	{ title: "用户名", field: "username", sortable: true },
+	{ title: "创建时间", field: "createTime", sortable: true },
+	{ title: "状态", field: "status" },
+	{ title: "分配", field: "assign" },
+	{ title: "操作", field: "actions" },
 ];
 
 onMounted(async () => {
@@ -225,6 +226,11 @@ onMounted(async () => {
 	if ($deleteModalElement) {
 		userDeleteModal.value = new Modal($deleteModalElement, {});
 	}
+	actionExcStore.setCallback((result) => {
+		if (result) {
+			handleSearch();
+		}
+	});
 });
 
 const handleUpsertUserSubmit = async (data: UserUpsertSubmitModel) => {

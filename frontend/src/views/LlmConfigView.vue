@@ -154,14 +154,14 @@ const alertStore = useAlertStore();
 
 // 定义表格列配置
 const columns = [
-  { title: '名称', field: 'name' },
-  { title: '模型名称', field: 'modelName' },
-  { title: '类型', field: 'type' },
-  { title: 'apiKey', field: 'apiKey', class: 'hidden lg:table-cell' },
-  { title: 'url', field: 'url', class: 'hidden lg:table-cell' },
-  { title: '状态', field: 'status' },
-  { title: '优先级', field: 'priority' },
-  { title: '操作', field: 'actions' }
+	{ title: "名称", field: "name" },
+	{ title: "模型名称", field: "modelName" },
+	{ title: "类型", field: "type" },
+	{ title: "apiKey", field: "apiKey", class: "hidden lg:table-cell" },
+	{ title: "url", field: "url", class: "hidden lg:table-cell" },
+	{ title: "状态", field: "status" },
+	{ title: "优先级", field: "priority" },
+	{ title: "操作", field: "actions" },
 ];
 
 const handleUpdateModalSubmit = async (llm: components["schemas"]["LlmVm"]) => {

@@ -35,21 +35,21 @@ import { computed } from "vue";
 import type { RouteLocationRaw } from "vue-router";
 
 interface BreadcrumbItem {
-  name: string;
-  route?: RouteLocationRaw;
+	name: string;
+	route?: RouteLocationRaw;
 }
 
 const props = defineProps<{
-  names: string[];
-  routes?: RouteLocationRaw[];
+	names: string[];
+	routes?: RouteLocationRaw[];
 }>();
 
 const breadcrumbs = computed<BreadcrumbItem[]>(() => {
-  return props.names.map((name, index) => {
-    return {
-      name,
-      route: props.routes?.[index]
-    };
-  });
+	return props.names.map((name, index) => {
+		return {
+			name,
+			route: props.routes?.[index],
+		};
+	});
 });
 </script>

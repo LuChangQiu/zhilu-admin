@@ -126,11 +126,11 @@ import TablePagination from "@/components/TablePagination.vue";
 import usePositionDelete from "@/composables/position/usePositionDelete";
 import { usePositionQuery } from "@/composables/position/usePositionQuery";
 import { usePositionUpsert } from "@/composables/position/usePositionUpsert";
-import { useMobileStyles } from "@/composables/useMobileStyles";
 import { Modal, type ModalInterface, initFlowbite } from "flowbite";
 import { nextTick, onMounted, ref } from "vue";
 import type { components } from "../api/types/schema";
 import useAlertStore from "../composables/store/useAlertStore";
+import { useActionExcStore } from "@/composables/store/useActionExcStore";
 
 const name = ref<string>("");
 const selectedPosition = ref<components["schemas"]["Position"]>();
@@ -144,11 +144,11 @@ const { deletePosition } = usePositionDelete();
 const { upsertPosition } = usePositionUpsert();
 
 const alertStore = useAlertStore();
-
+const actionExcStore = useActionExcStore();
 // 定义表格列配置
 const columns = [
-  { title: '岗位名称', field: 'name' },
-  { title: '操作', field: 'actions' }
+	{ title: "岗位名称", field: "name" },
+	{ title: "操作", field: "actions" },
 ];
 
 onMounted(async () => {
@@ -169,6 +169,11 @@ onMounted(async () => {
 	if ($deleteModalElement) {
 		positionDeleteModal.value = new Modal($deleteModalElement, {});
 	}
+	actionExcStore.setCallback((result) => {
+		if (result) {
+			handleSearch();
+		}
+	});
 });
 
 const handleUpsertPositionSubmit = async (

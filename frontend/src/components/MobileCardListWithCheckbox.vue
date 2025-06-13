@@ -37,24 +37,24 @@
 </template>
 
 <script setup generic="T" lang="ts">
-import { ref, watch } from 'vue';
+import { ref, watch } from "vue";
 
 /** 通用对象类型 */
 type ItemRecord = Record<string, unknown>;
 
 const props = defineProps<{
-  /** 数据项数组 */
-  items: T[] | undefined;
-  /** 数据项ID字段名 */
-  idField?: string;
-  /** 数据项唯一键字段名 */
-  keyField?: string;
-  /** 选中项的值数组 */
-  modelValue?: (string | number)[];
+	/** 数据项数组 */
+	items: T[] | undefined;
+	/** 数据项ID字段名 */
+	idField?: string;
+	/** 数据项唯一键字段名 */
+	keyField?: string;
+	/** 选中项的值数组 */
+	modelValue?: (string | number)[];
 }>();
 
 const emit = defineEmits<{
-  'update:modelValue': [checkedItems: (string | number)[]];
+	"update:modelValue": [checkedItems: (string | number)[]];
 }>();
 
 const checkedItems = ref<(string | number)[]>(props.modelValue || []);
@@ -66,13 +66,13 @@ const checkedItems = ref<(string | number)[]>(props.modelValue || []);
  * @returns 唯一键
  */
 const getItemKey = (item: T, index: number): string | number => {
-  if (props.keyField) {
-    const key = (item as ItemRecord)[props.keyField];
-    if (key !== undefined) return String(key);
-  }
-  
-  const id = getItemId(item);
-  return id !== undefined ? id : index;
+	if (props.keyField) {
+		const key = (item as ItemRecord)[props.keyField];
+		if (key !== undefined) return String(key);
+	}
+
+	const id = getItemId(item);
+	return id !== undefined ? id : index;
 };
 
 /**
@@ -81,21 +81,28 @@ const getItemKey = (item: T, index: number): string | number => {
  * @returns ID值
  */
 const getItemId = (item: T): string | number => {
-  if (props.idField) {
-    return (item as ItemRecord)[props.idField] as string | number;
-  }
-  return (item as ItemRecord).id as string | number || item as unknown as string | number;
+	if (props.idField) {
+		return (item as ItemRecord)[props.idField] as string | number;
+	}
+	return (
+		((item as ItemRecord).id as string | number) ||
+		(item as unknown as string | number)
+	);
 };
 
 // 监听选中项变化
 watch(checkedItems, (newVal) => {
-  emit('update:modelValue', newVal);
+	emit("update:modelValue", newVal);
 });
 
 // 监听modelValue变化
-watch(() => props.modelValue, (newVal) => {
-  if (newVal) {
-    checkedItems.value = newVal;
-  }
-}, { deep: true });
+watch(
+	() => props.modelValue,
+	(newVal) => {
+		if (newVal) {
+			checkedItems.value = newVal;
+		}
+	},
+	{ deep: true },
+);
 </script>

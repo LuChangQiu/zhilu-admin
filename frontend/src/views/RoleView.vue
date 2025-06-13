@@ -157,12 +157,13 @@ import { useRouter } from "vue-router";
 import type { components } from "../api/types/schema";
 import { useRoleUpsert } from "../composables/role/useRoleUpsert";
 import useAlertStore from "../composables/store/useAlertStore";
+import { useActionExcStore } from "@/composables/store/useActionExcStore";
 
 const roleName = ref<string>("");
 const selectedRole = ref<components["schemas"]["RoleDto"]>();
 const roleUpsertModal = ref<ModalInterface>();
 const roleDeleteModal = ref<ModalInterface>();
-
+const actionExcStore = useActionExcStore();
 const { total, roles, fetchRolesWith } = useRolesQuery();
 
 const { deleteRole } = useRoleDelete();
@@ -172,10 +173,10 @@ const upsertRole = useRoleUpsert();
 
 // 定义表格列配置
 const columns = [
-  { title: '角色名称', field: 'name' },
-  { title: '角色编码', field: 'code' },
-  { title: '分配', field: 'assign' },
-  { title: '操作', field: 'actions' }
+	{ title: "角色名称", field: "name" },
+	{ title: "角色编码", field: "code" },
+	{ title: "分配", field: "assign" },
+	{ title: "操作", field: "actions" },
 ];
 
 onMounted(async () => {
@@ -193,6 +194,11 @@ onMounted(async () => {
 	if ($deleteModalElement) {
 		roleDeleteModal.value = new Modal($deleteModalElement, {});
 	}
+	actionExcStore.setCallback((result) => {
+		if (result) {
+			handleSearch();
+		}
+	});
 });
 
 const handleUpsertModalSubmit = async (data: RoleUpsertModel) => {

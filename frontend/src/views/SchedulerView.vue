@@ -195,17 +195,21 @@ const { updateCron } = useJobUpdate();
 
 // 定义表格列配置
 const columns = [
-  { title: '任务', field: 'name' },
-  { title: '触发器', field: 'trigger', class: 'hidden lg:table-cell' },
-  { title: '开始', field: 'startTime', class: 'hidden lg:table-cell' },
-  { title: '结束', field: 'endTime', class: 'hidden lg:table-cell' },
-  { title: '下次执行', field: 'nextFireTime', class: 'hidden md:table-cell' },
-  { title: '上次执行', field: 'previousFireTime', class: 'hidden lg:table-cell' },
-  { title: '类型', field: 'schedulerType', class: 'hidden md:table-cell' },
-  { title: 'Cron', field: 'cronExpression', class: 'hidden md:table-cell' },
-  { title: '状态', field: 'triggerState' },
-  { title: '编辑', field: 'edit', class: 'hidden sm:table-cell' },
-  { title: '操作', field: 'actions' }
+	{ title: "任务", field: "name" },
+	{ title: "触发器", field: "trigger", class: "hidden lg:table-cell" },
+	{ title: "开始", field: "startTime", class: "hidden lg:table-cell" },
+	{ title: "结束", field: "endTime", class: "hidden lg:table-cell" },
+	{ title: "下次执行", field: "nextFireTime", class: "hidden md:table-cell" },
+	{
+		title: "上次执行",
+		field: "previousFireTime",
+		class: "hidden lg:table-cell",
+	},
+	{ title: "类型", field: "schedulerType", class: "hidden md:table-cell" },
+	{ title: "Cron", field: "cronExpression", class: "hidden md:table-cell" },
+	{ title: "状态", field: "triggerState" },
+	{ title: "编辑", field: "edit", class: "hidden sm:table-cell" },
+	{ title: "操作", field: "actions" },
 ];
 
 const handleResumeJobClick = async (

@@ -117,6 +117,7 @@ import { Modal, type ModalInterface, initFlowbite } from "flowbite";
 import { onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import useAlertStore from "../composables/store/useAlertStore";
+import { useActionExcStore } from "@/composables/store/useActionExcStore";
 
 const positionName = ref<string>("");
 const checkedPositionIds = ref<number[]>([]);
@@ -127,15 +128,15 @@ const $route = useRoute();
 const bindState = ref<"BIND" | "ALL" | "UNBIND">("ALL");
 
 const alertStore = useAlertStore();
-
+const actionExcStore = useActionExcStore();
 const { total, positions, fetchPositionWith } = usePositionQuery();
 
 const { bindPosition, unbindPosition } = usePositionBind();
 
 // 定义表格列配置
 const columns = [
-  { title: '岗位名称', field: 'name' },
-  { title: '绑定状态', field: 'bindState' }
+	{ title: "岗位名称", field: "name" },
+	{ title: "绑定状态", field: "bindState" },
 ];
 
 const handleBindPositionSubmit = async () => {
@@ -191,6 +192,11 @@ onMounted(async () => {
 		{},
 		{ id: "position-unbind-modal" },
 	);
+	actionExcStore.setCallback((result) => {
+		if (result) {
+			handleSearch();
+		}
+	});
 });
 
 const handleSearch = async () => {

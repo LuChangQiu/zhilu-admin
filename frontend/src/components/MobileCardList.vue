@@ -32,18 +32,18 @@
 </template>
 
 <script setup generic="T" lang="ts">
-import { ref } from 'vue';
+import { ref } from "vue";
 
 /** 通用对象类型 */
 type ItemRecord = Record<string, unknown>;
 
 const props = defineProps<{
-  /** 数据项数组 */
-  items: T[] | undefined;
-  /** 数据项ID字段名 */
-  idField?: string;
-  /** 数据项唯一键字段名 */
-  keyField?: string;
+	/** 数据项数组 */
+	items: T[] | undefined;
+	/** 数据项ID字段名 */
+	idField?: string;
+	/** 数据项唯一键字段名 */
+	keyField?: string;
 }>();
 
 /**
@@ -53,17 +53,17 @@ const props = defineProps<{
  * @returns 唯一键
  */
 const getItemKey = (item: T, index: number): string | number => {
-  if (props.keyField) {
-    const key = (item as ItemRecord)[props.keyField];
-    if (key !== undefined) return String(key);
-  }
-  
-  if (props.idField) {
-    const id = (item as ItemRecord)[props.idField];
-    if (id !== undefined) return String(id);
-  }
-  
-  const id = (item as ItemRecord).id;
-  return id !== undefined ? String(id) : index;
+	if (props.keyField) {
+		const key = (item as ItemRecord)[props.keyField];
+		if (key !== undefined) return String(key);
+	}
+
+	if (props.idField) {
+		const id = (item as ItemRecord)[props.idField];
+		if (id !== undefined) return String(id);
+	}
+
+	const id = (item as ItemRecord).id;
+	return id !== undefined ? String(id) : index;
 };
 </script>

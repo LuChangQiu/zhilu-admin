@@ -51,44 +51,44 @@
 </template>
 
 <script setup generic="T" lang="ts">
-import { defineEmits, ref, watch } from 'vue';
+import { defineEmits, ref, watch } from "vue";
 
 /**
  * 表格列配置接口
  */
 export interface Column {
-  /** 列标题 */
-  title: string;
-  /** 数据字段名 */
-  field: string;
-  /** 是否可排序 */
-  sortable?: boolean;
-  /** 自定义CSS类名 */
-  class?: string;
+	/** 列标题 */
+	title: string;
+	/** 数据字段名 */
+	field: string;
+	/** 是否可排序 */
+	sortable?: boolean;
+	/** 自定义CSS类名 */
+	class?: string;
 }
 
 /** 通用对象类型 */
 type ItemRecord = Record<string, unknown>;
 
 const props = defineProps<{
-  /** 数据项数组 */
-  items: T[];
-  /** 列配置数组 */
-  columns: Column[];
-  /** 是否显示复选框 */
-  hasCheckbox?: boolean;
-  /** 数据项ID字段名 */
-  idField?: string;
-  /** 数据项唯一键字段名 */
-  keyField?: string;
-  /** 选中项的值数组，用于v-model绑定 */
-  modelValue?: (string | number)[];
+	/** 数据项数组 */
+	items: T[];
+	/** 列配置数组 */
+	columns: Column[];
+	/** 是否显示复选框 */
+	hasCheckbox?: boolean;
+	/** 数据项ID字段名 */
+	idField?: string;
+	/** 数据项唯一键字段名 */
+	keyField?: string;
+	/** 选中项的值数组，用于v-model绑定 */
+	modelValue?: (string | number)[];
 }>();
 
 const emit = defineEmits<{
-  'update:modelValue': [checkedItems: (string | number)[]];
-  'sort': [field: string];
-  'all-checked-change': [checked: boolean];
+	"update:modelValue": [checkedItems: (string | number)[]];
+	sort: [field: string];
+	"all-checked-change": [checked: boolean];
 }>();
 
 const checkedItems = ref<(string | number)[]>(props.modelValue || []);
@@ -101,13 +101,13 @@ const allChecked = ref(false);
  * @returns 唯一键
  */
 const getItemKey = (item: T, index: number): string | number => {
-  if (props.keyField) {
-    const key = (item as ItemRecord)[props.keyField];
-    if (key !== undefined) return String(key);
-  }
-  
-  const id = getItemId(item);
-  return id !== undefined ? id : index;
+	if (props.keyField) {
+		const key = (item as ItemRecord)[props.keyField];
+		if (key !== undefined) return String(key);
+	}
+
+	const id = getItemId(item);
+	return id !== undefined ? id : index;
 };
 
 /**
@@ -116,10 +116,13 @@ const getItemKey = (item: T, index: number): string | number => {
  * @returns ID值
  */
 const getItemId = (item: T): string | number => {
-  if (props.idField) {
-    return (item as ItemRecord)[props.idField] as string | number;
-  }
-  return (item as ItemRecord).id as string | number || item as unknown as string | number;
+	if (props.idField) {
+		return (item as ItemRecord)[props.idField] as string | number;
+	}
+	return (
+		((item as ItemRecord).id as string | number) ||
+		(item as unknown as string | number)
+	);
 };
 
 /**
@@ -129,26 +132,34 @@ const getItemId = (item: T): string | number => {
  * @returns 字段值
  */
 const getItemValue = (item: T, field: string): string => {
-  if (!field) return '';
-  
-  return String(field.split('.').reduce<unknown>((obj, key) => 
-    obj && typeof obj === 'object' && key in (obj as Record<string, unknown>) 
-      ? (obj as Record<string, unknown>)[key] 
-      : '', 
-    item as ItemRecord));
+	if (!field) return "";
+
+	return String(
+		field
+			.split(".")
+			.reduce<unknown>(
+				(obj, key) =>
+					obj &&
+					typeof obj === "object" &&
+					key in (obj as Record<string, unknown>)
+						? (obj as Record<string, unknown>)[key]
+						: "",
+				item as ItemRecord,
+			),
+	);
 };
 
 /**
  * 处理全选/取消全选
  */
 const handleAllCheckedChange = () => {
-  if (allChecked.value) {
-    checkedItems.value = props.items.map(getItemId);
-  } else {
-    checkedItems.value = [];
-  }
-  emit('all-checked-change', allChecked.value);
-  emit('update:modelValue', checkedItems.value);
+	if (allChecked.value) {
+		checkedItems.value = props.items.map(getItemId);
+	} else {
+		checkedItems.value = [];
+	}
+	emit("all-checked-change", allChecked.value);
+	emit("update:modelValue", checkedItems.value);
 };
 
 /**
@@ -156,32 +167,40 @@ const handleAllCheckedChange = () => {
  * @param field 排序字段
  */
 const handleSortClick = (field: string) => {
-  emit('sort', field);
+	emit("sort", field);
 };
 
 // 监听选中项变化
 watch(checkedItems, (newVal) => {
-  emit('update:modelValue', newVal);
-  // 更新全选状态
-  if (props.items.length > 0) {
-    allChecked.value = newVal.length === props.items.length;
-  } else {
-    allChecked.value = false;
-  }
+	emit("update:modelValue", newVal);
+	// 更新全选状态
+	if (props.items.length > 0) {
+		allChecked.value = newVal.length === props.items.length;
+	} else {
+		allChecked.value = false;
+	}
 });
 
 // 监听modelValue变化
-watch(() => props.modelValue, (newVal) => {
-  if (newVal) {
-    checkedItems.value = newVal;
-  }
-}, { deep: true });
+watch(
+	() => props.modelValue,
+	(newVal) => {
+		if (newVal) {
+			checkedItems.value = newVal;
+		}
+	},
+	{ deep: true },
+);
 
 // 监听items变化，重置选中状态
-watch(() => props.items, () => {
-  if (allChecked.value) {
-    checkedItems.value = props.items.map(getItemId);
-    emit('update:modelValue', checkedItems.value);
-  }
-}, { deep: true });
+watch(
+	() => props.items,
+	() => {
+		if (allChecked.value) {
+			checkedItems.value = props.items.map(getItemId);
+			emit("update:modelValue", checkedItems.value);
+		}
+	},
+	{ deep: true },
+);
 </script>
