@@ -11,10 +11,7 @@
         <Button :handleClick="() => handleUpsertPermissionClick(undefined)" :isLoading="false" :abortable="false"
           submitContent="新增权限" class="w-full sm:w-auto">
           <template #icon>
-            <svg class="w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-              viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-            </svg>
+            <PlusIcon class="w-4 h-4 me-2" />
           </template>
         </Button>
       </template>
@@ -121,6 +118,7 @@ import TableFilterForm from "@/components/TableFilterForm.vue";
 import type { FilterItem } from "@/components/TableFilterForm.vue";
 import TableFormLayout from "@/components/TableFormLayout.vue";
 import TablePagination from "@/components/TablePagination.vue";
+import PlusIcon from "@/components/icons/PlusIcon.vue";
 import usePermissionDelete from "@/composables/permission/usePermissionDelete";
 import { useActionExcStore } from "@/composables/store/useActionExcStore";
 import { Modal, type ModalInterface, initFlowbite } from "flowbite";

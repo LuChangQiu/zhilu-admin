@@ -11,10 +11,7 @@
         <Button :handleClick="() => handleUpsertPositionClick()" :isLoading="false" :abortable="false"
           submitContent="新增岗位" class="w-full sm:w-auto">
           <template #icon>
-            <svg class="w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-              viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-            </svg>
+            <PlusIcon class="w-4 h-4 me-2" />
           </template>
         </Button>
       </template>
@@ -110,6 +107,7 @@ import TableFilterForm from "@/components/TableFilterForm.vue";
 import type { FilterItem } from "@/components/TableFilterForm.vue";
 import TableFormLayout from "@/components/TableFormLayout.vue";
 import TablePagination from "@/components/TablePagination.vue";
+import PlusIcon from "@/components/icons/PlusIcon.vue";
 import usePositionDelete from "@/composables/position/usePositionDelete";
 import { usePositionQuery } from "@/composables/position/usePositionQuery";
 import { usePositionUpsert } from "@/composables/position/usePositionUpsert";
