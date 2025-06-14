@@ -53,4 +53,11 @@ public class AiChatService {
     AiLlmConfig aiLlmConfig = precedenceLlmBy.orElseThrow(() -> new BusinessException("没有开启的大模型"));
     return aiLlmConfig.getCode();
   }
+
+  public void evictChatMemory(String sessionIdentifier) {
+    deepSeekChatAssistant.evictChatMemory(sessionIdentifier);
+    zhiPuChatAssistant.evictChatMemory(sessionIdentifier);
+    zhiPuToolAssistant.evictChatMemory(sessionIdentifier);
+    deepSeekToolAssistant.evictChatMemory(sessionIdentifier);
+  }
 }

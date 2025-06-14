@@ -133,4 +133,9 @@ public class AiController {
     }
     departmentRepository.deleteByName(name);
   }
+
+  @PostMapping("/chat/refresh")
+  void createNewConversation(Principal principal) {
+    aiChatService.evictChatMemory(principal.getName());
+  }
 }
