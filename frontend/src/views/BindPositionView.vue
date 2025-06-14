@@ -4,60 +4,38 @@
       <Breadcrumbs :names="['用户管理', '绑定岗位']" :routes="[{ name: RouteName.USERVIEW }]" />
       <h1 class="text-xl sm:text-2xl mb-4 sm:mb-6 font-semibold text-gray-900">绑定岗位</h1>
     </div>
-    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-y-3 sm:gap-y-0">
-      <form class="w-full sm:w-auto flex flex-col xs:flex-row gap-2 xs:gap-3 items-stretch xs:items-center">
-        <div class="flex-grow">
-          <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
-          <div class="relative">
-            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-              <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                viewBox="0 0 20 20">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-              </svg>
-            </div>
-            <input type="search" id="default-search" v-model="positionName"
-              class="block w-full p-2.5 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="岗位名" required />
-          </div>
+
+    <TableFilterForm :filters="filterConfig" :initialValues="filterValues" @search="handleSearch"
+      @update:values="updateFilterValues">
+      <template #actions>
+        <div class="flex gap-x-2">
+          <TableButton variant="primary" @click="() => {
+              if (checkedPositionIds.length === 0) {
+                alertStore.showAlert({
+                  content: '没有选择岗位',
+                  level: 'error',
+                });
+              } else {
+                positionBindModal?.show();
+              }
+            }">
+            绑定
+          </TableButton>
+          <TableButton variant="danger" @click="() => {
+              if (checkedPositionIds.length === 0) {
+                alertStore.showAlert({
+                  content: '没有选择岗位',
+                  level: 'error',
+                });
+              } else {
+                positionUnbindModal?.show();
+              }
+            }">
+            解绑
+          </TableButton>
         </div>
-        <select id="bind-state" v-model="bindState"
-          class="w-full xs:w-auto bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5">
-          <option value="BIND">已绑定</option>
-          <option value="UNBIND">未绑定</option>
-          <option value="ALL">全部</option>
-        </select>
-        <button type="submit"
-          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5"
-          @click.prevent="handleSearch">搜索</button>
-      </form>
-      <div class="flex gap-x-2">
-        <TableButton variant="primary" @click="() => {
-            if (checkedPositionIds.length === 0) {
-              alertStore.showAlert({
-                content: '没有选择岗位',
-                level: 'error',
-              });
-            } else {
-              positionBindModal?.show();
-            }
-          }">
-          绑定
-        </TableButton>
-        <TableButton variant="danger" @click="() => {
-            if (checkedPositionIds.length === 0) {
-              alertStore.showAlert({
-                content: '没有选择岗位',
-                level: 'error',
-              });
-            } else {
-              positionUnbindModal?.show();
-            }
-          }">
-          解绑
-        </TableButton>
-      </div>
-    </div>
+      </template>
+    </TableFilterForm>
 
     <!-- 移动端卡片布局 -->
     <div class="md:hidden space-y-4">
@@ -107,25 +85,64 @@ import MobileCardListWithCheckbox from "@/components/MobileCardListWithCheckbox.
 import BindModal from "@/components/PopupModal.vue";
 import UnModal from "@/components/PopupModal.vue";
 import TableButton from "@/components/TableButton.vue";
+import TableFilterForm from "@/components/TableFilterForm.vue";
+import type { FilterItem } from "@/components/TableFilterForm.vue";
 import TableFormLayout from "@/components/TableFormLayout.vue";
 import TablePagination from "@/components/TablePagination.vue";
 import { usePositionBind } from "@/composables/position/usePositionBind";
 import { usePositionQuery } from "@/composables/position/usePositionQuery";
+import { useActionExcStore } from "@/composables/store/useActionExcStore";
 import { useMobileStyles } from "@/composables/useMobileStyles";
 import { RouteName } from "@/router/constants";
 import { Modal, type ModalInterface, initFlowbite } from "flowbite";
-import { onMounted, ref, watch } from "vue";
+import { onMounted, reactive, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import useAlertStore from "../composables/store/useAlertStore";
-import { useActionExcStore } from "@/composables/store/useActionExcStore";
 
-const positionName = ref<string>("");
+// 定义筛选配置
+const filterConfig: FilterItem[] = [
+	{
+		type: "input",
+		name: "positionName",
+		placeholder: "岗位名",
+	},
+	{
+		type: "select",
+		name: "bindState",
+		options: [
+			{ value: "BIND", label: "已绑定" },
+			{ value: "UNBIND", label: "未绑定" },
+			{ value: "ALL", label: "全部" },
+		],
+	},
+];
+
+// 筛选值
+const filterValues = reactive<{
+	positionName: string;
+	bindState: "BIND" | "ALL" | "UNBIND";
+}>({
+	positionName: "",
+	bindState: "ALL",
+});
+
+// 更新筛选值
+const updateFilterValues = (
+	values: Record<string, string | number | boolean | Date[] | undefined>,
+) => {
+	if (values.positionName !== undefined) {
+		filterValues.positionName = values.positionName as string;
+	}
+	if (values.bindState !== undefined) {
+		filterValues.bindState = values.bindState as "BIND" | "ALL" | "UNBIND";
+	}
+};
+
 const checkedPositionIds = ref<number[]>([]);
 const positionBindModal = ref<ModalInterface>();
 const positionUnbindModal = ref<ModalInterface>();
 const allChecked = ref<boolean>(false);
 const $route = useRoute();
-const bindState = ref<"BIND" | "ALL" | "UNBIND">("ALL");
 
 const alertStore = useAlertStore();
 const actionExcStore = useActionExcStore();
@@ -147,9 +164,9 @@ const handleBindPositionSubmit = async () => {
 		level: "success",
 	});
 	await fetchPositionWith({
-		name: positionName.value,
+		name: filterValues.positionName,
 		userId: Number($route.params.userId),
-		bindState: bindState.value,
+		bindState: filterValues.bindState,
 	});
 	clearCheckedPositionIds();
 	allChecked.value = false;
@@ -163,9 +180,9 @@ const handleUnbindPositionSubmit = async () => {
 		level: "success",
 	});
 	await fetchPositionWith({
-		name: positionName.value,
+		name: filterValues.positionName,
 		userId: Number($route.params.userId),
-		bindState: bindState.value,
+		bindState: filterValues.bindState,
 	});
 	clearCheckedPositionIds();
 	allChecked.value = false;
@@ -173,9 +190,9 @@ const handleUnbindPositionSubmit = async () => {
 
 onMounted(async () => {
 	await fetchPositionWith({
-		name: positionName.value,
+		name: filterValues.positionName,
 		userId: Number($route.params.userId),
-		bindState: bindState.value,
+		bindState: filterValues.bindState,
 	});
 	initFlowbite();
 	const $bindModalElement: HTMLElement | null = document.querySelector(
@@ -201,18 +218,18 @@ onMounted(async () => {
 
 const handleSearch = async () => {
 	await fetchPositionWith({
-		name: positionName.value,
+		name: filterValues.positionName,
 		userId: Number($route.params.userId),
-		bindState: bindState.value,
+		bindState: filterValues.bindState,
 	});
 };
 
 const handlePageChange = async (page: number, pageSize: number) => {
 	await fetchPositionWith(
 		{
-			name: positionName.value,
+			name: filterValues.positionName,
 			userId: Number($route.params.userId),
-			bindState: bindState.value,
+			bindState: filterValues.bindState,
 		},
 		page,
 		pageSize,

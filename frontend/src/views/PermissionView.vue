@@ -4,36 +4,21 @@
       <Breadcrumbs :names="['权限管理']" />
       <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl">权限管理</h1>
     </div>
-    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-y-3 sm:gap-y-0">
-      <form class="w-full sm:max-w-xs">
-        <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
-        <div class="relative">
-          <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-            <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-              viewBox="0 0 20 20">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+
+    <TableFilterForm :filters="filterConfig" :initialValues="filterValues" @search="handleSearch"
+      @update:values="updateFilterValues">
+      <template #actions>
+        <Button :handleClick="() => handleUpsertPermissionClick(undefined)" :isLoading="false" :abortable="false"
+          submitContent="新增权限" class="w-full sm:w-auto">
+          <template #icon>
+            <svg class="w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+              viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
             </svg>
-          </div>
-          <input type="search" id="default-search" v-model="permissionName"
-            class="block w-full p-3 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-            placeholder="权限名" required />
-          <button type="submit"
-            class="text-white absolute end-1.5 bottom-1.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-1.5 sm:px-4 sm:py-2"
-            @click.prevent="handleSearch">搜索</button>
-        </div>
-      </form>
-      <!-- Create Modal toggle -->
-      <Button :handleClick="() => handleUpsertPermissionClick(undefined)" :isLoading="false" :abortable="false"
-        submitContent="新增权限" class="w-full sm:w-auto">
-        <template #icon>
-          <svg class="w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-          </svg>
-        </template>
-      </Button>
-    </div>
+          </template>
+        </Button>
+      </template>
+    </TableFilterForm>
 
     <!-- 移动端卡片布局 -->
     <div class="md:hidden">
@@ -125,26 +110,51 @@
 </template>
 
 <script setup lang="ts">
-import Button from "@/components/Button.vue";
-import PermissionUpsertModal from "@/components/PermissionUpsertModal.vue";
-import PermissionDeleteModal from "@/components/PopupModal.vue";
-import usePermissionDelete from "@/composables/permission/usePermissionDelete";
-
 import type { components } from "@/api/types/schema";
 import Breadcrumbs from "@/components/Breadcrumbs.vue";
+import Button from "@/components/Button.vue";
 import MobileCardList from "@/components/MobileCardList.vue";
+import PermissionUpsertModal from "@/components/PermissionUpsertModal.vue";
+import PermissionDeleteModal from "@/components/PopupModal.vue";
 import TableButton from "@/components/TableButton.vue";
+import TableFilterForm from "@/components/TableFilterForm.vue";
+import type { FilterItem } from "@/components/TableFilterForm.vue";
 import TableFormLayout from "@/components/TableFormLayout.vue";
 import TablePagination from "@/components/TablePagination.vue";
+import usePermissionDelete from "@/composables/permission/usePermissionDelete";
+import { useActionExcStore } from "@/composables/store/useActionExcStore";
 import { Modal, type ModalInterface, initFlowbite } from "flowbite";
-import { nextTick, onMounted, ref } from "vue";
+import { nextTick, onMounted, reactive, ref } from "vue";
 import usePermissionsQuery from "../composables/permission/usePermissionQuery";
 import usePermissionUpsert from "../composables/permission/usePermissionUpsert";
 import useAlertStore from "../composables/store/useAlertStore";
 import type { PermissionUpsertModel } from "../types/permission";
-import { useActionExcStore } from "@/composables/store/useActionExcStore";
 
-const permissionName = ref<string>("");
+// 定义筛选配置
+const filterConfig = [
+	{
+		type: "input",
+		name: "permissionName",
+		placeholder: "权限名",
+	},
+] as FilterItem[];
+
+// 筛选值
+const filterValues = reactive<{
+	permissionName: string;
+}>({
+	permissionName: "",
+});
+
+// 更新筛选值
+const updateFilterValues = (
+	values: Record<string, string | number | boolean | Date[] | undefined>,
+) => {
+	if (values.permissionName !== undefined) {
+		filterValues.permissionName = values.permissionName as string;
+	}
+};
+
 const selectedPermission = ref<components["schemas"]["PermissionRespDto"]>();
 const permissionUpsertModal = ref<ModalInterface>();
 const permissionDeleteModal = ref<ModalInterface>();
@@ -164,7 +174,7 @@ const columns = [
 
 onMounted(async () => {
 	await fetchPermissionsWith({
-		name: permissionName.value,
+		name: filterValues.permissionName,
 	});
 	initFlowbite();
 	const $upsertModalElement: HTMLElement | null = document.querySelector(
@@ -189,7 +199,7 @@ onMounted(async () => {
 const handleUpsertModalSubmit = async (data: PermissionUpsertModel) => {
 	await permissionUpsert.upsertPermission(data);
 	await fetchPermissionsWith({
-		name: permissionName.value,
+		name: filterValues.permissionName,
 	});
 	permissionUpsertModal.value?.hide();
 	alertStore.showAlert({
@@ -208,7 +218,7 @@ const handleUpsertPermissionClick = async (
 };
 
 const handleDeleteModalSubmit = async () => {
-	if (!selectedPermission?.value?.id) return;
+	if (!selectedPermission.value?.id) return;
 	await deletePermission(selectedPermission.value.id);
 	permissionDeleteModal.value?.hide();
 	alertStore.showAlert({
@@ -216,7 +226,7 @@ const handleDeleteModalSubmit = async () => {
 		level: "success",
 	});
 	await fetchPermissionsWith({
-		name: permissionName.value,
+		name: filterValues.permissionName,
 	});
 };
 
@@ -231,14 +241,14 @@ const handleDeletePermissionClick = async (
 
 const handleSearch = async () => {
 	await fetchPermissionsWith({
-		name: permissionName.value,
+		name: filterValues.permissionName,
 	});
 };
 
 const handlePageChange = async (page: number, pageSize: number) => {
 	await fetchPermissionsWith(
 		{
-			name: permissionName.value,
+			name: filterValues.permissionName,
 		},
 		page,
 		pageSize,

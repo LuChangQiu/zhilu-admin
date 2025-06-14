@@ -4,36 +4,21 @@
       <Breadcrumbs :names="['角色管理']" />
       <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl">角色管理</h1>
     </div>
-    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-y-3 sm:gap-y-0">
-      <form class="w-full sm:max-w-xs">
-        <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
-        <div class="relative">
-          <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-            <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-              viewBox="0 0 20 20">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+
+    <TableFilterForm :filters="filterConfig" :initialValues="filterValues" @search="handleSearch"
+      @update:values="updateFilterValues">
+      <template #actions>
+        <Button :handleClick="() => handleUpsertRoleClick(undefined)" :isLoading="false" :abortable="false"
+          submitContent="新增角色" class="w-full sm:w-auto">
+          <template #icon>
+            <svg class="w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+              viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
             </svg>
-          </div>
-          <input type="search" id="default-search" v-model="roleName"
-            class="block w-full p-3 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-            placeholder="角色名" required />
-          <button type="submit"
-            class="text-white absolute end-1.5 bottom-1.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-1.5 sm:px-4 sm:py-2"
-            @click.prevent="handleSearch">搜索</button>
-        </div>
-      </form>
-      <!-- Create Modal toggle -->
-      <Button :handleClick="() => handleUpsertRoleClick(undefined)" :isLoading="false" :abortable="false"
-        submitContent="新增角色" class="w-full sm:w-auto">
-        <template #icon>
-          <svg class="w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-          </svg>
-        </template>
-      </Button>
-    </div>
+          </template>
+        </Button>
+      </template>
+    </TableFilterForm>
 
     <!-- 移动端卡片布局 -->
     <div class="md:hidden">
@@ -145,21 +130,47 @@ import Button from "@/components/Button.vue";
 import MobileCardList from "@/components/MobileCardList.vue";
 import RoleDeleteModal from "@/components/PopupModal.vue";
 import RoleUpsertModal from "@/components/RoleUpsertModal.vue";
+import TableFilterForm from "@/components/TableFilterForm.vue";
+import type { FilterItem } from "@/components/TableFilterForm.vue";
 import TableFormLayout from "@/components/TableFormLayout.vue";
 import TablePagination from "@/components/TablePagination.vue";
 import useRoleDelete from "@/composables/role/useRoleDelete";
 import { useRolesQuery } from "@/composables/role/useRolesQuery";
+import { useActionExcStore } from "@/composables/store/useActionExcStore";
 import { RouteName } from "@/router/constants";
 import type { RoleUpsertModel } from "@/types/role";
 import { Modal, type ModalInterface, initFlowbite } from "flowbite";
-import { nextTick, onMounted, ref } from "vue";
+import { nextTick, onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import type { components } from "../api/types/schema";
 import { useRoleUpsert } from "../composables/role/useRoleUpsert";
 import useAlertStore from "../composables/store/useAlertStore";
-import { useActionExcStore } from "@/composables/store/useActionExcStore";
 
-const roleName = ref<string>("");
+// 定义筛选配置
+const filterConfig = [
+	{
+		type: "input",
+		name: "roleName",
+		placeholder: "角色名",
+	},
+] as FilterItem[];
+
+// 筛选值
+const filterValues = reactive<{
+	roleName: string;
+}>({
+	roleName: "",
+});
+
+// 更新筛选值
+const updateFilterValues = (
+	values: Record<string, string | number | boolean | Date[] | undefined>,
+) => {
+	if (values.roleName !== undefined) {
+		filterValues.roleName = values.roleName as string;
+	}
+};
+
 const selectedRole = ref<components["schemas"]["RoleDto"]>();
 const roleUpsertModal = ref<ModalInterface>();
 const roleDeleteModal = ref<ModalInterface>();
@@ -181,7 +192,7 @@ const columns = [
 
 onMounted(async () => {
 	await fetchRolesWith({
-		name: roleName.value,
+		name: filterValues.roleName,
 	});
 	initFlowbite();
 	const $upsertModalElement: HTMLElement | null =
@@ -203,13 +214,13 @@ onMounted(async () => {
 
 const handleUpsertModalSubmit = async (data: RoleUpsertModel) => {
 	await upsertRole.upsertRole(data);
-	await fetchRolesWith({
-		name: roleName.value,
-	});
 	roleUpsertModal.value?.hide();
 	alertStore.showAlert({
 		content: "操作成功",
 		level: "success",
+	});
+	await fetchRolesWith({
+		name: filterValues.roleName,
 	});
 };
 
@@ -222,16 +233,27 @@ const handleUpsertRoleClick = async (
 	});
 };
 
-const handleDeletedModalSubmit = async () => {
-	if (!selectedRole?.value?.id) return;
-	await deleteRole(selectedRole.value.id);
-	await fetchRolesWith({
-		name: roleName.value,
+const handleBindPermissionClick = async (
+	role: components["schemas"]["RoleDto"],
+) => {
+	router.push({
+		name: RouteName.BINDPERMISSIONVIEW,
+		params: {
+			roleId: role.id,
+		},
 	});
+};
+
+const handleDeletedModalSubmit = async () => {
+	if (!selectedRole.value?.id) return;
+	await deleteRole(selectedRole.value.id);
 	roleDeleteModal.value?.hide();
 	alertStore.showAlert({
 		content: "删除成功",
 		level: "success",
+	});
+	await fetchRolesWith({
+		name: filterValues.roleName,
 	});
 };
 
@@ -244,24 +266,16 @@ const handleDeleteRoleClick = async (
 	});
 };
 
-const handleBindPermissionClick = async (
-	role: components["schemas"]["RoleDto"],
-) => {
-	router.push({
-		name: RouteName.BINDPERMISSIONVIEW,
-		params: { roleId: role.id },
-	});
-};
 const handleSearch = async () => {
 	await fetchRolesWith({
-		name: roleName.value,
+		name: filterValues.roleName,
 	});
 };
 
 const handlePageChange = async (page: number, pageSize: number) => {
 	await fetchRolesWith(
 		{
-			name: roleName.value,
+			name: filterValues.roleName,
 		},
 		page,
 		pageSize,
