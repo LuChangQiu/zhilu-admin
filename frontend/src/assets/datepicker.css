@@ -11,6 +11,9 @@
 	/* 次要颜色 */
 	--dp-secondary-color: #9ca3af; /* 对应 Flowbite 的 gray-400 */
 
+	/* 背景颜色 */
+	--dp-background-color: var(--color-gray-50);
+
 	/* 边框颜色 */
 	--dp-border-color: var(--color-gray-300); /* 对应 Flowbite 的 gray-200 */
 	--dp-menu-border-color: #e5e7eb;
