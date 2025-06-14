@@ -4,60 +4,38 @@
       <Breadcrumbs :names="['用户管理', '角色分配']" :routes="[{ name: RouteName.USERVIEW }]" />
       <h1 class="text-xl sm:text-2xl mb-4 sm:mb-6 font-semibold text-gray-900">角色分配</h1>
     </div>
-    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-y-3 sm:gap-y-0">
-      <form class="w-full sm:w-auto flex flex-col xs:flex-row gap-2 xs:gap-3 items-stretch xs:items-center">
-        <div class="flex-grow">
-          <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
-          <div class="relative">
-            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-              <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                viewBox="0 0 20 20">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-              </svg>
-            </div>
-            <input type="search" id="default-search" v-model="roleName"
-              class="block w-full p-2.5 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="角色名" required />
-          </div>
+
+    <TableFilterForm :filters="filterConfig" :initialValues="filterValues" @search="handleSearch"
+      @update:values="updateFilterValues">
+      <template #actions>
+        <div class="flex gap-x-2">
+          <TableButton variant="primary" @click="() => {
+              if (checkedRoleIds.length === 0) {
+                alertStore.showAlert({
+                  content: '没有选择角色',
+                  level: 'error',
+                });
+              } else {
+                roleBindModal?.show();
+              }
+            }">
+            绑定
+          </TableButton>
+          <TableButton variant="danger" @click="() => {
+              if (checkedRoleIds.length === 0) {
+                alertStore.showAlert({
+                  content: '没有选择角色',
+                  level: 'error',
+                });
+              } else {
+                roleUnbindModal?.show();
+              }
+            }">
+            解绑
+          </TableButton>
         </div>
-        <select id="countries" v-model="bindState"
-          class="w-full xs:w-auto bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5">
-          <option value="BIND">已绑定</option>
-          <option value="UNBIND">未绑定</option>
-          <option value="ALL">全部</option>
-        </select>
-        <button type="submit"
-          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5"
-          @click.prevent="handleSearch">搜索</button>
-      </form>
-      <div class="flex gap-x-2">
-        <TableButton variant="primary" @click="() => {
-            if (checkedRoleIds.length === 0) {
-              alertStore.showAlert({
-                content: '没有选择角色',
-                level: 'error',
-              });
-            } else {
-              roleBindModal?.show();
-            }
-          }">
-          绑定
-        </TableButton>
-        <TableButton variant="danger" @click="() => {
-            if (checkedRoleIds.length === 0) {
-              alertStore.showAlert({
-                content: '没有选择角色',
-                level: 'error',
-              });
-            } else {
-              roleUnbindModal?.show();
-            }
-          }">
-          解绑
-        </TableButton>
-      </div>
-    </div>
+      </template>
+    </TableFilterForm>
 
     <!-- 移动端卡片布局 -->
     <div class="md:hidden space-y-4">
@@ -117,26 +95,60 @@ import MobileCardListWithCheckbox from "@/components/MobileCardListWithCheckbox.
 import BindModal from "@/components/PopupModal.vue";
 import UnModal from "@/components/PopupModal.vue";
 import TableButton from "@/components/TableButton.vue";
+import TableFilterForm from "@/components/TableFilterForm.vue";
+import type { FilterItem } from "@/components/TableFilterForm.vue";
 import TableFormLayout from "@/components/TableFormLayout.vue";
 import TablePagination from "@/components/TablePagination.vue";
 import { useRolesQuery } from "@/composables/role/useRolesQuery";
+import { useActionExcStore } from "@/composables/store/useActionExcStore";
 import { RouteName } from "@/router/constants";
 import { Modal, type ModalInterface, initFlowbite } from "flowbite";
-import { onMounted, ref, watch } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import { useRoute } from "vue-router";
 import { useRoleBind } from "../composables/role/useRoleBind";
 import useAlertStore from "../composables/store/useAlertStore";
-import { useActionExcStore } from "@/composables/store/useActionExcStore";
-import VueDatePicker from "@vuepic/vue-datepicker";
-import "@vuepic/vue-datepicker/dist/main.css";
 
-const roleName = ref<string>("");
+const filterConfig: FilterItem[] = [
+	{
+		type: "input",
+		name: "roleName",
+		placeholder: "角色名",
+	},
+	{
+		type: "select",
+		name: "bindState",
+		options: [
+			{ value: "BIND", label: "已绑定" },
+			{ value: "UNBIND", label: "未绑定" },
+			{ value: "ALL", label: "全部" },
+		],
+	},
+];
+
+const filterValues = reactive<{
+	roleName: string;
+	bindState: "BIND" | "ALL" | "UNBIND";
+}>({
+	roleName: "",
+	bindState: "ALL",
+});
+
+const updateFilterValues = (
+	values: Record<string, string | number | boolean | Date[] | undefined>,
+) => {
+	if (values.roleName !== undefined) {
+		filterValues.roleName = values.roleName as string;
+	}
+	if (values.bindState !== undefined) {
+		filterValues.bindState = values.bindState as "BIND" | "ALL" | "UNBIND";
+	}
+};
+
 const checkedRoleIds = ref<number[]>([]);
 const roleBindModal = ref<ModalInterface>();
 const roleUnbindModal = ref<ModalInterface>();
 const allChecked = ref<boolean>(false);
 const $route = useRoute();
-const bindState = ref<"BIND" | "ALL" | "UNBIND">("ALL");
 
 const alertStore = useAlertStore();
 const { total, roles, fetchRolesWith } = useRolesQuery();
@@ -162,9 +174,9 @@ const handleBindRoleSubmit = async () => {
 		level: "success",
 	});
 	await fetchRolesWith({
-		name: roleName.value,
+		name: filterValues.roleName,
 		userId: Number($route.params.userId),
-		bindState: bindState.value,
+		bindState: filterValues.bindState,
 	});
 };
 
@@ -178,17 +190,17 @@ const handleUnbindRoleSubmit = async () => {
 		level: "success",
 	});
 	await fetchRolesWith({
-		name: roleName.value,
+		name: filterValues.roleName,
 		userId: Number($route.params.userId),
-		bindState: bindState.value,
+		bindState: filterValues.bindState,
 	});
 };
 
 onMounted(async () => {
 	await fetchRolesWith({
-		name: roleName.value,
+		name: filterValues.roleName,
 		userId: Number($route.params.userId),
-		bindState: bindState.value,
+		bindState: filterValues.bindState,
 	});
 	initFlowbite();
 	const $bindModalElement: HTMLElement | null =
@@ -198,11 +210,9 @@ onMounted(async () => {
 	}
 	const $unbindModalElement: HTMLElement | null =
 		document.querySelector("#role-unbind-modal");
-	roleUnbindModal.value = new Modal(
-		$unbindModalElement,
-		{},
-		{ id: "role-unbind-modal" },
-	);
+	if ($unbindModalElement) {
+		roleUnbindModal.value = new Modal($unbindModalElement, {});
+	}
 	actionExcStore.setCallback((result) => {
 		if (result) {
 			handleSearch();
@@ -210,36 +220,28 @@ onMounted(async () => {
 	});
 });
 
+const clearCheckedRoleIds = () => {
+	checkedRoleIds.value = [];
+};
+
 const handleSearch = async () => {
 	await fetchRolesWith({
-		name: roleName.value,
+		name: filterValues.roleName,
 		userId: Number($route.params.userId),
-		bindState: bindState.value,
+		bindState: filterValues.bindState,
 	});
 };
 
 const handlePageChange = async (page: number, pageSize: number) => {
 	await fetchRolesWith(
 		{
-			name: roleName.value,
+			name: filterValues.roleName,
 			userId: Number($route.params.userId),
-			bindState: bindState.value,
+			bindState: filterValues.bindState,
 		},
 		page,
 		pageSize,
 	);
-};
-
-watch(allChecked, () => {
-	if (allChecked.value) {
-		checkedRoleIds.value = roles.value?.map((r) => r.id!) ?? [];
-	} else {
-		checkedRoleIds.value = [];
-	}
-});
-
-const clearCheckedRoleIds = () => {
-	checkedRoleIds.value = [];
 };
 </script>
 

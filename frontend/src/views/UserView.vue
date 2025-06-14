@@ -4,40 +4,21 @@
       <Breadcrumbs :names="['用户管理']" />
       <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl">用户管理</h1>
     </div>
-    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-y-3 sm:gap-y-0">
-      <form class="w-full sm:w-auto flex flex-col xs:flex-row gap-2 xs:gap-3 items-stretch xs:items-center">
-        <div class="flex-grow">
-          <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
-          <div class="relative">
-            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-              <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                viewBox="0 0 20 20">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-              </svg>
-            </div>
-            <input type="search" id="default-search" v-model="username"
-              class="block w-full p-2.5 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="用户名" required />
-          </div>
-        </div>
-        <VueDatePicker v-model="dateRange" locale="zh-CN" range format="yyyy/MM/dd HH:mm:ss - yyy/MM/dd HH:mm:ss">
-        </VueDatePicker>
-        <button type="submit"
-          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5"
-          @click.prevent="handleSearch">搜索</button>
-      </form>
-      <!-- Create Modal toggle -->
-      <Button :handleClick="() => handleUpsertUserClick(undefined)" :isLoading="false" :abortable="false"
-        submitContent="新增用户" class="w-full sm:w-auto">
-        <template #icon>
-          <svg class="w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-          </svg>
-        </template>
-      </Button>
-    </div>
+
+    <TableFilterForm :filters="filterConfig" :initialValues="filterValues" @search="handleSearch"
+      @update:values="updateFilterValues">
+      <template #actions>
+        <Button :handleClick="() => handleUpsertUserClick(undefined)" :isLoading="false" :abortable="false"
+          submitContent="新增用户" class="w-full sm:w-auto">
+          <template #icon>
+            <svg class="w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+              viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+          </template>
+        </Button>
+      </template>
+    </TableFilterForm>
 
     <!-- 移动端卡片布局 -->
     <div class="md:hidden space-y-4">
@@ -178,25 +159,58 @@ import Breadcrumbs from "@/components/Breadcrumbs.vue";
 import Button from "@/components/Button.vue";
 import UserDeleteModal from "@/components/PopupModal.vue";
 import SortIcon from "@/components/SortIcon.vue";
+import TableFilterForm, {
+	type FilterItem,
+} from "@/components/TableFilterForm.vue";
 import TableFormLayout from "@/components/TableFormLayout.vue";
 import TablePagination from "@/components/TablePagination.vue";
 import UserUpsertModal from "@/components/UserUpsertModal.vue";
 import { useSort } from "@/composables/sort";
+import { useActionExcStore } from "@/composables/store/useActionExcStore";
 import useUserDelete from "@/composables/user/useUserDelete";
 import { useUserQuery } from "@/composables/user/useUserQuery";
 import { RouteName } from "@/router/constants";
 import type { UserUpsertSubmitModel } from "@/types/user";
 import { dayjs, formatDate } from "@/utils/dateUtil";
 import { Modal, type ModalInterface, initFlowbite } from "flowbite";
-import { nextTick, onMounted, ref } from "vue";
+import { nextTick, onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import type { components } from "../api/types/schema";
 import useAlertStore from "../composables/store/useAlertStore";
 import { useUserUpsert } from "../composables/user/useUserUpsert";
-import { useActionExcStore } from "@/composables/store/useActionExcStore";
 
-const dateRange = ref<Date[]>();
-const username = ref<string>("");
+const filterConfig: FilterItem[] = [
+	{
+		type: "input",
+		name: "username",
+		placeholder: "用户名",
+	},
+	{
+		type: "date-range",
+		name: "dateRange",
+		format: "yyyy/MM/dd HH:mm:ss - yyy/MM/dd HH:mm:ss",
+	},
+];
+
+const filterValues = reactive<{
+	username: string;
+	dateRange?: Date[];
+}>({
+	username: "",
+	dateRange: undefined,
+});
+
+const updateFilterValues = (
+	values: Record<string, string | number | boolean | Date[] | undefined>,
+) => {
+	if (values.username !== undefined) {
+		filterValues.username = values.username as string;
+	}
+	if (values.dateRange !== undefined) {
+		filterValues.dateRange = values.dateRange as Date[];
+	}
+};
+
 const selectedUser = ref<components["schemas"]["UserRolePermissionDto"]>();
 const userUpsertModal = ref<ModalInterface>();
 const userDeleteModal = ref<ModalInterface>();
@@ -218,7 +232,7 @@ const columns = [
 
 onMounted(async () => {
 	await fetchUsersWith({
-		username: username.value,
+		username: filterValues.username,
 	});
 	initFlowbite();
 	const $upsertModalElement: HTMLElement | null =
@@ -247,9 +261,9 @@ const handleUpsertUserSubmit = async (data: UserUpsertSubmitModel) => {
 	});
 	await fetchUsersWith(
 		{
-			username: username.value,
-			startDate: formatDate(dateRange?.value?.[0]),
-			endDate: formatDate(dateRange?.value?.[1]),
+			username: filterValues.username,
+			startDate: formatDate(filterValues.dateRange?.[0]),
+			endDate: formatDate(filterValues.dateRange?.[1]),
 		},
 		1,
 		10,
@@ -303,9 +317,9 @@ const handleSortClick = async (field: string) => {
 	handleSort(field);
 	await fetchUsersWith(
 		{
-			username: username.value,
-			startDate: formatDate(dateRange?.value?.[0]),
-			endDate: formatDate(dateRange?.value?.[1]),
+			username: filterValues.username,
+			startDate: formatDate(filterValues.dateRange?.[0]),
+			endDate: formatDate(filterValues.dateRange?.[1]),
 		},
 		1,
 		10,
@@ -323,9 +337,9 @@ const handleDeleteUserSubmit = async () => {
 	});
 	await fetchUsersWith(
 		{
-			username: username.value,
-			startDate: formatDate(dateRange?.value?.[0]),
-			endDate: formatDate(dateRange?.value?.[1]),
+			username: filterValues.username,
+			startDate: formatDate(filterValues.dateRange?.[0]),
+			endDate: formatDate(filterValues.dateRange?.[1]),
 		},
 		1,
 		10,
@@ -345,9 +359,9 @@ const handleDeleteUserClick = async (
 const handleSearch = async () => {
 	await fetchUsersWith(
 		{
-			username: username.value,
-			startDate: formatDate(dateRange?.value?.[0]),
-			endDate: formatDate(dateRange?.value?.[1]),
+			username: filterValues.username,
+			startDate: formatDate(filterValues.dateRange?.[0]),
+			endDate: formatDate(filterValues.dateRange?.[1]),
 		},
 		1,
 		10,
@@ -358,9 +372,9 @@ const handleSearch = async () => {
 const handlePageChange = async (page: number, pageSize: number) => {
 	await fetchUsersWith(
 		{
-			username: username.value,
-			startDate: formatDate(dateRange?.value?.[0]),
-			endDate: formatDate(dateRange?.value?.[1]),
+			username: filterValues.username,
+			startDate: formatDate(filterValues.dateRange?.[0]),
+			endDate: formatDate(filterValues.dateRange?.[1]),
 		},
 		page,
 		pageSize,
