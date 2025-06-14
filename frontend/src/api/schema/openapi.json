@@ -747,6 +747,19 @@
         }
       }
     },
+    "/ai/chat/refresh": {
+      "post": {
+        "tags": [
+          "ai-controller"
+        ],
+        "operationId": "createNewConversation",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/ai/action/search": {
       "post": {
         "tags": [
@@ -1627,10 +1640,6 @@
           "name": {
             "type": "string"
           },
-          "parentId": {
-            "type": "integer",
-            "format": "int64"
-          },
           "isBound": {
             "type": "boolean"
           }
@@ -1641,6 +1650,14 @@
         "properties": {
           "username": {
             "type": "string"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time"
           }
         }
       },

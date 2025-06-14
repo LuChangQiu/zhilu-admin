@@ -117,6 +117,11 @@ export const useAiChat = () => {
 		}
 	};
 
+	const clearConversation = async () => {
+		await client.POST("/ai/chat/refresh");
+		messages.value = [];
+	};
+
 	const cancel = () => {
 		if (currentController) {
 			currentController.abort();
@@ -124,5 +129,13 @@ export const useAiChat = () => {
 		}
 	};
 
-	return { messages, chat, isLoading, cancel, searchAction, executeAction };
+	return {
+		messages,
+		chat,
+		isLoading,
+		cancel,
+		searchAction,
+		executeAction,
+		clearConversation,
+	};
 };

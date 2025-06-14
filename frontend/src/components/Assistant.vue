@@ -20,7 +20,7 @@
 						<button
 							v-if="chatElement.type === 'action' && (chatElement.command === 'CREATE_USER' || chatElement.command === 'CREATE_DEPARTMENT')"
 							type="button" @click="commandActionMap[chatElement.command!]"
-							class="px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+							class="px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
 							{{
 							commandContentMap[chatElement.command!]
 							}}</button>
@@ -38,6 +38,14 @@
 		</div>
 
 		<form class="sticky">
+			<button @click.prevent="clearConversation"
+				class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 
+				overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 ">
+				<span
+					class="relative px-3 py-2 text-xs font-medium transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-transparent">
+					开启新对话
+				</span>
+			</button>
 			<div class="w-full border border-gray-200 rounded-lg bg-gray-50">
 				<div class="px-4 py-2 bg-white rounded-t-lg">
 					<label for="comment" class="sr-only"></label>
@@ -103,7 +111,7 @@ import useUserStore from "../composables/store/useUserStore";
 import { useUserUpsert } from "../composables/user/useUserUpsert";
 import type { UserUpsertSubmitModel } from "../types/user";
 
-const { messages, chat, isLoading, cancel, searchAction, executeAction } =
+const { messages, chat, isLoading, cancel, searchAction, executeAction, clearConversation } =
 	useAiChat();
 const { user } = useUserStore();
 const userUpsertModal = ref<ModalInterface>();
