@@ -48,7 +48,7 @@ public class IdentityAccessController {
       produces = MediaType.TEXT_PLAIN_VALUE)
   public String uploadAvatar(Principal principal, @RequestPart("file") MultipartFile multipartFile)
       throws Exception {
-    String objectName = String.format("avatar/%s/avatar.jpg", principal.getName());
+    String objectName = String.format("/avatar/%s/avatar.jpg", principal.getName());
     if (multipartFile.isEmpty()) {
       throw new BusinessException("上传的文件不能为空");
     }

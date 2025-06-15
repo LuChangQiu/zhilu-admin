@@ -21,7 +21,12 @@
     <div class="md:hidden space-y-4">
       <div v-for="user in users" :key="user.id" class="p-4 bg-white rounded-lg shadow">
         <div class="flex justify-between items-start mb-3">
-          <div class="font-medium text-gray-900">{{ user.username }}</div>
+          <div class="flex items-center gap-2">
+            <div class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center overflow-hidden">
+              <img v-if="user.avatar" :src="getUserAvatarUrl(user.avatar)" class="w-full h-full object-cover">
+            </div>
+            <div class="font-medium text-gray-900">{{ user.username }}</div>
+          </div>
           <div class="flex items-center">
             <div class="h-2.5 w-2.5 rounded-full me-2" :class="user.enable ? 'bg-blue-500' : 'bg-red-500'"></div>
             <span class="text-sm">{{ user.enable === true ? "启用" : "禁用" }}</span>
@@ -83,6 +88,9 @@
       <TableFormLayout :items="users" :columns="columns" @sort="handleSortClick">
         <template #sort-icon="{ field }">
           <SortIcon :sortField="getSortField(field)" />
+        </template>
+        <template #avatar="{ item }">
+          <img v-if="item.avatar" :src="getUserAvatarUrl(item.avatar)" class="w-10 h-10 object-cover rounded-full">
         </template>
         <template #createTime="{ item }">
           {{ dayjs(item.createTime).format("llll") }}
@@ -169,6 +177,7 @@ import useUserDelete from "@/composables/user/useUserDelete";
 import { useUserQuery } from "@/composables/user/useUserQuery";
 import { RouteName } from "@/router/constants";
 import type { UserUpsertSubmitModel } from "@/types/user";
+import { getUserAvatarUrl } from "@/utils/avatarUtil";
 import { dayjs, formatDate } from "@/utils/dateUtil";
 import { Modal, type ModalInterface, initFlowbite } from "flowbite";
 import { nextTick, onMounted, reactive, ref } from "vue";
@@ -221,6 +230,7 @@ const alertStore = useAlertStore();
 const actionExcStore = useActionExcStore();
 // 定义表格列配置
 const columns = [
+	{ title: "头像", field: "avatar" },
 	{ title: "用户名", field: "username", sortable: true },
 	{ title: "创建时间", field: "createTime", sortable: true },
 	{ title: "状态", field: "status" },
