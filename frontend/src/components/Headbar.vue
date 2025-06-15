@@ -39,10 +39,7 @@
               <button type="button" id="dropdown-button" class="flex text-sm rounded-full cursor-pointer"
                 aria-expanded="false" data-dropdown-toggle="dropdown-user">
                 <span class="sr-only">打开用户菜单</span>
-                <div
-                  class="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center overflow-hidden">
-                  <img v-if="user.avatar" :src="getUserAvatarUrl(user.avatar)" class="object-cover">
-                </div>
+                <Avatar :src="user.avatar" size="sm" />
               </button>
             </div>
             <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-sm shadow-sm  "
@@ -97,8 +94,8 @@ import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import useUserAuth from "../composables/auth/useUserAuth";
 import { RouteName, RoutePath } from "../router/constants";
+import Avatar from "./Avatar.vue";
 import AiChatIcon from "./icons/AiChatIcon.vue";
-import { getUserAvatarUrl } from "@/utils/avatarUtil";
 
 const props = defineProps<{
 	changeAssistantVisible: () => void;

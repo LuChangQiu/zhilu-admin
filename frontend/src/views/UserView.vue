@@ -22,9 +22,7 @@
       <div v-for="user in users" :key="user.id" class="p-4 bg-white rounded-lg shadow">
         <div class="flex justify-between items-start mb-3">
           <div class="flex items-center gap-2">
-            <div class="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center overflow-hidden">
-              <img v-if="user.avatar" :src="getUserAvatarUrl(user.avatar)" class="object-cover">
-            </div>
+            <Avatar :src="user.avatar" />
             <div class="font-medium text-gray-900">{{ user.username }}</div>
           </div>
           <div class="flex items-center">
@@ -90,9 +88,7 @@
           <SortIcon :sortField="getSortField(field)" />
         </template>
         <template #avatar="{ item }">
-          <div class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center overflow-hidden">
-            <img v-if="item.avatar" :src="getUserAvatarUrl(item.avatar)" class="object-cover">
-          </div>
+          <Avatar :src="item.avatar" />
         </template>
         <template #createTime="{ item }">
           {{ dayjs(item.createTime).format("llll") }}
@@ -162,8 +158,8 @@
 </template>
 
 <script setup lang="ts">
+import Avatar from "@/components/Avatar.vue";
 import Breadcrumbs from "@/components/Breadcrumbs.vue";
-
 import UserDeleteModal from "@/components/PopupModal.vue";
 import SortIcon from "@/components/SortIcon.vue";
 import TableButton from "@/components/TableButton.vue";
@@ -180,7 +176,6 @@ import useUserDelete from "@/composables/user/useUserDelete";
 import { useUserQuery } from "@/composables/user/useUserQuery";
 import { RouteName } from "@/router/constants";
 import type { UserUpsertSubmitModel } from "@/types/user";
-import { getUserAvatarUrl } from "@/utils/avatarUtil";
 import { dayjs, formatDate } from "@/utils/dateUtil";
 import { Modal, type ModalInterface, initFlowbite } from "flowbite";
 import { nextTick, onMounted, reactive, ref } from "vue";

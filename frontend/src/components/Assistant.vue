@@ -4,17 +4,18 @@
 		ref="chatContainer">
 		<div class="flex flex-col gap-y-5 flex-1 pb-2">
 			<li v-for="chatElement in messages" :key="chatElement.content"
-				:class="['flex items-start gap-2.5', chatElement.isUser ? 'flex-row-reverse max-w-full break-words' : 'flex-row']">
-				<img class="w-8 h-8 rounded-full" :src="chatElement.isUser ? '/java.svg' : '/trump.jpg'" alt="avatar">
+				:class="['flex items-start gap-2.5', chatElement.isUser ? 'flex-row-reverse' : 'flex-row']">
+				<Avatar :src="chatElement.isUser ? user.avatar : '/trump.jpg'" size="sm"
+					:alt="chatElement.isUser ? '用户头像' : 'AI头像'" />
 				<div
-					:class="['flex flex-col leading-1.5 p-4 border-gray-200 rounded-e-xl rounded-es-xl ', chatElement.isUser ? 'bg-blue-100' : 'bg-gray-100']">
+					:class="['flex flex-col leading-1.5 p-4 border-gray-200 rounded-e-xl rounded-es-xl max-w-[calc(100%-40px)]', chatElement.isUser ? 'bg-blue-100' : 'bg-gray-100']">
 					<div class="flex items-center space-x-2">
 						<span class="text-sm font-semibold text-gray-900 ">{{ chatElement.username }}</span>
 						<LoadingIcon :textColor="'text-gray-900'"
 							v-if="isLoading && !chatElement.isUser && chatElement.content === ''" />
 					</div>
 					<div>
-						<div class="markdown-content markdown-body text-base font-normal py-2.5 text-gray-900 "
+						<div class="markdown-content markdown-body text-base font-normal py-2.5 text-gray-900 break-words"
 							v-html="renderMarkdown(chatElement.content)">
 						</div>
 						<button
@@ -90,6 +91,7 @@
 </template>
 
 <script setup lang="ts">
+import Avatar from "@/components/Avatar.vue";
 import InputButton from "@/components/InputButton.vue";
 import UserDeleteModal from "@/components/PopupModal.vue";
 import DepartmentDeleteModal from "@/components/PopupModal.vue";
