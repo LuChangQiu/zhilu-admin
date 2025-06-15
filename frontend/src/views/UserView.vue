@@ -10,7 +10,7 @@
       <template #actions>
         <TableButton variant="primary" @click="() => handleUpsertUserClick(undefined)">
           <template #icon>
-            <PlusIcon class="w-4 h-4 me-2" />
+            <PlusIcon class="w-4 h-4" />
           </template>
           新增用户
         </TableButton>
@@ -161,9 +161,10 @@
 
 <script setup lang="ts">
 import Breadcrumbs from "@/components/Breadcrumbs.vue";
-import Button from "@/components/Button.vue";
+
 import UserDeleteModal from "@/components/PopupModal.vue";
 import SortIcon from "@/components/SortIcon.vue";
+import TableButton from "@/components/TableButton.vue";
 import TableFilterForm, {
 	type FilterItem,
 } from "@/components/TableFilterForm.vue";
@@ -185,7 +186,6 @@ import { useRouter } from "vue-router";
 import type { components } from "../api/types/schema";
 import useAlertStore from "../composables/store/useAlertStore";
 import { useUserUpsert } from "../composables/user/useUserUpsert";
-import TableButton from "@/components/TableButton.vue";
 
 const filterConfig: FilterItem[] = [
 	{

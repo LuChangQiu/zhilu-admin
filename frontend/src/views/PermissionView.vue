@@ -8,12 +8,12 @@
     <TableFilterForm :filters="filterConfig" :initialValues="filterValues" @search="handleSearch"
       @update:values="updateFilterValues">
       <template #actions>
-        <Button :handleClick="() => handleUpsertPermissionClick(undefined)" :isLoading="false" :abortable="false"
-          submitContent="新增权限" class="w-full sm:w-auto">
+        <TableButton variant="primary" @click="handleUpsertPermissionClick(undefined)" class="w-full sm:w-auto">
           <template #icon>
-            <PlusIcon class="w-4 h-4 me-2" />
+            <PlusIcon class="w-4 h-4" />
           </template>
-        </Button>
+          新增权限
+        </TableButton>
       </template>
     </TableFilterForm>
 
@@ -109,7 +109,7 @@
 <script setup lang="ts">
 import type { components } from "@/api/types/schema";
 import Breadcrumbs from "@/components/Breadcrumbs.vue";
-import Button from "@/components/Button.vue";
+
 import MobileCardList from "@/components/MobileCardList.vue";
 import PermissionUpsertModal from "@/components/PermissionUpsertModal.vue";
 import PermissionDeleteModal from "@/components/PopupModal.vue";

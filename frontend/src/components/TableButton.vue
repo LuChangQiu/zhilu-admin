@@ -1,20 +1,22 @@
 <template>
-  <button :class="[
+	<button :class="[
       'flex items-center justify-center gap-x-1 whitespace-nowrap font-medium rounded-lg focus:ring-4 focus:outline-none',
       sizeClasses,
       colorClasses,
-      disabled ? 'opacity-50 cursor-not-allowed' : '',
+      (disabled || (isLoading && !abortable)) ? 'opacity-50 cursor-not-allowed' : '',
       className
-    ]" :disabled="disabled" @click="handleClick" type="button">
-    <slot name="icon"></slot>
-    <span>
-      <slot></slot>
-    </span>
-  </button>
+    ]" :disabled="disabled || (isLoading && !abortable)" @click="handleClick" type="button">
+		<StopIcon v-if="isLoading && abortable" :class="iconSizeClasses" />
+		<slot v-else name="icon"></slot>
+		<span>
+			<slot></slot>
+		</span>
+	</button>
 </template>
 
 <script setup lang="ts">
 import { computed } from "vue";
+import StopIcon from "./icons/StopIcon.vue";
 
 export type ButtonVariant =
 	| "primary"
@@ -36,6 +38,10 @@ const props = defineProps<{
 	className?: string;
 	/** 是否为移动端尺寸 */
 	isMobile?: boolean;
+	/** 是否处于加载状态 */
+	isLoading?: boolean;
+	/** 是否可中止 */
+	abortable?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -82,9 +88,20 @@ const sizeClasses = computed(() => {
 	return sizes[props.size || "md"];
 });
 
+/** 图标尺寸样式映射 */
+const iconSizeClasses = computed(() => {
+	const sizes: Record<ButtonSize, string> = {
+		xs: "w-3.5 h-3.5",
+		sm: "w-4 h-4",
+		md: "w-4.5 h-4.5",
+		lg: "w-5 h-5",
+	};
+	return sizes[props.size || "md"];
+});
+
 /** 处理点击事件 */
 const handleClick = (event: MouseEvent) => {
-	if (!props.disabled) {
+	if (!props.disabled && !(props.isLoading && !props.abortable)) {
 		emit("click", event);
 	}
 };

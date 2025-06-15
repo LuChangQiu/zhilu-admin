@@ -8,12 +8,12 @@
     <TableFilterForm :filters="filterConfig" :initialValues="filterValues" @search="handleSearch"
       @update:values="updateFilterValues">
       <template #actions>
-        <Button :handleClick="() => handleUpsertRoleClick(undefined)" :isLoading="false" :abortable="false"
-          submitContent="新增角色" class="w-full sm:w-auto">
+        <TableButton variant="primary" @click="handleUpsertRoleClick(undefined)" class="w-full sm:w-auto">
           <template #icon>
-            <PlusIcon class="w-4 h-4 me-2" />
+            <PlusIcon class="w-4 h-4" />
           </template>
-        </Button>
+          新增角色
+        </TableButton>
       </template>
     </TableFilterForm>
 
@@ -123,10 +123,10 @@
 
 <script setup lang="ts">
 import Breadcrumbs from "@/components/Breadcrumbs.vue";
-import Button from "@/components/Button.vue";
 import MobileCardList from "@/components/MobileCardList.vue";
 import RoleDeleteModal from "@/components/PopupModal.vue";
 import RoleUpsertModal from "@/components/RoleUpsertModal.vue";
+import TableButton from "@/components/TableButton.vue";
 import TableFilterForm from "@/components/TableFilterForm.vue";
 import type { FilterItem } from "@/components/TableFilterForm.vue";
 import TableFormLayout from "@/components/TableFormLayout.vue";

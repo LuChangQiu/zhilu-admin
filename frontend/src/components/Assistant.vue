@@ -61,8 +61,10 @@
 						<option :value="'search'">搜索模式</option>
 						<option :value="'chat'">询问模式</option>
 					</select>
-					<Button :abortable="true" :isLoading="isLoading" :loadingContent="'中止'" :submitContent="'发送'"
-						:handleClick="() => handleSendClick(inputMessage, commandMode)" />
+					<TableButton variant="primary" :isLoading="isLoading" :abortable="true"
+						@click="() => handleSendClick(inputMessage, commandMode)">
+						{{ isLoading ? '中止' : '发送' }}
+					</TableButton>
 				</div>
 
 			</div>
@@ -91,6 +93,7 @@
 import InputButton from "@/components/InputButton.vue";
 import UserDeleteModal from "@/components/PopupModal.vue";
 import DepartmentDeleteModal from "@/components/PopupModal.vue";
+import TableButton from "@/components/TableButton.vue";
 import LoadingIcon from "@/components/icons/LoadingIcon.vue";
 import { useAiAction } from "@/composables/ai/useAiAction";
 import { useDepartmentQuery } from "@/composables/department/useDepartmentQuery";
@@ -103,7 +106,6 @@ import { Modal, type ModalInterface, initFlowbite } from "flowbite";
 import { marked } from "marked";
 import { nextTick, onMounted, onUnmounted, ref, watch } from "vue";
 import { z } from "zod";
-import Button from "../components/Button.vue";
 import DepartmentUpsertModal from "../components/DepartmentUpsertModal.vue";
 import UserUpsertModal from "../components/UserUpsertModal.vue";
 import { useAiChat } from "../composables/ai/useAiChat";

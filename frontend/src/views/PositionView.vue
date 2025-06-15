@@ -8,12 +8,12 @@
     <TableFilterForm :filters="filterConfig" :initialValues="filterValues" @search="handleSearch"
       @update:values="updateFilterValues">
       <template #actions>
-        <Button :handleClick="() => handleUpsertPositionClick()" :isLoading="false" :abortable="false"
-          submitContent="新增岗位" class="w-full sm:w-auto">
+        <TableButton variant="primary" @click="handleUpsertPositionClick()" class="w-full sm:w-auto">
           <template #icon>
-            <PlusIcon class="w-4 h-4 me-2" />
+            <PlusIcon class="w-4 h-4" />
           </template>
-        </Button>
+          新增岗位
+        </TableButton>
       </template>
     </TableFilterForm>
 
@@ -99,10 +99,10 @@
 
 <script setup lang="ts">
 import Breadcrumbs from "@/components/Breadcrumbs.vue";
-import Button from "@/components/Button.vue";
 import MobileCardList from "@/components/MobileCardList.vue";
 import PositionDeleteModal from "@/components/PopupModal.vue";
 import PositionUpsertModal from "@/components/PositionUpsertModal.vue";
+import TableButton from "@/components/TableButton.vue";
 import TableFilterForm from "@/components/TableFilterForm.vue";
 import type { FilterItem } from "@/components/TableFilterForm.vue";
 import TableFormLayout from "@/components/TableFormLayout.vue";
