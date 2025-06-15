@@ -1,6 +1,7 @@
 <template>
   <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-y-3 sm:gap-y-0">
-    <form class="w-full min-w-[200px] sm:w-auto flex flex-col xs:flex-row gap-2 xs:gap-3 items-stretch xs:items-center">
+    <form
+      class="grid grid-cols-2 sm:grid-cols-1 w-full min-w-[200px] sm:w-auto gap-2 xs:gap-3 items-stretch xs:items-center">
       <template v-for="(filter, index) in filters" :key="index">
         <!-- 输入框类型 -->
         <div v-if="filter.type === 'input'" class="flex-grow">
@@ -32,7 +33,6 @@
           </select>
         </div>
       </template>
-
       <button type="submit"
         class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 min-w-[70px] flex items-center justify-center"
         @click.prevent="handleSearch">
@@ -45,7 +45,7 @@
     </form>
 
     <!-- 额外操作按钮插槽 -->
-    <div class="w-full sm:w-auto">
+    <div class="flex justify-end">
       <slot name="actions"></slot>
     </div>
   </div>

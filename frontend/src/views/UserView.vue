@@ -8,12 +8,12 @@
     <TableFilterForm :filters="filterConfig" :initialValues="filterValues" @search="handleSearch"
       @update:values="updateFilterValues">
       <template #actions>
-        <Button :handleClick="() => handleUpsertUserClick(undefined)" :isLoading="false" :abortable="false"
-          submitContent="新增用户" class="w-full sm:w-auto">
+        <TableButton variant="primary" @click="() => handleUpsertUserClick(undefined)">
           <template #icon>
             <PlusIcon class="w-4 h-4 me-2" />
           </template>
-        </Button>
+          新增用户
+        </TableButton>
       </template>
     </TableFilterForm>
 
@@ -185,6 +185,7 @@ import { useRouter } from "vue-router";
 import type { components } from "../api/types/schema";
 import useAlertStore from "../composables/store/useAlertStore";
 import { useUserUpsert } from "../composables/user/useUserUpsert";
+import TableButton from "@/components/TableButton.vue";
 
 const filterConfig: FilterItem[] = [
 	{
