@@ -36,7 +36,7 @@
           </button>
           <div class="flex items-center ms-2 sm:ms-3">
             <div>
-              <button type="button" id="dropdown-button" class="flex text-sm bg-gray-800 rounded-full cursor-pointer"
+              <button type="button" id="dropdown-button" class="flex text-sm rounded-full cursor-pointer"
                 aria-expanded="false" data-dropdown-toggle="dropdown-user">
                 <span class="sr-only">打开用户菜单</span>
                 <div
