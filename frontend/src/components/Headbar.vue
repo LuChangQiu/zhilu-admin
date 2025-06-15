@@ -39,7 +39,10 @@
               <button type="button" id="dropdown-button" class="flex text-sm bg-gray-800 rounded-full cursor-pointer"
                 aria-expanded="false" data-dropdown-toggle="dropdown-user">
                 <span class="sr-only">打开用户菜单</span>
-                <img class="w-8 h-8 rounded-full" :src="getUserAvatarUrl(user.avatar)" alt="user photo">
+                <div
+                  class="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center overflow-hidden">
+                  <img v-if="user.avatar" :src="getUserAvatarUrl(user.avatar)" class="object-cover">
+                </div>
               </button>
             </div>
             <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-sm shadow-sm  "

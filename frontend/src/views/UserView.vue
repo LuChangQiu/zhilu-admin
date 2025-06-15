@@ -22,8 +22,8 @@
       <div v-for="user in users" :key="user.id" class="p-4 bg-white rounded-lg shadow">
         <div class="flex justify-between items-start mb-3">
           <div class="flex items-center gap-2">
-            <div class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center overflow-hidden">
-              <img v-if="user.avatar" :src="getUserAvatarUrl(user.avatar)" class="w-full h-full object-cover">
+            <div class="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center overflow-hidden">
+              <img v-if="user.avatar" :src="getUserAvatarUrl(user.avatar)" class="object-cover">
             </div>
             <div class="font-medium text-gray-900">{{ user.username }}</div>
           </div>
@@ -90,7 +90,9 @@
           <SortIcon :sortField="getSortField(field)" />
         </template>
         <template #avatar="{ item }">
-          <img v-if="item.avatar" :src="getUserAvatarUrl(item.avatar)" class="w-10 h-10 object-cover rounded-full">
+          <div class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center overflow-hidden">
+            <img v-if="item.avatar" :src="getUserAvatarUrl(item.avatar)" class="object-cover">
+          </div>
         </template>
         <template #createTime="{ item }">
           {{ dayjs(item.createTime).format("llll") }}
