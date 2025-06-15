@@ -36,15 +36,8 @@ public class UserRolePermissionOperatorTool {
     if (user != null) {
       throw new BusinessException("用户已存在");
     }
-    identityAccessService.upsertUser(new UserUpsertDto(null, name, name, true));
+    identityAccessService.upsertUser(new UserUpsertDto(null, name, name, true, null));
   }
-
-  //  @Tool(value = "查询用户")
-  //  List<User> queryUser(@P(value = "用户名",required = false) String username, @P(value =
-  // "开始日期",required = false) LocalDateTime startDate, @P(value = "结束日期",required = false)
-  // LocalDateTime endDate) {
-  //    return userRepository.fetchBy(new UserQueryDto(username, startDate, endDate));
-  //  }
 
   @Tool(value = "删除用户")
   void deleteUser(@P(value = "用户名") String username) {
@@ -56,7 +49,7 @@ public class UserRolePermissionOperatorTool {
       @P(value = "用户名") String name,
       @P(value = "密码", required = false) String password,
       @P(value = "是否开启", required = false) Boolean enable) {
-    identityAccessService.upsertUser(new UserUpsertDto(null, name, password, enable));
+    identityAccessService.upsertUser(new UserUpsertDto(null, name, password, enable, null));
   }
 
   @Tool(value = {"给用户绑定角色", "给用户分配角色"})

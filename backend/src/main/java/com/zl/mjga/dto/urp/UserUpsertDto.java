@@ -14,4 +14,5 @@ public class UserUpsertDto {
   @NotEmpty private String username;
   private String password;
   @NotNull private Boolean enable;
+  private String avatar;
 }

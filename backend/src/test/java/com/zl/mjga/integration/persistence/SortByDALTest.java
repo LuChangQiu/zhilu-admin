@@ -34,9 +34,9 @@ public class SortByDALTest extends AbstractDataAccessLayerTest {
   void userPageFetchWithNoSort() {
     UserQueryDto rbacQueryDto = new UserQueryDto("test", null, null);
     Result<Record> records = userRepository.pageFetchBy(PageRequestDto.of(1, 10), rbacQueryDto);
-    assertThat(records.get(0).get(USER.ID)).isEqualTo(1);
+    assertThat(records.get(2).get(USER.ID)).isEqualTo(1);
     assertThat(records.get(1).get(USER.ID)).isEqualTo(2);
-    assertThat(records.get(2).get(USER.ID)).isEqualTo(3);
+    assertThat(records.get(0).get(USER.ID)).isEqualTo(3);
   }
 
   @Test

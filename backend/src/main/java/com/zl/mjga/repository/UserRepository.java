@@ -36,6 +36,7 @@ public class UserRepository extends UserDao {
                     value(user.getId()).as("id"),
                     value(user.getUsername()).as("username"),
                     value(user.getPassword()).as("password"),
+                    value(user.getAvatar()).as("avatar"),
                     value(user.getEnable()).as("enable"))
                 .asTable("newUser"))
         .on(USER.ID.eq(DSL.field(DSL.name("newUser", "id"), Long.class)))
@@ -46,11 +47,13 @@ public class UserRepository extends UserDao {
             StringUtils.isNotEmpty(user.getPassword())
                 ? DSL.field(DSL.name("newUser", "password"), String.class)
                 : USER.PASSWORD)
+        .set(USER.AVATAR, DSL.field(DSL.name("newUser", "avatar"), String.class))
         .set(USER.ENABLE, DSL.field(DSL.name("newUser", "enable"), Boolean.class))
-        .whenNotMatchedThenInsert(USER.USERNAME, USER.PASSWORD, USER.ENABLE)
+        .whenNotMatchedThenInsert(USER.USERNAME, USER.PASSWORD, USER.AVATAR, USER.ENABLE)
         .values(
             DSL.field(DSL.name("newUser", "username"), String.class),
             DSL.field(DSL.name("newUser", "password"), String.class),
+            DSL.field(DSL.name("newUser", "avatar"), String.class),
             DSL.field(DSL.name("newUser", "enable"), Boolean.class))
         .execute();
   }

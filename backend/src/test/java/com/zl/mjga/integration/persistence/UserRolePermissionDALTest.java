@@ -100,8 +100,8 @@ public class UserRolePermissionDALTest extends AbstractDataAccessLayerTest {
     Result<Record> records = userRepository.pageFetchBy(PageRequestDto.of(1, 10), rbacQueryDto);
     assertThat(records.size()).isEqualTo(2);
 
-    assertThat(records.get(0).get(USER.ID)).isEqualTo(1);
-    assertThat(records.get(1).get(USER.ID)).isEqualTo(2);
+    assertThat(records.get(1).get(USER.ID)).isEqualTo(1);
+    assertThat(records.get(0).get(USER.ID)).isEqualTo(2);
   }
 
   @Test
@@ -142,8 +142,8 @@ public class UserRolePermissionDALTest extends AbstractDataAccessLayerTest {
     roleQueryDto.setBindState(BindState.ALL);
     Result<Record> records = roleRepository.pageFetchBy(PageRequestDto.of(1, 10), roleQueryDto);
     assertThat(records.get(0).getValue("total_role")).isEqualTo(2);
-    assertThat(records.get(0).getValue(ROLE.NAME)).isEqualTo("testRoleA");
-    assertThat(records.get(1).getValue(ROLE.NAME)).isEqualTo("testRoleB");
+    assertThat(records.get(1).getValue(ROLE.NAME)).isEqualTo("testRoleA");
+    assertThat(records.get(0).getValue(ROLE.NAME)).isEqualTo("testRoleB");
 
     roleQueryDto = new RoleQueryDto();
     roleQueryDto.setRoleCode("testRoleA");

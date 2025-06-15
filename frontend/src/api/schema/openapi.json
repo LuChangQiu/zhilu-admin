@@ -610,6 +610,44 @@
         }
       }
     },
+    "/iam/avatar/upload": {
+      "post": {
+        "tags": [
+          "identity-access-controller"
+        ],
+        "operationId": "uploadAvatar",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "file"
+                ],
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/department": {
       "post": {
         "tags": [
@@ -1300,6 +1338,9 @@
           },
           "enable": {
             "type": "boolean"
+          },
+          "avatar": {
+            "type": "string"
           }
         }
       },
@@ -1731,6 +1772,9 @@
           "password": {
             "type": "string",
             "writeOnly": true
+          },
+          "avatar": {
+            "type": "string"
           },
           "enable": {
             "type": "boolean"

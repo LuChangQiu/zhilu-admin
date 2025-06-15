@@ -3,6 +3,7 @@ export interface UserUpsertSubmitModel {
 	username: string;
 	password?: string;
 	enable: boolean;
+	avatar?: string;
 }
 
 export type User = UserRolePermissionModel | null;

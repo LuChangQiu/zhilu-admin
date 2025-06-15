@@ -1,3 +1,10 @@
+class ValidationError extends Error {
+	constructor(message: string) {
+		super(message);
+		this.name = "ValidationError";
+	}
+}
+
 class HttpError extends Error {
 	status: number;
 	detail?: string;
@@ -37,4 +44,10 @@ class InternalServerError extends HttpError {
 	}
 }
 
-export { UnAuthError, ForbiddenError, RequestError, InternalServerError };
+export {
+	UnAuthError,
+	ForbiddenError,
+	RequestError,
+	InternalServerError,
+	ValidationError,
+};

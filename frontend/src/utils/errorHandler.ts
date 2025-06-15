@@ -5,6 +5,7 @@ import {
 	ForbiddenError,
 	InternalServerError,
 	RequestError,
+	ValidationError,
 	UnAuthError,
 } from "../types/error";
 import { z } from "zod";
@@ -23,7 +24,12 @@ const makeErrorHandler =
 	) =>
 	(err: unknown, instance: ComponentPublicInstance | null, info: string) => {
 		console.error(err);
-		if (err instanceof UnAuthError) {
+		if (err instanceof ValidationError) {
+			showAlert({
+				level: "error",
+				content: err.message,
+			});
+		} else if (err instanceof UnAuthError) {
 			signOut();
 			router.push(RoutePath.LOGIN);
 			showAlert({

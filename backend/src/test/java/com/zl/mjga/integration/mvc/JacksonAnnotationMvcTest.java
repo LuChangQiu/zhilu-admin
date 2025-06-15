@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.zl.mjga.config.minio.MinIoConfig;
 import com.zl.mjga.config.security.HttpFireWallConfig;
 import com.zl.mjga.controller.IdentityAccessController;
 import com.zl.mjga.dto.PageRequestDto;
@@ -15,6 +16,7 @@ import com.zl.mjga.repository.PermissionRepository;
 import com.zl.mjga.repository.RoleRepository;
 import com.zl.mjga.repository.UserRepository;
 import com.zl.mjga.service.IdentityAccessService;
+import io.minio.MinioClient;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,8 @@ public class JacksonAnnotationMvcTest {
   @MockBean private UserRepository userRepository;
   @MockBean private RoleRepository roleRepository;
   @MockBean private PermissionRepository permissionRepository;
+  @MockBean private MinioClient minioClient;
+  @MockBean private MinIoConfig minIoConfig;
 
   @Test
   @WithMockUser

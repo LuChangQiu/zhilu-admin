@@ -292,6 +292,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/iam/avatar/upload": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["uploadAvatar"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/department": {
         parameters: {
             query?: never;
@@ -631,6 +647,7 @@ export interface components {
             username: string;
             password?: string;
             enable: boolean;
+            avatar?: string;
         };
         RoleUpsertDto: {
             /** Format: int64 */
@@ -780,6 +797,7 @@ export interface components {
             id?: number;
             username?: string;
             password?: string;
+            avatar?: string;
             enable?: boolean;
             roles?: components["schemas"]["RoleDto"][];
             /** Format: date-time */
@@ -1399,6 +1417,33 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+        };
+    };
+    uploadAvatar: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "multipart/form-data": {
+                    /** Format: binary */
+                    file: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "text/plain": string;
+                };
             };
         };
     };

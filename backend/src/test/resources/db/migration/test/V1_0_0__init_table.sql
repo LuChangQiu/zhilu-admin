@@ -3,7 +3,8 @@ CREATE SCHEMA IF NOT EXISTS mjga;
 CREATE TABLE mjga.user (
                            id BIGSERIAL PRIMARY KEY,
                            username VARCHAR NOT NULL UNIQUE,
-                           create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                           avatar VARCHAR,
+                           create_time TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
                            password VARCHAR NOT NULL,
                            enable BOOLEAN NOT NULL DEFAULT TRUE
 );

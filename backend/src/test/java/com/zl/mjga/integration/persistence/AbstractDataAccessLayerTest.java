@@ -16,7 +16,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 public class AbstractDataAccessLayerTest {
 
   public static PostgreSQLContainer<?> postgres =
-      new PostgreSQLContainer<>("postgres:17.3-alpine").withDatabaseName("mjga");
+      new PostgreSQLContainer<>("pgvector/pgvector:pg17").withDatabaseName("mjga");
 
   @DynamicPropertySource
   static void postgresProperties(DynamicPropertyRegistry registry) {

@@ -111,8 +111,15 @@ import useUserStore from "../composables/store/useUserStore";
 import { useUserUpsert } from "../composables/user/useUserUpsert";
 import type { UserUpsertSubmitModel } from "../types/user";
 
-const { messages, chat, isLoading, cancel, searchAction, executeAction, clearConversation } =
-	useAiChat();
+const {
+	messages,
+	chat,
+	isLoading,
+	cancel,
+	searchAction,
+	executeAction,
+	clearConversation,
+} = useAiChat();
 const { user } = useUserStore();
 const userUpsertModal = ref<ModalInterface>();
 const departmentUpsertModal = ref<ModalInterface>();

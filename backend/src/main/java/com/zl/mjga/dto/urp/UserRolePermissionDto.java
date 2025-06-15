@@ -19,6 +19,8 @@ public class UserRolePermissionDto {
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private String password;
 
+  private String avatar;
+
   private Boolean enable;
   @Builder.Default private List<RoleDto> roles = new LinkedList<>();
 

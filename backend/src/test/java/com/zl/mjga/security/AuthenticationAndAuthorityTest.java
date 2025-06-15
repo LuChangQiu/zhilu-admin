@@ -6,6 +6,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.zl.mjga.config.minio.MinIoConfig;
 import com.zl.mjga.config.security.HttpFireWallConfig;
 import com.zl.mjga.config.security.Jwt;
 import com.zl.mjga.config.security.UserDetailsServiceImpl;
@@ -19,6 +20,7 @@ import com.zl.mjga.repository.RoleRepository;
 import com.zl.mjga.repository.UserRepository;
 import com.zl.mjga.service.IdentityAccessService;
 import com.zl.mjga.service.SignService;
+import io.minio.MinioClient;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.List;
@@ -49,6 +51,8 @@ public class AuthenticationAndAuthorityTest {
   @MockBean private UserRepository userRepository;
   @MockBean private RoleRepository roleRepository;
   @MockBean private PermissionRepository permissionRepository;
+  @MockBean private MinioClient minioClient;
+  @MockBean private MinIoConfig minIoConfig;
 
   @Test
   public void givenRequestOnPublicService_shouldSucceedWith200() throws Exception {

@@ -1,5 +1,6 @@
 package com.zl.mjga.controller;
 
+import com.zl.mjga.config.minio.MinIoConfig;
 import com.zl.mjga.dto.PageRequestDto;
 import com.zl.mjga.dto.PageResponseDto;
 import com.zl.mjga.dto.department.DepartmentBindDto;
@@ -12,17 +13,23 @@ import com.zl.mjga.repository.PermissionRepository;
 import com.zl.mjga.repository.RoleRepository;
 import com.zl.mjga.repository.UserRepository;
 import com.zl.mjga.service.IdentityAccessService;
+import io.minio.MinioClient;
+import io.minio.PutObjectArgs;
+import io.minio.errors.*;
 import jakarta.validation.Valid;
+import java.awt.image.BufferedImage;
 import java.security.Principal;
 import java.util.List;
+import javax.imageio.ImageIO;
 import lombok.RequiredArgsConstructor;
 import org.jooq.generated.mjga.tables.pojos.User;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 @RestController
 @RequestMapping("/iam")
 @RequiredArgsConstructor
@@ -32,6 +39,34 @@ public class IdentityAccessController {
   private final UserRepository userRepository;
   private final RoleRepository roleRepository;
   private final PermissionRepository permissionRepository;
+  private final MinioClient minioClient;
+  private final MinIoConfig minIoConfig;
+
+  @PostMapping(
+      value = "/avatar/upload",
+      consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+      produces = MediaType.TEXT_PLAIN_VALUE)
+  public String uploadAvatar(Principal principal, @RequestPart("file") MultipartFile multipartFile)
+      throws Exception {
+    String objectName = String.format("avatar/%s/avatar.jpg", principal.getName());
+    if (multipartFile.isEmpty()) {
+      throw new BusinessException("上传的文件不能为空");
+    }
+    long size = multipartFile.getSize();
+    if (size > 200 * 1024) {
+      throw new BusinessException("头像文件大小不能超过200KB");
+    }
+    BufferedImage img = ImageIO.read(multipartFile.getInputStream());
+    if (img == null) {
+      throw new BusinessException("非法的上传文件");
+    }
+    minioClient.putObject(
+        PutObjectArgs.builder().bucket(minIoConfig.getDefaultBucket()).object(objectName).stream(
+                multipartFile.getInputStream(), size, -1)
+            .contentType(multipartFile.getContentType())
+            .build());
+    return objectName;
+  }
 
   @GetMapping("/me")
   UserRolePermissionDto currentUser(Principal principal) {
