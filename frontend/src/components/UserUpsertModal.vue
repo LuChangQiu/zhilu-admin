@@ -154,7 +154,7 @@ const handleSubmit = async () => {
 				.string({
 					message: "用户名不能为空",
 				})
-				.min(4, "用户名至少4个字符")
+				.min(1, "用户名至少1个字符")
 				.max(15, "用户名最多15个字符"),
 			enable: z.boolean({
 				message: "状态不能为空",

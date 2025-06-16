@@ -11,6 +11,7 @@ import com.zl.mjga.service.IdentityAccessService;
 import dev.langchain4j.agent.tool.P;
 import dev.langchain4j.agent.tool.Tool;
 import dev.langchain4j.model.output.structured.Description;
+import jakarta.validation.constraints.Size;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -31,7 +32,7 @@ public class UserRolePermissionOperatorTool {
   private final PositionRepository positionRepository;
 
   @Tool(value = {"创建用户", "入职申请", "开通账号"})
-  void createUser(@P(value = "用户名") String name) {
+  void createUser(@P(value = "用户名") @Size(min = 1, max = 15) String name) {
     User user = userRepository.fetchOneByUsername(name);
     if (user != null) {
       throw new BusinessException("用户已存在");

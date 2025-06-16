@@ -6,6 +6,7 @@ import com.zl.mjga.service.DepartmentService;
 import dev.langchain4j.agent.tool.P;
 import dev.langchain4j.agent.tool.Tool;
 import dev.langchain4j.model.output.structured.Description;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.generated.mjga.tables.pojos.Department;
@@ -21,7 +22,8 @@ public class DepartmentOperatorTool {
 
   @Tool(value = "创建部门")
   void createDepartment(
-      @P(value = "部门名称") String name, @P(value = "上级部门名称", required = false) String parentName) {
+      @P(value = "部门名称") @Size(min = 2, max = 15) String name,
+      @P(value = "上级部门名称", required = false) @Size(min = 2, max = 15) String parentName) {
     Department exist = departmentRepository.fetchOneByName(name);
     Department department = new Department(null, name, null);
     if (exist != null) {
