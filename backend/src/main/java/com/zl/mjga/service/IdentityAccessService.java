@@ -80,17 +80,17 @@ public class IdentityAccessService {
     return userRepository.fetchUniqueUserDtoWithNestedRolePermissionBy(userId);
   }
 
-  public PageResponseDto<List<RoleDto>> pageQueryRole(
+  public PageResponseDto<List<RoleRespDto>> pageQueryRole(
       PageRequestDto pageRequestDto, RoleQueryDto roleQueryDto) {
     Result<Record> roleRecords = roleRepository.pageFetchBy(pageRequestDto, roleQueryDto);
     if (roleRecords.isEmpty()) {
       return PageResponseDto.empty();
     }
-    List<RoleDto> roleDtoList =
+    List<RoleRespDto> roleRespDtoList =
         roleRecords.stream()
             .map(
                 record -> {
-                  return RoleDto.builder()
+                  return RoleRespDto.builder()
                       .id(record.getValue("id", Long.class))
                       .code(record.getValue("code", String.class))
                       .name(record.getValue("name", String.class))
@@ -103,17 +103,17 @@ public class IdentityAccessService {
                 })
             .toList();
     return new PageResponseDto<>(
-        roleRecords.get(0).getValue("total_role", Integer.class), roleDtoList);
+        roleRecords.get(0).getValue("total_role", Integer.class), roleRespDtoList);
   }
 
-  public @Nullable RoleDto queryUniqueRoleWithPermission(Long roleId) {
+  public @Nullable RoleRespDto queryUniqueRoleWithPermission(Long roleId) {
     Result<Record> roleWithPermissionRecords = roleRepository.fetchUniqueRoleWithPermission(roleId);
     if (roleWithPermissionRecords.isEmpty()) {
       return null;
     }
-    RoleDto roleDto = createRbacDtoRolePart(roleWithPermissionRecords);
-    setCurrentRolePermission(roleDto, roleWithPermissionRecords);
-    return roleDto;
+    RoleRespDto roleRespDto = createRbacDtoRolePart(roleWithPermissionRecords);
+    setCurrentRolePermission(roleRespDto, roleWithPermissionRecords);
+    return roleRespDto;
   }
 
   public PageResponseDto<List<PermissionRespDto>> pageQueryPermission(
@@ -199,12 +199,12 @@ public class IdentityAccessService {
             .toList());
   }
 
-  private void setCurrentRolePermission(RoleDto roleDto, List<Record> roleResult) {
+  private void setCurrentRolePermission(RoleRespDto roleRespDto, List<Record> roleResult) {
     if (roleResult.get(0).getValue(PERMISSION.ID) != null) {
       roleResult.forEach(
           (record) -> {
             PermissionRespDto permissionRespDto = createRbacDtoPermissionPart(record);
-            roleDto.getPermissions().add(permissionRespDto);
+            roleRespDto.getPermissions().add(permissionRespDto);
           });
     }
   }
@@ -217,12 +217,12 @@ public class IdentityAccessService {
     return permissionRespDto;
   }
 
-  private RoleDto createRbacDtoRolePart(List<Record> roleResult) {
-    RoleDto roleDto = new RoleDto();
-    roleDto.setId(roleResult.get(0).getValue(ROLE.ID));
-    roleDto.setCode(roleResult.get(0).getValue(ROLE.CODE));
-    roleDto.setName(roleResult.get(0).getValue(ROLE.NAME));
-    return roleDto;
+  private RoleRespDto createRbacDtoRolePart(List<Record> roleResult) {
+    RoleRespDto roleRespDto = new RoleRespDto();
+    roleRespDto.setId(roleResult.get(0).getValue(ROLE.ID));
+    roleRespDto.setCode(roleResult.get(0).getValue(ROLE.CODE));
+    roleRespDto.setName(roleResult.get(0).getValue(ROLE.NAME));
+    return roleRespDto;
   }
 
   public boolean isRoleDuplicate(String roleCode, String name) {

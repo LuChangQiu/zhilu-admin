@@ -1,10 +1,10 @@
 import type { RouteRecordRaw } from "vue-router";
-import { EPermission, RouteName, RoutePath } from "../constants";
+import { EPermission, Routes } from "../constants";
 
 const aiRoutes: RouteRecordRaw[] = [
 	{
-		path: RoutePath.LLMCONFIGVIEW,
-		name: RouteName.LLMCONFIGVIEW,
+		path: Routes.LLMCONFIGVIEW.path,
+		name: Routes.LLMCONFIGVIEW.name,
 		component: () => import("@/views/LlmConfigView.vue"),
 		meta: {
 			requiresAuth: true,

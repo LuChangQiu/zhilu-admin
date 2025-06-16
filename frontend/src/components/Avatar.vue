@@ -10,10 +10,10 @@
 import { getUserAvatarUrl } from "@/utils/avatarUtil";
 import { computed } from "vue";
 
-const { 
-	src = "", 
-	alt = "用户头像", 
-	size = "md" 
+const {
+	src = "",
+	alt = "用户头像",
+	size = "md",
 } = defineProps<{
 	src?: string;
 	alt?: string;
@@ -37,7 +37,7 @@ const processedSrc = computed(() => {
 	}
 	if (src === "/trump.jpg") {
 		return src;
-	} 
+	}
 	return getUserAvatarUrl(src);
 });
 </script>

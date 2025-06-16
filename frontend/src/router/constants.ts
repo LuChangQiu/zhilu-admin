@@ -1,56 +1,156 @@
-export enum RoutePath {
-	HOME = "/",
-	LOGIN = "/login",
-	DASHBOARD = "/dashboard",
-	GLOBAL_NOTFOUND = "/:pathMatch(.*)*",
-	NOTFOUND = ":pathMatch(.*)*",
-	OVERVIEW = "overview",
-	USERVIEW = "users",
-	ROLEVIEW = "roles",
-	BINDROLEVIEW = "bind-roles/:userId",
-	BINDPERMISSIONVIEW = "bind-permissions/:roleId",
-	BINDDEPARTMENTVIEW = "bind-departments/:userId",
-	BINDPOSITIONVIEW = "bind-positions/:userId",
-	PERMISSIONVIEW = "permissions",
-	DEPARTMENTVIEW = "departments",
-	POSITIONVIEW = "positions",
-	CREATEUSERVIEW = "create-user",
-	LLMCONFIGVIEW = "llm/config",
-	SCHEDULERVIEW = "scheduler",
-	UPSERTUSERVIEW = "upsert-user",
-	UPSERTROLEVIEW = "upsert-role",
-	UPSERTPERMISSIONVIEW = "upsert-permission",
-	UPSERTDEPARTMENTVIEW = "upsert-department",
-	UPSERTPOSITIONVIEW = "upsert-position",
-	SETTINGS = "settings",
-}
+import type { RouteLocationRaw } from "vue-router";
 
-export enum RouteName {
-	HOME = "home",
-	LOGIN = "login",
-	DASHBOARD = "dashboard",
-	OVERVIEW = "overview",
-	USERVIEW = "users",
-	ROLEVIEW = "roles",
-	BINDROLEVIEW = "bind-roles",
-	BINDPERMISSIONVIEW = "bind-permissions",
-	BINDDEPARTMENTVIEW = "bind-departments",
-	BINDPOSITIONVIEW = "bind-positions",
-	PERMISSIONVIEW = "permissions",
-	DEPARTMENTVIEW = "departments",
-	POSITIONVIEW = "positions",
-	CREATEUSERVIEW = "create-user",
-	LLMCONFIGVIEW = "llm/config",
-	SCHEDULERVIEW = "scheduler",
-	UPSERTUSERVIEW = "upsert-user",
-	UPSERTROLEVIEW = "upsert-role",
-	UPSERTPERMISSIONVIEW = "upsert-permission",
-	UPSERTDEPARTMENTVIEW = "upsert-department",
-	UPSERTPOSITIONVIEW = "upsert-position",
-	SETTINGS = "settings",
-	NOTFOUND = "notfound",
-	GLOBAL_NOTFOUND = "global-notfound",
-}
+export type RouteConfig = {
+	path: string;
+	name: string;
+	fullPath: () => string;
+	withParams: <T extends Record<string, string | number>>(
+		params: T,
+	) => RouteLocationRaw;
+};
+
+// 基础路由
+export const BaseRoutes = {
+	HOME: {
+		path: "/",
+		name: "home",
+		fullPath: () => "/",
+		withParams: () => ({ name: "home" }),
+	},
+	LOGIN: {
+		path: "/login",
+		name: "login",
+		fullPath: () => "/login",
+		withParams: () => ({ name: "login" }),
+	},
+	DASHBOARD: {
+		path: "/dashboard",
+		name: "dashboard",
+		fullPath: () => "/dashboard",
+		withParams: () => ({ name: "dashboard" }),
+	},
+	NOTFOUND: {
+		path: ":pathMatch(.*)*",
+		name: "notfound",
+		fullPath: () => "/dashboard/:pathMatch(.*)*",
+		withParams: () => ({ name: "notfound" }),
+	},
+	GLOBAL_NOTFOUND: {
+		path: "/:pathMatch(.*)*",
+		name: "global-notfound",
+		fullPath: () => "/:pathMatch(.*)*",
+		withParams: () => ({ name: "global-notfound" }),
+	},
+} as const;
+
+// 仪表盘子路由
+export const DashboardRoutes = {
+	OVERVIEW: {
+		path: "overview",
+		name: "overview",
+		fullPath: () => `${BaseRoutes.DASHBOARD.path}/overview`,
+		withParams: () => ({ name: "overview" }),
+	},
+	SETTINGS: {
+		path: "settings",
+		name: "settings",
+		fullPath: () => `${BaseRoutes.DASHBOARD.path}/settings`,
+		withParams: () => ({ name: "settings" }),
+	},
+} as const;
+
+// 用户管理相关路由
+export const UserRoutes = {
+	USERVIEW: {
+		path: "users",
+		name: "users",
+		fullPath: () => `${BaseRoutes.DASHBOARD.path}/users`,
+		withParams: () => ({ name: "users" }),
+	},
+	ROLEVIEW: {
+		path: "roles",
+		name: "roles",
+		fullPath: () => `${BaseRoutes.DASHBOARD.path}/roles`,
+		withParams: () => ({ name: "roles" }),
+	},
+	BINDROLEVIEW: {
+		path: "bind-roles/:userId",
+		name: "bind-roles",
+		fullPath: () => `${BaseRoutes.DASHBOARD.path}/bind-roles/:userId`,
+		withParams: <T extends { userId: string | number }>(params: T) => ({
+			name: "bind-roles",
+			params: { userId: params.userId.toString() },
+		}),
+	},
+	BINDPERMISSIONVIEW: {
+		path: "bind-permissions/:roleId",
+		name: "bind-permissions",
+		fullPath: () => `${BaseRoutes.DASHBOARD.path}/bind-permissions/:roleId`,
+		withParams: <T extends { roleId: string | number }>(params: T) => ({
+			name: "bind-permissions",
+			params: { roleId: params.roleId.toString() },
+		}),
+	},
+	BINDDEPARTMENTVIEW: {
+		path: "bind-departments/:userId",
+		name: "bind-departments",
+		fullPath: () => `${BaseRoutes.DASHBOARD.path}/bind-departments/:userId`,
+		withParams: <T extends { userId: string | number }>(params: T) => ({
+			name: "bind-departments",
+			params: { userId: params.userId.toString() },
+		}),
+	},
+	BINDPOSITIONVIEW: {
+		path: "bind-positions/:userId",
+		name: "bind-positions",
+		fullPath: () => `${BaseRoutes.DASHBOARD.path}/bind-positions/:userId`,
+		withParams: <T extends { userId: string | number }>(params: T) => ({
+			name: "bind-positions",
+			params: { userId: params.userId.toString() },
+		}),
+	},
+	PERMISSIONVIEW: {
+		path: "permissions",
+		name: "permissions",
+		fullPath: () => `${BaseRoutes.DASHBOARD.path}/permissions`,
+		withParams: () => ({ name: "permissions" }),
+	},
+	DEPARTMENTVIEW: {
+		path: "departments",
+		name: "departments",
+		fullPath: () => `${BaseRoutes.DASHBOARD.path}/departments`,
+		withParams: () => ({ name: "departments" }),
+	},
+	POSITIONVIEW: {
+		path: "positions",
+		name: "positions",
+		fullPath: () => `${BaseRoutes.DASHBOARD.path}/positions`,
+		withParams: () => ({ name: "positions" }),
+	},
+} as const;
+
+// AI相关路由
+export const AiRoutes = {
+	LLMCONFIGVIEW: {
+		path: "llm/config",
+		name: "llm/config",
+		fullPath: () => `${BaseRoutes.DASHBOARD.path}/llm/config`,
+		withParams: () => ({ name: "llm/config" }),
+	},
+	SCHEDULERVIEW: {
+		path: "scheduler",
+		name: "scheduler",
+		fullPath: () => `${BaseRoutes.DASHBOARD.path}/scheduler`,
+		withParams: () => ({ name: "scheduler" }),
+	},
+} as const;
+
+export const Routes = {
+	...BaseRoutes,
+	...DashboardRoutes,
+	...UserRoutes,
+	...AiRoutes,
+} as const;
 
 export enum ERole {
 	ADMIN = "ADMIN",

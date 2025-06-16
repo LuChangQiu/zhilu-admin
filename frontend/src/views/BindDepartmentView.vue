@@ -1,15 +1,15 @@
 <template>
-  <div class="px-2 sm:px-4 pt-6 sm:rounded-lg">
-    <div class="mb-4 sm:mb-6 col-span-full">
-      <Breadcrumbs :names="['用户管理', '绑定部门']" :routes="[{ name: RouteName.USERVIEW }]" />
-      <h1 class="text-xl sm:text-2xl mb-4 sm:mb-6 font-semibold text-gray-900">绑定部门</h1>
-    </div>
+	<div class="px-2 sm:px-4 pt-6 sm:rounded-lg">
+		<div class="mb-4 sm:mb-6 col-span-full">
+			<Breadcrumbs :names="['用户管理', '绑定部门']" :routes="[Routes.USERVIEW.fullPath()]" />
+			<h1 class="text-xl sm:text-2xl mb-4 sm:mb-6 font-semibold text-gray-900">绑定部门</h1>
+		</div>
 
-    <TableFilterForm :filters="filterConfig" :initialValues="filterValues" @search="handleSearch"
-      @update:values="updateFilterValues">
-      <template #actions>
-        <div class="flex gap-x-2">
-          <TableButton variant="primary" @click="() => {
+		<TableFilterForm :filters="filterConfig" :initialValues="filterValues" @search="handleSearch"
+			@update:values="updateFilterValues">
+			<template #actions>
+				<div class="flex gap-x-2">
+					<TableButton variant="primary" @click="() => {
               if (checkedDepartmentIds.length === 0) {
                 alertStore.showAlert({
                   content: '没有选择部门',
@@ -19,9 +19,9 @@
                 departmentBindModal?.show();
               }
             }">
-            绑定
-          </TableButton>
-          <TableButton variant="danger" @click="() => {
+						绑定
+					</TableButton>
+					<TableButton variant="danger" @click="() => {
               if (checkedDepartmentIds.length === 0) {
                 alertStore.showAlert({
                   content: '没有选择部门',
@@ -31,59 +31,59 @@
                 departmentUnbindModal?.show();
               }
             }">
-            解绑
-          </TableButton>
-        </div>
-      </template>
-    </TableFilterForm>
+						解绑
+					</TableButton>
+				</div>
+			</template>
+		</TableFilterForm>
 
-    <!-- 移动端卡片布局 -->
-    <div class="md:hidden space-y-4">
-      <MobileCardListWithCheckbox :items="departments || []" v-model="checkedDepartmentIds">
-        <template #title="{ item }">
-          {{ item.name }}
-        </template>
-        <template #status="{ item }">
-          <div class="flex items-center">
-            <div class="h-2.5 w-2.5 rounded-full me-2" :class="item.isBound ? 'bg-green-500' : 'bg-red-500'"></div>
-            <span class="text-sm">{{ item.isBound === true ? "已绑定" : "未绑定" }}</span>
-          </div>
-        </template>
-        <template #content="{ item }">
-          <div>
-            <p class="text-xs font-medium text-gray-600">上级部门</p>
-            <p class="text-sm text-gray-900 mt-0.5">{{ !item.parentName ? '无' : item.parentName }}</p>
-          </div>
-        </template>
-      </MobileCardListWithCheckbox>
-    </div>
+		<!-- 移动端卡片布局 -->
+		<div class="md:hidden space-y-4">
+			<MobileCardListWithCheckbox :items="departments || []" v-model="checkedDepartmentIds">
+				<template #title="{ item }">
+					{{ item.name }}
+				</template>
+				<template #status="{ item }">
+					<div class="flex items-center">
+						<div class="h-2.5 w-2.5 rounded-full me-2" :class="item.isBound ? 'bg-green-500' : 'bg-red-500'"></div>
+						<span class="text-sm">{{ item.isBound === true ? "已绑定" : "未绑定" }}</span>
+					</div>
+				</template>
+				<template #content="{ item }">
+					<div>
+						<p class="text-xs font-medium text-gray-600">上级部门</p>
+						<p class="text-sm text-gray-900 mt-0.5">{{ !item.parentName ? '无' : item.parentName }}</p>
+					</div>
+				</template>
+			</MobileCardListWithCheckbox>
+		</div>
 
-    <!-- PC端表格布局 -->
-    <div class="hidden md:block">
-      <TableFormLayout :items="departments || []" :columns="columns" :hasCheckbox="true" v-model="checkedDepartmentIds"
-        @all-checked-change="allChecked = $event">
-        <template #parentName="{ item }">
-          {{ !item.parentName ? '无' : item.parentName }}
-        </template>
-        <template #name="{ item }">
-          {{ item.name }}
-        </template>
-        <template #bindState="{ item }">
-          <div class="flex items-center">
-            <div class="h-2.5 w-2.5 rounded-full me-2" :class="item.isBound ? 'bg-green-500' : 'bg-red-500'"></div>
-            {{ item.isBound === true ? "已绑定" : "未绑定" }}
-          </div>
-        </template>
-      </TableFormLayout>
-    </div>
-    <TablePagination :pageChange="handlePageChange" :total="total" />
-    <BindModal :id="'department-bind-modal'" :closeModal="() => {
+		<!-- PC端表格布局 -->
+		<div class="hidden md:block">
+			<TableFormLayout :items="departments || []" :columns="columns" :hasCheckbox="true" v-model="checkedDepartmentIds"
+				@all-checked-change="allChecked = $event">
+				<template #parentName="{ item }">
+					{{ !item.parentName ? '无' : item.parentName }}
+				</template>
+				<template #name="{ item }">
+					{{ item.name }}
+				</template>
+				<template #bindState="{ item }">
+					<div class="flex items-center">
+						<div class="h-2.5 w-2.5 rounded-full me-2" :class="item.isBound ? 'bg-green-500' : 'bg-red-500'"></div>
+						{{ item.isBound === true ? "已绑定" : "未绑定" }}
+					</div>
+				</template>
+			</TableFormLayout>
+		</div>
+		<TablePagination :pageChange="handlePageChange" :total="total" />
+		<BindModal :id="'department-bind-modal'" :closeModal="() => {
     departmentBindModal!.hide();
   }" :onSubmit="handleBindDepartmentSubmit" title="绑定选中的部门吗"></BindModal>
-    <UnModal :id="'department-unbind-modal'" :closeModal="() => {
+		<UnModal :id="'department-unbind-modal'" :closeModal="() => {
     departmentUnbindModal!.hide();
   }" :onSubmit="handleUnbindDepartmentSubmit" title="解绑选中的部门吗"></UnModal>
-  </div>
+	</div>
 
 </template>
 
@@ -99,7 +99,7 @@ import TableFormLayout from "@/components/TableFormLayout.vue";
 import TablePagination from "@/components/TablePagination.vue";
 import { useDepartmentQuery } from "@/composables/department/useDepartmentQuery";
 import { useActionExcStore } from "@/composables/store/useActionExcStore";
-import { RouteName } from "@/router/constants";
+import { Routes } from "@/router/constants";
 import { Modal, type ModalInterface, initFlowbite } from "flowbite";
 import { onMounted, reactive, ref, watch } from "vue";
 import { useRoute } from "vue-router";

@@ -178,14 +178,14 @@ class UserRolePermissionMvcTest {
     stubRoleQueryDto.setRoleId(stubRoleId);
     stubRoleQueryDto.setRoleCode(stubRoleCode);
     stubRoleQueryDto.setRoleName(stubRoleName);
-    RoleDto stubRoleDto = new RoleDto();
-    stubRoleDto.setId(1L);
-    stubRoleDto.setName(stubRoleName);
-    stubRoleDto.setCode(stubRoleCode);
-    stubRoleDto.setPermissions(
+    RoleRespDto stubRoleRespDto = new RoleRespDto();
+    stubRoleRespDto.setId(1L);
+    stubRoleRespDto.setName(stubRoleName);
+    stubRoleRespDto.setCode(stubRoleCode);
+    stubRoleRespDto.setPermissions(
         List.of(new PermissionRespDto(1L, "9VWU1nmU89zEVH", "9VWU1nmU89zEVH", false)));
     when(identityAccessService.pageQueryRole(PageRequestDto.of(1, 5), stubRoleQueryDto))
-        .thenReturn(new PageResponseDto<>(1, List.of(stubRoleDto)));
+        .thenReturn(new PageResponseDto<>(1, List.of(stubRoleRespDto)));
 
     mockMvc
         .perform(

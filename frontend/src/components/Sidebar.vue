@@ -28,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-import { RoutePath } from "@/router/constants";
+import { Routes } from "@/router/constants";
 import { initFlowbite } from "flowbite";
 import { onMounted, ref } from "vue";
 import { RouterLink, useRoute } from "vue-router";
@@ -73,42 +73,42 @@ defineExpose({
 const menuItems = [
 	{
 		title: "用户管理",
-		path: `${RoutePath.DASHBOARD}/${RoutePath.USERVIEW}`,
+		path: Routes.USERVIEW.fullPath(),
 		icon: UsersIcon,
 	},
 	{
 		title: "角色管理",
-		path: `${RoutePath.DASHBOARD}/${RoutePath.ROLEVIEW}`,
+		path: Routes.ROLEVIEW.fullPath(),
 		icon: RoleIcon,
 	},
 	{
 		title: "权限管理",
-		path: `${RoutePath.DASHBOARD}/${RoutePath.PERMISSIONVIEW}`,
+		path: Routes.PERMISSIONVIEW.fullPath(),
 		icon: PermissionIcon,
 	},
 	{
 		title: "部门管理",
-		path: `${RoutePath.DASHBOARD}/${RoutePath.DEPARTMENTVIEW}`,
+		path: Routes.DEPARTMENTVIEW.fullPath(),
 		icon: DepartmentIcon,
 	},
 	{
 		title: "岗位管理",
-		path: `${RoutePath.DASHBOARD}/${RoutePath.POSITIONVIEW}`,
+		path: Routes.POSITIONVIEW.fullPath(),
 		icon: PositionIcon,
 	},
 	{
 		title: "个人中心",
-		path: `${RoutePath.DASHBOARD}/${RoutePath.SETTINGS}`,
+		path: Routes.SETTINGS.fullPath(),
 		icon: SettingsIcon,
 	},
 	{
 		title: "定时任务",
-		path: `${RoutePath.DASHBOARD}/${RoutePath.SCHEDULERVIEW}`,
+		path: Routes.SCHEDULERVIEW.fullPath(),
 		icon: SchedulerIcon,
 	},
 	{
 		title: "大模型管理",
-		path: `${RoutePath.DASHBOARD}/${RoutePath.LLMCONFIGVIEW}`,
+		path: Routes.LLMCONFIGVIEW.fullPath(),
 		icon: LlmConfigIcon,
 	},
 ];

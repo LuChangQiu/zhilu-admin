@@ -1,28 +1,28 @@
 import type { RouteRecordRaw } from "vue-router";
 import Dashboard from "../../components/Dashboard.vue";
-import { EPermission, ERole, RouteName, RoutePath } from "../constants";
-import userManagementRoutes from "./user";
+import { EPermission, ERole, Routes } from "../constants";
 import aiRoutes from "./ai";
+import userManagementRoutes from "./user";
 
 const dashboardRoutes: RouteRecordRaw = {
-	path: RoutePath.DASHBOARD,
-	name: RouteName.DASHBOARD,
+	path: Routes.DASHBOARD.path,
+	name: Routes.DASHBOARD.name,
 	component: Dashboard,
 	meta: {
 		requiresAuth: true,
 	},
 	children: [
 		{
-			path: RoutePath.OVERVIEW,
-			name: RouteName.OVERVIEW,
+			path: Routes.OVERVIEW.path,
+			name: Routes.OVERVIEW.name,
 			component: () => import("@/views/OverView.vue"),
 			meta: {
 				requiresAuth: true,
 			},
 		},
 		{
-			path: RoutePath.SETTINGS,
-			name: RouteName.SETTINGS,
+			path: Routes.SETTINGS.path,
+			name: Routes.SETTINGS.name,
 			component: () => import("@/views/SettingsView.vue"),
 			meta: {
 				requiresAuth: true,
@@ -31,13 +31,13 @@ const dashboardRoutes: RouteRecordRaw = {
 		...userManagementRoutes,
 		...aiRoutes,
 		{
-			path: RoutePath.NOTFOUND,
-			name: RouteName.NOTFOUND,
+			path: Routes.NOTFOUND.path,
+			name: Routes.NOTFOUND.name,
 			component: () => import("@/views/NotFound.vue"),
 		},
 		{
-			path: RoutePath.SCHEDULERVIEW,
-			name: RouteName.SCHEDULERVIEW,
+			path: Routes.SCHEDULERVIEW.path,
+			name: Routes.SCHEDULERVIEW.name,
 			component: () => import("@/views/SchedulerView.vue"),
 			meta: {
 				requiresAuth: true,
@@ -45,8 +45,8 @@ const dashboardRoutes: RouteRecordRaw = {
 			},
 		},
 		{
-			path: RoutePath.DEPARTMENTVIEW,
-			name: RouteName.DEPARTMENTVIEW,
+			path: Routes.DEPARTMENTVIEW.path,
+			name: Routes.DEPARTMENTVIEW.name,
 			component: () => import("@/views/DepartmentView.vue"),
 			meta: {
 				requiresAuth: true,
@@ -54,8 +54,8 @@ const dashboardRoutes: RouteRecordRaw = {
 			},
 		},
 		{
-			path: RoutePath.POSITIONVIEW,
-			name: RouteName.POSITIONVIEW,
+			path: Routes.POSITIONVIEW.path,
+			name: Routes.POSITIONVIEW.name,
 			component: () => import("@/views/PositionView.vue"),
 			meta: {
 				requiresAuth: true,

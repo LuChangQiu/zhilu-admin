@@ -779,29 +779,29 @@ export interface components {
 		};
 		PermissionRespDto: {
 			/** Format: int64 */
-			id?: number;
-			code?: string;
-			name?: string;
-			isBound?: boolean;
+			id: number;
+			code: string;
+			name: string;
+			isBound: boolean;
 		};
-		RoleDto: {
+		RoleRespDto: {
 			/** Format: int64 */
-			id?: number;
-			code?: string;
-			name?: string;
-			isBound?: boolean;
+			id: number;
+			code: string;
+			name: string;
+			isBound: boolean;
 			permissions?: components["schemas"]["PermissionRespDto"][];
 		};
 		UserRolePermissionDto: {
 			/** Format: int64 */
-			id?: number;
-			username?: string;
+			id: number;
+			username: string;
 			password?: string;
 			avatar?: string;
-			enable?: boolean;
-			roles?: components["schemas"]["RoleDto"][];
+			enable: boolean;
+			roles?: components["schemas"]["RoleRespDto"][];
 			/** Format: date-time */
-			createTime?: string;
+			createTime: string;
 			permissions?: components["schemas"]["PermissionRespDto"][];
 		};
 		RoleQueryDto: {
@@ -815,10 +815,10 @@ export interface components {
 			/** @enum {string} */
 			bindState?: "BIND" | "UNBIND" | "ALL";
 		};
-		PageResponseDtoListRoleDto: {
+		PageResponseDtoListRoleRespDto: {
 			/** Format: int64 */
 			total?: number;
-			data?: components["schemas"]["RoleDto"][];
+			data?: components["schemas"]["RoleRespDto"][];
 		};
 		PermissionQueryDto: {
 			/** Format: int64 */
@@ -1113,7 +1113,7 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					"*/*": components["schemas"]["RoleDto"];
+					"*/*": components["schemas"]["RoleRespDto"];
 				};
 			};
 		};
@@ -1750,7 +1750,7 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					"*/*": components["schemas"]["PageResponseDtoListRoleDto"];
+					"*/*": components["schemas"]["PageResponseDtoListRoleRespDto"];
 				};
 			};
 		};

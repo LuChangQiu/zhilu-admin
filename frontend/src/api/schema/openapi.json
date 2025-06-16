@@ -289,7 +289,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/RoleDto"
+                  "$ref": "#/components/schemas/RoleRespDto"
                 }
               }
             }
@@ -1031,7 +1031,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/PageResponseDtoListRoleDto"
+                  "$ref": "#/components/schemas/PageResponseDtoListRoleRespDto"
                 }
               }
             }
@@ -1718,6 +1718,12 @@
         }
       },
       "PermissionRespDto": {
+        "required": [
+          "code",
+          "id",
+          "isBound",
+          "name"
+        ],
         "type": "object",
         "properties": {
           "id": {
@@ -1735,7 +1741,13 @@
           }
         }
       },
-      "RoleDto": {
+      "RoleRespDto": {
+        "required": [
+          "code",
+          "id",
+          "isBound",
+          "name"
+        ],
         "type": "object",
         "properties": {
           "id": {
@@ -1760,6 +1772,12 @@
         }
       },
       "UserRolePermissionDto": {
+        "required": [
+          "createTime",
+          "enable",
+          "id",
+          "username"
+        ],
         "type": "object",
         "properties": {
           "id": {
@@ -1782,7 +1800,7 @@
           "roles": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/RoleDto"
+              "$ref": "#/components/schemas/RoleRespDto"
             }
           },
           "createTime": {
@@ -1832,7 +1850,7 @@
           }
         }
       },
-      "PageResponseDtoListRoleDto": {
+      "PageResponseDtoListRoleRespDto": {
         "type": "object",
         "properties": {
           "total": {
@@ -1842,7 +1860,7 @@
           "data": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/RoleDto"
+              "$ref": "#/components/schemas/RoleRespDto"
             }
           }
         }

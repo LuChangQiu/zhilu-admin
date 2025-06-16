@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RoutePath } from "../router/constants";
+import { Routes } from "../router/constants";
 </script>
 
 <template>
@@ -10,7 +10,7 @@ import { RoutePath } from "../router/constants";
         found</h1>
       <p class="mt-6 text-base sm:text-lg font-medium text-pretty text-gray-500">您访问的资源未找到，请点击浏览器后退按钮返回</p>
       <div class="mt-10 flex items-center justify-center gap-x-6">
-        <RouterLink :to="`${RoutePath.DASHBOARD}/${RoutePath.OVERVIEW}`"
+        <RouterLink :to="Routes.OVERVIEW.fullPath()"
           class="rounded-md  px-3.5 py-2.5 text-sm font-semibold bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300    text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2">
           回到主页</RouterLink>
         <a href="#" class="text-sm font-semibold text-gray-900">联系我们<span aria-hidden="true">&rarr;</span></a>

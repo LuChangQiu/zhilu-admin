@@ -174,7 +174,7 @@ import { useSort } from "@/composables/sort";
 import { useActionExcStore } from "@/composables/store/useActionExcStore";
 import useUserDelete from "@/composables/user/useUserDelete";
 import { useUserQuery } from "@/composables/user/useUserQuery";
-import { RouteName } from "@/router/constants";
+import { Routes } from "@/router/constants";
 import type { UserUpsertSubmitModel } from "@/types/user";
 import { dayjs, formatDate } from "@/utils/dateUtil";
 import { Modal, type ModalInterface, initFlowbite } from "flowbite";
@@ -289,34 +289,31 @@ const handleUpsertUserClick = async (
 const handleBindRoleClick = async (
 	user: components["schemas"]["UserRolePermissionDto"],
 ) => {
-	router.push({
-		name: RouteName.BINDROLEVIEW,
-		params: {
-			userId: user.id,
-		},
-	});
+	router.push(
+		Routes.BINDROLEVIEW.withParams({
+			userId: user.id!,
+		}),
+	);
 };
 
 const handleBindDepartmentClick = async (
 	user: components["schemas"]["UserRolePermissionDto"],
 ) => {
-	router.push({
-		name: RouteName.BINDDEPARTMENTVIEW,
-		params: {
-			userId: user.id,
-		},
-	});
+	router.push(
+		Routes.BINDDEPARTMENTVIEW.withParams({
+			userId: user.id!,
+		}),
+	);
 };
 
 const handleBindPositionClick = async (
 	user: components["schemas"]["UserRolePermissionDto"],
 ) => {
-	router.push({
-		name: RouteName.BINDPOSITIONVIEW,
-		params: {
-			userId: user.id,
-		},
-	});
+	router.push(
+		Routes.BINDPOSITIONVIEW.withParams({
+			userId: user.id!,
+		}),
+	);
 };
 
 const handleSortClick = async (field: string) => {

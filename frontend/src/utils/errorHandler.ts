@@ -1,6 +1,5 @@
 import type { ComponentPublicInstance } from "vue";
 import type { Router } from "vue-router";
-import { RoutePath } from "../router/constants";
 import {
 	ForbiddenError,
 	InternalServerError,
@@ -9,6 +8,7 @@ import {
 	UnAuthError,
 } from "../types/error";
 import { z } from "zod";
+import { Routes } from "../router/constants";
 
 const makeErrorHandler =
 	(
@@ -31,7 +31,7 @@ const makeErrorHandler =
 			});
 		} else if (err instanceof UnAuthError) {
 			signOut();
-			router.push(RoutePath.LOGIN);
+			router.push(Routes.LOGIN.path);
 			showAlert({
 				level: "error",
 				content: err.message,

@@ -1,19 +1,19 @@
+import useAlertStore from "@/composables/store/useAlertStore";
 import useUserStore from "@/composables/store/useUserStore";
 import type { NavigationGuard, Router } from "vue-router";
 import type { RouteMeta } from "../types/router";
-import { RoutePath } from "./constants";
-import useAlertStore from "@/composables/store/useAlertStore";
+import { Routes } from "./constants";
 
 export const authGuard: NavigationGuard = (to) => {
 	const userStore = useUserStore();
 	if (to.meta.requiresAuth && !userStore.user) {
 		return {
-			path: RoutePath.LOGIN,
+			path: Routes.LOGIN.path,
 			query: { redirect: to.fullPath },
 		};
 	}
-	if (to.path === RoutePath.LOGIN && userStore.user) {
-		return { path: `${RoutePath.DASHBOARD}/${RoutePath.USERVIEW}` };
+	if (to.path === Routes.LOGIN.path && userStore.user) {
+		return { path: `${Routes.DASHBOARD.path}/${Routes.USERVIEW.path}` };
 	}
 };
 

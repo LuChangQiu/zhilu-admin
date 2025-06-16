@@ -15,7 +15,6 @@ import com.zl.mjga.repository.UserRepository;
 import com.zl.mjga.service.IdentityAccessService;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
-import io.minio.errors.*;
 import jakarta.validation.Valid;
 import java.awt.image.BufferedImage;
 import java.security.Principal;
@@ -118,7 +117,7 @@ public class IdentityAccessController {
 
   @PreAuthorize("hasAuthority(T(com.zl.mjga.model.urp.EPermission).WRITE_USER_ROLE_PERMISSION)")
   @GetMapping("/role")
-  RoleDto queryRoleWithPermission(@RequestParam Long roleId) {
+  RoleRespDto queryRoleWithPermission(@RequestParam Long roleId) {
     return identityAccessService.queryUniqueRoleWithPermission(roleId);
   }
 
@@ -145,7 +144,7 @@ public class IdentityAccessController {
   @PreAuthorize("hasAuthority(T(com.zl.mjga.model.urp.EPermission).READ_USER_ROLE_PERMISSION)")
   @GetMapping("/roles")
   @ResponseStatus(HttpStatus.OK)
-  PageResponseDto<List<RoleDto>> queryRoles(
+  PageResponseDto<List<RoleRespDto>> queryRoles(
       @ModelAttribute PageRequestDto pageRequestDto, @ModelAttribute RoleQueryDto roleQueryDto) {
     return identityAccessService.pageQueryRole(pageRequestDto, roleQueryDto);
   }

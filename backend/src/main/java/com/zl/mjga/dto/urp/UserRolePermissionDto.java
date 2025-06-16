@@ -1,6 +1,7 @@
 package com.zl.mjga.dto.urp;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.OffsetDateTime;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,7 +14,11 @@ import lombok.*;
 @Data
 @Builder
 public class UserRolePermissionDto {
+
+  @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
   private Long id;
+
+  @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
   private String username;
 
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -21,9 +26,12 @@ public class UserRolePermissionDto {
 
   private String avatar;
 
+  @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
   private Boolean enable;
-  @Builder.Default private List<RoleDto> roles = new LinkedList<>();
 
+  @Builder.Default private List<RoleRespDto> roles = new LinkedList<>();
+
+  @Schema(requiredMode = Schema.RequiredMode.REQUIRED)
   private OffsetDateTime createTime;
 
   public Set<PermissionRespDto> getPermissions() {

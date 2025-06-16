@@ -53,14 +53,14 @@
                 <li>
                   <button @click="() => {
                     userDropDownMenu?.toggle()
-                    router.push(`${RoutePath.DASHBOARD}/${RoutePath.SETTINGS}`)
+                    router.push(Routes.SETTINGS.fullPath())
                   }" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100   "
                     role="menuitem">Settings</button>
                 </li>
                 <li>
                   <button @click="() => {
                     userDropDownMenu?.toggle()
-                    router.push(RouteName.USERVIEW)
+                    router.push(Routes.USERVIEW.withParams({}))
                   }" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100   "
                     role="menuitem">Dashboard</button>
                 </li>
@@ -93,7 +93,7 @@ import { Dropdown, type DropdownInterface, initFlowbite } from "flowbite";
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import useUserAuth from "../composables/auth/useUserAuth";
-import { RouteName, RoutePath } from "../router/constants";
+import { Routes } from "../router/constants";
 import Avatar from "./Avatar.vue";
 import AiChatIcon from "./icons/AiChatIcon.vue";
 
@@ -113,7 +113,7 @@ const { signOut } = useUserAuth();
 const router = useRouter();
 const handleLogoutClick = () => {
 	signOut();
-	router.push(RoutePath.LOGIN);
+	router.push(Routes.LOGIN.path);
 };
 
 onMounted(() => {

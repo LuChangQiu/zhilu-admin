@@ -112,19 +112,19 @@ class UserRolePermissionUnitTest {
                 DSL.field("total_user", Integer.class))
             .values(stubUserId2, stubUserName2, stubUserPassword2, true, null, 2));
     UserRolePermissionDto mockUserRolePermissionDto1 = new UserRolePermissionDto();
-    RoleDto mockRoleDto = new RoleDto();
-    mockRoleDto.setId(stubRoleId);
-    mockRoleDto.setCode(stubRoleCode);
-    mockRoleDto.setName(stubRoleName);
+    RoleRespDto mockRoleRespDto = new RoleRespDto();
+    mockRoleRespDto.setId(stubRoleId);
+    mockRoleRespDto.setCode(stubRoleCode);
+    mockRoleRespDto.setName(stubRoleName);
     PermissionRespDto permissionRespDto = new PermissionRespDto();
     permissionRespDto.setId(stubPermissionId);
     permissionRespDto.setCode(stubPermissionCode);
     permissionRespDto.setName(stubPermissionName);
-    mockRoleDto.getPermissions().add(permissionRespDto);
+    mockRoleRespDto.getPermissions().add(permissionRespDto);
     mockUserRolePermissionDto1.setId(stubUserId1);
     mockUserRolePermissionDto1.setUsername(stubUserName1);
     mockUserRolePermissionDto1.setPassword(stubUserPassword1);
-    mockUserRolePermissionDto1.getRoles().add(mockRoleDto);
+    mockUserRolePermissionDto1.getRoles().add(mockRoleRespDto);
 
     UserRolePermissionDto mockUserRolePermissionDto2 = new UserRolePermissionDto();
     mockUserRolePermissionDto2.setId(stubUserId2);
@@ -202,7 +202,7 @@ class UserRolePermissionUnitTest {
     mockResult.setId(stubRoleId);
     mockResult.setRoles(
         List.of(
-            new RoleDto(
+            new RoleRespDto(
                 stubRoleId,
                 stubRoleName,
                 stubRoleCode,
@@ -245,12 +245,12 @@ class UserRolePermissionUnitTest {
     when(roleRepository.pageFetchBy(any(PageRequestDto.class), any(RoleQueryDto.class)))
         .thenReturn(mockRoleResult);
     RoleQueryDto roleQueryDto = new RoleQueryDto();
-    PageResponseDto<List<RoleDto>> pageResult =
+    PageResponseDto<List<RoleRespDto>> pageResult =
         identityAccessService.pageQueryRole(PageRequestDto.of(1, 5), roleQueryDto);
     assertThat(pageResult.getTotal()).isEqualTo(0L);
 
     roleQueryDto.setUserId(1L);
-    PageResponseDto<List<RoleDto>> pageResult2 =
+    PageResponseDto<List<RoleRespDto>> pageResult2 =
         identityAccessService.pageQueryRole(PageRequestDto.of(1, 5), roleQueryDto);
     assertThat(pageResult2.getTotal()).isEqualTo(0L);
   }

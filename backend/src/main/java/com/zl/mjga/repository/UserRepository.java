@@ -5,7 +5,7 @@ import static org.jooq.impl.DSL.*;
 
 import com.zl.mjga.dto.PageRequestDto;
 import com.zl.mjga.dto.urp.PermissionRespDto;
-import com.zl.mjga.dto.urp.RoleDto;
+import com.zl.mjga.dto.urp.RoleRespDto;
 import com.zl.mjga.dto.urp.UserQueryDto;
 import com.zl.mjga.dto.urp.UserRolePermissionDto;
 import java.util.List;
@@ -102,7 +102,7 @@ public class UserRepository extends UserDao {
                                     r -> r.map((record) -> record.into(PermissionRespDto.class)))
                                 .as("permissions"))
                         .from(USER.role()))
-                .convertFrom(r -> r.map((record) -> record.into(RoleDto.class)))
+                .convertFrom(r -> r.map((record) -> record.into(RoleRespDto.class)))
                 .as("roles"))
         .from(USER)
         .where(USER.ID.eq(userId))

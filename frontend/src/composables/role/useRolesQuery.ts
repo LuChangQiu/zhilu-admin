@@ -4,8 +4,8 @@ import type { components } from "../../api/types/schema";
 
 export const useRolesQuery = () => {
 	const total = ref<number>(0);
-	const roles = ref<components["schemas"]["RoleDto"][]>();
-	const roleWithDetail = ref<components["schemas"]["RoleDto"]>();
+	const roles = ref<components["schemas"]["RoleRespDto"][]>();
+	const roleWithDetail = ref<components["schemas"]["RoleRespDto"]>();
 
 	const getRoleWithDetail = async (roleId: number) => {
 		const { data } = await client.GET("/iam/role", {

@@ -2,20 +2,20 @@ import { createRouter, createWebHistory } from "vue-router";
 import type { RouteRecordRaw } from "vue-router";
 import { setupGuards } from "./guards";
 
+import { Routes } from "./constants";
 import authRoutes from "./modules/auth";
 import dashboardRoutes from "./modules/dashboard";
 import errorRoutes from "./modules/error";
-import { RouteName, RoutePath } from "./constants";
 
 const routes: RouteRecordRaw[] = [
 	dashboardRoutes,
 	...authRoutes,
 	...errorRoutes,
 	{
-		path: RoutePath.HOME,
-		name: RouteName.HOME,
+		path: Routes.HOME.path,
+		name: Routes.HOME.name,
 		redirect: {
-			path: `${RoutePath.DASHBOARD}/${RoutePath.USERVIEW}`,
+			path: `${Routes.DASHBOARD.path}/${Routes.USERVIEW.path}`,
 		},
 	},
 ];
@@ -27,7 +27,7 @@ const router = createRouter({
 
 router.onError((err) => {
 	console.error("router err:", err);
-	router.push(RouteName.USERVIEW);
+	router.push(Routes.USERVIEW.name);
 	return false;
 });
 

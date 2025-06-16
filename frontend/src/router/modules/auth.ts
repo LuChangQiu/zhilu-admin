@@ -1,17 +1,17 @@
 import type { RouteRecordRaw } from "vue-router";
-import { RouteName, RoutePath } from "../constants";
+import { Routes } from "../constants";
 
 const authRoutes: RouteRecordRaw[] = [
 	{
-		path: RoutePath.HOME,
-		name: RouteName.HOME,
+		path: Routes.HOME.path,
+		name: Routes.HOME.name,
 		redirect: {
-			name: RouteName.LOGIN,
+			name: Routes.LOGIN.name,
 		},
 	},
 	{
-		path: RoutePath.LOGIN,
-		name: RouteName.LOGIN,
+		path: Routes.LOGIN.path,
+		name: Routes.LOGIN.name,
 		component: () => import("../../views/LoginView.vue"),
 	},
 ];

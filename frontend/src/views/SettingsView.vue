@@ -52,14 +52,14 @@
 </template>
 
 <script setup lang="ts">
+import Breadcrumbs from "@/components/Breadcrumbs.vue";
 import useUserAuth from "@/composables/auth/useUserAuth";
 import useUserStore from "@/composables/store/useUserStore";
 import { initFlowbite } from "flowbite";
 import { onMounted, ref } from "vue";
 import { z } from "zod";
 import useAlertStore from "../composables/store/useAlertStore";
-import { RouteName } from "../router/constants";
-import Breadcrumbs from "@/components/Breadcrumbs.vue";
+import { Routes } from "../router/constants";
 
 const { user } = useUserStore();
 const { upsertCurrentUser } = useUserAuth();

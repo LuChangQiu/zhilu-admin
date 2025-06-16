@@ -33,7 +33,7 @@ import { useRoute, useRouter } from "vue-router";
 import { z } from "zod";
 import useUserAuth from "../composables/auth/useUserAuth";
 import useAlertStore from "../composables/store/useAlertStore";
-import { RoutePath } from "../router/constants";
+import { Routes } from "../router/constants";
 
 const username = ref("admin");
 const password = ref("admin");
@@ -58,8 +58,7 @@ const handleLogin = async () => {
 		content: "登录成功",
 	});
 	const redirectPath =
-		(route.query.redirect as string) ||
-		`${RoutePath.DASHBOARD}/${RoutePath.USERVIEW}`;
+		(route.query.redirect as string) || Routes.USERVIEW.fullPath();
 	router.push(redirectPath);
 };
 

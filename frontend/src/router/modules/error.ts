@@ -1,10 +1,10 @@
 import type { RouteRecordRaw } from "vue-router";
-import { RouteName, RoutePath } from "../constants";
+import { Routes } from "../constants";
 
 const errorRoutes: RouteRecordRaw[] = [
 	{
-		path: RoutePath.GLOBAL_NOTFOUND,
-		name: RouteName.GLOBAL_NOTFOUND,
+		path: Routes.GLOBAL_NOTFOUND.path,
+		name: Routes.GLOBAL_NOTFOUND.name,
 		component: () => import("../../views/NotFound.vue"),
 	},
 ];

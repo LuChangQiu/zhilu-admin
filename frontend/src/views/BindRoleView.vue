@@ -1,7 +1,7 @@
 <template>
 	<div class="px-2 sm:px-4 pt-6 sm:rounded-lg">
 		<div class="mb-4 sm:mb-6 col-span-full">
-			<Breadcrumbs :names="['用户管理', '角色分配']" :routes="[{ name: RouteName.USERVIEW }]" />
+			<Breadcrumbs :names="['用户管理', '角色分配']" :routes="[Routes.USERVIEW.fullPath()]" />
 			<h1 class="text-xl sm:text-2xl mb-4 sm:mb-6 font-semibold text-gray-900">角色分配</h1>
 		</div>
 
@@ -101,7 +101,7 @@ import TableFormLayout from "@/components/TableFormLayout.vue";
 import TablePagination from "@/components/TablePagination.vue";
 import { useRolesQuery } from "@/composables/role/useRolesQuery";
 import { useActionExcStore } from "@/composables/store/useActionExcStore";
-import { RouteName } from "@/router/constants";
+import { Routes } from "@/router/constants";
 import { Modal, type ModalInterface, initFlowbite } from "flowbite";
 import { onMounted, reactive, ref } from "vue";
 import { useRoute } from "vue-router";

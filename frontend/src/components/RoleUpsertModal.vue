@@ -52,7 +52,7 @@ import type { components } from "../api/types/schema";
 const alertStore = useAlertStore();
 
 const { role, onSubmit } = defineProps<{
-	role?: components["schemas"]["RoleDto"];
+	role?: components["schemas"]["RoleRespDto"];
 	closeModal: () => void;
 	onSubmit: (data: RoleUpsertModel) => Promise<void>;
 }>();
