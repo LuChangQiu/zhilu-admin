@@ -71,19 +71,19 @@
 			</div>
 		</form>
 	</div>
-	<UserUpsertModal :id="'user-upsert-modal'" :onSubmit="handleUpsertUserSubmit" :closeModal="() => {
+	<UserFormDialog :id="'user-upsert-modal'" :onSubmit="handleUpsertUserSubmit" :closeModal="() => {
     userUpsertModal!.hide();
   }">
-	</UserUpsertModal>
+	</UserFormDialog>
 	<UserDeleteModal :id="'user-delete-modal'" :closeModal="() => {
 		currentDeleteUsername = undefined
     userDeleteModal!.hide();
   }" :onSubmit="handleDeleteUserSubmit" title="确定删除该用户吗" content="删除用户"></UserDeleteModal>
-	<DepartmentUpsertModal :id="'department-upsert-modal'" :onSubmit="handleUpsertDepartmentSubmit" :closeModal="() => {
+	<DepartmentFormDialog :id="'department-upsert-modal'" :onSubmit="handleUpsertDepartmentSubmit" :closeModal="() => {
     availableDepartments = undefined
     departmentUpsertModal!.hide();
   }" :availableDepartments="availableDepartments">
-	</DepartmentUpsertModal>
+	</DepartmentFormDialog>
 	<DepartmentDeleteModal :id="'department-delete-modal'" :closeModal="() => {
     currentDeleteDepartmentName = undefined
     departmentDeleteModal!.hide();
@@ -92,10 +92,9 @@
 
 <script setup lang="ts">
 import { LoadingIcon } from "@/components/icons";
-import DepartmentUpsertModal from "@/components/modals/DepartmentUpsertModal.vue";
-import UserDeleteModal from "@/components/modals/PopupModal.vue";
-import DepartmentDeleteModal from "@/components/modals/PopupModal.vue";
-import UserUpsertModal from "@/components/modals/UserUpsertModal.vue";
+import UserDeleteModal from "@/components/modals/ConfirmationDialog.vue";
+import DepartmentDeleteModal from "@/components/modals/ConfirmationDialog.vue";
+import DepartmentFormDialog from "@/components/modals/DepartmentFormDialog.vue";
 import TableButton from "@/components/tables/TableButton.vue";
 import Avatar from "@/components/ui/Avatar.vue";
 import InputButton from "@/components/ui/InputButton.vue";
@@ -107,8 +106,8 @@ import { useActionExcStore } from "@/composables/store/useActionExcStore";
 import useAlertStore from "@/composables/store/useAlertStore";
 import useUserStore from "@/composables/store/useUserStore";
 import { useUserUpsert } from "@/composables/user/useUserUpsert";
-import type { DepartmentUpsertModel } from "@/types/department";
-import type { UserUpsertSubmitModel } from "@/types/user";
+import type { DepartmentUpsertModel } from "@/types/DepartmentTypes";
+import type { UserUpsertSubmitModel } from "@/types/UserTypes";
 import DOMPurify from "dompurify";
 import { Modal, type ModalInterface, initFlowbite } from "flowbite";
 import { marked } from "marked";

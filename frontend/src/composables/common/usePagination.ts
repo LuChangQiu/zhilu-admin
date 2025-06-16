@@ -12,6 +12,11 @@ export interface UsePaginationOptions {
 	initialTotal?: number;
 }
 
+/**
+ * 分页逻辑Composable - 提供分页相关的状态和操作
+ * @param options 分页选项
+ * @returns 分页状态和方法
+ */
 export function usePagination(options: UsePaginationOptions = {}) {
 	const { initialPage = 1, initialPageSize = 10, initialTotal = 0 } = options;
 

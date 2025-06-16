@@ -1,8 +1,8 @@
 <template>
 	<div class="px-2 sm:px-4 pt-6 sm:rounded-lg">
 		<div class="mb-4 sm:mb-6 col-span-full">
-			<Breadcrumbs :names="['用户管理', '绑定部门']" :routes="[Routes.USERVIEW.fullPath()]" />
-			<h1 class="text-xl sm:text-2xl mb-4 sm:mb-6 font-semibold text-gray-900">绑定部门</h1>
+			<Breadcrumbs :names="['角色管理', '绑定权限']" :routes="[Routes.ROLEVIEW.fullPath()]" />
+			<h1 class="text-xl sm:text-2xl mb-4 sm:mb-6 font-semibold text-gray-900">绑定权限</h1>
 		</div>
 
 		<TableFilterForm :filters="filterConfig" :initialValues="filterValues" @search="handleSearch"
@@ -10,25 +10,25 @@
 			<template #actions>
 				<div class="flex gap-x-2">
 					<TableButton variant="primary" @click="() => {
-              if (checkedDepartmentIds.length === 0) {
+              if (checkedPermissionIds.length === 0) {
                 alertStore.showAlert({
-                  content: '没有选择部门',
+                  content: '没有选择权限',
                   level: 'error',
                 });
               } else {
-                departmentBindModal?.show();
+                permissionBindModal?.show();
               }
             }">
 						绑定
 					</TableButton>
 					<TableButton variant="danger" @click="() => {
-              if (checkedDepartmentIds.length === 0) {
+              if (checkedPermissionIds.length === 0) {
                 alertStore.showAlert({
-                  content: '没有选择部门',
+                  content: '没有选择权限',
                   level: 'error',
                 });
               } else {
-                departmentUnbindModal?.show();
+                permissionUnbindModal?.show();
               }
             }">
 						解绑
@@ -39,7 +39,7 @@
 
 		<!-- 移动端卡片布局 -->
 		<div class="md:hidden space-y-4">
-			<MobileCardListWithCheckbox :items="departments || []" v-model="checkedDepartmentIds">
+			<MobileCardListWithCheckbox :items="permissions || []" v-model="checkedPermissionIds">
 				<template #title="{ item }">
 					{{ item.name }}
 				</template>
@@ -51,8 +51,8 @@
 				</template>
 				<template #content="{ item }">
 					<div>
-						<p class="text-xs font-medium text-gray-600">上级部门</p>
-						<p class="text-sm text-gray-900 mt-0.5">{{ !item.parentName ? '无' : item.parentName }}</p>
+						<p class="text-xs font-medium text-gray-600">权限编码</p>
+						<p class="text-sm text-gray-900 mt-0.5">{{ item.code }}</p>
 					</div>
 				</template>
 			</MobileCardListWithCheckbox>
@@ -60,10 +60,10 @@
 
 		<!-- PC端表格布局 -->
 		<div class="hidden md:block">
-			<TableFormLayout :items="departments || []" :columns="columns" :hasCheckbox="true" v-model="checkedDepartmentIds"
+			<TableFormLayout :items="permissions || []" :columns="columns" :hasCheckbox="true" v-model="checkedPermissionIds"
 				@all-checked-change="allChecked = $event">
-				<template #parentName="{ item }">
-					{{ !item.parentName ? '无' : item.parentName }}
+				<template #code="{ item }">
+					{{ item.code }}
 				</template>
 				<template #name="{ item }">
 					{{ item.name }}
@@ -76,29 +76,31 @@
 				</template>
 			</TableFormLayout>
 		</div>
+
 		<TablePagination :pageChange="handlePageChange" :total="total" />
-		<BindModal :id="'department-bind-modal'" :closeModal="() => {
-    departmentBindModal!.hide();
-  }" :onSubmit="handleBindDepartmentSubmit" title="绑定选中的部门吗"></BindModal>
-		<UnModal :id="'department-unbind-modal'" :closeModal="() => {
-    departmentUnbindModal!.hide();
-  }" :onSubmit="handleUnbindDepartmentSubmit" title="解绑选中的部门吗"></UnModal>
 	</div>
 
+	<BindModal :id="'permission-bind-modal'" :closeModal="() => {
+    permissionBindModal!.hide();
+  }" :onSubmit="handleBindPermissionSubmit" title="确定绑定选中的权限吗"></BindModal>
+	<UnModal :id="'permission-unbind-modal'" :closeModal="() => {
+    permissionUnbindModal!.hide();
+  }" :onSubmit="handleUnbindPermissionSubmit" title="确定解绑选中的权限吗"></UnModal>
 </template>
 
 <script setup lang="ts">
+import type { components } from "@/api/types/schema";
 import Breadcrumbs from "@/components/layout/Breadcrumbs.vue";
+import BindModal from "@/components/modals/ConfirmationDialog.vue";
+import UnModal from "@/components/modals/ConfirmationDialog.vue";
 import MobileCardListWithCheckbox from "@/components/tables/MobileCardListWithCheckbox.vue";
 import TableButton from "@/components/tables/TableButton.vue";
 import TableFilterForm from "@/components/tables/TableFilterForm.vue";
 import type { FilterItem } from "@/components/tables/TableFilterForm.vue";
 import TableFormLayout from "@/components/tables/TableFormLayout.vue";
 import TablePagination from "@/components/tables/TablePagination.vue";
-import BindModal from "@/components/modals/PopupModal.vue";
-import UnModal from "@/components/modals/PopupModal.vue";
-import { useDepartmentBind } from "@/composables/department/useDepartmentBind";
-import { useDepartmentQuery } from "@/composables/department/useDepartmentQuery";
+import { usePermissionBind } from "@/composables/permission/usePermissionBind";
+import usePermissionsQuery from "@/composables/permission/usePermissionQuery";
 import { useActionExcStore } from "@/composables/store/useActionExcStore";
 import useAlertStore from "@/composables/store/useAlertStore";
 import { Routes } from "@/router/constants";
@@ -110,8 +112,8 @@ import { useRoute } from "vue-router";
 const filterConfig: FilterItem[] = [
 	{
 		type: "input",
-		name: "departmentName",
-		placeholder: "部门名",
+		name: "permissionName",
+		placeholder: "权限名",
 	},
 	{
 		type: "select",
@@ -126,10 +128,10 @@ const filterConfig: FilterItem[] = [
 
 // 筛选值
 const filterValues = reactive<{
-	departmentName: string;
+	permissionName: string;
 	bindState: "BIND" | "ALL" | "UNBIND";
 }>({
-	departmentName: "",
+	permissionName: "",
 	bindState: "ALL",
 });
 
@@ -137,88 +139,91 @@ const filterValues = reactive<{
 const updateFilterValues = (
 	values: Record<string, string | number | boolean | Date[] | undefined>,
 ) => {
-	if (values.departmentName !== undefined) {
-		filterValues.departmentName = values.departmentName as string;
+	if (values.permissionName !== undefined) {
+		filterValues.permissionName = values.permissionName as string;
 	}
 	if (values.bindState !== undefined) {
 		filterValues.bindState = values.bindState as "BIND" | "ALL" | "UNBIND";
 	}
 };
 
-const checkedDepartmentIds = ref<number[]>([]);
-const departmentBindModal = ref<ModalInterface>();
-const departmentUnbindModal = ref<ModalInterface>();
+const checkedPermissionIds = ref<number[]>([]);
+const permissionBindModal = ref<ModalInterface>();
+const permissionUnbindModal = ref<ModalInterface>();
 const allChecked = ref<boolean>(false);
 const $route = useRoute();
 
 const alertStore = useAlertStore();
 const actionExcStore = useActionExcStore();
-const { total, departments, fetchDepartmentWith } = useDepartmentQuery();
-
-const { bindDepartment, unbindDepartment } = useDepartmentBind();
+const { total, permissions, fetchPermissionsWith } = usePermissionsQuery();
+const { bindPermission, unbindPermission } = usePermissionBind();
 
 // 定义表格列配置
 const columns = [
-	{ title: "上级部门", field: "parentName" },
-	{ title: "部门名称", field: "name" },
+	{ title: "权限编码", field: "code" },
+	{ title: "权限名称", field: "name" },
 	{ title: "绑定状态", field: "bindState" },
 ];
 
-const handleBindDepartmentSubmit = async () => {
-	await bindDepartment(
-		Number($route.params.userId),
-		checkedDepartmentIds.value,
-	);
-	clearCheckedDepartment();
-	allChecked.value = false;
-	departmentBindModal.value?.hide();
+const handleBindPermissionSubmit = async () => {
+	await bindPermission({
+		roleId: Number($route.params.roleId),
+		permissionIds: checkedPermissionIds.value,
+	});
+	permissionBindModal.value?.hide();
 	alertStore.showAlert({
 		content: "操作成功",
 		level: "success",
 	});
-	await fetchDepartmentWith({
-		name: filterValues.departmentName,
-		userId: Number($route.params.userId),
+	clearCheckedRoleIds();
+	allChecked.value = false;
+	await fetchPermissionsWith({
+		name: filterValues.permissionName,
+		roleId: Number($route.params.roleId),
 		bindState: filterValues.bindState,
 	});
 };
 
-const handleUnbindDepartmentSubmit = async () => {
-	await unbindDepartment(
-		Number($route.params.userId),
-		checkedDepartmentIds.value,
-	);
-	clearCheckedDepartment();
-	allChecked.value = false;
-	departmentUnbindModal.value?.hide();
+const handleUnbindPermissionSubmit = async () => {
+	await unbindPermission({
+		roleId: Number($route.params.roleId),
+		permissionIds: checkedPermissionIds.value,
+	});
+	permissionUnbindModal.value?.hide();
 	alertStore.showAlert({
 		content: "操作成功",
 		level: "success",
 	});
-	await fetchDepartmentWith({
-		name: filterValues.departmentName,
-		userId: Number($route.params.userId),
+	clearCheckedRoleIds();
+	allChecked.value = false;
+	await fetchPermissionsWith({
+		name: filterValues.permissionName,
+		roleId: Number($route.params.roleId),
 		bindState: filterValues.bindState,
 	});
 };
 
 onMounted(async () => {
-	await fetchDepartmentWith({
-		name: filterValues.departmentName,
-		userId: Number($route.params.userId),
+	await fetchPermissionsWith({
+		name: filterValues.permissionName,
+		roleId: Number($route.params.roleId),
 		bindState: filterValues.bindState,
 	});
 	initFlowbite();
 	const $bindModalElement: HTMLElement | null = document.querySelector(
-		"#department-bind-modal",
+		"#permission-bind-modal",
 	);
 	if ($bindModalElement) {
-		departmentBindModal.value = new Modal($bindModalElement, {});
+		permissionBindModal.value = new Modal($bindModalElement, {});
 	}
 	const $unbindModalElement: HTMLElement | null = document.querySelector(
-		"#department-unbind-modal",
+		"#permission-unbind-modal",
 	);
-	departmentUnbindModal.value = new Modal($unbindModalElement, {});
+	permissionUnbindModal.value = new Modal(
+		$unbindModalElement,
+		{},
+		{ id: "permission-unbind-modal" },
+	);
 	actionExcStore.setCallback((result) => {
 		if (result) {
 			handleSearch();
@@ -227,18 +232,18 @@ onMounted(async () => {
 });
 
 const handleSearch = async () => {
-	await fetchDepartmentWith({
-		name: filterValues.departmentName,
-		userId: Number($route.params.userId),
+	await fetchPermissionsWith({
+		name: filterValues.permissionName,
+		roleId: Number($route.params.roleId),
 		bindState: filterValues.bindState,
 	});
 };
 
 const handlePageChange = async (page: number, pageSize: number) => {
-	await fetchDepartmentWith(
+	await fetchPermissionsWith(
 		{
-			name: filterValues.departmentName,
-			userId: Number($route.params.userId),
+			name: filterValues.permissionName,
+			roleId: Number($route.params.roleId),
 			bindState: filterValues.bindState,
 		},
 		page,
@@ -248,14 +253,14 @@ const handlePageChange = async (page: number, pageSize: number) => {
 
 watch(allChecked, async () => {
 	if (allChecked.value) {
-		checkedDepartmentIds.value = departments.value?.map((r) => r.id!) ?? [];
+		checkedPermissionIds.value = permissions.value?.map((p) => p.id!) ?? [];
 	} else {
-		checkedDepartmentIds.value = [];
+		checkedPermissionIds.value = [];
 	}
 });
 
-const clearCheckedDepartment = () => {
-	checkedDepartmentIds.value = [];
+const clearCheckedRoleIds = () => {
+	checkedPermissionIds.value = [];
 };
 </script>
 

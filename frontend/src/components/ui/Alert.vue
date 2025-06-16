@@ -35,8 +35,8 @@
 
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from "vue";
 import useAlertStore from "@/composables/store/useAlertStore";
-import type { AlertLevel } from "@/types/alert";
+import type { AlertLevel } from "@/types/AlertTypes";
+import { onMounted, onUnmounted, ref } from "vue";
 const alertStore = useAlertStore();
 </script>

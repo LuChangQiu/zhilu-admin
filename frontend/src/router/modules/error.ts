@@ -5,7 +5,7 @@ const errorRoutes: RouteRecordRaw[] = [
 	{
 		path: Routes.GLOBAL_NOTFOUND.path,
 		name: Routes.GLOBAL_NOTFOUND.name,
-		component: () => import("../../views/NotFound.vue"),
+		component: () => import("../../views/NotFoundPage.vue"),
 	},
 ];
 

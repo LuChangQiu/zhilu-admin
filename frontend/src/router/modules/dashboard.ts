@@ -1,8 +1,8 @@
 import type { RouteRecordRaw } from "vue-router";
+import Dashboard from "../../components/layout/Dashboard.vue";
 import { EPermission, Routes } from "../constants";
 import aiRoutes from "./ai";
 import userManagementRoutes from "./user";
-import Dashboard from "../../components/layout/Dashboard.vue";
 
 const dashboardRoutes: RouteRecordRaw = {
 	path: Routes.DASHBOARD.path,
@@ -15,7 +15,7 @@ const dashboardRoutes: RouteRecordRaw = {
 		{
 			path: Routes.OVERVIEW.path,
 			name: Routes.OVERVIEW.name,
-			component: () => import("@/views/OverView.vue"),
+			component: () => import("@/views/DashboardPage.vue"),
 			meta: {
 				requiresAuth: true,
 			},
@@ -23,7 +23,7 @@ const dashboardRoutes: RouteRecordRaw = {
 		{
 			path: Routes.SETTINGS.path,
 			name: Routes.SETTINGS.name,
-			component: () => import("@/views/SettingsView.vue"),
+			component: () => import("@/views/SystemSettingsPage.vue"),
 			meta: {
 				requiresAuth: true,
 			},
@@ -33,12 +33,12 @@ const dashboardRoutes: RouteRecordRaw = {
 		{
 			path: Routes.NOTFOUND.path,
 			name: Routes.NOTFOUND.name,
-			component: () => import("@/views/NotFound.vue"),
+			component: () => import("@/views/NotFoundPage.vue"),
 		},
 		{
 			path: Routes.SCHEDULERVIEW.path,
 			name: Routes.SCHEDULERVIEW.name,
-			component: () => import("@/views/SchedulerView.vue"),
+			component: () => import("@/views/SchedulerManagementPage.vue"),
 			meta: {
 				requiresAuth: true,
 				hasPermission: EPermission.READ_SCHEDULER_PERMISSION,
@@ -47,7 +47,7 @@ const dashboardRoutes: RouteRecordRaw = {
 		{
 			path: Routes.DEPARTMENTVIEW.path,
 			name: Routes.DEPARTMENTVIEW.name,
-			component: () => import("@/views/DepartmentView.vue"),
+			component: () => import("@/views/DepartmentManagementPage.vue"),
 			meta: {
 				requiresAuth: true,
 				hasPermission: EPermission.READ_DEPARTMENT_PERMISSION,
@@ -56,7 +56,7 @@ const dashboardRoutes: RouteRecordRaw = {
 		{
 			path: Routes.POSITIONVIEW.path,
 			name: Routes.POSITIONVIEW.name,
-			component: () => import("@/views/PositionView.vue"),
+			component: () => import("@/views/PositionManagementPage.vue"),
 			meta: {
 				requiresAuth: true,
 				hasPermission: EPermission.READ_POSITION_PERMISSION,

@@ -5,7 +5,7 @@ import { createApp } from "vue";
 
 import VueDatePicker from "@vuepic/vue-datepicker";
 import App from "./App.vue";
-import useErrorHandler from "./composables/useErrorHandler";
+import useErrorHandling from "./composables/common/useErrorHandling";
 import router from "./router";
 import "@vuepic/vue-datepicker/dist/main.css";
 import "./assets/datepicker.css";
@@ -27,7 +27,7 @@ enableMocking().then(() => {
 	app.use(createPinia());
 	app.use(router);
 
-	const { handleError } = useErrorHandler();
+	const { handleError } = useErrorHandling();
 	app.config.errorHandler = (err, instance, info) => {
 		handleError(err);
 	};

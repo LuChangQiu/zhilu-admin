@@ -1,5 +1,5 @@
 import client from "../../api/client";
-import type { DepartmentUpsertModel } from "../../types/department";
+import type { DepartmentUpsertModel } from "../../types/DepartmentTypes";
 
 export const useDepartmentUpsert = () => {
 	const upsertDepartment = async (department: DepartmentUpsertModel) => {

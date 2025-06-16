@@ -140,15 +140,16 @@
   <PopupModal :id="'job-pause-modal'" :closeModal="() => {
     jobPauseModal!.hide();
   }" :onSubmit="handlePauseModalSubmit" title="确定暂停该任务吗" content="暂停任务"></PopupModal>
-  <SchedulerUpdateModal :job="selectedJob" :id="'job-update-modal'" :closeModal="() => {
+  <SchedulerFormDialog :job="selectedJob" :id="'job-update-modal'" :closeModal="() => {
     jobUpdateModal!.hide();
-  }" :onSubmit="handleUpdateModalSubmit"></SchedulerUpdateModal>
+  }" :onSubmit="handleUpdateModalSubmit"></SchedulerFormDialog>
 </template>
 
 <script setup lang="ts">
 import Breadcrumbs from "@/components/layout/Breadcrumbs.vue";
-import PopupModal from "@/components/modals/PopupModal.vue";
-import SchedulerUpdateModal from "@/components/modals/SchedulerUpdateModal.vue";
+import PopupModal from "@/components/modals/ConfirmationDialog.vue";
+import SchedulerFormDialog from "@/components/modals/SchedulerFormDialog.vue";
+
 import MobileCardList from "@/components/tables/MobileCardList.vue";
 import TableFilterForm from "@/components/tables/TableFilterForm.vue";
 import type { FilterItem } from "@/components/tables/TableFilterForm.vue";

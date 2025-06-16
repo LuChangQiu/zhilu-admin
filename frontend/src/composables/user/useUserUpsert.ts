@@ -1,5 +1,5 @@
 import client from "../../api/client";
-import type { UserUpsertSubmitModel } from "../../types/user";
+import type { UserUpsertSubmitModel } from "../../types/UserTypes";
 
 export const useUserUpsert = () => {
 	const uploadUserAvatar = async (file: File) => {

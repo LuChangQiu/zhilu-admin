@@ -1,7 +1,8 @@
 /**
- * 移动端样式hook，提供通用的移动端样式类
+ * 样式系统Composable - 提供统一的样式类名
+ * @returns 样式类名集合
  */
-export function useMobileStyles() {
+export function useStyleSystem() {
 	// 移动端卡片容器样式
 	const cardContainerClass =
 		"p-4 bg-white rounded-lg shadow border border-gray-100";

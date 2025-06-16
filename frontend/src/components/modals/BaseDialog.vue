@@ -26,19 +26,19 @@
 </template>
 
 <script setup lang="ts">
+import { Modal, initFlowbite } from "flowbite";
 import { computed, onMounted } from "vue";
-import { initFlowbite, Modal } from "flowbite";
 
 export type ModalSize = "xs" | "sm" | "md" | "lg" | "xl";
 
 const props = defineProps<{
-	/** 模态框标题 */
+	/** 对话框标题 */
 	title?: string;
-	/** 模态框大小 */
+	/** 对话框大小 */
 	size?: ModalSize;
-	/** 关闭模态框的回调函数 */
+	/** 关闭对话框的回调函数 */
 	closeModal: () => void;
-	/** 模态框ID，用于DOM选择 */
+	/** 对话框ID，用于DOM选择 */
 	id?: string;
 }>();
 

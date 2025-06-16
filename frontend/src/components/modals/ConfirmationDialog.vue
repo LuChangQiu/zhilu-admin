@@ -1,5 +1,5 @@
 <template>
-  <BaseModal :id="id" :closeModal="closeModal" size="sm">
+  <BaseDialog :id="id" :closeModal="closeModal" size="sm">
     <div class="p-5 md:p-6 text-center">
       <svg class="w-14 h-14 sm:w-16 sm:h-16 mx-auto text-red-600 mb-4" fill="none" stroke="currentColor"
         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -18,11 +18,11 @@
           class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 min-w-[80px]">否</button>
       </div>
     </div>
-  </BaseModal>
+  </BaseDialog>
 </template>
 
 <script setup lang="ts">
-import BaseModal from "./BaseModal.vue";
+import BaseDialog from "./BaseDialog.vue";
 
 const { title, id, closeModal, onSubmit } = defineProps<{
 	title: string;

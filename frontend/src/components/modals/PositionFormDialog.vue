@@ -1,17 +1,11 @@
 <template>
-	<BaseModal :id="id" title="权限管理" size="md" :closeModal="closeModal">
+	<BaseDialog :id="id" title="岗位管理" size="md" :closeModal="closeModal">
 		<!-- Modal body -->
 		<div class="p-4 md:p-5">
 			<div class="grid gap-4 mb-4 grid-cols-1">
 				<div class="col-span-full">
-					<label for="name" class="block mb-2 text-sm font-medium text-gray-900">权限名称</label>
+					<label for="name" class="block mb-2 text-sm font-medium text-gray-900">岗位名称</label>
 					<input type="text" id="name" v-model="formData.name"
-						class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-						required />
-				</div>
-				<div class="col-span-full">
-					<label for="code" class="block mb-2 text-sm font-medium text-gray-900">权限代码</label>
-					<input type="text" id="code" v-model="formData.code"
 						class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
 						required />
 				</div>
@@ -21,68 +15,60 @@
 				保存
 			</button>
 		</div>
-	</BaseModal>
+	</BaseDialog>
 </template>
 
 <script setup lang="ts">
 import type { components } from "@/api/types/schema";
 import useAlertStore from "@/composables/store/useAlertStore";
-import type { PermissionUpsertModel } from "@/types/permission";
+import type { PositionUpsertModel } from "@/types/PositionTypes";
 import { ref, watch } from "vue";
 import { z } from "zod";
-import BaseModal from "./BaseModal.vue";
+import BaseDialog from "./BaseDialog.vue";
 
 const alertStore = useAlertStore();
-const { permission, onSubmit, closeModal, id } = defineProps<{
-	permission?: components["schemas"]["PermissionRespDto"];
-	onSubmit: (data: PermissionUpsertModel) => Promise<void>;
+const { position, closeModal, onSubmit, id } = defineProps<{
+	position?: components["schemas"]["Position"];
 	closeModal: () => void;
+	onSubmit: (data: PositionUpsertModel) => Promise<void>;
 	id: string;
 }>();
 
-const formData = ref<PermissionUpsertModel>({
+const formData = ref<PositionUpsertModel>({
 	name: "",
-	code: "",
 });
 
-const updateFormData = (newPermission: typeof permission) => {
-	if (!newPermission) {
+const updateFormData = (newPosition: typeof position) => {
+	if (!newPosition) {
 		formData.value = {
 			name: "",
-			code: "",
 		};
 		return;
 	}
 
 	formData.value = {
-		id: newPermission.id,
-		name: newPermission.name ?? "",
-		code: newPermission.code ?? "",
+		id: newPosition.id,
+		name: newPosition.name ?? "",
 	};
 };
 
-watch(() => permission, updateFormData, { immediate: true });
+watch(() => position, updateFormData, { immediate: true });
 
 const handleSubmit = async () => {
 	const schema = z.object({
 		id: z.number().optional(),
 		name: z
 			.string({
-				message: "权限名称不能为空",
+				message: "岗位名称不能为空",
 			})
-			.min(2, "权限名称至少2个字符")
-			.max(15, "权限名称最多15个字符"),
-		code: z
-			.string({
-				message: "权限代码不能为空",
-			})
-			.min(2, "权限代码至少2个字符")
-			.max(50, "权限代码最多50个字符"),
+			.min(2, "岗位名称至少2个字符")
+			.max(15, "岗位名称最多15个字符"),
 	});
 
 	try {
 		const validatedData = schema.parse(formData.value);
 		await onSubmit(validatedData);
+		updateFormData(undefined);
 	} catch (error) {
 		if (error instanceof z.ZodError) {
 			alertStore.showAlert({

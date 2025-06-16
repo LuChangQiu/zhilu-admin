@@ -36,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import { usePagination } from "@/composables/page";
+import { usePagination } from "@/composables/common/usePagination";
 import { watch } from "vue";
 
 const { pageChange, total } = defineProps<{

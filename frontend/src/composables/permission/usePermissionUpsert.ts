@@ -1,5 +1,5 @@
 import client from "../../api/client";
-import type { PermissionUpsertModel } from "../../types/permission";
+import type { PermissionUpsertModel } from "../../types/PermissionTypes";
 
 const usePermissionUpsert = () => {
 	const upsertPermission = async (permission: PermissionUpsertModel) => {

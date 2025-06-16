@@ -7,20 +7,22 @@ import {
 	RequestError,
 	UnAuthError,
 	ValidationError,
-} from "@/types/error";
+} from "@/types/ErrorTypes";
 import { useRouter } from "vue-router";
 import { z } from "zod";
 
 /**
- * 错误处理 Composable
+ * 错误处理 Composable - 提供统一的错误处理机制
+ * @returns 包含错误处理函数的对象
  */
-export function useErrorHandler() {
+export function useErrorHandling() {
 	const router = useRouter();
 	const { signOut } = useUserAuth();
 	const alertStore = useAlertStore();
 
 	/**
 	 * 处理各类错误，显示对应的提示信息
+	 * @param err 错误对象
 	 */
 	const handleError = (err: unknown) => {
 		console.error(err);
@@ -69,4 +71,4 @@ export function useErrorHandler() {
 	};
 }
 
-export default useErrorHandler;
+export default useErrorHandling;

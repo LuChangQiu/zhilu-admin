@@ -1,5 +1,5 @@
 <template>
-	<BaseModal :id="id" title="用户管理" size="md" :closeModal="closeModal">
+	<BaseDialog :id="id" title="用户管理" size="md" :closeModal="closeModal">
 		<!-- Modal body -->
 		<form class="p-4 md:p-5">
 			<div class="space-y-4">
@@ -39,19 +39,19 @@
 				保存
 			</button>
 		</form>
-	</BaseModal>
+	</BaseDialog>
 </template>
 
 <script setup lang="ts">
 import type { components } from "@/api/types/schema";
 import useAlertStore from "@/composables/store/useAlertStore";
 import { useUserUpsert } from "@/composables/user/useUserUpsert";
-import { ValidationError } from "@/types/error";
-import type { UserUpsertSubmitModel } from "@/types/user";
+import { ValidationError } from "@/types/ErrorTypes";
+import type { UserUpsertSubmitModel } from "@/types/UserTypes";
 import Compressor from "compressorjs";
-import { onMounted, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import { z } from "zod";
-import BaseModal from "./BaseModal.vue";
+import BaseDialog from "./BaseDialog.vue";
 
 const { user, onSubmit, id } = defineProps<{
 	user?: components["schemas"]["UserRolePermissionDto"];

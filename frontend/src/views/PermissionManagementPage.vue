@@ -1,37 +1,37 @@
 <template>
   <div class="px-2 sm:px-4 pt-6 sm:rounded-lg">
     <div class="mb-4 col-span-full">
-      <Breadcrumbs :names="['部门管理']" />
-      <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl">部门管理</h1>
+      <Breadcrumbs :names="['权限管理']" />
+      <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl">权限管理</h1>
     </div>
 
     <TableFilterForm :filters="filterConfig" :initialValues="filterValues" @search="handleSearch"
       @update:values="updateFilterValues">
       <template #actions>
-        <TableButton variant="primary" @click="handleUpsertDepartmentClick()" class="w-full sm:w-auto">
+        <TableButton variant="primary" @click="handleUpsertPermissionClick(undefined)" class="w-full sm:w-auto">
           <template #icon>
             <PlusIcon class="w-4 h-4" />
           </template>
-          新增部门
+          新增权限
         </TableButton>
       </template>
     </TableFilterForm>
 
     <!-- 移动端卡片布局 -->
     <div class="md:hidden">
-      <MobileCardList :items="departments">
+      <MobileCardList :items="permissions">
         <template #title="{ item }">
           {{ item.name }}
         </template>
         <template #content="{ item }">
           <div>
-            <p class="text-xs font-medium text-gray-600">上级部门</p>
-            <p class="text-sm text-gray-900 mt-0.5">{{ !item.parentName ? '无' : item.parentName }}</p>
+            <p class="text-xs font-medium text-gray-600">权限编码</p>
+            <p class="text-sm text-gray-900 mt-0.5">{{ item.code }}</p>
           </div>
         </template>
         <template #actions="{ item }">
           <div class="flex gap-x-2">
-            <TableButton variant="primary" size="xs" isMobile @click="handleUpsertDepartmentClick(item)">
+            <TableButton variant="primary" size="xs" isMobile @click="handleUpsertPermissionClick(item)">
               <template #icon>
                 <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                   <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path>
@@ -42,7 +42,7 @@
               </template>
               编辑
             </TableButton>
-            <TableButton variant="danger" size="xs" isMobile @click="handleDeleteDepartmentClick(item)">
+            <TableButton variant="danger" size="xs" isMobile @click="handleDeletePermissionClick(item)">
               <template #icon>
                 <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                   <path fill-rule="evenodd"
@@ -59,16 +59,16 @@
 
     <!-- PC端表格布局 -->
     <div class="hidden md:block">
-      <TableFormLayout :items="departments || []" :columns="columns">
-        <template #parentName="{ item }">
-          {{ !item.parentName ? '无' : item.parentName }}
-        </template>
+      <TableFormLayout :items="permissions || []" :columns="columns">
         <template #name="{ item }">
           {{ item.name }}
         </template>
+        <template #code="{ item }">
+          {{ item.code }}
+        </template>
         <template #actions="{ item }">
           <div class="flex items-center gap-x-2">
-            <TableButton variant="primary" @click="handleUpsertDepartmentClick(item)">
+            <TableButton variant="primary" @click="handleUpsertPermissionClick(item)">
               <template #icon>
                 <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                   <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path>
@@ -79,7 +79,7 @@
               </template>
               编辑
             </TableButton>
-            <TableButton variant="danger" @click="handleDeleteDepartmentClick(item)">
+            <TableButton variant="danger" @click="handleDeletePermissionClick(item)">
               <template #icon>
                 <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                   <path fill-rule="evenodd"
@@ -94,105 +94,97 @@
       </TableFormLayout>
     </div>
 
-    <TablePagination :total="total" :pageChange="handlePageChange" />
+    <TablePagination :pageChange="handlePageChange" :total="total" />
   </div>
 
-  <DepartmentDeleteModal :id="'department-delete-modal'" :closeModal="() => {
-    departmentDeleteModal!.hide();
-  }" :onSubmit="handleDeleteDepartmentSubmit" title="确定删除该部门吗" content="删除部门"></DepartmentDeleteModal>
-  <DepartmentUpsertModal :id="'department-upsert-modal'" :onSubmit="handleUpsertDepartmentSubmit" :closeModal="() => {
-    availableDepartments = undefined
-    departmentUpsertModal!.hide();
-  }" :department="selectedDepartment" :availableDepartments="availableDepartments">
-  </DepartmentUpsertModal>
+  <PermissionDeleteModal :id="'permission-delete-modal'" :closeModal="() => {
+    permissionDeleteModal!.hide();
+  }" :onSubmit="handleDeleteModalSubmit" title="确定删除该权限吗" content="删除权限"></PermissionDeleteModal>
+  <PermissionFormDialog :id="'permission-upsert-modal'" :onSubmit="handleUpsertModalSubmit" :closeModal="() => {
+    permissionUpsertModal!.hide();
+  }" :permission="selectedPermission">
+  </PermissionFormDialog>
 </template>
 
 <script setup lang="ts">
 import type { components } from "@/api/types/schema";
+import PlusIcon from "@/components/icons/PlusIcon.vue";
 import Breadcrumbs from "@/components/layout/Breadcrumbs.vue";
+import PermissionDeleteModal from "@/components/modals/ConfirmationDialog.vue";
+import PermissionFormDialog from "@/components/modals/PermissionFormDialog.vue";
 import MobileCardList from "@/components/tables/MobileCardList.vue";
 import TableButton from "@/components/tables/TableButton.vue";
 import TableFilterForm from "@/components/tables/TableFilterForm.vue";
 import type { FilterItem } from "@/components/tables/TableFilterForm.vue";
 import TableFormLayout from "@/components/tables/TableFormLayout.vue";
 import TablePagination from "@/components/tables/TablePagination.vue";
-import PlusIcon from "@/components/icons/PlusIcon.vue";
-import DepartmentUpsertModal from "@/components/modals/DepartmentUpsertModal.vue";
-import DepartmentDeleteModal from "@/components/modals/PopupModal.vue";
-import useDepartmentDelete from "@/composables/department/useDepartmentDelete";
-import { useDepartmentQuery } from "@/composables/department/useDepartmentQuery";
-import { useDepartmentUpsert } from "@/composables/department/useDepartmentUpsert";
+import usePermissionDelete from "@/composables/permission/usePermissionDelete";
 import { useActionExcStore } from "@/composables/store/useActionExcStore";
-import useAlertStore from "@/composables/store/useAlertStore";
-import type { DepartmentUpsertModel } from "@/types/department";
+import type { PermissionUpsertModel } from "@/types/PermissionTypes";
 import { Modal, type ModalInterface, initFlowbite } from "flowbite";
 import { nextTick, onMounted, reactive, ref } from "vue";
+import usePermissionsQuery from "../composables/permission/usePermissionQuery";
+import usePermissionUpsert from "../composables/permission/usePermissionUpsert";
+import useAlertStore from "../composables/store/useAlertStore";
 
 // 定义筛选配置
 const filterConfig = [
 	{
 		type: "input",
-		name: "departmentName",
-		placeholder: "部门名称",
+		name: "permissionName",
+		placeholder: "权限名",
 	},
 ] as FilterItem[];
 
 // 筛选值
 const filterValues = reactive<{
-	departmentName: string;
+	permissionName: string;
 }>({
-	departmentName: "",
+	permissionName: "",
 });
 
 // 更新筛选值
 const updateFilterValues = (
 	values: Record<string, string | number | boolean | Date[] | undefined>,
 ) => {
-	if (values.departmentName !== undefined) {
-		filterValues.departmentName = values.departmentName as string;
+	if (values.permissionName !== undefined) {
+		filterValues.permissionName = values.permissionName as string;
 	}
 };
 
-const selectedDepartment = ref<components["schemas"]["Department"]>();
-const departmentUpsertModal = ref<ModalInterface>();
-const departmentDeleteModal = ref<ModalInterface>();
+const selectedPermission = ref<components["schemas"]["PermissionRespDto"]>();
+const permissionUpsertModal = ref<ModalInterface>();
+const permissionDeleteModal = ref<ModalInterface>();
 
-const {
-	departments,
-	availableDepartments,
-	fetchDepartmentWith,
-	total,
-	fetchAvailableDepartments,
-} = useDepartmentQuery();
+const { total, permissions, fetchPermissionsWith } = usePermissionsQuery();
 
-const { deleteDepartment } = useDepartmentDelete();
-const { upsertDepartment } = useDepartmentUpsert();
-
+const { deletePermission } = usePermissionDelete();
+const permissionUpsert = usePermissionUpsert();
 const alertStore = useAlertStore();
 const actionExcStore = useActionExcStore();
 // 定义表格列配置
 const columns = [
-	{ title: "上级部门", field: "parentName" },
-	{ title: "部门名称", field: "name" },
+	{ title: "权限名称", field: "name" },
+	{ title: "权限编码", field: "code" },
 	{ title: "操作", field: "actions" },
 ];
 
 onMounted(async () => {
-	await fetchDepartmentWith({
-		name: filterValues.departmentName,
+	await fetchPermissionsWith({
+		name: filterValues.permissionName,
 	});
 	initFlowbite();
 	const $upsertModalElement: HTMLElement | null = document.querySelector(
-		"#department-upsert-modal",
+		"#permission-upsert-modal",
 	);
 	const $deleteModalElement: HTMLElement | null = document.querySelector(
-		"#department-delete-modal",
+		"#permission-delete-modal",
 	);
 	if ($upsertModalElement) {
-		departmentUpsertModal.value = new Modal($upsertModalElement, {});
+		permissionUpsertModal.value = new Modal($upsertModalElement, {});
 	}
 	if ($deleteModalElement) {
-		departmentDeleteModal.value = new Modal($deleteModalElement, {});
+		permissionDeleteModal.value = new Modal($deleteModalElement, {});
 	}
 	actionExcStore.setCallback((result) => {
 		if (result) {
@@ -201,62 +193,59 @@ onMounted(async () => {
 	});
 });
 
-const handleUpsertDepartmentSubmit = async (
-	department: DepartmentUpsertModel,
-) => {
-	await upsertDepartment(department);
-	departmentUpsertModal.value?.hide();
+const handleUpsertModalSubmit = async (data: PermissionUpsertModel) => {
+	await permissionUpsert.upsertPermission(data);
+	await fetchPermissionsWith({
+		name: filterValues.permissionName,
+	});
+	permissionUpsertModal.value?.hide();
 	alertStore.showAlert({
 		content: "操作成功",
 		level: "success",
 	});
-	await fetchDepartmentWith({
-		name: filterValues.departmentName,
-	});
 };
 
-const handleUpsertDepartmentClick = async (
-	department?: components["schemas"]["Department"],
+const handleUpsertPermissionClick = async (
+	permission?: components["schemas"]["PermissionRespDto"],
 ) => {
-	selectedDepartment.value = department;
-	await fetchAvailableDepartments(department?.id);
+	selectedPermission.value = permission;
 	await nextTick(() => {
-		departmentUpsertModal.value?.show();
+		permissionUpsertModal.value?.show();
 	});
 };
 
-const handleDeleteDepartmentSubmit = async () => {
-	if (!selectedDepartment.value?.id) return;
-	await deleteDepartment(selectedDepartment.value.id);
-	departmentDeleteModal.value?.hide();
+const handleDeleteModalSubmit = async () => {
+	if (!selectedPermission.value?.id) return;
+	await deletePermission(selectedPermission.value.id);
+	permissionDeleteModal.value?.hide();
 	alertStore.showAlert({
 		content: "删除成功",
 		level: "success",
 	});
-	await fetchDepartmentWith({
-		name: filterValues.departmentName,
+	await fetchPermissionsWith({
+		name: filterValues.permissionName,
 	});
 };
 
-const handleDeleteDepartmentClick = async (
-	department: components["schemas"]["Department"],
+const handleDeletePermissionClick = async (
+	permission: components["schemas"]["PermissionRespDto"],
 ) => {
-	selectedDepartment.value = department;
+	selectedPermission.value = permission;
 	await nextTick(() => {
-		departmentDeleteModal.value?.show();
+		permissionDeleteModal.value?.show();
 	});
 };
 
 const handleSearch = async () => {
-	await fetchDepartmentWith({
-		name: filterValues.departmentName,
+	await fetchPermissionsWith({
+		name: filterValues.permissionName,
 	});
 };
 
 const handlePageChange = async (page: number, pageSize: number) => {
-	await fetchDepartmentWith(
+	await fetchPermissionsWith(
 		{
-			name: filterValues.departmentName,
+			name: filterValues.permissionName,
 		},
 		page,
 		pageSize,

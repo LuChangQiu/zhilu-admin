@@ -150,19 +150,20 @@
 
   <UserDeleteModal :id="'user-delete-modal'" :closeModal="() => {
     userDeleteModal!.hide();
-  }" :onSubmit="handleDeleteUserSubmit" title="确定删除该用户吗" content="删除用户"></UserDeleteModal>
-  <UserUpsertModal :id="'user-upsert-modal'" :onSubmit="handleUpsertUserSubmit" :closeModal="() => {
+  }" :onSubmit="handleDeleteUserSubmit" title="确定删除该用户吗"></UserDeleteModal>
+  <UserFormDialog :id="'user-upsert-modal'" :onSubmit="handleUpsertUserSubmit" :closeModal="() => {
     userUpsertModal!.hide();
   }" :user="selectedUser">
-  </UserUpsertModal>
+  </UserFormDialog>
 </template>
 
 <script setup lang="ts">
 import type { components } from "@/api/types/schema";
 import { PlusIcon } from "@/components/icons";
 import Breadcrumbs from "@/components/layout/Breadcrumbs.vue";
-import UserDeleteModal from "@/components/modals/PopupModal.vue";
-import UserUpsertModal from "@/components/modals/UserUpsertModal.vue";
+import ConfirmationDialog from "@/components/modals/ConfirmationDialog.vue";
+import UserDeleteModal from "@/components/modals/ConfirmationDialog.vue";
+import UserFormDialog from "@/components/modals/UserFormDialog.vue";
 import TableButton from "@/components/tables/TableButton.vue";
 import TableFilterForm, {
 	type FilterItem,
@@ -171,14 +172,14 @@ import TableFormLayout from "@/components/tables/TableFormLayout.vue";
 import TablePagination from "@/components/tables/TablePagination.vue";
 import Avatar from "@/components/ui/Avatar.vue";
 import SortIcon from "@/components/ui/SortIcon.vue";
-import { useSort } from "@/composables/sort";
+import { useSorting } from "@/composables/common/useSorting";
 import { useActionExcStore } from "@/composables/store/useActionExcStore";
 import useAlertStore from "@/composables/store/useAlertStore";
 import useUserDelete from "@/composables/user/useUserDelete";
 import { useUserQuery } from "@/composables/user/useUserQuery";
 import { useUserUpsert } from "@/composables/user/useUserUpsert";
 import { Routes } from "@/router/constants";
-import type { UserUpsertSubmitModel } from "@/types/user";
+import type { UserUpsertSubmitModel } from "@/types/UserTypes";
 import { dayjs, formatDate } from "@/utils/dateUtil";
 import { Modal, type ModalInterface, initFlowbite } from "flowbite";
 import { nextTick, onMounted, reactive, ref } from "vue";
@@ -223,7 +224,7 @@ const router = useRouter();
 const { total, users, fetchUsersWith } = useUserQuery();
 const { deleteUser } = useUserDelete();
 const userUpsert = useUserUpsert();
-const { sortBy, handleSort, getSortField } = useSort();
+const { sortBy, handleSort, getSortField } = useSorting();
 const alertStore = useAlertStore();
 const actionExcStore = useActionExcStore();
 // 定义表格列配置

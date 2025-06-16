@@ -1,16 +1,16 @@
 <template>
-	<BaseModal :id="id" title="角色管理" size="md" :closeModal="closeModal">
+	<BaseDialog :id="id" title="权限管理" size="md" :closeModal="closeModal">
 		<!-- Modal body -->
 		<div class="p-4 md:p-5">
 			<div class="grid gap-4 mb-4 grid-cols-1">
 				<div class="col-span-full">
-					<label for="name" class="block mb-2 text-sm font-medium text-gray-900">角色名称</label>
+					<label for="name" class="block mb-2 text-sm font-medium text-gray-900">权限名称</label>
 					<input type="text" id="name" v-model="formData.name"
 						class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
 						required />
 				</div>
 				<div class="col-span-full">
-					<label for="code" class="block mb-2 text-sm font-medium text-gray-900">角色代码</label>
+					<label for="code" class="block mb-2 text-sm font-medium text-gray-900">权限代码</label>
 					<input type="text" id="code" v-model="formData.code"
 						class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
 						required />
@@ -21,32 +21,32 @@
 				保存
 			</button>
 		</div>
-	</BaseModal>
+	</BaseDialog>
 </template>
 
 <script setup lang="ts">
 import type { components } from "@/api/types/schema";
 import useAlertStore from "@/composables/store/useAlertStore";
-import type { RoleUpsertModel } from "@/types/role";
+import type { PermissionUpsertModel } from "@/types/PermissionTypes";
 import { ref, watch } from "vue";
 import { z } from "zod";
-import BaseModal from "./BaseModal.vue";
+import BaseDialog from "./BaseDialog.vue";
 
 const alertStore = useAlertStore();
-const { role, closeModal, onSubmit, id } = defineProps<{
-	role?: components["schemas"]["RoleRespDto"];
+const { permission, onSubmit, closeModal, id } = defineProps<{
+	permission?: components["schemas"]["PermissionRespDto"];
+	onSubmit: (data: PermissionUpsertModel) => Promise<void>;
 	closeModal: () => void;
-	onSubmit: (data: RoleUpsertModel) => Promise<void>;
 	id: string;
 }>();
 
-const formData = ref<RoleUpsertModel>({
+const formData = ref<PermissionUpsertModel>({
 	name: "",
 	code: "",
 });
 
-const updateFormData = (newRole: typeof role) => {
-	if (!newRole) {
+const updateFormData = (newPermission: typeof permission) => {
+	if (!newPermission) {
 		formData.value = {
 			name: "",
 			code: "",
@@ -55,29 +55,29 @@ const updateFormData = (newRole: typeof role) => {
 	}
 
 	formData.value = {
-		id: newRole.id,
-		name: newRole.name ?? "",
-		code: newRole.code ?? "",
+		id: newPermission.id,
+		name: newPermission.name ?? "",
+		code: newPermission.code ?? "",
 	};
 };
 
-watch(() => role, updateFormData, { immediate: true });
+watch(() => permission, updateFormData, { immediate: true });
 
 const handleSubmit = async () => {
 	const schema = z.object({
 		id: z.number().optional(),
 		name: z
 			.string({
-				message: "角色名称不能为空",
+				message: "权限名称不能为空",
 			})
-			.min(2, "角色名称至少2个字符")
-			.max(15, "角色名称最多15个字符"),
+			.min(2, "权限名称至少2个字符")
+			.max(15, "权限名称最多15个字符"),
 		code: z
 			.string({
-				message: "角色代码不能为空",
+				message: "权限代码不能为空",
 			})
-			.min(2, "角色代码至少2个字符")
-			.max(15, "角色代码最多15个字符"),
+			.min(2, "权限代码至少2个字符")
+			.max(50, "权限代码最多50个字符"),
 	});
 
 	try {

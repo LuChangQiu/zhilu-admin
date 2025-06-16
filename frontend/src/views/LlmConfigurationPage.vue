@@ -109,20 +109,20 @@
     <TablePagination :pageChange="handlePageChange" :total="total" />
   </div>
 
-  <LlmUpdateModal :llm="selectedLlm" :id="'llm-update-modal'" :closeModal="() => {
+  <LlmFormDialog :llm="selectedLlm" :id="'llm-update-modal'" :closeModal="() => {
     llmUpdateModal!.hide();
-  }" :onSubmit="handleUpdateModalSubmit"></LlmUpdateModal>
+  }" :onSubmit="handleUpdateModalSubmit"></LlmFormDialog>
 </template>
 
 <script setup lang="ts">
 import type { components } from "@/api/types/schema";
 import Breadcrumbs from "@/components/layout/Breadcrumbs.vue";
+import LlmFormDialog from "@/components/modals/LlmFormDialog.vue";
 import MobileCardList from "@/components/tables/MobileCardList.vue";
 import TableFilterForm from "@/components/tables/TableFilterForm.vue";
 import type { FilterItem } from "@/components/tables/TableFilterForm.vue";
 import TableFormLayout from "@/components/tables/TableFormLayout.vue";
 import TablePagination from "@/components/tables/TablePagination.vue";
-import LlmUpdateModal from "@/components/modals/LlmUpdateModal.vue";
 import { useLlmQuery } from "@/composables/ai/useLlmQuery";
 import { useLlmUpdate } from "@/composables/ai/useLlmUpdate";
 import useAlertStore from "@/composables/store/useAlertStore";

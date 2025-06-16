@@ -1,5 +1,5 @@
 <template>
-	<BaseModal :id="id" title="定时任务配置" size="md" :closeModal="closeModal">
+	<BaseDialog :id="id" title="定时任务配置" size="md" :closeModal="closeModal">
 		<!-- Modal body -->
 		<div class="p-4 md:p-5">
 			<div class="grid gap-4 mb-4 grid-cols-1">
@@ -15,14 +15,14 @@
 				保存
 			</button>
 		</div>
-	</BaseModal>
+	</BaseDialog>
 </template>
 
 <script setup lang="ts">
 import type { components } from "@/api/types/schema";
 import { ref, watch } from "vue";
 import { z } from "zod";
-import BaseModal from "./BaseModal.vue";
+import BaseDialog from "./BaseDialog.vue";
 
 const { job, closeModal, onSubmit, id } = defineProps<{
 	job?: components["schemas"]["JobTriggerDto"];
