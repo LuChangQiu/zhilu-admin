@@ -1,5 +1,5 @@
 <template>
-  <BaseModal :closeModal="closeModal" size="sm">
+  <BaseModal :id="id" :closeModal="closeModal" size="sm">
     <div class="p-5 md:p-6 text-center">
       <svg class="w-14 h-14 sm:w-16 sm:h-16 mx-auto text-red-600 mb-4" fill="none" stroke="currentColor"
         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

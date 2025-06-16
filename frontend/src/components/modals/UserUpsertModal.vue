@@ -1,5 +1,5 @@
 <template>
-	<BaseModal title="用户管理" size="md" :closeModal="closeModal">
+	<BaseModal :id="id" title="用户管理" size="md" :closeModal="closeModal">
 		<!-- Modal body -->
 		<form class="p-4 md:p-5">
 			<div class="space-y-4">
@@ -53,10 +53,11 @@ import { onMounted, ref, watch } from "vue";
 import { z } from "zod";
 import BaseModal from "./BaseModal.vue";
 
-const { user, onSubmit } = defineProps<{
+const { user, onSubmit, id } = defineProps<{
 	user?: components["schemas"]["UserRolePermissionDto"];
 	closeModal: () => void;
 	onSubmit: (data: UserUpsertSubmitModel) => Promise<void>;
+	id: string;
 }>();
 
 const formData = ref();

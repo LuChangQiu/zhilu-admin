@@ -115,7 +115,7 @@
   <RoleDeleteModal :id="'role-delete-modal'" :closeModal="() => {
     roleDeleteModal!.hide();
   }" :onSubmit="handleDeletedModalSubmit" title="确定删除该角色吗" content="删除角色"></RoleDeleteModal>
-  <RoleUpsertModal :onSubmit="handleUpsertModalSubmit" :closeModal="() => {
+  <RoleUpsertModal :id="'role-upsert-modal'" :onSubmit="handleUpsertModalSubmit" :closeModal="() => {
     roleUpsertModal!.hide();
   }" :role="selectedRole">
   </RoleUpsertModal>

@@ -1,5 +1,5 @@
 <template>
-  <div tabindex="-1" aria-hidden="true"
+  <div :id="id" tabindex="-1" aria-hidden="true"
     class="bg-gray-900/50 hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative p-4 w-full" :class="[maxWidthClass]">
       <!-- Modal content -->
@@ -26,7 +26,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
+import { initFlowbite, Modal } from "flowbite";
 
 export type ModalSize = "xs" | "sm" | "md" | "lg" | "xl";
 
@@ -37,6 +38,8 @@ const props = defineProps<{
 	size?: ModalSize;
 	/** 关闭模态框的回调函数 */
 	closeModal: () => void;
+	/** 模态框ID，用于DOM选择 */
+	id?: string;
 }>();
 
 /** 根据size属性计算最大宽度类名 */
@@ -50,5 +53,10 @@ const maxWidthClass = computed(() => {
 	};
 
 	return sizes[props.size || "md"];
+});
+
+// 确保Flowbite初始化，这对于PopupModal的正常工作至关重要
+onMounted(() => {
+	initFlowbite();
 });
 </script>

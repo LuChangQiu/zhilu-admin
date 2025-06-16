@@ -3,12 +3,10 @@ import "./assets/main.css";
 import { createPinia } from "pinia";
 import { createApp } from "vue";
 
-import App from "./App.vue";
-import useUserAuth from "./composables/auth/useUserAuth";
-import useAlertStore from "./composables/store/useAlertStore";
-import router from "./router";
-import makeErrorHandler from "./utils/errorHandler";
 import VueDatePicker from "@vuepic/vue-datepicker";
+import App from "./App.vue";
+import useErrorHandler from "./composables/useErrorHandler";
+import router from "./router";
 import "@vuepic/vue-datepicker/dist/main.css";
 import "./assets/datepicker.css";
 
@@ -27,11 +25,13 @@ async function enableMocking() {
 enableMocking().then(() => {
 	const app = createApp(App);
 	app.use(createPinia());
-	const { signOut } = useUserAuth();
-	const { showAlert } = useAlertStore();
 	app.use(router);
-	const errorHandler = makeErrorHandler(router, signOut, showAlert);
-	app.config.errorHandler = errorHandler;
+
+	const { handleError } = useErrorHandler();
+	app.config.errorHandler = (err, instance, info) => {
+		handleError(err);
+	};
+
 	app.component("VueDatePicker", VueDatePicker);
 	app.mount("#app");
 });

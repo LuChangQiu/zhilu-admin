@@ -1,5 +1,5 @@
 <template>
-	<BaseModal title="大模型配置" size="md" :closeModal="closeModal">
+	<BaseModal :id="id" title="大模型配置" size="md" :closeModal="closeModal">
 		<!-- Modal body -->
 		<div class="p-4 md:p-5">
 			<div class="grid gap-4 mb-4 grid-cols-1">
@@ -63,10 +63,11 @@ import { onMounted, ref, watch } from "vue";
 import { z } from "zod";
 import BaseModal from "./BaseModal.vue";
 
-const { llm, onSubmit } = defineProps<{
+const { llm, onSubmit, id } = defineProps<{
 	llm?: components["schemas"]["LlmVm"];
 	closeModal: () => void;
 	onSubmit: (data: components["schemas"]["LlmVm"]) => Promise<void>;
+	id: string;
 }>();
 
 // 初始化默认值，避免undefined错误
@@ -139,8 +140,4 @@ const handleSubmit = async () => {
 	await onSubmit(validatedData);
 	updateFormData(undefined);
 };
-
-onMounted(() => {
-	initFlowbite();
-});
 </script>
