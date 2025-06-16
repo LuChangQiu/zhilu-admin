@@ -1718,12 +1718,6 @@
         }
       },
       "PermissionRespDto": {
-        "required": [
-          "code",
-          "id",
-          "isBound",
-          "name"
-        ],
         "type": "object",
         "properties": {
           "id": {

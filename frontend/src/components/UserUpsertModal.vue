@@ -54,8 +54,8 @@
 							</select>
 						</div>
 					</div>
-					<button type="submit" @click.prevent="handleSubmit"
-						class="mt-5 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+					<button type="submit" @click.prevent="handleSubmit" :disabled="uploadLoading"
+						class="mt-5 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center disabled:opacity-50 disabled:cursor-not-allowed">
 						保存
 					</button>
 				</form>
@@ -84,6 +84,8 @@ const { user, onSubmit } = defineProps<{
 const formData = ref();
 const { uploadUserAvatar } = useUserUpsert();
 const { showAlert } = useAlertStore();
+const uploadLoading = ref(false);
+
 
 const updateFormData = (newUser: typeof user) => {
 	formData.value = {
@@ -104,7 +106,7 @@ const validateFile = (file?: File) => {
 	if (!file) {
 		throw new ValidationError("您未选择文件");
 	}
-	const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
+	const allowedTypes = ["image/jpeg", "image/png"];
 	if (!allowedTypes.includes(file.type)) {
 		throw new ValidationError("不支持的文件类型");
 	}
@@ -116,6 +118,7 @@ const validateFile = (file?: File) => {
 
 const handleFileChange = (event: Event) => {
 	const file = (event.target as HTMLInputElement).files?.[0];
+	uploadLoading.value = true;
 	try {
 		validateFile(file);
 		new Compressor(file!, {
@@ -125,6 +128,7 @@ const handleFileChange = (event: Event) => {
 			mimeType: "auto", // 自动选择最佳格式
 			success: async (compressedFile: File) => {
 				formData.value.avatar = await uploadUserAvatar(compressedFile);
+				uploadLoading.value = false;
 				showAlert({
 					content: "上传成功",
 					level: "success",
@@ -136,6 +140,7 @@ const handleFileChange = (event: Event) => {
 		});
 	} catch (error) {
 		(event.target as HTMLInputElement).value = "";
+		uploadLoading.value = false;
 		throw error;
 	}
 };

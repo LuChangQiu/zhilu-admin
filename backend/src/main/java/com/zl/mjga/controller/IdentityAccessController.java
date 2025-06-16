@@ -18,9 +18,12 @@ import io.minio.PutObjectArgs;
 import jakarta.validation.Valid;
 import java.awt.image.BufferedImage;
 import java.security.Principal;
+import java.time.Instant;
 import java.util.List;
 import javax.imageio.ImageIO;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jooq.generated.mjga.tables.pojos.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -41,13 +44,29 @@ public class IdentityAccessController {
   private final MinioClient minioClient;
   private final MinIoConfig minIoConfig;
 
+  @PreAuthorize("hasAuthority(T(com.zl.mjga.model.urp.EPermission).WRITE_USER_ROLE_PERMISSION)")
   @PostMapping(
       value = "/avatar/upload",
       consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
       produces = MediaType.TEXT_PLAIN_VALUE)
-  public String uploadAvatar(Principal principal, @RequestPart("file") MultipartFile multipartFile)
-      throws Exception {
-    String objectName = String.format("/avatar/%s/avatar.jpg", principal.getName());
+  public String uploadAvatar(@RequestPart("file") MultipartFile multipartFile) throws Exception {
+    String originalFilename = multipartFile.getOriginalFilename();
+    if (StringUtils.isEmpty(originalFilename)) {
+      throw new BusinessException("文件名不能为空");
+    }
+    String contentType = multipartFile.getContentType();
+    String extension = "";
+    if ("image/jpeg".equals(contentType)) {
+      extension = ".jpg";
+    } else if ("image/png".equals(contentType)) {
+      extension = ".png";
+    }
+    String objectName =
+        String.format(
+            "/avatar/%d%s%s",
+            Instant.now().toEpochMilli(),
+            RandomStringUtils.insecure().nextAlphabetic(6),
+            extension);
     if (multipartFile.isEmpty()) {
       throw new BusinessException("上传的文件不能为空");
     }
