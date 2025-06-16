@@ -108,17 +108,16 @@
 
 <script setup lang="ts">
 import type { components } from "@/api/types/schema";
-import Breadcrumbs from "@/components/Breadcrumbs.vue";
-
-import MobileCardList from "@/components/MobileCardList.vue";
-import PermissionUpsertModal from "@/components/PermissionUpsertModal.vue";
-import PermissionDeleteModal from "@/components/PopupModal.vue";
-import TableButton from "@/components/TableButton.vue";
-import TableFilterForm from "@/components/TableFilterForm.vue";
-import type { FilterItem } from "@/components/TableFilterForm.vue";
-import TableFormLayout from "@/components/TableFormLayout.vue";
-import TablePagination from "@/components/TablePagination.vue";
+import Breadcrumbs from "@/components/layout/Breadcrumbs.vue";
+import MobileCardList from "@/components/tables/MobileCardList.vue";
+import TableButton from "@/components/tables/TableButton.vue";
+import TableFilterForm from "@/components/tables/TableFilterForm.vue";
+import type { FilterItem } from "@/components/tables/TableFilterForm.vue";
+import TableFormLayout from "@/components/tables/TableFormLayout.vue";
+import TablePagination from "@/components/tables/TablePagination.vue";
 import PlusIcon from "@/components/icons/PlusIcon.vue";
+import PermissionUpsertModal from "@/components/modals/PermissionUpsertModal.vue";
+import PermissionDeleteModal from "@/components/modals/PopupModal.vue";
 import usePermissionDelete from "@/composables/permission/usePermissionDelete";
 import { useActionExcStore } from "@/composables/store/useActionExcStore";
 import { Modal, type ModalInterface, initFlowbite } from "flowbite";

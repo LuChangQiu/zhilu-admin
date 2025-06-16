@@ -108,26 +108,25 @@
 </template>
 
 <script setup lang="ts">
-import Breadcrumbs from "@/components/Breadcrumbs.vue";
-
-import DepartmentUpsertModal from "@/components/DepartmentUpsertModal.vue";
-import MobileCardList from "@/components/MobileCardList.vue";
-import DepartmentDeleteModal from "@/components/PopupModal.vue";
-import TableButton from "@/components/TableButton.vue";
-import TableFilterForm from "@/components/TableFilterForm.vue";
-import type { FilterItem } from "@/components/TableFilterForm.vue";
-import TableFormLayout from "@/components/TableFormLayout.vue";
-import TablePagination from "@/components/TablePagination.vue";
+import type { components } from "@/api/types/schema";
+import Breadcrumbs from "@/components/layout/Breadcrumbs.vue";
+import MobileCardList from "@/components/tables/MobileCardList.vue";
+import TableButton from "@/components/tables/TableButton.vue";
+import TableFilterForm from "@/components/tables/TableFilterForm.vue";
+import type { FilterItem } from "@/components/tables/TableFilterForm.vue";
+import TableFormLayout from "@/components/tables/TableFormLayout.vue";
+import TablePagination from "@/components/tables/TablePagination.vue";
 import PlusIcon from "@/components/icons/PlusIcon.vue";
+import DepartmentUpsertModal from "@/components/modals/DepartmentUpsertModal.vue";
+import DepartmentDeleteModal from "@/components/modals/PopupModal.vue";
+import useDepartmentDelete from "@/composables/department/useDepartmentDelete";
+import { useDepartmentQuery } from "@/composables/department/useDepartmentQuery";
+import { useDepartmentUpsert } from "@/composables/department/useDepartmentUpsert";
 import { useActionExcStore } from "@/composables/store/useActionExcStore";
+import useAlertStore from "@/composables/store/useAlertStore";
 import type { DepartmentUpsertModel } from "@/types/department";
 import { Modal, type ModalInterface, initFlowbite } from "flowbite";
 import { nextTick, onMounted, reactive, ref } from "vue";
-import type { components } from "../api/types/schema";
-import useDepartmentDelete from "../composables/department/useDepartmentDelete";
-import { useDepartmentQuery } from "../composables/department/useDepartmentQuery";
-import { useDepartmentUpsert } from "../composables/department/useDepartmentUpsert";
-import useAlertStore from "../composables/store/useAlertStore";
 
 // 定义筛选配置
 const filterConfig = [

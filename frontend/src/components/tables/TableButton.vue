@@ -15,8 +15,8 @@
 </template>
 
 <script setup lang="ts">
+import { StopIcon } from "@/components/icons";
 import { computed } from "vue";
-import StopIcon from "./icons/StopIcon.vue";
 
 export type ButtonVariant =
 	| "primary"

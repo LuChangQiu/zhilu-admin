@@ -88,14 +88,14 @@
   </nav>
 </template>
 <script setup lang="ts">
+import { AiChatIcon } from "@/components/icons";
+import Avatar from "@/components/ui/Avatar.vue";
+import useUserAuth from "@/composables/auth/useUserAuth";
 import useUserStore from "@/composables/store/useUserStore";
+import { Routes } from "@/router/constants";
 import { Dropdown, type DropdownInterface, initFlowbite } from "flowbite";
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
-import useUserAuth from "../composables/auth/useUserAuth";
-import { Routes } from "../router/constants";
-import Avatar from "./Avatar.vue";
-import AiChatIcon from "./icons/AiChatIcon.vue";
 
 const props = defineProps<{
 	changeAssistantVisible: () => void;

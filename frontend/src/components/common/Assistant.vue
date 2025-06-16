@@ -91,29 +91,29 @@
 </template>
 
 <script setup lang="ts">
-import Avatar from "@/components/Avatar.vue";
-import InputButton from "@/components/InputButton.vue";
-import UserDeleteModal from "@/components/PopupModal.vue";
-import DepartmentDeleteModal from "@/components/PopupModal.vue";
-import TableButton from "@/components/TableButton.vue";
-import LoadingIcon from "@/components/icons/LoadingIcon.vue";
+import { LoadingIcon } from "@/components/icons";
+import DepartmentUpsertModal from "@/components/modals/DepartmentUpsertModal.vue";
+import UserDeleteModal from "@/components/modals/PopupModal.vue";
+import DepartmentDeleteModal from "@/components/modals/PopupModal.vue";
+import UserUpsertModal from "@/components/modals/UserUpsertModal.vue";
+import TableButton from "@/components/tables/TableButton.vue";
+import Avatar from "@/components/ui/Avatar.vue";
+import InputButton from "@/components/ui/InputButton.vue";
 import { useAiAction } from "@/composables/ai/useAiAction";
+import { useAiChat } from "@/composables/ai/useAiChat";
 import { useDepartmentQuery } from "@/composables/department/useDepartmentQuery";
 import { useDepartmentUpsert } from "@/composables/department/useDepartmentUpsert";
 import { useActionExcStore } from "@/composables/store/useActionExcStore";
 import useAlertStore from "@/composables/store/useAlertStore";
+import useUserStore from "@/composables/store/useUserStore";
+import { useUserUpsert } from "@/composables/user/useUserUpsert";
 import type { DepartmentUpsertModel } from "@/types/department";
+import type { UserUpsertSubmitModel } from "@/types/user";
 import DOMPurify from "dompurify";
 import { Modal, type ModalInterface, initFlowbite } from "flowbite";
 import { marked } from "marked";
 import { nextTick, onMounted, onUnmounted, ref, watch } from "vue";
 import { z } from "zod";
-import DepartmentUpsertModal from "../components/DepartmentUpsertModal.vue";
-import UserUpsertModal from "../components/UserUpsertModal.vue";
-import { useAiChat } from "../composables/ai/useAiChat";
-import useUserStore from "../composables/store/useUserStore";
-import { useUserUpsert } from "../composables/user/useUserUpsert";
-import type { UserUpsertSubmitModel } from "../types/user";
 
 const {
 	messages,

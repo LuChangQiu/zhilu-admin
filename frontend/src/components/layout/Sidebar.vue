@@ -33,14 +33,16 @@ import { initFlowbite } from "flowbite";
 import { onMounted, ref } from "vue";
 import { RouterLink, useRoute } from "vue-router";
 
-import DepartmentIcon from "./icons/DepartmentIcon.vue";
-import LlmConfigIcon from "./icons/LlmConfigIcon.vue";
-import PermissionIcon from "./icons/PermissionIcon.vue";
-import PositionIcon from "./icons/PositionIcon.vue";
-import RoleIcon from "./icons/RoleIcon.vue";
-import SchedulerIcon from "./icons/SchedulerIcon.vue";
-import SettingsIcon from "./icons/SettingsIcon.vue";
-import UsersIcon from "./icons/UsersIcon.vue";
+import {
+	DepartmentIcon,
+	LlmConfigIcon,
+	PermissionIcon,
+	PositionIcon,
+	RoleIcon,
+	SchedulerIcon,
+	SettingsIcon,
+	UsersIcon,
+} from "@/components/icons";
 
 const isDrawerVisible = ref(false);
 const emit = defineEmits(["menu-click"]);

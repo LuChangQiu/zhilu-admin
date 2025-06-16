@@ -122,27 +122,27 @@
 </template>
 
 <script setup lang="ts">
-import Breadcrumbs from "@/components/Breadcrumbs.vue";
-import MobileCardList from "@/components/MobileCardList.vue";
-import RoleDeleteModal from "@/components/PopupModal.vue";
-import RoleUpsertModal from "@/components/RoleUpsertModal.vue";
-import TableButton from "@/components/TableButton.vue";
-import TableFilterForm from "@/components/TableFilterForm.vue";
-import type { FilterItem } from "@/components/TableFilterForm.vue";
-import TableFormLayout from "@/components/TableFormLayout.vue";
-import TablePagination from "@/components/TablePagination.vue";
+import type { components } from "@/api/types/schema";
+import Breadcrumbs from "@/components/layout/Breadcrumbs.vue";
+import MobileCardList from "@/components/tables/MobileCardList.vue";
+import TableButton from "@/components/tables/TableButton.vue";
+import TableFilterForm from "@/components/tables/TableFilterForm.vue";
+import type { FilterItem } from "@/components/tables/TableFilterForm.vue";
+import TableFormLayout from "@/components/tables/TableFormLayout.vue";
+import TablePagination from "@/components/tables/TablePagination.vue";
 import PlusIcon from "@/components/icons/PlusIcon.vue";
+import RoleDeleteModal from "@/components/modals/PopupModal.vue";
+import RoleUpsertModal from "@/components/modals/RoleUpsertModal.vue";
 import useRoleDelete from "@/composables/role/useRoleDelete";
 import { useRolesQuery } from "@/composables/role/useRolesQuery";
+import { useRoleUpsert } from "@/composables/role/useRoleUpsert";
 import { useActionExcStore } from "@/composables/store/useActionExcStore";
+import useAlertStore from "@/composables/store/useAlertStore";
 import { Routes } from "@/router/constants";
 import type { RoleUpsertModel } from "@/types/role";
 import { Modal, type ModalInterface, initFlowbite } from "flowbite";
 import { nextTick, onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-import type { components } from "../api/types/schema";
-import { useRoleUpsert } from "../composables/role/useRoleUpsert";
-import useAlertStore from "../composables/store/useAlertStore";
 
 // 定义筛选配置
 const filterConfig = [

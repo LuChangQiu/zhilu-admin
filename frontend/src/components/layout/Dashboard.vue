@@ -13,7 +13,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { RouterView } from "vue-router";
-import Assistant from "./Assistant.vue";
+import Assistant from "@/components/common/Assistant.vue";
 import Headbar from "./Headbar.vue";
 import Sidebar from "./Sidebar.vue";
 

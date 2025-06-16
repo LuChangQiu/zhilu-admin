@@ -98,24 +98,24 @@
 </template>
 
 <script setup lang="ts">
-import Breadcrumbs from "@/components/Breadcrumbs.vue";
-import MobileCardList from "@/components/MobileCardList.vue";
-import PositionDeleteModal from "@/components/PopupModal.vue";
-import PositionUpsertModal from "@/components/PositionUpsertModal.vue";
-import TableButton from "@/components/TableButton.vue";
-import TableFilterForm from "@/components/TableFilterForm.vue";
-import type { FilterItem } from "@/components/TableFilterForm.vue";
-import TableFormLayout from "@/components/TableFormLayout.vue";
-import TablePagination from "@/components/TablePagination.vue";
+import type { components } from "@/api/types/schema";
+import Breadcrumbs from "@/components/layout/Breadcrumbs.vue";
+import MobileCardList from "@/components/tables/MobileCardList.vue";
+import TableButton from "@/components/tables/TableButton.vue";
+import TableFilterForm from "@/components/tables/TableFilterForm.vue";
+import type { FilterItem } from "@/components/tables/TableFilterForm.vue";
+import TableFormLayout from "@/components/tables/TableFormLayout.vue";
+import TablePagination from "@/components/tables/TablePagination.vue";
 import PlusIcon from "@/components/icons/PlusIcon.vue";
+import PositionDeleteModal from "@/components/modals/PopupModal.vue";
+import PositionUpsertModal from "@/components/modals/PositionUpsertModal.vue";
 import usePositionDelete from "@/composables/position/usePositionDelete";
 import { usePositionQuery } from "@/composables/position/usePositionQuery";
 import { usePositionUpsert } from "@/composables/position/usePositionUpsert";
 import { useActionExcStore } from "@/composables/store/useActionExcStore";
+import useAlertStore from "@/composables/store/useAlertStore";
 import { Modal, type ModalInterface, initFlowbite } from "flowbite";
 import { nextTick, onMounted, reactive, ref } from "vue";
-import type { components } from "../api/types/schema";
-import useAlertStore from "../composables/store/useAlertStore";
 
 // 定义筛选配置
 const filterConfig = [

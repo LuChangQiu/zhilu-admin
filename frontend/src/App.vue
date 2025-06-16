@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from "vue-router";
-import Alert from "./components/Alert.vue";
+import { RouterView } from "vue-router";
+import Alert from "./components/ui/Alert.vue";
 </script>
 
 <template>
   <RouterView />
-  <Alert/> 
+  <Alert />
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

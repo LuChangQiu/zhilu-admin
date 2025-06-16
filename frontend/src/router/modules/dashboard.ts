@@ -1,8 +1,8 @@
 import type { RouteRecordRaw } from "vue-router";
-import Dashboard from "../../components/Dashboard.vue";
-import { EPermission, ERole, Routes } from "../constants";
+import { EPermission, Routes } from "../constants";
 import aiRoutes from "./ai";
 import userManagementRoutes from "./user";
+import Dashboard from "../../components/layout/Dashboard.vue";
 
 const dashboardRoutes: RouteRecordRaw = {
 	path: Routes.DASHBOARD.path,

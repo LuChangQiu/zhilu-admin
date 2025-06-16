@@ -11,7 +11,7 @@
 
     <!-- 移动端卡片布局 -->
     <div class="md:hidden">
-      <MobileCardList :items="jobs as Array<components['schemas']['JobTriggerDto']>">
+      <MobileCardList :items="jobs">
         <template #title="{ item }">
           {{ `${item.name}:${item.group}` }}
         </template>
@@ -134,7 +134,6 @@
 
     <TablePagination :pageChange="handlePageChange" :total="total" />
   </div>
-
   <PopupModal :id="'job-resume-modal'" :closeModal="() => {
     jobResumeModal!.hide();
   }" :onSubmit="handleResumeModalSubmit" title="确定恢复该任务吗？" content="恢复任务"></PopupModal>
@@ -147,19 +146,19 @@
 </template>
 
 <script setup lang="ts">
-import Breadcrumbs from "@/components/Breadcrumbs.vue";
-import MobileCardList from "@/components/MobileCardList.vue";
-import PopupModal from "@/components/PopupModal.vue";
-import SchedulerUpdateModal from "@/components/SchedulerUpdateModal.vue";
-import TableFilterForm from "@/components/TableFilterForm.vue";
-import type { FilterItem } from "@/components/TableFilterForm.vue";
-import TableFormLayout from "@/components/TableFormLayout.vue";
-import TablePagination from "@/components/TablePagination.vue";
+import Breadcrumbs from "@/components/layout/Breadcrumbs.vue";
+import PopupModal from "@/components/modals/PopupModal.vue";
+import SchedulerUpdateModal from "@/components/modals/SchedulerUpdateModal.vue";
+import MobileCardList from "@/components/tables/MobileCardList.vue";
+import TableFilterForm from "@/components/tables/TableFilterForm.vue";
+import type { FilterItem } from "@/components/tables/TableFilterForm.vue";
+import TableFormLayout from "@/components/tables/TableFormLayout.vue";
+import TablePagination from "@/components/tables/TablePagination.vue";
 import { useJobControl } from "@/composables/job/useJobControl";
 import { useJobsPaginationQuery } from "@/composables/job/useJobQuery";
 import { useJobUpdate } from "@/composables/job/useJobUpdate";
 import useAlertStore from "@/composables/store/useAlertStore";
-import { dayjs } from "@/utils/dateUtil";
+import dayjs from "dayjs";
 import { Modal, type ModalInterface, initFlowbite } from "flowbite";
 import { nextTick, onMounted, reactive, ref } from "vue";
 import type { components } from "../api/types/schema";

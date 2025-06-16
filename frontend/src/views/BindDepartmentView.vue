@@ -88,23 +88,23 @@
 </template>
 
 <script setup lang="ts">
-import Breadcrumbs from "@/components/Breadcrumbs.vue";
-import MobileCardListWithCheckbox from "@/components/MobileCardListWithCheckbox.vue";
-import BindModal from "@/components/PopupModal.vue";
-import UnModal from "@/components/PopupModal.vue";
-import TableButton from "@/components/TableButton.vue";
-import TableFilterForm from "@/components/TableFilterForm.vue";
-import type { FilterItem } from "@/components/TableFilterForm.vue";
-import TableFormLayout from "@/components/TableFormLayout.vue";
-import TablePagination from "@/components/TablePagination.vue";
+import Breadcrumbs from "@/components/layout/Breadcrumbs.vue";
+import MobileCardListWithCheckbox from "@/components/tables/MobileCardListWithCheckbox.vue";
+import TableButton from "@/components/tables/TableButton.vue";
+import TableFilterForm from "@/components/tables/TableFilterForm.vue";
+import type { FilterItem } from "@/components/tables/TableFilterForm.vue";
+import TableFormLayout from "@/components/tables/TableFormLayout.vue";
+import TablePagination from "@/components/tables/TablePagination.vue";
+import BindModal from "@/components/modals/PopupModal.vue";
+import UnModal from "@/components/modals/PopupModal.vue";
+import { useDepartmentBind } from "@/composables/department/useDepartmentBind";
 import { useDepartmentQuery } from "@/composables/department/useDepartmentQuery";
 import { useActionExcStore } from "@/composables/store/useActionExcStore";
+import useAlertStore from "@/composables/store/useAlertStore";
 import { Routes } from "@/router/constants";
 import { Modal, type ModalInterface, initFlowbite } from "flowbite";
 import { onMounted, reactive, ref, watch } from "vue";
 import { useRoute } from "vue-router";
-import { useDepartmentBind } from "../composables/department/useDepartmentBind";
-import useAlertStore from "../composables/store/useAlertStore";
 
 // 定义筛选配置
 const filterConfig: FilterItem[] = [

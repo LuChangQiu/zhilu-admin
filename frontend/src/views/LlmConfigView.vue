@@ -115,19 +115,19 @@
 </template>
 
 <script setup lang="ts">
-import Breadcrumbs from "@/components/Breadcrumbs.vue";
-import LlmUpdateModal from "@/components/LlmUpdateModal.vue";
-import MobileCardList from "@/components/MobileCardList.vue";
-import TableFilterForm from "@/components/TableFilterForm.vue";
-import type { FilterItem } from "@/components/TableFilterForm.vue";
-import TableFormLayout from "@/components/TableFormLayout.vue";
-import TablePagination from "@/components/TablePagination.vue";
+import type { components } from "@/api/types/schema";
+import Breadcrumbs from "@/components/layout/Breadcrumbs.vue";
+import MobileCardList from "@/components/tables/MobileCardList.vue";
+import TableFilterForm from "@/components/tables/TableFilterForm.vue";
+import type { FilterItem } from "@/components/tables/TableFilterForm.vue";
+import TableFormLayout from "@/components/tables/TableFormLayout.vue";
+import TablePagination from "@/components/tables/TablePagination.vue";
+import LlmUpdateModal from "@/components/modals/LlmUpdateModal.vue";
 import { useLlmQuery } from "@/composables/ai/useLlmQuery";
 import { useLlmUpdate } from "@/composables/ai/useLlmUpdate";
 import useAlertStore from "@/composables/store/useAlertStore";
 import { Modal, type ModalInterface, initFlowbite } from "flowbite";
 import { nextTick, onMounted, reactive, ref } from "vue";
-import type { components } from "../api/types/schema";
 
 // 定义筛选配置
 const filterConfig: FilterItem[] = [
