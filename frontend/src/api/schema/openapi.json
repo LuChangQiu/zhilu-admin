@@ -1210,6 +1210,75 @@
         }
       }
     },
+    "/ai/action/role": {
+      "delete": {
+        "tags": [
+          "ai-controller"
+        ],
+        "operationId": "deleteRole_1",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/ai/action/position": {
+      "delete": {
+        "tags": [
+          "ai-controller"
+        ],
+        "operationId": "deletePosition_1",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/ai/action/permission": {
+      "delete": {
+        "tags": [
+          "ai-controller"
+        ],
+        "operationId": "deletePermission_1",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/ai/action/department": {
       "delete": {
         "tags": [

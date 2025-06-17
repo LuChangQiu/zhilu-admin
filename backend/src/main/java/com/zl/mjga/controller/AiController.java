@@ -5,8 +5,7 @@ import com.zl.mjga.dto.PageResponseDto;
 import com.zl.mjga.dto.ai.LlmQueryDto;
 import com.zl.mjga.dto.ai.LlmVm;
 import com.zl.mjga.exception.BusinessException;
-import com.zl.mjga.repository.DepartmentRepository;
-import com.zl.mjga.repository.UserRepository;
+import com.zl.mjga.repository.*;
 import com.zl.mjga.service.AiChatService;
 import com.zl.mjga.service.EmbeddingService;
 import com.zl.mjga.service.LlmService;
@@ -20,9 +19,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.generated.mjga.enums.LlmCodeEnum;
-import org.jooq.generated.mjga.tables.pojos.AiLlmConfig;
-import org.jooq.generated.mjga.tables.pojos.Department;
-import org.jooq.generated.mjga.tables.pojos.User;
+import org.jooq.generated.mjga.tables.pojos.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -41,6 +38,10 @@ public class AiController {
   private final EmbeddingService embeddingService;
   private final UserRepository userRepository;
   private final DepartmentRepository departmentRepository;
+  private final PositionRepository positionRepository;
+  private final RoleRepository repository;
+  private final PermissionRepository permissionRepository;
+  private final RoleRepository roleRepository;
 
   @PostMapping(value = "/action/execute", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
   public Flux<String> actionExecute(Principal principal, @RequestBody String userMessage) {
@@ -124,7 +125,7 @@ public class AiController {
     userRepository.deleteByUsername(username);
   }
 
-  @PreAuthorize("hasAuthority(T(com.zl.mjga.model.urp.EPermission).WRITE_USER_ROLE_PERMISSION)")
+  @PreAuthorize("hasAuthority(T(com.zl.mjga.model.urp.EPermission).WRITE_DEPARTMENT_PERMISSION)")
   @DeleteMapping("/action/department")
   void deleteDepartment(@RequestParam String name) {
     Department department = departmentRepository.fetchOneByName(name);
@@ -132,6 +133,36 @@ public class AiController {
       throw new BusinessException("该部门不存在");
     }
     departmentRepository.deleteByName(name);
+  }
+
+  @PreAuthorize("hasAuthority(T(com.zl.mjga.model.urp.EPermission).WRITE_POSITION_PERMISSION)")
+  @DeleteMapping("/action/position")
+  void deletePosition(@RequestParam String name) {
+    Position position = positionRepository.fetchOneByName(name);
+    if (position == null) {
+      throw new BusinessException("该岗位不存在");
+    }
+    positionRepository.deleteById(position.getId());
+  }
+
+  @PreAuthorize("hasAuthority(T(com.zl.mjga.model.urp.EPermission).WRITE_USER_ROLE_PERMISSION)")
+  @DeleteMapping("/action/role")
+  void deleteRole(@RequestParam String name) {
+    Role role = roleRepository.fetchOneByName(name);
+    if (role == null) {
+      throw new BusinessException("该角色不存在");
+    }
+    roleRepository.deleteById(role.getId());
+  }
+
+  @PreAuthorize("hasAuthority(T(com.zl.mjga.model.urp.EPermission).WRITE_USER_ROLE_PERMISSION)")
+  @DeleteMapping("/action/permission")
+  void deletePermission(@RequestParam String name) {
+    Permission permission = permissionRepository.fetchOneByName(name);
+    if (permission == null) {
+      throw new BusinessException("该权限不存在");
+    }
+    permissionRepository.deleteById(permission.getId());
   }
 
   @PostMapping("/chat/refresh")

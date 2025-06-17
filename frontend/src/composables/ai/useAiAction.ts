@@ -21,8 +21,41 @@ export const useAiAction = () => {
 		});
 	};
 
+	const deletePositionByName = async (name: string) => {
+		await client.DELETE("/ai/action/position", {
+			params: {
+				query: {
+					name,
+				},
+			},
+		});
+	};
+
+	const deleteRoleByName = async (name: string) => {
+		await client.DELETE("/ai/action/role", {
+			params: {
+				query: {
+					name,
+				},
+			},
+		});
+	};
+
+	const deletePermissionByName = async (name: string) => {
+		await client.DELETE("/ai/action/permission", {
+			params: {
+				query: {
+					name,
+				},
+			},
+		});
+	};
+
 	return {
 		deleteUserByUsername,
 		deleteDepartmentByName,
+		deletePositionByName,
+		deleteRoleByName,
+		deletePermissionByName,
 	};
 };

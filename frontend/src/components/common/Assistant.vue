@@ -18,21 +18,16 @@
 						<div class="markdown-content markdown-body text-base font-normal py-2.5 text-gray-900 break-words"
 							v-html="renderMarkdown(chatElement.content)">
 						</div>
-						<button
-							v-if="chatElement.type === 'action' && (chatElement.command === 'CREATE_USER' || chatElement.command === 'CREATE_DEPARTMENT')"
-							type="button" @click="commandActionMap[chatElement.command!]"
+						<button v-if="chatElement.type === 'action' && chatElement.command?.startsWith('CREATE_')" type="button"
+							@click="commandActionMap[chatElement.command!]"
 							class="px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
 							{{
 							commandContentMap[chatElement.command!]
 							}}</button>
 						<InputButton size="md"
 							bgColor="bg-red-700 hover:bg-red-800 focus:ring-red-300 text-white focus:ring-4 focus:outline-none"
-							:content="commandContentMap[chatElement.command!]" :handleSubmit="handleDeleteUserClick"
-							v-if="chatElement.command === 'DELETE_USER'" />
-						<InputButton size="md"
-							bgColor="bg-red-700 hover:bg-red-800 focus:ring-red-300 text-white focus:ring-4 focus:outline-none"
-							:content="commandContentMap[chatElement.command!]" :handleSubmit="handleDeleteDepartmentClick"
-							v-if="chatElement.command === 'DELETE_DEPARTMENT'" />
+							:content="commandContentMap[chatElement.command!]" :handleSubmit="commandActionMap[chatElement.command!]"
+							v-if="chatElement.command?.startsWith('DELETE_')" />
 					</div>
 				</div>
 			</li>
@@ -88,6 +83,30 @@
     currentDeleteDepartmentName = undefined
     departmentDeleteModal!.hide();
   }" :onSubmit="handleDeleteDepartmentSubmit" title="确定删除该部门吗" content="删除部门"></DepartmentDeleteModal>
+	<PositionFormDialog :id="'position-upsert-modal'" :onSubmit="handleUpsertPositionSubmit" :closeModal="() => {
+    positionUpsertModal!.hide();
+  }">
+	</PositionFormDialog>
+	<PositionDeleteModal :id="'position-delete-modal'" :closeModal="() => {
+    currentDeletePositionName = undefined
+    positionDeleteModal!.hide();
+  }" :onSubmit="handleDeletePositionSubmit" title="确定删除该岗位吗" content="删除岗位"></PositionDeleteModal>
+	<RoleFormDialog :id="'role-upsert-modal'" :onSubmit="handleUpsertRoleSubmit" :closeModal="() => {
+    roleUpsertModal!.hide();
+  }">
+	</RoleFormDialog>
+	<RoleDeleteModal :id="'role-delete-modal'" :closeModal="() => {
+    currentDeleteRoleName = undefined
+    roleDeleteModal!.hide();
+  }" :onSubmit="handleDeleteRoleSubmit" title="确定删除该角色吗" content="删除角色"></RoleDeleteModal>
+	<PermissionFormDialog :id="'permission-upsert-modal'" :onSubmit="handleUpsertPermissionSubmit" :closeModal="() => {
+    permissionUpsertModal!.hide();
+  }">
+	</PermissionFormDialog>
+	<PermissionDeleteModal :id="'permission-delete-modal'" :closeModal="() => {
+    currentDeletePermissionName = undefined
+    permissionDeleteModal!.hide();
+  }" :onSubmit="handleDeletePermissionSubmit" title="确定删除该权限吗" content="删除权限"></PermissionDeleteModal>
 </template>
 
 <script setup lang="ts">
@@ -102,17 +121,29 @@ import { useAiAction } from "@/composables/ai/useAiAction";
 import { useAiChat } from "@/composables/ai/useAiChat";
 import { useDepartmentQuery } from "@/composables/department/useDepartmentQuery";
 import { useDepartmentUpsert } from "@/composables/department/useDepartmentUpsert";
+import usePermissionUpsert from "@/composables/permission/usePermissionUpsert";
+import { usePositionUpsert } from "@/composables/position/usePositionUpsert";
+import { useRoleUpsert } from "@/composables/role/useRoleUpsert";
 import { useActionExcStore } from "@/composables/store/useActionExcStore";
 import useAlertStore from "@/composables/store/useAlertStore";
 import useUserStore from "@/composables/store/useUserStore";
 import { useUserUpsert } from "@/composables/user/useUserUpsert";
 import type { DepartmentUpsertModel } from "@/types/DepartmentTypes";
+import type { PositionUpsertModel } from "@/types/PositionTypes";
+import type { PermissionUpsertModel } from "@/types/PermissionTypes";
+import type { RoleUpsertModel } from "@/types/RoleTypes";
 import type { UserUpsertSubmitModel } from "@/types/UserTypes";
 import DOMPurify from "dompurify";
 import { Modal, type ModalInterface, initFlowbite } from "flowbite";
 import { marked } from "marked";
 import { nextTick, onMounted, onUnmounted, ref, watch } from "vue";
 import { z } from "zod";
+import PermissionDeleteModal from "@/components/modals/ConfirmationDialog.vue";
+import PermissionFormDialog from "@/components/modals/PermissionFormDialog.vue";
+import PositionDeleteModal from "@/components/modals/ConfirmationDialog.vue";
+import PositionFormDialog from "@/components/modals/PositionFormDialog.vue";
+import RoleDeleteModal from "@/components/modals/ConfirmationDialog.vue";
+import RoleFormDialog from "@/components/modals/RoleFormDialog.vue";
 
 const {
 	messages,
@@ -132,35 +163,37 @@ const alertStore = useAlertStore();
 const commandMode = ref<"chat" | "search" | "execute">("execute");
 const userUpsert = useUserUpsert();
 const departmentUpsert = useDepartmentUpsert();
+const positionUpsert = usePositionUpsert();
+const roleUpsert = useRoleUpsert();
 const userDeleteModal = ref<ModalInterface>();
-const { deleteUserByUsername, deleteDepartmentByName } = useAiAction();
+const positionUpsertModal = ref<ModalInterface>();
+const positionDeleteModal = ref<ModalInterface>();
+const roleUpsertModal = ref<ModalInterface>();
+const roleDeleteModal = ref<ModalInterface>();
+const permissionUpsertModal = ref<ModalInterface>();
+const permissionDeleteModal = ref<ModalInterface>();
+const {
+	deleteUserByUsername,
+	deleteDepartmentByName,
+	deletePositionByName,
+	deleteRoleByName,
+	deletePermissionByName,
+} = useAiAction();
+const { upsertPermission } = usePermissionUpsert();
 const departmentDeleteModal = ref<ModalInterface>();
 const currentDeleteUsername = ref<string>();
 const currentDeleteDepartmentName = ref<string>();
+const currentDeletePositionName = ref<string>();
+const currentDeleteRoleName = ref<string>();
+const currentDeletePermissionName = ref<string>();
 const actionExcStore = useActionExcStore();
 const { availableDepartments, fetchAvailableDepartments } =
 	useDepartmentQuery();
 
 const commandPlaceholderMap: Record<string, string> = {
 	chat: "随便聊聊",
-	search: "搜索创建用户、删除部门等功能",
+	search: "输入「创建用户、删除部门、创建岗位、创建角色、创建权限」试试看",
 	execute: "帮我创建一个名为 mjga 的用户",
-};
-
-const commandActionMap: Record<string, () => void> = {
-	CREATE_USER: () => {
-		userUpsertModal.value?.show();
-	},
-	CREATE_DEPARTMENT: () => {
-		fetchAvailableDepartments();
-		departmentUpsertModal.value?.show();
-	},
-	DELETE_USER: () => {
-		userDeleteModal.value?.show();
-	},
-	DELETE_DEPARTMENT: () => {
-		departmentDeleteModal.value?.show();
-	},
 };
 
 const commandContentMap: Record<string, string> = {
@@ -168,6 +201,12 @@ const commandContentMap: Record<string, string> = {
 	CREATE_DEPARTMENT: "创建部门",
 	DELETE_USER: "删除用户",
 	DELETE_DEPARTMENT: "删除部门",
+	CREATE_POSITION: "创建岗位",
+	DELETE_POSITION: "删除岗位",
+	CREATE_ROLE: "创建角色",
+	DELETE_ROLE: "删除角色",
+	CREATE_PERMISSION: "创建权限",
+	DELETE_PERMISSION: "删除权限",
 };
 
 marked.setOptions({
@@ -206,6 +245,21 @@ const handleDeleteDepartmentClick = (input: string) => {
 	departmentDeleteModal.value?.show();
 };
 
+const handleDeletePositionClick = (input: string) => {
+	currentDeletePositionName.value = input;
+	positionDeleteModal.value?.show();
+};
+
+const handleDeleteRoleClick = (input: string) => {
+	currentDeleteRoleName.value = input;
+	roleDeleteModal.value?.show();
+};
+
+const handleDeletePermissionClick = (input: string) => {
+	currentDeletePermissionName.value = input;
+	permissionDeleteModal.value?.show();
+};
+
 const handleUpsertUserSubmit = async (data: UserUpsertSubmitModel) => {
 	await userUpsert.upsertUser(data);
 	userUpsertModal.value?.hide();
@@ -241,6 +295,68 @@ const handleDeleteUserSubmit = async () => {
 const handleDeleteDepartmentSubmit = async () => {
 	await deleteDepartmentByName(currentDeleteDepartmentName.value!);
 	departmentDeleteModal.value?.hide();
+	alertStore.showAlert({
+		content: "操作成功",
+		level: "success",
+	});
+	actionExcStore.notify(true);
+};
+
+const handleUpsertPositionSubmit = async (position: PositionUpsertModel) => {
+	await positionUpsert.upsertPosition(position);
+	positionUpsertModal.value?.hide();
+	alertStore.showAlert({
+		content: "操作成功",
+		level: "success",
+	});
+	actionExcStore.notify(true);
+};
+
+const handleDeletePositionSubmit = async () => {
+	await deletePositionByName(currentDeletePositionName.value!);
+	positionDeleteModal.value?.hide();
+	alertStore.showAlert({
+		content: "操作成功",
+		level: "success",
+	});
+	actionExcStore.notify(true);
+};
+
+const handleUpsertRoleSubmit = async (role: RoleUpsertModel) => {
+	await roleUpsert.upsertRole(role);
+	roleUpsertModal.value?.hide();
+	alertStore.showAlert({
+		content: "操作成功",
+		level: "success",
+	});
+	actionExcStore.notify(true);
+};
+
+const handleDeleteRoleSubmit = async () => {
+	await deleteRoleByName(currentDeleteRoleName.value!);
+	roleDeleteModal.value?.hide();
+	alertStore.showAlert({
+		content: "操作成功",
+		level: "success",
+	});
+	actionExcStore.notify(true);
+};
+
+const handleUpsertPermissionSubmit = async (
+	permission: PermissionUpsertModel,
+) => {
+	await upsertPermission(permission);
+	permissionUpsertModal.value?.hide();
+	alertStore.showAlert({
+		content: "操作成功",
+		level: "success",
+	});
+	actionExcStore.notify(true);
+};
+
+const handleDeletePermissionSubmit = async () => {
+	await deletePermissionByName(currentDeletePermissionName.value!);
+	permissionDeleteModal.value?.hide();
 	alertStore.showAlert({
 		content: "操作成功",
 		level: "success",
@@ -337,7 +453,76 @@ onMounted(async () => {
 	if ($departmentUpsertModalElement) {
 		departmentUpsertModal.value = new Modal($departmentUpsertModalElement, {});
 	}
+	const $positionDeleteModalElement: HTMLElement | null =
+		document.querySelector("#position-delete-modal");
+	if ($positionDeleteModalElement) {
+		positionDeleteModal.value = new Modal($positionDeleteModalElement, {});
+	}
+	const $positionUpsertModalElement: HTMLElement | null =
+		document.querySelector("#position-upsert-modal");
+	if ($positionUpsertModalElement) {
+		positionUpsertModal.value = new Modal($positionUpsertModalElement, {});
+	}
+	const $roleDeleteModalElement: HTMLElement | null =
+		document.querySelector("#role-delete-modal");
+	if ($roleDeleteModalElement) {
+		roleDeleteModal.value = new Modal($roleDeleteModalElement, {});
+	}
+	const $roleUpsertModalElement: HTMLElement | null =
+		document.querySelector("#role-upsert-modal");
+	if ($roleUpsertModalElement) {
+		roleUpsertModal.value = new Modal($roleUpsertModalElement, {});
+	}
+	const $permissionDeleteModalElement: HTMLElement | null =
+		document.querySelector("#permission-delete-modal");
+	if ($permissionDeleteModalElement) {
+		permissionDeleteModal.value = new Modal($permissionDeleteModalElement, {});
+	}
+	const $permissionUpsertModalElement: HTMLElement | null =
+		document.querySelector("#permission-upsert-modal");
+	if ($permissionUpsertModalElement) {
+		permissionUpsertModal.value = new Modal($permissionUpsertModalElement, {});
+	}
 });
+
+const commandActionMap: Record<string, (input: string) => void> = {
+	CREATE_USER: () => {
+		userUpsertModal.value?.show();
+	},
+	CREATE_DEPARTMENT: () => {
+		fetchAvailableDepartments();
+		departmentUpsertModal.value?.show();
+	},
+	DELETE_USER: (input: string) => {
+		currentDeleteUsername.value = input;
+		userDeleteModal.value?.show();
+	},
+	DELETE_DEPARTMENT: (input: string) => {
+		currentDeleteDepartmentName.value = input;
+		departmentDeleteModal.value?.show();
+	},
+	CREATE_POSITION: () => {
+		positionUpsertModal.value?.show();
+	},
+	DELETE_POSITION: (input: string) => {
+		currentDeletePositionName.value = input;
+		positionDeleteModal.value?.show();
+	},
+	CREATE_ROLE: () => {
+		roleUpsertModal.value?.show();
+	},
+	DELETE_ROLE: (input: string) => {
+		currentDeleteRoleName.value = input;
+		roleDeleteModal.value?.show();
+	},
+	CREATE_PERMISSION: () => {
+		permissionUpsertModal.value?.show();
+	},
+	DELETE_PERMISSION: (input: string) => {
+		currentDeletePermissionName.value = input;
+		permissionDeleteModal.value?.show();
+	},
+};
 </script>
 
 <style lang="css">
