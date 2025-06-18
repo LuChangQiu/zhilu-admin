@@ -34,18 +34,21 @@
 
 ## 🥝 产品社群
 
-**加 QQ 群，获取一键部署脚本（包含数据库 Redis 消息队列等所有中间件！）**
+**加 QQ 群或微信群立送以下装备，瞬间秒杀全服！！**
+1. 一键部署脚本（包含数据库 Redis 消息队列等所有中间件！）
+2. 永久免费的 Https 证书
+3. 永久免费的分布式对象存储
+4. 永久免费的 AI 模型
+5. 永久免费的 Node、Docker、Maven 国内镜像仓库
 
-- QQ群：638254979 (获取部署脚本)
+![group](assets/group.png)
   
 [![点击按钮加入 QQ群](https://img.shields.io/badge/-white?style=social&logo=QQ&label=或点击按钮加入QQ群)](https://qm.qq.com/q/9mvVC57jPO)
 
-没有 QQ 的可以加微信我拉你进群
 
-- 微信：Chuck9996
-  
-或者直接扫码（若已过期可以加我 vx）
-![wechat](assets/wechat.png)
+- QQ群：638254979(目前人较多)
+- 微信：Chuck9996(若微信群已过期可以加我 vx)
+
 
 ## 🍅 相关课程
 
