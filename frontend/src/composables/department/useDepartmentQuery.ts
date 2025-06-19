@@ -24,6 +24,8 @@ export function useDepartmentQuery() {
 	const fetchDepartmentWith = async (
 		params: {
 			name?: string;
+			userId?: number;
+			bindState?: "BIND" | "UNBIND" | "ALL";
 		} = {},
 		page = 1,
 		pageSize = 10,
@@ -36,9 +38,7 @@ export function useDepartmentQuery() {
 							page,
 							size: pageSize,
 						},
-						departmentQueryDto: {
-							name: params.name || "",
-						},
+						departmentQueryDto: params,
 					},
 				},
 			});
@@ -56,12 +56,12 @@ export function useDepartmentQuery() {
 	};
 
 	// 获取可用部门列表（用于选择上级部门）
-	const fetchAvailableDepartments = async (excludeId?: number) => {
+	const fetchAvailableDepartments = async (id?: number) => {
 		try {
 			const response = await client.GET("/department/query-available", {
 				params: {
 					query: {
-						id: excludeId,
+						id,
 					},
 				},
 			});
