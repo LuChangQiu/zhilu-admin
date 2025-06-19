@@ -37,7 +37,8 @@ public class DepartmentRepository extends DepartmentDao {
                         DEPARTMENT.PARENT_ID,
                         DEPARTMENT.NAME.cast(VARCHAR))
                     .from(DEPARTMENT)
-                    .where(DEPARTMENT.ID.eq(id))
+                    .where(id == null ? noCondition() : DEPARTMENT.ID.eq(id))
+                    .and(DEPARTMENT.PARENT_ID.isNull())
                     .unionAll(
                         select(
                                 DEPARTMENT.ID,

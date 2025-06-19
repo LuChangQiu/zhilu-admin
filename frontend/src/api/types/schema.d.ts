@@ -532,6 +532,22 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
+	"/department/query-sub": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get: operations["querySubDepartment"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/department/query-available": {
 		parameters: {
 			query?: never;
@@ -883,6 +899,15 @@ export interface components {
 			/** Format: int64 */
 			total?: number;
 			data?: components["schemas"]["PermissionRespDto"][];
+		};
+		DepartmentWithParentDto: {
+			/** Format: int64 */
+			id: number;
+			name: string;
+			/** Format: int64 */
+			parentId: number;
+			parentName: string;
+			path: string;
 		};
 		DepartmentQueryDto: {
 			/** Format: int64 */
@@ -1822,6 +1847,28 @@ export interface operations {
 				};
 				content: {
 					"*/*": components["schemas"]["PageResponseDtoListPermissionRespDto"];
+				};
+			};
+		};
+	};
+	querySubDepartment: {
+		parameters: {
+			query?: {
+				id?: number;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description OK */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"*/*": components["schemas"]["DepartmentWithParentDto"][];
 				};
 			};
 		};

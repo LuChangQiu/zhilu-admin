@@ -4,6 +4,7 @@ import com.zl.mjga.dto.PageRequestDto;
 import com.zl.mjga.dto.PageResponseDto;
 import com.zl.mjga.dto.department.DepartmentQueryDto;
 import com.zl.mjga.dto.department.DepartmentRespDto;
+import com.zl.mjga.dto.department.DepartmentWithParentDto;
 import com.zl.mjga.repository.DepartmentRepository;
 import com.zl.mjga.service.DepartmentService;
 import java.util.List;
@@ -35,6 +36,12 @@ public class DepartmentController {
   @GetMapping("/query-available")
   List<Department> queryAvailableParentDepartmentsBy(@RequestParam(required = false) Long id) {
     return departmentService.queryAvailableParentDepartmentsBy(id);
+  }
+
+  @PreAuthorize("hasAuthority(T(com.zl.mjga.model.urp.EPermission).READ_DEPARTMENT_PERMISSION)")
+  @GetMapping("/query-sub")
+  List<DepartmentWithParentDto> querySubDepartment(@RequestParam(required = false) Long id) {
+    return departmentService.queryDepartmentAndSubsBy(id);
   }
 
   @PreAuthorize("hasAuthority(T(com.zl.mjga.model.urp.EPermission).WRITE_DEPARTMENT_PERMISSION)")
