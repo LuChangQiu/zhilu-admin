@@ -1,5 +1,7 @@
 <template>
   <div class="px-2 sm:px-4 pt-6 sm:rounded-lg">
+    <PromotionBanner href="https://www.bilibili.com/cheese/play/ss198449120" imageSrc="/ai-tdd.png"
+      imageAlt="ai-tdd-tutorial" label="官方教程" text="无幻觉式 AI 编程方法论" />
     <div class="mb-4">
       <Breadcrumbs :names="['用户管理']" />
       <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl">用户管理</h1>
@@ -159,6 +161,7 @@
 
 <script setup lang="ts">
 import type { components } from "@/api/types/schema";
+import PromotionBanner from "@/components/common/PromotionBanner.vue";
 import { PlusIcon } from "@/components/icons";
 import Breadcrumbs from "@/components/layout/Breadcrumbs.vue";
 import ConfirmationDialog from "@/components/modals/ConfirmationDialog.vue";
@@ -290,31 +293,37 @@ const handleUpsertUserClick = async (
 const handleBindRoleClick = async (
 	user: components["schemas"]["UserRolePermissionDto"],
 ) => {
-	router.push(
-		Routes.BINDROLEVIEW.withParams({
-			userId: user.id!,
-		}),
-	);
+	if (user.id) {
+		router.push(
+			Routes.BINDROLEVIEW.withParams({
+				userId: user.id,
+			}),
+		);
+	}
 };
 
 const handleBindDepartmentClick = async (
 	user: components["schemas"]["UserRolePermissionDto"],
 ) => {
-	router.push(
-		Routes.BINDDEPARTMENTVIEW.withParams({
-			userId: user.id!,
-		}),
-	);
+	if (user.id) {
+		router.push(
+			Routes.BINDDEPARTMENTVIEW.withParams({
+				userId: user.id,
+			}),
+		);
+	}
 };
 
 const handleBindPositionClick = async (
 	user: components["schemas"]["UserRolePermissionDto"],
 ) => {
-	router.push(
-		Routes.BINDPOSITIONVIEW.withParams({
-			userId: user.id!,
-		}),
-	);
+	if (user.id) {
+		router.push(
+			Routes.BINDPOSITIONVIEW.withParams({
+				userId: user.id,
+			}),
+		);
+	}
 };
 
 const handleSortClick = async (field: string) => {
