@@ -1,10 +1,14 @@
 package com.zl.mjga.config.ai;
 
+import com.zl.mjga.config.minio.MinIoConfig;
 import com.zl.mjga.service.LlmService;
 import dev.langchain4j.community.model.zhipu.ZhipuAiEmbeddingModel;
+import dev.langchain4j.data.document.loader.amazon.s3.AmazonS3DocumentLoader;
+import dev.langchain4j.data.document.loader.amazon.s3.AwsCredentials;
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.store.embedding.EmbeddingStore;
+import dev.langchain4j.store.embedding.EmbeddingStoreIngestor;
 import dev.langchain4j.store.embedding.pgvector.PgVectorEmbeddingStore;
 import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +46,7 @@ public class EmbeddingInitializer {
   }
 
   @Bean
-  public EmbeddingStore<TextSegment> zhiPuEmbeddingStore(EmbeddingModel zhipuEmbeddingModel) {
+  public EmbeddingStore<TextSegment> zhiPuEmbeddingStore() {
     String hostPort = env.getProperty("DATABASE_HOST_PORT");
     String host = hostPort.split(":")[0];
     return PgVectorEmbeddingStore.builder()
@@ -53,6 +57,39 @@ public class EmbeddingInitializer {
         .password(env.getProperty("DATABASE_PASSWORD"))
         .table("mjga.zhipu_embedding_store")
         .dimension(2048)
+        .build();
+  }
+
+  @Bean
+  public EmbeddingStore<TextSegment> zhiPuLibraryEmbeddingStore() {
+    String hostPort = env.getProperty("DATABASE_HOST_PORT");
+    String host = hostPort.split(":")[0];
+    return PgVectorEmbeddingStore.builder()
+        .host(host)
+        .port(env.getProperty("DATABASE_EXPOSE_PORT", Integer.class))
+        .database(env.getProperty("DATABASE_DB"))
+        .user(env.getProperty("DATABASE_USER"))
+        .password(env.getProperty("DATABASE_PASSWORD"))
+        .table("mjga.zhipu_library_embedding_store")
+        .dimension(2048)
+        .build();
+  }
+
+  @Bean
+  public EmbeddingStoreIngestor zhipuEmbeddingStoreIngestor(
+      EmbeddingStore<TextSegment> zhiPuLibraryEmbeddingStore, EmbeddingModel zhipuEmbeddingModel) {
+    return EmbeddingStoreIngestor.builder()
+        .embeddingModel(zhipuEmbeddingModel)
+        .embeddingStore(zhiPuLibraryEmbeddingStore)
+        .build();
+  }
+
+  @Bean
+  public AmazonS3DocumentLoader amazonS3DocumentLoader(MinIoConfig minIoConfig) {
+    return AmazonS3DocumentLoader.builder()
+        .endpointUrl(minIoConfig.getEndpoint())
+        .forcePathStyle(true)
+        .awsCredentials(new AwsCredentials(minIoConfig.getAccessKey(), minIoConfig.getSecretKey()))
         .build();
   }
 }

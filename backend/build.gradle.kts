@@ -32,7 +32,7 @@ sourceSets {
 group = "com.zl.mjga"
 version = "1.0.0"
 description = "make java great again!"
-java.sourceCompatibility = JavaVersion.VERSION_17
+java.sourceCompatibility = JavaVersion.VERSION_21
 
 configurations {
     compileOnly {
@@ -64,6 +64,8 @@ dependencies {
     implementation("dev.langchain4j:langchain4j-open-ai:1.0.0")
     implementation("dev.langchain4j:langchain4j-pgvector:1.0.1-beta6")
     implementation("dev.langchain4j:langchain4j-community-zhipu-ai:1.0.1-beta6")
+    implementation("dev.langchain4j:langchain4j-easy-rag:1.1.0-beta7")
+    implementation("dev.langchain4j:langchain4j-document-loader-amazon-s3:1.1.0-beta7")
     implementation("io.projectreactor:reactor-core:3.7.6")
     testImplementation("org.testcontainers:junit-jupiter:$testcontainersVersion")
     testImplementation("org.testcontainers:postgresql:$testcontainersVersion")

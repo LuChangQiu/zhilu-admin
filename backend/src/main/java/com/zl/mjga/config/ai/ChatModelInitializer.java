@@ -3,9 +3,12 @@ package com.zl.mjga.config.ai;
 import com.zl.mjga.component.PromptConfiguration;
 import com.zl.mjga.service.LlmService;
 import dev.langchain4j.community.model.zhipu.ZhipuAiStreamingChatModel;
+import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import dev.langchain4j.model.openai.OpenAiStreamingChatModel;
+import dev.langchain4j.rag.content.retriever.EmbeddingStoreContentRetriever;
 import dev.langchain4j.service.AiServices;
+import dev.langchain4j.store.embedding.EmbeddingStore;
 import lombok.RequiredArgsConstructor;
 import org.jooq.generated.mjga.enums.LlmCodeEnum;
 import org.jooq.generated.mjga.tables.pojos.AiLlmConfig;
@@ -54,11 +57,14 @@ public class ChatModelInitializer {
 
   @Bean
   @DependsOn("flywayInitializer")
-  public AiChatAssistant zhiPuChatAssistant(ZhipuAiStreamingChatModel zhipuChatModel) {
+  public AiChatAssistant zhiPuChatAssistant(
+      ZhipuAiStreamingChatModel zhipuChatModel,
+      EmbeddingStore<TextSegment> zhiPuLibraryEmbeddingStore) {
     return AiServices.builder(AiChatAssistant.class)
         .streamingChatModel(zhipuChatModel)
         .systemMessageProvider(chatMemoryId -> promptConfiguration.getSystem())
         .chatMemoryProvider(memoryId -> MessageWindowChatMemory.withMaxMessages(10))
+        .contentRetriever(EmbeddingStoreContentRetriever.from(zhiPuLibraryEmbeddingStore))
         .build();
   }
 

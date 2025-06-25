@@ -1,6 +1,5 @@
 package com.zl.mjga.controller;
 
-import com.zl.mjga.config.minio.MinIoConfig;
 import com.zl.mjga.dto.PageRequestDto;
 import com.zl.mjga.dto.PageResponseDto;
 import com.zl.mjga.dto.department.DepartmentBindDto;
@@ -13,17 +12,11 @@ import com.zl.mjga.repository.PermissionRepository;
 import com.zl.mjga.repository.RoleRepository;
 import com.zl.mjga.repository.UserRepository;
 import com.zl.mjga.service.IdentityAccessService;
-import io.minio.MinioClient;
-import io.minio.PutObjectArgs;
+import com.zl.mjga.service.UploadService;
 import jakarta.validation.Valid;
-import java.awt.image.BufferedImage;
 import java.security.Principal;
-import java.time.Instant;
 import java.util.List;
-import javax.imageio.ImageIO;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.jooq.generated.mjga.tables.pojos.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -41,8 +34,7 @@ public class IdentityAccessController {
   private final UserRepository userRepository;
   private final RoleRepository roleRepository;
   private final PermissionRepository permissionRepository;
-  private final MinioClient minioClient;
-  private final MinIoConfig minIoConfig;
+  private final UploadService uploadService;
 
   @PreAuthorize("hasAuthority(T(com.zl.mjga.model.urp.EPermission).WRITE_USER_ROLE_PERMISSION)")
   @PostMapping(
@@ -50,40 +42,7 @@ public class IdentityAccessController {
       consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
       produces = MediaType.TEXT_PLAIN_VALUE)
   public String uploadAvatar(@RequestPart("file") MultipartFile multipartFile) throws Exception {
-    String originalFilename = multipartFile.getOriginalFilename();
-    if (StringUtils.isEmpty(originalFilename)) {
-      throw new BusinessException("文件名不能为空");
-    }
-    String contentType = multipartFile.getContentType();
-    String extension = "";
-    if ("image/jpeg".equals(contentType)) {
-      extension = ".jpg";
-    } else if ("image/png".equals(contentType)) {
-      extension = ".png";
-    }
-    String objectName =
-        String.format(
-            "/avatar/%d%s%s",
-            Instant.now().toEpochMilli(),
-            RandomStringUtils.insecure().nextAlphabetic(6),
-            extension);
-    if (multipartFile.isEmpty()) {
-      throw new BusinessException("上传的文件不能为空");
-    }
-    long size = multipartFile.getSize();
-    if (size > 200 * 1024) {
-      throw new BusinessException("头像文件大小不能超过200KB");
-    }
-    BufferedImage img = ImageIO.read(multipartFile.getInputStream());
-    if (img == null) {
-      throw new BusinessException("非法的上传文件");
-    }
-    minioClient.putObject(
-        PutObjectArgs.builder().bucket(minIoConfig.getDefaultBucket()).object(objectName).stream(
-                multipartFile.getInputStream(), size, -1)
-            .contentType(multipartFile.getContentType())
-            .build());
-    return objectName;
+    return uploadService.uploadAvatarFile(multipartFile);
   }
 
   @GetMapping("/me")

@@ -9,6 +9,7 @@ import com.zl.mjga.repository.*;
 import com.zl.mjga.service.AiChatService;
 import com.zl.mjga.service.EmbeddingService;
 import com.zl.mjga.service.LlmService;
+import com.zl.mjga.service.UploadService;
 import dev.langchain4j.service.TokenStream;
 import jakarta.validation.Valid;
 import java.security.Principal;
@@ -24,6 +25,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
 
@@ -42,6 +44,7 @@ public class AiController {
   private final RoleRepository repository;
   private final PermissionRepository permissionRepository;
   private final RoleRepository roleRepository;
+  private final UploadService uploadService;
 
   @PostMapping(value = "/action/execute", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
   public Flux<String> actionExecute(Principal principal, @RequestBody String userMessage) {
@@ -168,5 +171,16 @@ public class AiController {
   @PostMapping("/chat/refresh")
   void createNewConversation(Principal principal) {
     aiChatService.evictChatMemory(principal.getName());
+  }
+
+  @PostMapping(
+      value = "/library/upload",
+      consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+      produces = MediaType.TEXT_PLAIN_VALUE)
+  public String uploadLibraryFile(@RequestPart("file") MultipartFile multipartFile)
+      throws Exception {
+    String objectName = uploadService.uploadLibraryFile(multipartFile);
+    embeddingService.ingestDocument(objectName);
+    return objectName;
   }
 }
