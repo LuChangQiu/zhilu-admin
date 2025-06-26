@@ -31,6 +31,7 @@ public class LibraryController {
     Library library = new Library();
     library.setId(libraryUpsertDto.id());
     library.setName(libraryUpsertDto.name());
+    library.setDesc(libraryUpsertDto.desc());
     libraryRepository.merge(library);
   }
 

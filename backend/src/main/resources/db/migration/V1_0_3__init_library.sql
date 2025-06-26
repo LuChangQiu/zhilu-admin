@@ -1,6 +1,7 @@
 CREATE TABLE mjga.library (
                               id BIGSERIAL PRIMARY KEY,
                               name VARCHAR NOT NULL UNIQUE,
+                              desc VARCHAR,
                               data_count INTEGER NOT NULL DEFAULT 0,
                               create_time TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
