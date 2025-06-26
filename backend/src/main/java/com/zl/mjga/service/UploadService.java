@@ -58,7 +58,7 @@ public class UploadService {
     return objectName;
   }
 
-  public String uploadLibraryFile(MultipartFile multipartFile) throws Exception {
+  public String uploadLibraryDoc(MultipartFile multipartFile) throws Exception {
     String originalFilename = multipartFile.getOriginalFilename();
     if (StringUtils.isEmpty(originalFilename)) {
       throw new BusinessException("文件名不能为空");

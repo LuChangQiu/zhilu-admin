@@ -64,7 +64,7 @@ dependencies {
     implementation("dev.langchain4j:langchain4j-open-ai:1.0.0")
     implementation("dev.langchain4j:langchain4j-pgvector:1.0.1-beta6")
     implementation("dev.langchain4j:langchain4j-community-zhipu-ai:1.0.1-beta6")
-    implementation("dev.langchain4j:langchain4j-easy-rag:1.1.0-beta7")
+    implementation("dev.langchain4j:langchain4j-document-parser-apache-tika:1.1.0-beta7")
     implementation("dev.langchain4j:langchain4j-document-loader-amazon-s3:1.1.0-beta7")
     implementation("io.projectreactor:reactor-core:3.7.6")
     testImplementation("org.testcontainers:junit-jupiter:$testcontainersVersion")
@@ -169,11 +169,6 @@ jooq {
                     }
                 }
                 forcedTypes {
-                    forcedType {
-                        name = "varchar"
-                        includeExpression = ".*"
-                        includeTypes = "JSONB?"
-                    }
                     forcedType {
                         name = "varchar"
                         includeExpression = ".*"

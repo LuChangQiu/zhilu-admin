@@ -8,7 +8,6 @@ import dev.langchain4j.data.document.loader.amazon.s3.AwsCredentials;
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.store.embedding.EmbeddingStore;
-import dev.langchain4j.store.embedding.EmbeddingStoreIngestor;
 import dev.langchain4j.store.embedding.pgvector.PgVectorEmbeddingStore;
 import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
@@ -72,15 +71,6 @@ public class EmbeddingInitializer {
         .password(env.getProperty("DATABASE_PASSWORD"))
         .table("mjga.zhipu_library_embedding_store")
         .dimension(2048)
-        .build();
-  }
-
-  @Bean
-  public EmbeddingStoreIngestor zhipuEmbeddingStoreIngestor(
-      EmbeddingStore<TextSegment> zhiPuLibraryEmbeddingStore, EmbeddingModel zhipuEmbeddingModel) {
-    return EmbeddingStoreIngestor.builder()
-        .embeddingModel(zhipuEmbeddingModel)
-        .embeddingStore(zhiPuLibraryEmbeddingStore)
         .build();
   }
 

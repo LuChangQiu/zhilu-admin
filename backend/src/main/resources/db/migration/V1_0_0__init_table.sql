@@ -4,7 +4,7 @@ CREATE TABLE mjga.user (
                            id BIGSERIAL PRIMARY KEY,
                            username VARCHAR NOT NULL UNIQUE,
                            avatar VARCHAR,
-                           create_time TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                           create_time TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
                            password VARCHAR NOT NULL,
                            enable BOOLEAN NOT NULL DEFAULT TRUE
 );
@@ -39,7 +39,7 @@ CREATE TABLE mjga.user_role_map (
 
 CREATE TABLE mjga.department (
                                  id BIGSERIAL PRIMARY KEY,
-                                 name VARCHAR(255) NOT NULL UNIQUE,
+                                 name VARCHAR NOT NULL UNIQUE,
                                  parent_id BIGINT,
                                  FOREIGN KEY (parent_id)
                                      REFERENCES mjga.department(id)
@@ -56,7 +56,7 @@ CREATE TABLE mjga.user_department_map (
 
 CREATE TABLE mjga.position (
                                id BIGSERIAL PRIMARY KEY,
-                               name VARCHAR(255) NOT NULL UNIQUE
+                               name VARCHAR NOT NULL UNIQUE
 );
 
 CREATE TABLE mjga.user_position_map (
@@ -80,12 +80,12 @@ CREATE TYPE "llm_type_enum" AS ENUM (
 
 CREATE TABLE mjga.ai_llm_config (
                                  id BIGSERIAL NOT NULL UNIQUE,
-                                 name VARCHAR(255) NOT NULL UNIQUE,
+                                 name VARCHAR NOT NULL UNIQUE,
                                  code mjga.llm_code_enum NOT NULL UNIQUE,
-                                 model_name VARCHAR(255) NOT NULL,
+                                 model_name VARCHAR NOT NULL,
                                  type LLM_TYPE_ENUM NOT NULL,
-                                 api_key VARCHAR(255) NOT NULL,
-                                 url VARCHAR(255) NOT NULL,
+                                 api_key VARCHAR NOT NULL,
+                                 url VARCHAR NOT NULL,
                                  enable BOOLEAN NOT NULL DEFAULT true,
                                  priority SMALLINT NOT NULL DEFAULT 0,
                                  PRIMARY KEY(id)

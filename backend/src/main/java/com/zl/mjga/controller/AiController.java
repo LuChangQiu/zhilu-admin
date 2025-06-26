@@ -7,9 +7,8 @@ import com.zl.mjga.dto.ai.LlmVm;
 import com.zl.mjga.exception.BusinessException;
 import com.zl.mjga.repository.*;
 import com.zl.mjga.service.AiChatService;
-import com.zl.mjga.service.EmbeddingService;
 import com.zl.mjga.service.LlmService;
-import com.zl.mjga.service.UploadService;
+import com.zl.mjga.service.RagService;
 import dev.langchain4j.service.TokenStream;
 import jakarta.validation.Valid;
 import java.security.Principal;
@@ -25,7 +24,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
 
@@ -37,14 +35,13 @@ public class AiController {
 
   private final AiChatService aiChatService;
   private final LlmService llmService;
-  private final EmbeddingService embeddingService;
+  private final RagService ragService;
   private final UserRepository userRepository;
   private final DepartmentRepository departmentRepository;
   private final PositionRepository positionRepository;
   private final RoleRepository repository;
   private final PermissionRepository permissionRepository;
   private final RoleRepository roleRepository;
-  private final UploadService uploadService;
 
   @PostMapping(value = "/action/execute", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
   public Flux<String> actionExecute(Principal principal, @RequestBody String userMessage) {
@@ -112,7 +109,7 @@ public class AiController {
     if (!aiLlmConfig.getEnable()) {
       throw new BusinessException("命令模型未启用，请开启后再试。");
     }
-    return embeddingService.searchAction(message);
+    return ragService.searchAction(message);
   }
 
   @PreAuthorize("hasAuthority(T(com.zl.mjga.model.urp.EPermission).WRITE_USER_ROLE_PERMISSION)")
@@ -171,16 +168,5 @@ public class AiController {
   @PostMapping("/chat/refresh")
   void createNewConversation(Principal principal) {
     aiChatService.evictChatMemory(principal.getName());
-  }
-
-  @PostMapping(
-      value = "/library/upload",
-      consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
-      produces = MediaType.TEXT_PLAIN_VALUE)
-  public String uploadLibraryFile(@RequestPart("file") MultipartFile multipartFile)
-      throws Exception {
-    String objectName = uploadService.uploadLibraryFile(multipartFile);
-    embeddingService.ingestDocument(objectName);
-    return objectName;
   }
 }
