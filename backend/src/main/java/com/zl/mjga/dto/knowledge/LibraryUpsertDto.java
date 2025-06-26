@@ -1,4 +1,4 @@
-package com.zl.mjga.dto.library;
+package com.zl.mjga.dto.knowledge;
 
 import jakarta.validation.constraints.NotEmpty;
 
