@@ -61,7 +61,9 @@ public class LibraryController {
       @RequestPart("libraryId") Long libraryId, @RequestPart("file") MultipartFile multipartFile)
       throws Exception {
     String objectName = uploadService.uploadLibraryDoc(multipartFile);
-    ragService.ingestDocumentBy(libraryId, objectName, multipartFile.getOriginalFilename());
+    Long libraryDocId =
+        ragService.createLibraryDocBy(libraryId, objectName, multipartFile.getOriginalFilename());
+    ragService.embeddingAndCreateDocSegment(libraryDocId, objectName);
     return objectName;
   }
 }

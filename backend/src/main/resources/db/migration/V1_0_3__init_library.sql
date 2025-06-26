@@ -5,6 +5,11 @@ CREATE TABLE mjga.library (
                               create_time TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TYPE mjga.library_doc_status_enum AS ENUM (
+	'SUCCESS',
+	'INDEXING'
+);
+
 CREATE TABLE mjga.library_doc (
                                   id BIGSERIAL PRIMARY KEY,
                                   lib_id BIGINT NOT NULL,
@@ -13,6 +18,7 @@ CREATE TABLE mjga.library_doc (
                                   path VARCHAR NOT NULL,
                                   meta JSON NOT NULL,
                                   enable BOOLEAN NOT NULL DEFAULT true,
+                                  status mjga.library_doc_status_enum NOT NULL,
                                   create_time TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
                                   update_time TIMESTAMPTZ,
                                   FOREIGN KEY (lib_id) REFERENCES mjga.library (id) ON DELETE CASCADE

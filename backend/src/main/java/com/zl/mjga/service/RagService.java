@@ -31,12 +31,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.jooq.JSON;
+import org.jooq.generated.mjga.enums.LibraryDocStatusEnum;
 import org.jooq.generated.mjga.tables.daos.LibraryDocSegmentDao;
 import org.jooq.generated.mjga.tables.pojos.LibraryDoc;
 import org.jooq.generated.mjga.tables.pojos.LibraryDocSegment;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Configuration
 @RequiredArgsConstructor
@@ -79,62 +81,17 @@ public class RagService {
     libraryDocRepository.deleteById(docId);
   }
 
-  @Transactional(rollbackFor = Throwable.class)
-  public void ingestDocumentBy(Long libraryId, String objectName, String originalName)
-      throws Exception {
-    Document document =
-        amazonS3DocumentLoader.loadDocument(
-            minIoConfig.getDefaultBucket(), objectName, new ApacheTikaDocumentParser());
-    ArrayList<String> embeddingIds = new ArrayList<>();
-    try {
-      Long libraryDocId = createLibraryDoc(objectName, originalName, document.metadata().toMap());
-      DocumentByParagraphSplitter documentByParagraphSplitter =
-          new DocumentByParagraphSplitter(1000, 200);
-      documentByParagraphSplitter
-          .split(document)
-          .forEach(
-              textSegment -> {
-                Metadata metadata = textSegment.metadata();
-                metadata.put("libraryId", libraryId);
-                Response<Embedding> embed = zhipuEmbeddingModel.embed(textSegment);
-                Integer tokenUsage = embed.tokenUsage().totalTokenCount();
-                Embedding vector = embed.content();
-                String embeddingId = zhiPuEmbeddingStore.add(vector, textSegment);
-                embeddingIds.add(embeddingId);
-                createLibraryDocSegment(textSegment, libraryDocId, tokenUsage, embeddingId);
-              });
-    } catch (Exception e) {
-      log.error(
-          "文档采集失败。libraryId {} objectName {} originalName {}",
-          libraryId,
-          objectName,
-          originalName,
-          e);
-      if (CollectionUtils.isNotEmpty(embeddingIds)) {
-        zhiPuEmbeddingStore.removeAll(embeddingIds);
-      }
-      throw e;
-    }
-  }
-
-  private void createLibraryDocSegment(
-      TextSegment textSegment, Long libraryDocId, Integer tokenUsage, String embeddingId) {
-    LibraryDocSegment libraryDocSegment = new LibraryDocSegment();
-    libraryDocSegment.setDocId(libraryDocId);
-    libraryDocSegment.setContent(textSegment.text());
-    libraryDocSegment.setTokenUsage(tokenUsage);
-    libraryDocSegment.setEmbeddingId(embeddingId);
-    libraryDocSegmentDao.insert();
-  }
-
-  private Long createLibraryDoc(String objectName, String originalName, Map meta)
+  public Long createLibraryDocBy(Long libraryId, String objectName, String originalName)
       throws JsonProcessingException {
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
     String identify =
         String.format(
             "%d%s_%s",
             Instant.now().toEpochMilli(),
             RandomStringUtils.insecure().nextAlphabetic(6),
             originalName);
+    Map<String, String> meta = new HashMap<>();
+    meta.put("uploader", username);
     LibraryDoc libraryDoc = new LibraryDoc();
     ObjectMapper objectMapper = new ObjectMapper();
     String metaJson = objectMapper.writeValueAsString(meta);
@@ -142,8 +99,37 @@ public class RagService {
     libraryDoc.setPath(objectName);
     libraryDoc.setName(originalName);
     libraryDoc.setIdentify(identify);
+    libraryDoc.setLibId(libraryId);
+    libraryDoc.setStatus(LibraryDocStatusEnum.INDEXING);
+    libraryDoc.setEnable(Boolean.TRUE);
     libraryDocRepository.insert(libraryDoc);
     return libraryDocRepository.fetchOneByIdentify(identify).getId();
+  }
+
+  @Async
+  public void embeddingAndCreateDocSegment(Long libraryDocId, String objectName) {
+    Document document =
+        amazonS3DocumentLoader.loadDocument(
+            minIoConfig.getDefaultBucket(), objectName, new ApacheTikaDocumentParser());
+    List<LibraryDocSegment> libraryDocSegments = new ArrayList<>();
+    DocumentByParagraphSplitter documentByParagraphSplitter =
+        new DocumentByParagraphSplitter(1000, 200);
+    documentByParagraphSplitter
+        .split(document)
+        .forEach(
+            textSegment -> {
+              Response<Embedding> embed = zhipuEmbeddingModel.embed(textSegment);
+              Integer tokenUsage = embed.tokenUsage().totalTokenCount();
+              Embedding vector = embed.content();
+              String embeddingId = zhiPuEmbeddingStore.add(vector, textSegment);
+              LibraryDocSegment libraryDocSegment = new LibraryDocSegment();
+              libraryDocSegment.setEmbeddingId(embeddingId);
+              libraryDocSegment.setContent(textSegment.text());
+              libraryDocSegment.setTokenUsage(tokenUsage);
+              libraryDocSegment.setDocId(libraryDocId);
+              libraryDocSegments.add(libraryDocSegment);
+            });
+    libraryDocSegmentDao.insert(libraryDocSegments);
   }
 
   public Map<String, String> searchAction(String message) {
