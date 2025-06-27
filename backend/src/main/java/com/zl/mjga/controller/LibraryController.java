@@ -34,13 +34,14 @@ public class LibraryController {
 
   @GetMapping("/libraries")
   public List<Library> queryLibraries() {
-    return libraryRepository.findAll();
+    return libraryRepository.findAll().stream().sorted(
+            Comparator.comparing(Library::getId).reversed()
+    ).toList();
   }
 
   @GetMapping("/docs")
   public List<LibraryDoc> queryLibraryDocs(@RequestParam Long libraryId) {
-    List<LibraryDoc> libraryDocs = libraryDocRepository.fetchByLibId(libraryId);
-    return libraryDocs.stream().sorted(
+    return libraryDocRepository.fetchByLibId(libraryId).stream().sorted(
             Comparator.comparing(LibraryDoc::getId).reversed()
     ).toList();
   }

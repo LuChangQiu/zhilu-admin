@@ -50,6 +50,8 @@ public class RagService {
 
   private final EmbeddingStore<TextSegment> zhiPuEmbeddingStore;
 
+  private final EmbeddingStore<TextSegment> zhiPuLibraryEmbeddingStore;
+
   private final ZhiPuEmbeddingModelConfig zhiPuEmbeddingModelConfig;
 
   private final AmazonS3DocumentLoader amazonS3DocumentLoader;
@@ -76,7 +78,7 @@ public class RagService {
     List<String> embeddingIdList =
         libraryDocSegments.stream().map(LibraryDocSegment::getEmbeddingId).toList();
     if (CollectionUtils.isNotEmpty(embeddingIdList)) {
-      zhiPuEmbeddingStore.removeAll(embeddingIdList);
+      zhiPuLibraryEmbeddingStore.removeAll(embeddingIdList);
     }
     libraryDocRepository.deleteById(docId);
   }
@@ -113,7 +115,7 @@ public class RagService {
             minIoConfig.getDefaultBucket(), objectName, new ApacheTikaDocumentParser());
     List<LibraryDocSegment> libraryDocSegments = new ArrayList<>();
     DocumentByParagraphSplitter documentByParagraphSplitter =
-        new DocumentByParagraphSplitter(1000, 200);
+        new DocumentByParagraphSplitter(500, 150);
     documentByParagraphSplitter
         .split(document)
         .forEach(
@@ -121,7 +123,7 @@ public class RagService {
               Response<Embedding> embed = zhipuEmbeddingModel.embed(textSegment);
               Integer tokenUsage = embed.tokenUsage().totalTokenCount();
               Embedding vector = embed.content();
-              String embeddingId = zhiPuEmbeddingStore.add(vector, textSegment);
+              String embeddingId = zhiPuLibraryEmbeddingStore.add(vector, textSegment);
               LibraryDocSegment libraryDocSegment = new LibraryDocSegment();
               libraryDocSegment.setEmbeddingId(embeddingId);
               libraryDocSegment.setContent(textSegment.text());
@@ -130,6 +132,9 @@ public class RagService {
               libraryDocSegments.add(libraryDocSegment);
             });
     libraryDocSegmentDao.insert(libraryDocSegments);
+    LibraryDoc libraryDoc = libraryDocRepository.fetchOneById(libraryDocId);
+    libraryDoc.setStatus(LibraryDocStatusEnum.SUCCESS);
+    libraryDocRepository.update(libraryDoc);
   }
 
   public Map<String, String> searchAction(String message) {
