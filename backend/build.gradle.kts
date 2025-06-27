@@ -32,7 +32,7 @@ sourceSets {
 group = "com.zl.mjga"
 version = "1.0.0"
 description = "make java great again!"
-java.sourceCompatibility = JavaVersion.VERSION_17
+java.sourceCompatibility = JavaVersion.VERSION_21
 
 configurations {
     compileOnly {
