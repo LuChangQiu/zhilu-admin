@@ -186,3 +186,5 @@ compose.yaml
 Dockerfile
 Caddyfile
 start.sh
+
+.cursor

@@ -116,10 +116,9 @@ const handleFileChange = (event: Event) => {
 				throw err;
 			},
 		});
-	} catch (error) {
+	} finally {
 		(event.target as HTMLInputElement).value = "";
 		uploadLoading.value = false;
-		throw error;
 	}
 };
 

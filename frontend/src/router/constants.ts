@@ -133,15 +133,46 @@ export const UserRoutes = {
 export const AiRoutes = {
 	LLMCONFIGVIEW: {
 		path: "llm/config",
-		name: "llm/config",
+		name: "llm-config",
 		fullPath: () => `${BaseRoutes.DASHBOARD.path}/llm/config`,
-		withParams: () => ({ name: "llm/config" }),
+		withParams: () => ({ name: "llm-config" }),
 	},
 	SCHEDULERVIEW: {
 		path: "scheduler",
 		name: "scheduler",
 		fullPath: () => `${BaseRoutes.DASHBOARD.path}/scheduler`,
 		withParams: () => ({ name: "scheduler" }),
+	},
+	KNOWLEDGEVIEW: {
+		path: "knowledge",
+		name: "knowledge",
+		fullPath: () => `${BaseRoutes.DASHBOARD.path}/knowledge`,
+		withParams: () => ({ name: "knowledge" }),
+	},
+	KNOWLEDGEDOCVIEW: {
+		path: "knowledge/:libraryId",
+		name: "knowledge-docs",
+		fullPath: () => `${BaseRoutes.DASHBOARD.path}/knowledge/:libraryId`,
+		withParams: <T extends { libraryId: string | number }>(params: T) => ({
+			name: "knowledge-docs",
+			params: { libraryId: params.libraryId.toString() },
+		}),
+	},
+	KNOWLEDGESEGMENTSVIEW: {
+		path: "knowledge/:libraryId/:docId",
+		name: "knowledge-segments",
+		fullPath: () => `${BaseRoutes.DASHBOARD.path}/knowledge/:libraryId/:docId`,
+		withParams: <
+			T extends { libraryId: string | number; docId: string | number },
+		>(
+			params: T,
+		) => ({
+			name: "knowledge-segments",
+			params: {
+				libraryId: params.libraryId.toString(),
+				docId: params.docId.toString(),
+			},
+		}),
 	},
 } as const;
 

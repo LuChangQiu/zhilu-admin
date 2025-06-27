@@ -170,9 +170,8 @@ jooq {
                 }
                 forcedTypes {
                     forcedType {
-                        name = "varchar"
-                        includeExpression = ".*"
-                        includeTypes = "INET"
+                        isJsonConverter = true
+                        includeTypes = "(?i:JSON|JSONB)"
                     }
                 }
             }

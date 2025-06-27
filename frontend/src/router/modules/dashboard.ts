@@ -12,6 +12,8 @@ const dashboardRoutes: RouteRecordRaw = {
 		requiresAuth: true,
 	},
 	children: [
+		...userManagementRoutes,
+		...aiRoutes,
 		{
 			path: Routes.OVERVIEW.path,
 			name: Routes.OVERVIEW.name,
@@ -28,8 +30,6 @@ const dashboardRoutes: RouteRecordRaw = {
 				requiresAuth: true,
 			},
 		},
-		...userManagementRoutes,
-		...aiRoutes,
 		{
 			path: Routes.NOTFOUND.path,
 			name: Routes.NOTFOUND.name,

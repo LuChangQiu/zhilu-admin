@@ -20,6 +20,22 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
+	"/knowledge/doc": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put: operations["updateLibraryDoc"];
+		post?: never;
+		delete: operations["deleteLibraryDoc"];
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/ai/llm": {
 		parameters: {
 			query?: never;
@@ -95,6 +111,38 @@ export interface paths {
 		put?: never;
 		post: operations["upsertPosition"];
 		delete: operations["deletePosition"];
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/knowledge/library": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		post: operations["upsertLibrary"];
+		delete: operations["deleteLibrary"];
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/knowledge/doc/upload": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		post: operations["uploadLibraryDoc"];
+		delete?: never;
 		options?: never;
 		head?: never;
 		patch?: never;
@@ -484,6 +532,54 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
+	"/knowledge/segments": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get: operations["queryLibraryDocSegments"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/knowledge/libraries": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get: operations["queryLibraries"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/knowledge/docs": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get: operations["queryLibraryDocs"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
 	"/iam/users": {
 		parameters: {
 			query?: never;
@@ -684,6 +780,11 @@ export interface components {
 			name: string;
 			group: string;
 		};
+		DocUpdateDto: {
+			/** Format: int64 */
+			id: number;
+			enable: boolean;
+		};
 		LlmVm: {
 			/** Format: int64 */
 			id: number;
@@ -704,6 +805,12 @@ export interface components {
 			/** Format: int64 */
 			id?: number;
 			name?: string;
+		};
+		LibraryUpsertDto: {
+			/** Format: int64 */
+			id?: number;
+			name: string;
+			description?: string;
 		};
 		UserUpsertDto: {
 			/** Format: int64 */
@@ -828,6 +935,42 @@ export interface components {
 			id: number;
 			name: string;
 			isBound?: boolean;
+		};
+		LibraryDocSegment: {
+			/** Format: int64 */
+			id?: number;
+			/** Format: int64 */
+			docId?: number;
+			embeddingId?: string;
+			content?: string;
+			/** Format: int32 */
+			tokenUsage?: number;
+		};
+		Library: {
+			/** Format: int64 */
+			id?: number;
+			name?: string;
+			description?: string;
+			/** Format: date-time */
+			createTime?: string;
+		};
+		JSON: Record<string, never>;
+		LibraryDoc: {
+			/** Format: int64 */
+			id?: number;
+			/** Format: int64 */
+			libId?: number;
+			name?: string;
+			identify?: string;
+			path?: string;
+			meta?: components["schemas"]["JSON"];
+			enable?: boolean;
+			/** @enum {string} */
+			status?: "SUCCESS" | "INDEXING";
+			/** Format: date-time */
+			createTime?: string;
+			/** Format: date-time */
+			updateTime?: string;
 		};
 		UserQueryDto: {
 			username?: string;
@@ -973,6 +1116,48 @@ export interface operations {
 			};
 		};
 	};
+	updateLibraryDoc: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["DocUpdateDto"];
+			};
+		};
+		responses: {
+			/** @description OK */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
+	deleteLibraryDoc: {
+		parameters: {
+			query: {
+				libraryDocId: number;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description OK */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
 	updateLlm: {
 		parameters: {
 			query?: never;
@@ -1102,6 +1287,76 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content?: never;
+			};
+		};
+	};
+	upsertLibrary: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": components["schemas"]["LibraryUpsertDto"];
+			};
+		};
+		responses: {
+			/** @description OK */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
+	deleteLibrary: {
+		parameters: {
+			query: {
+				libraryId: number;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description OK */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
+	uploadLibraryDoc: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: {
+			content: {
+				"application/json": {
+					libraryId: string;
+					/** Format: binary */
+					file: string;
+				};
+			};
+		};
+		responses: {
+			/** @description OK */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"text/plain": string;
+				};
 			};
 		};
 	};
@@ -1778,6 +2033,70 @@ export interface operations {
 				};
 				content: {
 					"*/*": components["schemas"]["PageResponseDtoListPositionRespDto"];
+				};
+			};
+		};
+	};
+	queryLibraryDocSegments: {
+		parameters: {
+			query: {
+				libraryDocId: number;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description OK */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"*/*": components["schemas"]["LibraryDocSegment"][];
+				};
+			};
+		};
+	};
+	queryLibraries: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description OK */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"*/*": components["schemas"]["Library"][];
+				};
+			};
+		};
+	};
+	queryLibraryDocs: {
+		parameters: {
+			query: {
+				libraryId: number;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			/** @description OK */
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"*/*": components["schemas"]["LibraryDoc"][];
 				};
 			};
 		};

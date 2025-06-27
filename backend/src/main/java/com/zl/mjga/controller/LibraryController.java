@@ -8,6 +8,8 @@ import com.zl.mjga.repository.LibraryRepository;
 import com.zl.mjga.service.RagService;
 import com.zl.mjga.service.UploadService;
 import jakarta.validation.Valid;
+
+import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +39,10 @@ public class LibraryController {
 
   @GetMapping("/docs")
   public List<LibraryDoc> queryLibraryDocs(@RequestParam Long libraryId) {
-    return libraryDocRepository.fetchByLibId(libraryId);
+    List<LibraryDoc> libraryDocs = libraryDocRepository.fetchByLibId(libraryId);
+    return libraryDocs.stream().sorted(
+            Comparator.comparing(LibraryDoc::getId).reversed()
+    ).toList();
   }
 
   @GetMapping("/segments")
@@ -66,22 +71,19 @@ public class LibraryController {
 
   @PutMapping("/doc")
   public void updateLibraryDoc(@RequestBody @Valid DocUpdateDto docUpdateDto) {
-    LibraryDoc libraryDoc = new LibraryDoc();
-    libraryDoc.setId(docUpdateDto.id());
-    libraryDoc.setEnable(docUpdateDto.enable());
-    libraryDocRepository.merge(libraryDoc);
+    LibraryDoc exist = libraryDocRepository.fetchOneById(docUpdateDto.id());
+    exist.setEnable(docUpdateDto.enable());
+    libraryDocRepository.merge(exist);
   }
 
-  @PostMapping(
-      value = "/doc/upload",
-      consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
-      produces = MediaType.TEXT_PLAIN_VALUE)
+  @PostMapping(value = "/doc/upload", produces = MediaType.TEXT_PLAIN_VALUE)
   public String uploadLibraryDoc(
-      @RequestPart("libraryId") Long libraryId, @RequestPart("file") MultipartFile multipartFile)
+      @RequestPart("libraryId") String libraryId, @RequestPart("file") MultipartFile multipartFile)
       throws Exception {
     String objectName = uploadService.uploadLibraryDoc(multipartFile);
     Long libraryDocId =
-        ragService.createLibraryDocBy(libraryId, objectName, multipartFile.getOriginalFilename());
+        ragService.createLibraryDocBy(
+            Long.valueOf(libraryId), objectName, multipartFile.getOriginalFilename());
     ragService.embeddingAndCreateDocSegment(libraryDocId, objectName);
     return objectName;
   }

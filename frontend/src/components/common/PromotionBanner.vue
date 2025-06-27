@@ -21,25 +21,25 @@
 
 <script setup lang="ts">
 defineProps({
-  href: {
-    type: String,
-    required: true
-  },
-  imageSrc: {
-    type: String,
-    required: true
-  },
-  imageAlt: {
-    type: String,
-    default: 'promotion'
-  },
-  label: {
-    type: String,
-    default: '官方教程'
-  },
-  text: {
-    type: String,
-    required: true
-  }
+	href: {
+		type: String,
+		required: true,
+	},
+	imageSrc: {
+		type: String,
+		required: true,
+	},
+	imageAlt: {
+		type: String,
+		default: "promotion",
+	},
+	label: {
+		type: String,
+		default: "官方教程",
+	},
+	text: {
+		type: String,
+		required: true,
+	},
 });
 </script>

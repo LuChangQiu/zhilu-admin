@@ -11,3 +11,4 @@ export { default as RoleIcon } from "./RoleIcon.vue";
 export { default as SettingsIcon } from "./SettingsIcon.vue";
 export { default as UsersIcon } from "./UsersIcon.vue";
 export { default as PermissionIcon } from "./PermissionIcon.vue";
+export { default as KnowledgeIcon } from "./KnowledgeIcon.vue";

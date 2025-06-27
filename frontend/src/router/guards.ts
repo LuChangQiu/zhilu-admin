@@ -13,7 +13,7 @@ export const authGuard: NavigationGuard = (to) => {
 		};
 	}
 	if (to.path === Routes.LOGIN.path && userStore.user) {
-		return { path: `${Routes.DASHBOARD.path}/${Routes.USERVIEW.path}` };
+		return { path: Routes.USERVIEW.fullPath() };
 	}
 };
 

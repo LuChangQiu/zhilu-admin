@@ -44,6 +44,51 @@
         }
       }
     },
+    "/knowledge/doc": {
+      "put": {
+        "tags": [
+          "library-controller"
+        ],
+        "operationId": "updateLibraryDoc",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DocUpdateDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "library-controller"
+        ],
+        "operationId": "deleteLibraryDoc",
+        "parameters": [
+          {
+            "name": "libraryDocId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/ai/llm": {
       "put": {
         "tags": [
@@ -188,6 +233,93 @@
         "responses": {
           "200": {
             "description": "OK"
+          }
+        }
+      }
+    },
+    "/knowledge/library": {
+      "post": {
+        "tags": [
+          "library-controller"
+        ],
+        "operationId": "upsertLibrary",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LibraryUpsertDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "library-controller"
+        ],
+        "operationId": "deleteLibrary",
+        "parameters": [
+          {
+            "name": "libraryId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/knowledge/doc/upload": {
+      "post": {
+        "tags": [
+          "library-controller"
+        ],
+        "operationId": "uploadLibraryDoc",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "file",
+                  "libraryId"
+                ],
+                "type": "object",
+                "properties": {
+                  "libraryId": {
+                    "type": "string"
+                  },
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         }
       }
@@ -963,6 +1095,97 @@
         }
       }
     },
+    "/knowledge/segments": {
+      "get": {
+        "tags": [
+          "library-controller"
+        ],
+        "operationId": "queryLibraryDocSegments",
+        "parameters": [
+          {
+            "name": "libraryDocId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LibraryDocSegment"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/knowledge/libraries": {
+      "get": {
+        "tags": [
+          "library-controller"
+        ],
+        "operationId": "queryLibraries",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Library"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/knowledge/docs": {
+      "get": {
+        "tags": [
+          "library-controller"
+        ],
+        "operationId": "queryLibraryDocs",
+        "parameters": [
+          {
+            "name": "libraryId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LibraryDoc"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/iam/users": {
       "get": {
         "tags": [
@@ -1354,6 +1577,22 @@
           }
         }
       },
+      "DocUpdateDto": {
+        "required": [
+          "enable",
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "enable": {
+            "type": "boolean"
+          }
+        }
+      },
       "LlmVm": {
         "required": [
           "apiKey",
@@ -1418,6 +1657,24 @@
             "format": "int64"
           },
           "name": {
+            "type": "string"
+          }
+        }
+      },
+      "LibraryUpsertDto": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
             "type": "string"
           }
         }
@@ -1786,6 +2043,94 @@
           },
           "isBound": {
             "type": "boolean"
+          }
+        }
+      },
+      "LibraryDocSegment": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "docId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "embeddingId": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "tokenUsage": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "Library": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "createTime": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "JSON": {
+        "type": "object"
+      },
+      "LibraryDoc": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "libId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "identify": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/JSON"
+          },
+          "enable": {
+            "type": "boolean"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "SUCCESS",
+              "INDEXING"
+            ]
+          },
+          "createTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updateTime": {
+            "type": "string",
+            "format": "date-time"
           }
         }
       },
