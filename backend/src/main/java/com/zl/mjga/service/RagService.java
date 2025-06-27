@@ -109,7 +109,7 @@ public class RagService {
   }
 
   @Async
-  public void embeddingAndCreateDocSegment(Long libraryDocId, String objectName) {
+  public void embeddingAndCreateDocSegment(Long libraryId, Long libraryDocId, String objectName) {
     Document document =
         amazonS3DocumentLoader.loadDocument(
             minIoConfig.getDefaultBucket(), objectName, new ApacheTikaDocumentParser());
@@ -123,6 +123,7 @@ public class RagService {
               Response<Embedding> embed = zhipuEmbeddingModel.embed(textSegment);
               Integer tokenUsage = embed.tokenUsage().totalTokenCount();
               Embedding vector = embed.content();
+              textSegment.metadata().put("libraryId", libraryId);
               String embeddingId = zhiPuLibraryEmbeddingStore.add(vector, textSegment);
               LibraryDocSegment libraryDocSegment = new LibraryDocSegment();
               libraryDocSegment.setEmbeddingId(embeddingId);

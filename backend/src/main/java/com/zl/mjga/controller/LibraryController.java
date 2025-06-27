@@ -85,7 +85,7 @@ public class LibraryController {
     Long libraryDocId =
         ragService.createLibraryDocBy(
             Long.valueOf(libraryId), objectName, multipartFile.getOriginalFilename());
-    ragService.embeddingAndCreateDocSegment(libraryDocId, objectName);
+    ragService.embeddingAndCreateDocSegment(Long.valueOf(libraryId), libraryDocId, objectName);
     return objectName;
   }
 }
