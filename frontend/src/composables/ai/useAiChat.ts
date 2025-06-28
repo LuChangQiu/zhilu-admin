@@ -11,13 +11,19 @@ export const useAiChat = () => {
 			isUser: boolean;
 			username: string;
 			command?: string;
+			withLibrary?: boolean;
+			libraryName?: string;
 		}[]
 	>([]);
 	const isLoading = ref(false);
 
 	let currentController: AbortController | null = null;
 
-	const chat = async (message: string) => {
+	const chat = async (
+		message: string,
+		libraryId?: number | null,
+		libraryName?: string,
+	) => {
 		isLoading.value = true;
 		const authStore = useAuthStore();
 		const ctrl = new AbortController();
@@ -27,6 +33,8 @@ export const useAiChat = () => {
 			type: "chat",
 			isUser: false,
 			username: "知路智能体",
+			withLibrary: libraryId !== undefined,
+			libraryName: libraryName,
 		});
 		try {
 			const baseUrl = `${import.meta.env.VITE_BASE_URL}`;
@@ -36,7 +44,11 @@ export const useAiChat = () => {
 					Authorization: authStore.get(),
 					"Content-Type": "application/json",
 				},
-				body: message,
+				body: JSON.stringify({
+					mode: libraryId !== undefined ? "WITH_LIBRARY" : "NORMAL",
+					libraryId: libraryId,
+					message: message,
+				}),
 				signal: ctrl.signal,
 				onmessage(ev) {
 					messages.value[messages.value.length - 1].content += ev.data;

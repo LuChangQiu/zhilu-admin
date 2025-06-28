@@ -1,5 +1,7 @@
 package com.zl.mjga.config.ai;
 
+import static dev.langchain4j.store.embedding.filter.MetadataFilterBuilder.metadataKey;
+
 import com.zl.mjga.component.PromptConfiguration;
 import com.zl.mjga.service.LlmService;
 import dev.langchain4j.community.model.zhipu.ZhipuAiStreamingChatModel;
@@ -72,6 +74,11 @@ public class ChatModelInitializer {
                 .embeddingModel(zhipuEmbeddingModel)
                 .minScore(0.75)
                 .maxResults(5)
+                .dynamicFilter(
+                    query -> {
+                      String libraryId = (String) query.metadata().chatMemoryId();
+                      return metadataKey("libraryId").isEqualTo(libraryId);
+                    })
                 .build())
         .build();
   }

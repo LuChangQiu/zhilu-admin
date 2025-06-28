@@ -8,7 +8,6 @@ import com.zl.mjga.repository.LibraryRepository;
 import com.zl.mjga.service.RagService;
 import com.zl.mjga.service.UploadService;
 import jakarta.validation.Valid;
-
 import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -34,16 +33,16 @@ public class LibraryController {
 
   @GetMapping("/libraries")
   public List<Library> queryLibraries() {
-    return libraryRepository.findAll().stream().sorted(
-            Comparator.comparing(Library::getId).reversed()
-    ).toList();
+    return libraryRepository.findAll().stream()
+        .sorted(Comparator.comparing(Library::getId).reversed())
+        .toList();
   }
 
   @GetMapping("/docs")
   public List<LibraryDoc> queryLibraryDocs(@RequestParam Long libraryId) {
-    return libraryDocRepository.fetchByLibId(libraryId).stream().sorted(
-            Comparator.comparing(LibraryDoc::getId).reversed()
-    ).toList();
+    return libraryDocRepository.fetchByLibId(libraryId).stream()
+        .sorted(Comparator.comparing(LibraryDoc::getId).reversed())
+        .toList();
   }
 
   @GetMapping("/segments")

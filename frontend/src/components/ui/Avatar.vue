@@ -25,7 +25,7 @@ const sizeClass = computed(() => {
 		sm: "w-8 h-8",
 		md: "w-10 h-10",
 		lg: "w-12 h-12",
-		xl: "w-16 h-16"
+		xl: "w-16 h-16",
 	};
 	return sizes[props.size || "md"];
 });

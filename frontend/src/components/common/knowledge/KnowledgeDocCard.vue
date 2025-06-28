@@ -10,7 +10,7 @@
     </template>
     <template #footer-left>
       <span class="text-xs text-gray-500">
-        上传时间: {{ formatDateString(doc.createTime) }}
+        {{ formatDateString(doc.createTime) }}
       </span>
     </template>
     <template #footer-actions>
@@ -20,12 +20,12 @@
 </template>
 
 <script setup lang="ts">
-import CardBase from '@/components/common/CardBase.vue';
-import { KnowledgeStatusBadge } from '@/components/common/knowledge';
+import CardBase from "@/components/common/CardBase.vue";
+import { KnowledgeStatusBadge } from "@/components/common/knowledge";
 import type { LibraryDoc } from "@/types/KnowledgeTypes";
-import { formatDateString } from '@/utils/dateUtil';
+import { formatDateString } from "@/utils/dateUtil";
 
 const props = defineProps<{
-  doc: LibraryDoc;
+	doc: LibraryDoc;
 }>();
 </script>

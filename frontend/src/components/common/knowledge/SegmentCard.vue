@@ -27,11 +27,11 @@
 </template>
 
 <script setup lang="ts">
-import CardBase from '@/components/common/CardBase.vue';
+import CardBase from "@/components/common/CardBase.vue";
 import type { LibraryDocSegment } from "@/types/KnowledgeTypes";
 
 const props = defineProps<{
-  segment: LibraryDocSegment;
-  index: number;
+	segment: LibraryDocSegment;
+	index: number;
 }>();
 </script>

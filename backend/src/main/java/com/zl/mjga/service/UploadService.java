@@ -71,10 +71,6 @@ public class UploadService {
     if (size > 1024 * 1024) {
       throw new BusinessException("知识库文档大小不能超过1MB");
     }
-    String contentType = multipartFile.getContentType();
-    if (!StringUtils.startsWith(contentType, "text/")) {
-      throw new BusinessException("非法的上传文件");
-    }
     minioClient.putObject(
         PutObjectArgs.builder().bucket(minIoConfig.getDefaultBucket()).object(objectName).stream(
                 multipartFile.getInputStream(), size, -1)

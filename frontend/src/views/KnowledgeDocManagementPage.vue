@@ -68,7 +68,7 @@ import { useKnowledgeQuery } from "@/composables/knowledge/useKnowledgeQuery";
 import { useKnowledgeUpsert } from "@/composables/knowledge/useKnowledgeUpsert";
 import useAlertStore from "@/composables/store/useAlertStore";
 import { Routes } from "@/router/constants";
-import { formatDateString } from '@/utils/dateUtil';
+import { formatDateString } from "@/utils/dateUtil";
 
 import type { Library, LibraryDoc } from "@/types/KnowledgeTypes";
 import { DocStatus } from "@/types/KnowledgeTypes";

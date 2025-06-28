@@ -26,9 +26,9 @@ export interface DocQueryParams {
 }
 
 export interface SegmentQueryParams {
-		libraryDocId?: number;
-		docId?: number;
-	}
+	libraryDocId?: number;
+	docId?: number;
+}
 
 export enum DocStatus {
 	SUCCESS = "SUCCESS",

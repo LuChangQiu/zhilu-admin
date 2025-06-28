@@ -28,9 +28,6 @@
     <!-- 空状态 -->
     <div v-else class="flex flex-col items-center justify-center py-10">
       <div class="text-gray-500 text-lg mb-4">暂无分段内容</div>
-      <Button variant="secondary" @click="navigateBack">
-        返回文档列表
-      </Button>
     </div>
   </div>
 </template>
@@ -55,7 +52,8 @@ const libraryId = Number.parseInt(route.params.libraryId as string, 10);
 const docId = Number.parseInt(route.params.docId as string, 10);
 
 // 获取文档信息和分段列表
-const { docs, segments, fetchLibraryDocs, fetchDocSegments } = useKnowledgeQuery();
+const { docs, segments, fetchLibraryDocs, fetchDocSegments } =
+	useKnowledgeQuery();
 const currentDoc = ref<LibraryDoc | undefined>();
 
 // 导航回文档列表

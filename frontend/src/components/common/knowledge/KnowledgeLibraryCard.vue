@@ -21,11 +21,11 @@
 </template>
 
 <script setup lang="ts">
-import CardBase from '@/components/common/CardBase.vue';
+import CardBase from "@/components/common/CardBase.vue";
 import type { Library } from "@/types/KnowledgeTypes";
-import { formatDateString } from '@/utils/dateUtil';
+import { formatDateString } from "@/utils/dateUtil";
 
 const props = defineProps<{
-  library: Library;
+	library: Library;
 }>();
 </script>

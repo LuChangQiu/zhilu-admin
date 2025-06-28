@@ -783,6 +783,8 @@ export interface components {
 		DocUpdateDto: {
 			/** Format: int64 */
 			id: number;
+			/** Format: int64 */
+			libId: number;
 			enable: boolean;
 		};
 		LlmVm: {
@@ -866,6 +868,13 @@ export interface components {
 		SignInDto: {
 			username: string;
 			password: string;
+		};
+		ChatDto: {
+			/** @enum {string} */
+			mode: "NORMAL" | "WITH_LIBRARY";
+			/** Format: int64 */
+			libraryId?: number;
+			message: string;
 		};
 		PageRequestDto: {
 			/** Format: int64 */
@@ -1888,7 +1897,7 @@ export interface operations {
 		};
 		requestBody: {
 			content: {
-				"application/json": string;
+				"application/json": components["schemas"]["ChatDto"];
 			};
 		};
 		responses: {

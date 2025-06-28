@@ -2,6 +2,7 @@ package com.zl.mjga.controller;
 
 import com.zl.mjga.dto.PageRequestDto;
 import com.zl.mjga.dto.PageResponseDto;
+import com.zl.mjga.dto.ai.ChatDto;
 import com.zl.mjga.dto.ai.LlmQueryDto;
 import com.zl.mjga.dto.ai.LlmVm;
 import com.zl.mjga.exception.BusinessException;
@@ -72,9 +73,9 @@ public class AiController {
   }
 
   @PostMapping(value = "/chat", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-  public Flux<String> chat(Principal principal, @RequestBody String userMessage) {
+  public Flux<String> chat(Principal principal, @RequestBody ChatDto chatDto) {
     Sinks.Many<String> sink = Sinks.many().unicast().onBackpressureBuffer();
-    TokenStream chat = aiChatService.chatPrecedenceLlmWith(principal.getName(), userMessage);
+    TokenStream chat = aiChatService.chat(principal.getName(), chatDto);
     chat.onPartialResponse(
             text ->
                 sink.tryEmitNext(

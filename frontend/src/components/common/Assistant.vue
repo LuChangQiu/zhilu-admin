@@ -5,14 +5,18 @@
 		<div class="flex flex-col gap-y-5 flex-1 pb-2">
 			<li v-for="chatElement in messages" :key="chatElement.content"
 				:class="['flex items-start gap-2.5', chatElement.isUser ? 'flex-row-reverse' : 'flex-row']">
-				<Avatar :src="chatElement.isUser ? user.avatar : '/trump.jpg'" size="sm"
+				<Avatar :src="chatElement.isUser ? user.avatar : undefined" size="sm"
 					:alt="chatElement.isUser ? '用户头像' : 'AI头像'" />
 				<div
-					:class="['flex flex-col leading-1.5 p-4 border-gray-200 rounded-e-xl rounded-es-xl max-w-[calc(100%-40px)]', chatElement.isUser ? 'bg-blue-100' : 'bg-gray-100']">
+					:class="['flex flex-col leading-1.5 p-4 border-gray-200 max-w-[calc(100%-40px)]', chatElement.isUser ? 'bg-blue-100 rounded-tl-xl rounded-bl-xl rounded-br-xl' : 'bg-gray-100 rounded-e-xl rounded-es-xl']">
 					<div class="flex items-center space-x-2">
 						<span class="text-sm font-semibold text-gray-900 ">{{ chatElement.username }}</span>
 						<LoadingIcon :textColor="'text-gray-900'"
 							v-if="isLoading && !chatElement.isUser && chatElement.content === ''" />
+						<span v-if="!chatElement.isUser && chatElement.withLibrary"
+							class="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full">
+							{{ chatElement.libraryName }}
+						</span>
 					</div>
 					<div>
 						<div class="markdown-content markdown-body text-base font-normal py-2.5 text-gray-900 break-words"
@@ -34,14 +38,24 @@
 		</div>
 
 		<form class="sticky">
-			<button @click.prevent="clearConversation"
-				class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 
-				overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 ">
-				<span
-					class="relative px-3 py-2 text-xs font-medium transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-transparent">
-					开启新对话
-				</span>
-			</button>
+			<div class="flex items-center justify-between gap-2 mb-2">
+				<button @click.prevent="clearConversation"
+					class="relative inline-flex items-center justify-center p-0.5 
+					overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 ">
+					<span
+						class="relative px-3 py-2 text-xs font-medium transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-transparent">
+						开启新对话
+					</span>
+				</button>
+
+				<select v-if="commandMode === 'chat'" v-model="selectedLibraryId"
+					class="bg-white border border-gray-300 text-gray-900 text-xs rounded-lg py-2 px-2 flex-1 max-w-48">
+					<option :value="undefined">不使用知识库</option>
+					<option v-for="library in libraries" :key="library.id" :value="library.id">
+						{{ library.name }}
+					</option>
+				</select>
+			</div>
 			<div class="w-full border border-gray-200 rounded-lg bg-gray-50">
 				<div class="px-4 py-2 bg-white rounded-t-lg">
 					<label for="comment" class="sr-only"></label>
@@ -51,7 +65,7 @@
 						" required></textarea>
 				</div>
 				<div class="flex justify-between px-2 py-2 border-t border-gray-200">
-					<select id="countries" v-model="commandMode"
+					<select id="commandMode" v-model="commandMode"
 						class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg block">
 						<option selected :value="'execute'">指令模式</option>
 						<option :value="'search'">搜索模式</option>
@@ -62,7 +76,6 @@
 						{{ isLoading ? '中止' : '发送' }}
 					</TableButton>
 				</div>
-
 			</div>
 		</form>
 	</div>
@@ -144,6 +157,9 @@ import PositionDeleteModal from "@/components/modals/ConfirmationDialog.vue";
 import PositionFormDialog from "@/components/modals/PositionFormDialog.vue";
 import RoleDeleteModal from "@/components/modals/ConfirmationDialog.vue";
 import RoleFormDialog from "@/components/modals/RoleFormDialog.vue";
+import { useKnowledgeQuery } from "@/composables/knowledge/useKnowledgeQuery";
+import { UserFormDialog } from "../modals";
+import { computed } from "vue";
 
 const {
 	messages,
@@ -190,6 +206,15 @@ const actionExcStore = useActionExcStore();
 const { availableDepartments, fetchAvailableDepartments } =
 	useDepartmentQuery();
 
+// 知识库相关
+const { libraries, fetchLibraries } = useKnowledgeQuery();
+const selectedLibraryId = ref<number | null | undefined>(undefined);
+const selectedLibraryName = computed(() => {
+	return libraries.value.find(
+		(library) => library.id === selectedLibraryId.value,
+	)?.name;
+});
+
 const commandPlaceholderMap: Record<string, string> = {
 	chat: "随便聊聊",
 	search: "输入「创建用户、删除部门、创建岗位、创建角色、创建权限」试试看",
@@ -234,31 +259,6 @@ const renderMarkdown = (content: string | undefined) => {
 //   console.log('原始消息:', newVal[newVal.length - 1]);
 //   console.log('处理后HTML:', renderMarkdown(newVal[newVal.length - 1]));
 // }, { deep: true });
-
-const handleDeleteUserClick = (input: string) => {
-	currentDeleteUsername.value = input;
-	userDeleteModal.value?.show();
-};
-
-const handleDeleteDepartmentClick = (input: string) => {
-	currentDeleteDepartmentName.value = input;
-	departmentDeleteModal.value?.show();
-};
-
-const handleDeletePositionClick = (input: string) => {
-	currentDeletePositionName.value = input;
-	positionDeleteModal.value?.show();
-};
-
-const handleDeleteRoleClick = (input: string) => {
-	currentDeleteRoleName.value = input;
-	roleDeleteModal.value?.show();
-};
-
-const handleDeletePermissionClick = (input: string) => {
-	currentDeletePermissionName.value = input;
-	permissionDeleteModal.value?.show();
-};
 
 const handleUpsertUserSubmit = async (data: UserUpsertSubmitModel) => {
 	await userUpsert.upsertUser(data);
@@ -402,7 +402,12 @@ const chatByMode = async (
 		await executeAction(message);
 		actionExcStore.notify(true);
 	} else {
-		await chat(message);
+		// 聊天模式，判断是否使用知识库
+		if (selectedLibraryId.value !== undefined) {
+			await chat(message, selectedLibraryId.value);
+		} else {
+			await chat(message);
+		}
 	}
 };
 
@@ -427,6 +432,9 @@ onUnmounted(() => {
 
 onMounted(async () => {
 	initFlowbite();
+	// 加载知识库列表
+	await fetchLibraries();
+
 	const $upsertModalElement: HTMLElement | null =
 		document.querySelector("#user-upsert-modal");
 	if ($upsertModalElement) {
