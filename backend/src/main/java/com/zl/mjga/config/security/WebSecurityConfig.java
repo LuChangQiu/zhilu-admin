@@ -41,7 +41,6 @@ public class WebSecurityConfig {
         new AntPathRequestMatcher("/auth/sign-up", HttpMethod.POST.name()),
         new AntPathRequestMatcher("/v3/api-docs/**", HttpMethod.GET.name()),
         new AntPathRequestMatcher("/swagger-ui/**", HttpMethod.GET.name()),
-        new AntPathRequestMatcher("/ai/library/upload", HttpMethod.POST.name()),
         new AntPathRequestMatcher("/swagger-ui.html", HttpMethod.GET.name()),
         new AntPathRequestMatcher("/error"));
   }
