@@ -5,63 +5,36 @@
       <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl">{{ currentLibrary?.name || '知识库' }} - 文档管理</h1>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      <div v-for="doc in docs" :key="doc.id"
-        class="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow">
-        <div class="p-4">
-          <div class="flex justify-between items-start">
-            <div>
-              <h5 class="text-xl font-semibold tracking-tight text-gray-900 mb-1 truncate">{{ doc.name }}</h5>
-              <div class="flex items-center mb-2">
-                <span :class="`inline-flex items-center px-2 py-1 text-xs font-medium rounded-full ${
-                    doc.status === DocStatus.SUCCESS ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
-                  } mr-2`">
-                  {{ doc.status === DocStatus.SUCCESS ? '解析完成' : '解析中' }}
-                </span>
-                <span :class="`inline-flex items-center px-2 py-1 text-xs font-medium rounded-full ${
-                    doc.enable ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'
-                  }`">
-                  {{ doc.enable ? '已启用' : '已禁用' }}
-                </span>
-              </div>
+    <!-- 文档列表 -->
+    <div v-if="docs.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <KnowledgeDocCard v-for="doc in docs" :key="doc.id" :doc="doc">
+        <template #toggle-switch>
+          <label class="inline-flex items-center mb-5"
+            :class="!doc.enable ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'">
+            <input type="checkbox" class="sr-only peer" :checked="doc.enable" @change="handleToggleDocStatus(doc)">
+            <div
+              class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
             </div>
-            <div class="flex space-x-2">
-              <label class="inline-flex items-center mb-5"
-                :class="!doc.enable ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'">
-                <input type="checkbox" class="sr-only peer" :checked="doc.enable" @change="handleToggleDocStatus(doc)">
-                <div
-                  class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
-                </div>
-              </label>
-
-            </div>
-          </div>
-          <!-- <div class="text-sm text-gray-600 mb-3">
-            <div class="truncate">{{ doc.path || '无' }}</div>
-          </div> -->
-          <div class="flex justify-between items-center">
-            <span class="text-xs text-gray-500">
-              上传时间: {{ formatDate(doc.createTime) }}
-            </span>
-            <div class="flex space-x-2">
-              <button @click="navigateToDocSegments(doc)" :class="
-                ['text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-xs px-3 py-content',
-                doc.status !== DocStatus.SUCCESS ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer']"
-                :disabled="doc.status !== DocStatus.SUCCESS">
-                查看内容
-              </button>
-              <button @click="handleDeleteDoc(doc)"
-                class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-xs px-3 py-1.5">
-                删除
-              </button>
-            </div>
-
-          </div>
-        </div>
-      </div>
+          </label>
+        </template>
+        <template #actions>
+          <button @click="navigateToDocSegments(doc)" :class="
+            ['text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-xs px-3 py-content',
+            doc.status !== DocStatus.SUCCESS ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer']"
+            :disabled="doc.status !== DocStatus.SUCCESS">
+            查看内容
+          </button>
+          <button @click="handleDeleteDoc(doc)"
+            class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-xs px-3 py-1.5">
+            删除
+          </button>
+        </template>
+      </KnowledgeDocCard>
     </div>
-    <div class="flex flex-col items-center justify-center py-10">
-      <div v-if="docs.length === 0" class="text-gray-500 text-lg mb-4">暂无文档</div>
+
+    <!-- 空状态 -->
+    <div v-else class="flex flex-col items-center justify-center py-10">
+      <div class="text-gray-500 text-lg mb-4">暂无文档</div>
       <div>
         <input ref="fileInputRef" class="hidden" id="doc_file_input" type="file" @change="handleFileChange">
         <TableButton variant="primary" size="md" @click="triggerFileInput">
@@ -84,11 +57,11 @@
 </template>
 
 <script setup lang="ts">
-import dayjs from "dayjs";
 import { Modal, type ModalInterface, initFlowbite } from "flowbite";
 import { onMounted, ref, watchEffect } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
+import { KnowledgeDocCard, KnowledgeStatusBadge } from "@/components/common/knowledge";
 import { PlusIcon } from "@/components/icons";
 import Breadcrumbs from "@/components/layout/Breadcrumbs.vue";
 import ConfirmationDialog from "@/components/modals/ConfirmationDialog.vue";
@@ -98,6 +71,7 @@ import { useKnowledgeQuery } from "@/composables/knowledge/useKnowledgeQuery";
 import { useKnowledgeUpsert } from "@/composables/knowledge/useKnowledgeUpsert";
 import useAlertStore from "@/composables/store/useAlertStore";
 import { Routes } from "@/router/constants";
+import { formatDateString } from '@/utils/dateUtil';
 
 import type { Library, LibraryDoc } from "@/types/KnowledgeTypes";
 import { DocStatus } from "@/types/KnowledgeTypes";
@@ -128,12 +102,6 @@ const selectedDoc = ref<LibraryDoc | undefined>();
 
 // 提示store
 const alertStore = useAlertStore();
-
-// 格式化日期
-const formatDate = (dateString?: string) => {
-	if (!dateString) return "未知";
-	return dayjs(dateString).format("YYYY-MM-DD HH:mm");
-};
 
 // 触发文件选择
 const triggerFileInput = () => {
