@@ -1,56 +1,53 @@
 <template>
-  <div class="px-2 sm:px-4 pt-6 sm:rounded-lg">
-    <Breadcrumbs :names="['知识库管理', '文档管理']" :routes="[Routes.KNOWLEDGEVIEW.fullPath()]" />
-    <div class="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between">
-      <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl">{{ currentLibrary?.name || '知识库' }} - 文档管理</h1>
-    </div>
+	<div class="px-2 sm:px-4 pt-6 sm:rounded-lg">
+		<Breadcrumbs :names="['知识库管理', '文档管理']" :routes="[Routes.KNOWLEDGEVIEW.fullPath()]" />
+		<div class="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between">
+			<h1 class="text-xl font-semibold text-gray-900 sm:text-2xl">{{ currentLibrary?.name || '知识库' }} - 文档管理</h1>
+		</div>
 
-    <!-- 文档列表 -->
-    <div v-if="docs.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      <KnowledgeDocCard v-for="doc in docs" :key="doc.id" :doc="doc">
-        <template #toggle-switch>
-          <label class="inline-flex items-center mb-5"
-            :class="!doc.enable ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'">
-            <input type="checkbox" class="sr-only peer" :checked="doc.enable" @change="handleToggleDocStatus(doc)">
-            <div
-              class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
-            </div>
-          </label>
-        </template>
-        <template #actions>
-          <button @click="navigateToDocSegments(doc)" :class="
-            ['text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-xs px-3 py-content',
-            doc.status !== DocStatus.SUCCESS ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer']"
-            :disabled="doc.status !== DocStatus.SUCCESS">
-            查看内容
-          </button>
-          <button @click="handleDeleteDoc(doc)"
-            class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-xs px-3 py-1.5">
-            删除
-          </button>
-        </template>
-      </KnowledgeDocCard>
-    </div>
+		<!-- 文档列表 -->
+		<div v-if="docs.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+			<KnowledgeDocCard v-for="doc in docs" :key="doc.id" :doc="doc">
+				<template #toggle-switch>
+					<label class="inline-flex items-center mb-5"
+						:class="!doc.enable ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'">
+						<input type="checkbox" class="sr-only peer" :checked="doc.enable" @change="handleToggleDocStatus(doc)">
+						<div
+							class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:w-5 after:h-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
+						</div>
+					</label>
+				</template>
+				<template #actions>
+					<Button variant="primary" size="xs" @click="navigateToDocSegments(doc)"
+						:disabled="doc.status !== DocStatus.SUCCESS">
+						查看内容
+					</Button>
+					<Button variant="danger" size="xs" @click="handleDeleteDoc(doc)">
+						删除
+					</Button>
+				</template>
+			</KnowledgeDocCard>
+		</div>
 
-    <!-- 空状态 -->
-    <div v-else class="flex flex-col items-center justify-center py-10">
-      <div class="text-gray-500 text-lg mb-4">暂无文档</div>
-      <div>
-        <input ref="fileInputRef" class="hidden" id="doc_file_input" type="file" @change="handleFileChange">
-        <TableButton variant="primary" size="md" @click="triggerFileInput">
-          <template #icon>
-            <PlusIcon class="w-4 h-4" />
-          </template>
-          上传文档
-        </TableButton>
-      </div>
-    </div>
+		<!-- 空状态 -->
+		<div v-else class="flex flex-col items-center justify-center py-10">
+			<div class="text-gray-500 text-lg mb-4">暂无文档</div>
+			<div>
+				<input ref="fileInputRef" class="hidden" id="doc_file_input" type="file" @change="handleFileChange">
+				<Button variant="primary" @click="triggerFileInput">
+					<template #icon>
+						<PlusIcon class="w-4 h-4" />
+					</template>
+					上传文档
+				</Button>
+			</div>
+		</div>
 
-  </div>
+	</div>
 
-  <!-- 删除确认对话框 -->
-  <ConfirmationDialog :id="'doc-delete-modal'" :title="`确定删除文档 '${selectedDoc?.name || ''}' 吗？`"
-    content="删除后将无法恢复，且其中的所有分段内容也将被删除。" :closeModal="() => {
+	<!-- 删除确认对话框 -->
+	<ConfirmationDialog :id="'doc-delete-modal'" :title="`确定删除文档 '${selectedDoc?.name || ''}' 吗？`"
+		content="删除后将无法恢复，且其中的所有分段内容也将被删除。" :closeModal="() => {
       docDeleteModal?.hide();
     }" :onSubmit="handleDocDeleteSubmit" />
 
@@ -61,11 +58,11 @@ import { Modal, type ModalInterface, initFlowbite } from "flowbite";
 import { onMounted, ref, watchEffect } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
-import { KnowledgeDocCard, KnowledgeStatusBadge } from "@/components/common/knowledge";
+import { KnowledgeDocCard } from "@/components/common/knowledge";
 import { PlusIcon } from "@/components/icons";
 import Breadcrumbs from "@/components/layout/Breadcrumbs.vue";
 import ConfirmationDialog from "@/components/modals/ConfirmationDialog.vue";
-import TableButton from "@/components/tables/TableButton.vue";
+import { Button } from "@/components/ui";
 
 import { useKnowledgeQuery } from "@/composables/knowledge/useKnowledgeQuery";
 import { useKnowledgeUpsert } from "@/composables/knowledge/useKnowledgeUpsert";

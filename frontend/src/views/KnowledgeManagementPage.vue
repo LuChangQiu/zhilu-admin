@@ -27,10 +27,9 @@
           </button>
         </template>
         <template #actions-bottom>
-          <button @click="navigateToLibraryDocs(library)"
-            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-xs px-3 py-1.5">
+          <Button variant="primary" size="xs" @click="navigateToLibraryDocs(library)">
             查看知识库
-          </button>
+          </Button>
         </template>
       </KnowledgeLibraryCard>
     </div>
@@ -39,10 +38,9 @@
     <div v-else class="flex flex-col items-center justify-center py-10">
       <div class="text-gray-500 text-lg mb-4">暂无知识库</div>
       <div>
-        <button @click="handleCreateLibraryClick"
-          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none">
+        <Button variant="primary" @click="handleCreateLibraryClick">
           创建知识库
-        </button>
+        </Button>
       </div>
     </div>
   </div>
@@ -69,6 +67,7 @@ import { KnowledgeLibraryCard } from "@/components/common/knowledge";
 import Breadcrumbs from "@/components/layout/Breadcrumbs.vue";
 import ConfirmationDialog from "@/components/modals/ConfirmationDialog.vue";
 import LibraryFormDialog from "@/components/modals/LibraryFormDialog.vue";
+import { Button } from "@/components/ui";
 
 import { useKnowledgeQuery } from "@/composables/knowledge/useKnowledgeQuery";
 import { useKnowledgeUpsert } from "@/composables/knowledge/useKnowledgeUpsert";
