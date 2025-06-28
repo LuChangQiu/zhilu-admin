@@ -30,17 +30,6 @@ export const useKnowledgeQuery = () => {
 		docs.value = data || [];
 	};
 
-	const fetchDocById = async (docId: number) => {
-		const { data } = await client.GET("/knowledge/docs", {
-			params: {
-				query: {},
-			},
-		});
-		if (data && Array.isArray(data)) {
-			doc.value = data.find((item) => item.id === docId) || null;
-		}
-	};
-
 	const fetchDocSegments = async (params: SegmentQueryParams) => {
 		const { data } = await client.GET("/knowledge/segments", {
 			params: {
@@ -58,7 +47,6 @@ export const useKnowledgeQuery = () => {
 		docs,
 		fetchLibraryDocs,
 		doc,
-		fetchDocById,
 		segments,
 		fetchDocSegments,
 	};

@@ -78,14 +78,14 @@ const handleSubmit = async () => {
 	} catch (error) {
 		if (error instanceof z.ZodError) {
 			alertStore.showAlert({
-				type: "error",
-				message: error.errors[0].message,
+				level: "error",
+				content: error.errors[0].message,
 			});
 		} else {
 			console.error("表单提交错误:", error);
 			alertStore.showAlert({
-				type: "error",
-				message: "表单提交失败，请重试",
+				level: "error",
+				content: "表单提交失败，请重试",
 			});
 		}
 	}
