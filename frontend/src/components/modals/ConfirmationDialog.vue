@@ -9,25 +9,33 @@
       <h3 class="mb-4 text-base sm:text-lg font-medium text-gray-800">
         {{ title }}
       </h3>
+      <p v-if="content" class="mb-4 text-sm text-gray-500">{{ content }}</p>
       <div class="flex justify-center items-center space-x-3 sm:space-x-4">
-        <button type="button" @click="onSubmit"
-          class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center min-w-[80px]">
+        <Button variant="danger" @click="onSubmit">
           是
-        </button>
-        <button type="button" @click="closeModal"
-          class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 min-w-[80px]">否</button>
+        </Button>
+        <Button variant="secondary" @click="closeModal">
+          否
+        </Button>
       </div>
     </div>
   </BaseDialog>
 </template>
 
 <script setup lang="ts">
+import { Button } from "@/components/ui";
 import BaseDialog from "./BaseDialog.vue";
 
-const { title, id, closeModal, onSubmit } = defineProps<{
+const props = defineProps<{
+	/** 对话框标题 */
 	title: string;
+	/** 对话框内容 */
+	content?: string;
+	/** 对话框ID */
 	id: string;
+	/** 关闭对话框的回调函数 */
 	closeModal: () => void;
+	/** 确认操作的回调函数 */
 	onSubmit: () => Promise<void>;
 }>();
 </script>

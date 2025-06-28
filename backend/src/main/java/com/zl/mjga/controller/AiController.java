@@ -2,13 +2,14 @@ package com.zl.mjga.controller;
 
 import com.zl.mjga.dto.PageRequestDto;
 import com.zl.mjga.dto.PageResponseDto;
+import com.zl.mjga.dto.ai.ChatDto;
 import com.zl.mjga.dto.ai.LlmQueryDto;
 import com.zl.mjga.dto.ai.LlmVm;
 import com.zl.mjga.exception.BusinessException;
 import com.zl.mjga.repository.*;
 import com.zl.mjga.service.AiChatService;
-import com.zl.mjga.service.EmbeddingService;
 import com.zl.mjga.service.LlmService;
+import com.zl.mjga.service.RagService;
 import dev.langchain4j.service.TokenStream;
 import jakarta.validation.Valid;
 import java.security.Principal;
@@ -35,7 +36,7 @@ public class AiController {
 
   private final AiChatService aiChatService;
   private final LlmService llmService;
-  private final EmbeddingService embeddingService;
+  private final RagService ragService;
   private final UserRepository userRepository;
   private final DepartmentRepository departmentRepository;
   private final PositionRepository positionRepository;
@@ -72,9 +73,9 @@ public class AiController {
   }
 
   @PostMapping(value = "/chat", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-  public Flux<String> chat(Principal principal, @RequestBody String userMessage) {
+  public Flux<String> chat(Principal principal, @RequestBody ChatDto chatDto) {
     Sinks.Many<String> sink = Sinks.many().unicast().onBackpressureBuffer();
-    TokenStream chat = aiChatService.chatPrecedenceLlmWith(principal.getName(), userMessage);
+    TokenStream chat = aiChatService.chat(principal.getName(), chatDto);
     chat.onPartialResponse(
             text ->
                 sink.tryEmitNext(
@@ -109,7 +110,7 @@ public class AiController {
     if (!aiLlmConfig.getEnable()) {
       throw new BusinessException("命令模型未启用，请开启后再试。");
     }
-    return embeddingService.searchAction(message);
+    return ragService.searchAction(message);
   }
 
   @PreAuthorize("hasAuthority(T(com.zl.mjga.model.urp.EPermission).WRITE_USER_ROLE_PERMISSION)")

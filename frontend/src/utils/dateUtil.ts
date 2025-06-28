@@ -13,4 +13,9 @@ const formatDate = (date?: Date) => {
 	return dayjs(date).format("YYYY-MM-DDTHH:mm:ss.SSSZ");
 };
 
-export { dayjs, formatDate };
+const formatDateString = (dateString?: string, format = "YYYY-MM-DD HH:mm") => {
+	if (!dateString) return "未知";
+	return dayjs(dateString).format(format);
+};
+
+export { dayjs, formatDate, formatDateString };

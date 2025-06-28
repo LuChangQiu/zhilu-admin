@@ -15,7 +15,7 @@ const routes: RouteRecordRaw[] = [
 		path: Routes.HOME.path,
 		name: Routes.HOME.name,
 		redirect: {
-			path: `${Routes.DASHBOARD.path}/${Routes.USERVIEW.path}`,
+			path: Routes.USERVIEW.fullPath(),
 		},
 	},
 ];
@@ -27,7 +27,7 @@ const router = createRouter({
 
 router.onError((err) => {
 	console.error("router err:", err);
-	router.push(Routes.USERVIEW.name);
+	router.push(Routes.USERVIEW.fullPath());
 	return false;
 });
 

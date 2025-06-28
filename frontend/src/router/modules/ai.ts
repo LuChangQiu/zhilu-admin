@@ -11,6 +11,30 @@ const aiRoutes: RouteRecordRaw[] = [
 			hasPermission: EPermission.READ_LLM_CONFIG_PERMISSION,
 		},
 	},
+	{
+		path: Routes.KNOWLEDGEVIEW.path,
+		name: Routes.KNOWLEDGEVIEW.name,
+		component: () => import("@/views/KnowledgeManagementPage.vue"),
+		meta: {
+			requiresAuth: true,
+		},
+	},
+	{
+		path: Routes.KNOWLEDGEDOCVIEW.path,
+		name: Routes.KNOWLEDGEDOCVIEW.name,
+		component: () => import("@/views/KnowledgeDocManagementPage.vue"),
+		meta: {
+			requiresAuth: true,
+		},
+	},
+	{
+		path: Routes.KNOWLEDGESEGMENTSVIEW.path,
+		name: Routes.KNOWLEDGESEGMENTSVIEW.name,
+		component: () => import("@/views/KnowledgeSegmentsPage.vue"),
+		meta: {
+			requiresAuth: true,
+		},
+	},
 ];
 
 export default aiRoutes;

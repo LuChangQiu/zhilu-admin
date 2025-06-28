@@ -1,6 +1,6 @@
 <template>
   <div class="px-2 sm:px-4 pt-6 sm:rounded-lg">
-    <div class="mb-4 col-span-full">
+    <div class="mb-4">
       <Breadcrumbs :names="['角色管理']" />
       <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl">角色管理</h1>
     </div>

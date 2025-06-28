@@ -2,6 +2,7 @@ package com.zl.mjga.service;
 
 import com.zl.mjga.config.ai.AiChatAssistant;
 import com.zl.mjga.config.ai.SystemToolAssistant;
+import com.zl.mjga.dto.ai.ChatDto;
 import com.zl.mjga.exception.BusinessException;
 import dev.langchain4j.service.TokenStream;
 import java.util.Optional;
@@ -39,8 +40,20 @@ public class AiChatService {
     };
   }
 
-  public TokenStream chatPrecedenceLlmWith(String sessionIdentifier, String userMessage) {
+  public TokenStream chat(String sessionIdentifier, ChatDto chatDto) {
+    return switch (chatDto.mode()) {
+      case NORMAL -> chatWithPrecedenceLlm(sessionIdentifier, chatDto);
+      case WITH_LIBRARY -> chatWithLibrary(chatDto.libraryId(), chatDto);
+    };
+  }
+
+  public TokenStream chatWithLibrary(Long libraryId, ChatDto chatDto) {
+    return zhiPuChatAssistant.chat(String.valueOf(libraryId), chatDto.message());
+  }
+
+  public TokenStream chatWithPrecedenceLlm(String sessionIdentifier, ChatDto chatDto) {
     LlmCodeEnum code = getPrecedenceLlmCode();
+    String userMessage = chatDto.message();
     return switch (code) {
       case ZHI_PU -> zhiPuChatAssistant.chat(sessionIdentifier, userMessage);
       case DEEP_SEEK -> deepSeekChatAssistant.chat(sessionIdentifier, userMessage);

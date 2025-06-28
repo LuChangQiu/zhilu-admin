@@ -35,6 +35,7 @@ import { RouterLink, useRoute } from "vue-router";
 
 import {
 	DepartmentIcon,
+	KnowledgeIcon,
 	LlmConfigIcon,
 	PermissionIcon,
 	PositionIcon,
@@ -112,6 +113,11 @@ const menuItems = [
 		title: "大模型管理",
 		path: Routes.LLMCONFIGVIEW.fullPath(),
 		icon: LlmConfigIcon,
+	},
+	{
+		title: "知识库管理",
+		path: Routes.KNOWLEDGEVIEW.fullPath(),
+		icon: KnowledgeIcon,
 	},
 ];
 
