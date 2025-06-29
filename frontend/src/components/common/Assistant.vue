@@ -404,7 +404,7 @@ const chatByMode = async (
 	} else {
 		// 聊天模式，判断是否使用知识库
 		if (selectedLibraryId.value !== undefined) {
-			await chat(message, selectedLibraryId.value);
+			await chat(message, selectedLibraryId.value, selectedLibraryName.value);
 		} else {
 			await chat(message);
 		}
