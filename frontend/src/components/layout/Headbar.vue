@@ -15,7 +15,7 @@
           </button>
           <a href="https://github.com/ccmjga/zhilu-admin" target="_blank" class="flex items-center ms-2 md:me-24 ">
             <img class="me-3" src="/logo.svg" alt="logo">
-            <span class="self-center text-lg sm:text-xl md:text-2xl font-semibold whitespace-nowrap">知路后台管理</span>
+            <span class="self-center text-lg sm:text-xl md:text-2xl font-semibold whitespace-nowrap">知路 AI 后台管理</span>
           </a>
         </div>
         <div class="flex items-center space-x-2 sm:space-x-3">
