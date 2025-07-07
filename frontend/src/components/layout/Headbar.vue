@@ -42,7 +42,7 @@
                 <Avatar :src="user.avatar" size="sm" />
               </button>
             </div>
-            <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-sm shadow-sm  "
+            <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-sm shadow-sm"
               id="dropdown-user">
               <div class="px-4 py-3" role="none">
                 <p class="text-sm font-medium text-gray-900 truncate " role="none">

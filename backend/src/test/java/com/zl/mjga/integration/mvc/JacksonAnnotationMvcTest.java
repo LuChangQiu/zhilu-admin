@@ -16,6 +16,7 @@ import com.zl.mjga.repository.PermissionRepository;
 import com.zl.mjga.repository.RoleRepository;
 import com.zl.mjga.repository.UserRepository;
 import com.zl.mjga.service.IdentityAccessService;
+import com.zl.mjga.service.UploadService;
 import io.minio.MinioClient;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -38,6 +39,7 @@ public class JacksonAnnotationMvcTest {
   @MockBean private PermissionRepository permissionRepository;
   @MockBean private MinioClient minioClient;
   @MockBean private MinIoConfig minIoConfig;
+  @MockBean private UploadService uploadService;
 
   @Test
   @WithMockUser

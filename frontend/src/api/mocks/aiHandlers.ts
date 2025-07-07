@@ -45,4 +45,30 @@ export default [
 			message: "Llm updated successfully",
 		});
 	}),
+	http.post("/ai/chat/refresh", () => {
+		return HttpResponse.json({
+			success: true,
+			message: "Conversation cleared successfully",
+		});
+	}),
+	http.post("/ai/action/execute", () => {
+		const response = new HttpResponse(`data: ${faker.lorem.paragraph()}\n\n`, {
+			headers: {
+				"Content-Type": "text/event-stream",
+			},
+		});
+		return response;
+	}),
+	http.delete("/ai/action/department", () => {
+		return HttpResponse.json({ success: true });
+	}),
+	http.delete("/ai/action/position", () => {
+		return HttpResponse.json({ success: true });
+	}),
+	http.delete("/ai/action/role", () => {
+		return HttpResponse.json({ success: true });
+	}),
+	http.delete("/ai/action/permission", () => {
+		return HttpResponse.json({ success: true });
+	}),
 ];

@@ -7,6 +7,8 @@ import userHandlers from "./iamHandlers";
 import departmentHandlers from "./departmentHandlers";
 import positionHandlers from "./positionHandlers";
 import aiHandlers from "./aiHandlers";
+import knowledgeHandlers from "./knowledgeHandlers";
+
 export const worker = setupWorker(
 	...userHandlers,
 	...authHandlers,
@@ -16,4 +18,5 @@ export const worker = setupWorker(
 	...departmentHandlers,
 	...positionHandlers,
 	...aiHandlers,
+	...knowledgeHandlers,
 );

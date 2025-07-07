@@ -20,6 +20,7 @@ import com.zl.mjga.repository.RoleRepository;
 import com.zl.mjga.repository.UserRepository;
 import com.zl.mjga.service.IdentityAccessService;
 import com.zl.mjga.service.SignService;
+import com.zl.mjga.service.UploadService;
 import io.minio.MinioClient;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.Collections;
@@ -53,6 +54,7 @@ public class AuthenticationAndAuthorityTest {
   @MockBean private PermissionRepository permissionRepository;
   @MockBean private MinioClient minioClient;
   @MockBean private MinIoConfig minIoConfig;
+  @MockBean private UploadService uploadService;
 
   @Test
   public void givenRequestOnPublicService_shouldSucceedWith200() throws Exception {
