@@ -1,13 +1,14 @@
 import { setupWorker } from "msw/browser";
-import authHandlers from "./authHandlers";
-import jobHandlers from "./schedulerHandlers";
-import permissionHandlers from "./permissionHandlers";
-import roleHandlers from "./roleHandlers";
-import userHandlers from "./iamHandlers";
-import departmentHandlers from "./departmentHandlers";
-import positionHandlers from "./positionHandlers";
 import aiHandlers from "./aiHandlers";
+import aopLogHandlers from "./aopLogHandlers";
+import authHandlers from "./authHandlers";
+import departmentHandlers from "./departmentHandlers";
+import userHandlers from "./iamHandlers";
 import knowledgeHandlers from "./knowledgeHandlers";
+import permissionHandlers from "./permissionHandlers";
+import positionHandlers from "./positionHandlers";
+import roleHandlers from "./roleHandlers";
+import jobHandlers from "./schedulerHandlers";
 
 export const worker = setupWorker(
 	...userHandlers,
@@ -19,4 +20,5 @@ export const worker = setupWorker(
 	...positionHandlers,
 	...aiHandlers,
 	...knowledgeHandlers,
+	...aopLogHandlers,
 );

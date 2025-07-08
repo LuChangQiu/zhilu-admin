@@ -4,2369 +4,2610 @@
  */
 
 export interface paths {
-	"/scheduler/job/update": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put: operations["updateJob"];
-		post?: never;
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/knowledge/doc": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put: operations["updateLibraryDoc"];
-		post?: never;
-		delete: operations["deleteLibraryDoc"];
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/ai/llm": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put: operations["updateLlm"];
-		post?: never;
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/scheduler/trigger/resume": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post: operations["resumeTrigger"];
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/scheduler/trigger/pause": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post: operations["pauseTrigger"];
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/scheduler/job/trigger": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post: operations["triggerJob"];
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/position": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post: operations["upsertPosition"];
-		delete: operations["deletePosition"];
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/knowledge/library": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post: operations["upsertLibrary"];
-		delete: operations["deleteLibrary"];
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/knowledge/doc/upload": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post: operations["uploadLibraryDoc"];
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/iam/user": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get: operations["queryUserWithRolePermission"];
-		put?: never;
-		post: operations["upsertUser"];
-		delete: operations["deleteUser"];
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/iam/role": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get: operations["queryRoleWithPermission"];
-		put?: never;
-		post: operations["upsertRole"];
-		delete: operations["deleteRole"];
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/iam/role/unbind": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post: operations["unBindRoleBy"];
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/iam/role/bind": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post: operations["bindRoleBy"];
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/iam/position/unbind": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post: operations["unBindPositionBy"];
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/iam/position/bind": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post: operations["bindPositionBy"];
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/iam/permission": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post: operations["upsertPermission"];
-		delete: operations["deletePermission"];
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/iam/permission/unbind": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post: operations["unBindPermissionBy"];
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/iam/permission/bind": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post: operations["bindPermissionBy"];
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/iam/me": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get: operations["currentUser"];
-		put?: never;
-		post: operations["upsertMe"];
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/iam/department/unbind": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post: operations["unBindDepartmentBy"];
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/iam/department/bind": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post: operations["bindDepartmentBy"];
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/iam/avatar/upload": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post: operations["uploadAvatar"];
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/department": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post: operations["upsertDepartment"];
-		delete: operations["deleteDepartment"];
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/auth/sign-up": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post: operations["signUp"];
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/auth/sign-out": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post: operations["signOut"];
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/auth/sign-in": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post: operations["signIn"];
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/ai/chat": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post: operations["chat"];
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/ai/chat/refresh": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post: operations["createNewConversation"];
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/ai/action/search": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post: operations["searchAction"];
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/ai/action/execute": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post: operations["actionExecute"];
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/scheduler/page-query": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get: operations["pageQuery"];
-		put?: never;
-		post?: never;
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/position/query": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get: operations["queryPositions"];
-		put?: never;
-		post?: never;
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/position/page-query": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get: operations["pageQueryPositions"];
-		put?: never;
-		post?: never;
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/knowledge/segments": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get: operations["queryLibraryDocSegments"];
-		put?: never;
-		post?: never;
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/knowledge/libraries": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get: operations["queryLibraries"];
-		put?: never;
-		post?: never;
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/knowledge/docs": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get: operations["queryLibraryDocs"];
-		put?: never;
-		post?: never;
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/iam/users": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get: operations["queryUsers"];
-		put?: never;
-		post?: never;
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/iam/roles": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get: operations["queryRoles"];
-		put?: never;
-		post?: never;
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/iam/permissions": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get: operations["queryPermissions"];
-		put?: never;
-		post?: never;
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/department/query-sub": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get: operations["querySubDepartment"];
-		put?: never;
-		post?: never;
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/department/query-available": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get: operations["queryAvailableParentDepartmentsBy"];
-		put?: never;
-		post?: never;
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/department/page-query": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get: operations["pageQueryDepartments"];
-		put?: never;
-		post?: never;
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/ai/llm/page-query": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get: operations["pageQueryLlm"];
-		put?: never;
-		post?: never;
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/ai/action/user": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post?: never;
-		delete: operations["deleteUser_1"];
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/ai/action/role": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post?: never;
-		delete: operations["deleteRole_1"];
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/ai/action/position": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post?: never;
-		delete: operations["deletePosition_1"];
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/ai/action/permission": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post?: never;
-		delete: operations["deletePermission_1"];
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/ai/action/department": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post?: never;
-		delete: operations["deleteDepartment_1"];
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
+    "/scheduler/job/update": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put: operations["updateJob"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/knowledge/doc": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put: operations["updateLibraryDoc"];
+        post?: never;
+        delete: operations["deleteLibraryDoc"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ai/llm": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put: operations["updateLlm"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/scheduler/trigger/resume": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["resumeTrigger"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/scheduler/trigger/pause": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["pauseTrigger"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/scheduler/job/trigger": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["triggerJob"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/position": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["upsertPosition"];
+        delete: operations["deletePosition"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/knowledge/library": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["upsertLibrary"];
+        delete: operations["deleteLibrary"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/knowledge/doc/upload": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["uploadLibraryDoc"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/iam/user": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["queryUserWithRolePermission"];
+        put?: never;
+        post: operations["upsertUser"];
+        delete: operations["deleteUser"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/iam/role": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["queryRoleWithPermission"];
+        put?: never;
+        post: operations["upsertRole"];
+        delete: operations["deleteRole"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/iam/role/unbind": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["unBindRoleBy"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/iam/role/bind": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["bindRoleBy"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/iam/position/unbind": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["unBindPositionBy"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/iam/position/bind": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["bindPositionBy"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/iam/permission": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["upsertPermission"];
+        delete: operations["deletePermission"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/iam/permission/unbind": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["unBindPermissionBy"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/iam/permission/bind": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["bindPermissionBy"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/iam/me": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["currentUser"];
+        put?: never;
+        post: operations["upsertMe"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/iam/department/unbind": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["unBindDepartmentBy"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/iam/department/bind": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["bindDepartmentBy"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/iam/avatar/upload": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["uploadAvatar"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/department": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["upsertDepartment"];
+        delete: operations["deleteDepartment"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/sign-up": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["signUp"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/sign-out": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["signOut"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/sign-in": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["signIn"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ai/chat": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["chat"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ai/chat/refresh": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["createNewConversation"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ai/action/search": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["searchAction"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ai/action/execute": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["actionExecute"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/scheduler/page-query": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["pageQuery"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/position/query": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["queryPositions"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/position/page-query": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["pageQueryPositions"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/knowledge/segments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["queryLibraryDocSegments"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/knowledge/libraries": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["queryLibraries"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/knowledge/docs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["queryLibraryDocs"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/iam/users": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["queryUsers"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/iam/roles": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["queryRoles"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/iam/permissions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["queryPermissions"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/department/query-sub": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["querySubDepartment"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/department/query-available": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["queryAvailableParentDepartmentsBy"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/department/page-query": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["pageQueryDepartments"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/aop-log/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 查询日志详情
+         * @description 根据ID查询单条日志的详细信息
+         */
+        get: operations["getAopLogById"];
+        put?: never;
+        post?: never;
+        /**
+         * 删除单条日志
+         * @description 根据ID删除单条日志
+         */
+        delete: operations["deleteAopLog"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/aop-log/page-query": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * 分页查询AOP日志
+         * @description 支持多种条件筛选的分页查询
+         */
+        get: operations["pageQueryAopLogs"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ai/llm/page-query": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["pageQueryLlm"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/aop-log/before": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * 删除指定时间前的日志
+         * @description 删除指定时间之前的所有日志
+         */
+        delete: operations["deleteLogsBeforeTime"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/aop-log/batch": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * 批量删除日志
+         * @description 根据ID列表批量删除日志
+         */
+        delete: operations["deleteAopLogs"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ai/action/user": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete: operations["deleteUser_1"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ai/action/role": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete: operations["deleteRole_1"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ai/action/position": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete: operations["deletePosition_1"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ai/action/permission": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete: operations["deletePermission_1"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ai/action/department": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete: operations["deleteDepartment_1"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
-	schemas: {
-		TriggerKeyDto: {
-			name: string;
-			group: string;
-		};
-		DocUpdateDto: {
-			/** Format: int64 */
-			id: number;
-			/** Format: int64 */
-			libId: number;
-			enable: boolean;
-		};
-		LlmVm: {
-			/** Format: int64 */
-			id: number;
-			name: string;
-			modelName: string;
-			type: string;
-			apiKey: string;
-			url: string;
-			enable: boolean;
-			/** Format: int32 */
-			priority: number;
-		};
-		JobKeyDto: {
-			name: string;
-			group: string;
-		};
-		Position: {
-			/** Format: int64 */
-			id?: number;
-			name?: string;
-		};
-		LibraryUpsertDto: {
-			/** Format: int64 */
-			id?: number;
-			name: string;
-			description?: string;
-		};
-		UserUpsertDto: {
-			/** Format: int64 */
-			id?: number;
-			username: string;
-			password?: string;
-			enable: boolean;
-			avatar?: string;
-		};
-		RoleUpsertDto: {
-			/** Format: int64 */
-			id?: number;
-			code: string;
-			name: string;
-		};
-		RoleBindDto: {
-			/** Format: int64 */
-			userId: number;
-			roleIds: number[];
-		};
-		PositionBindDto: {
-			/** Format: int64 */
-			userId: number;
-			positionIds: number[];
-		};
-		PermissionUpsertDto: {
-			/** Format: int64 */
-			id?: number;
-			code: string;
-			name: string;
-		};
-		PermissionBindDto: {
-			/** Format: int64 */
-			roleId: number;
-			permissionIds: number[];
-		};
-		DepartmentBindDto: {
-			/** Format: int64 */
-			userId: number;
-			departmentIds: number[];
-		};
-		Department: {
-			/** Format: int64 */
-			id?: number;
-			name?: string;
-			/** Format: int64 */
-			parentId?: number;
-		};
-		SignUpDto: {
-			username: string;
-			password: string;
-		};
-		SignInDto: {
-			username: string;
-			password: string;
-		};
-		ChatDto: {
-			/** @enum {string} */
-			mode: "NORMAL" | "WITH_LIBRARY";
-			/** Format: int64 */
-			libraryId?: number;
-			message: string;
-		};
-		PageRequestDto: {
-			/** Format: int64 */
-			page?: number;
-			/** Format: int64 */
-			size?: number;
-			/**
-			 * @description 排序字段
-			 * @example name:asc,age:desc
-			 */
-			sortBy?: string;
-			/** Format: int64 */
-			offset?: number;
-			sortFields?: components["schemas"]["SortFieldObject"][];
-		};
-		SortFieldObject: {
-			name?: string;
-			/** @enum {string} */
-			order?: "ASC" | "DESC" | "DEFAULT";
-		};
-		QueryDto: {
-			name?: string;
-		};
-		JobTriggerDto: {
-			name?: string;
-			group?: string;
-			className?: string;
-			jobDataMap?: {
-				[key: string]: Record<string, never>;
-			};
-			triggerName?: string;
-			triggerGroup?: string;
-			schedulerType?: string;
-			cronExpression?: string;
-			/** Format: int64 */
-			startTime?: number;
-			/** Format: int64 */
-			endTime?: number;
-			/** Format: int64 */
-			nextFireTime?: number;
-			/** Format: int64 */
-			previousFireTime?: number;
-			triggerState?: string;
-			triggerJobDataMap?: {
-				[key: string]: Record<string, never>;
-			};
-		};
-		PageResponseDtoListJobTriggerDto: {
-			/** Format: int64 */
-			total?: number;
-			data?: components["schemas"]["JobTriggerDto"][];
-		};
-		PositionQueryDto: {
-			/** Format: int64 */
-			userId?: number;
-			name?: string;
-			/** @enum {string} */
-			bindState?: "BIND" | "UNBIND" | "ALL";
-		};
-		PageResponseDtoListPositionRespDto: {
-			/** Format: int64 */
-			total?: number;
-			data?: components["schemas"]["PositionRespDto"][];
-		};
-		PositionRespDto: {
-			/** Format: int64 */
-			id: number;
-			name: string;
-			isBound?: boolean;
-		};
-		LibraryDocSegment: {
-			/** Format: int64 */
-			id?: number;
-			/** Format: int64 */
-			docId?: number;
-			embeddingId?: string;
-			content?: string;
-			/** Format: int32 */
-			tokenUsage?: number;
-		};
-		Library: {
-			/** Format: int64 */
-			id?: number;
-			name?: string;
-			description?: string;
-			/** Format: date-time */
-			createTime?: string;
-		};
-		JSON: Record<string, never>;
-		LibraryDoc: {
-			/** Format: int64 */
-			id?: number;
-			/** Format: int64 */
-			libId?: number;
-			name?: string;
-			identify?: string;
-			path?: string;
-			meta?: components["schemas"]["JSON"];
-			enable?: boolean;
-			/** @enum {string} */
-			status?: "SUCCESS" | "INDEXING";
-			/** Format: date-time */
-			createTime?: string;
-			/** Format: date-time */
-			updateTime?: string;
-		};
-		UserQueryDto: {
-			username?: string;
-			/** Format: date-time */
-			startDate?: string;
-			/** Format: date-time */
-			endDate?: string;
-		};
-		PageResponseDtoListUserRolePermissionDto: {
-			/** Format: int64 */
-			total?: number;
-			data?: components["schemas"]["UserRolePermissionDto"][];
-		};
-		PermissionRespDto: {
-			/** Format: int64 */
-			id?: number;
-			code?: string;
-			name?: string;
-			isBound?: boolean;
-		};
-		RoleRespDto: {
-			/** Format: int64 */
-			id: number;
-			code: string;
-			name: string;
-			isBound: boolean;
-			permissions?: components["schemas"]["PermissionRespDto"][];
-		};
-		UserRolePermissionDto: {
-			/** Format: int64 */
-			id: number;
-			username: string;
-			password?: string;
-			avatar?: string;
-			enable: boolean;
-			roles?: components["schemas"]["RoleRespDto"][];
-			/** Format: date-time */
-			createTime: string;
-			permissions?: components["schemas"]["PermissionRespDto"][];
-		};
-		RoleQueryDto: {
-			/** Format: int64 */
-			userId?: number;
-			/** Format: int64 */
-			roleId?: number;
-			roleCode?: string;
-			roleName?: string;
-			roleIdList?: number[];
-			/** @enum {string} */
-			bindState?: "BIND" | "UNBIND" | "ALL";
-		};
-		PageResponseDtoListRoleRespDto: {
-			/** Format: int64 */
-			total?: number;
-			data?: components["schemas"]["RoleRespDto"][];
-		};
-		PermissionQueryDto: {
-			/** Format: int64 */
-			roleId?: number;
-			/** Format: int64 */
-			permissionId?: number;
-			permissionCode?: string;
-			permissionName?: string;
-			permissionIdList?: number[];
-			/** @enum {string} */
-			bindState?: "BIND" | "UNBIND" | "ALL";
-		};
-		PageResponseDtoListPermissionRespDto: {
-			/** Format: int64 */
-			total?: number;
-			data?: components["schemas"]["PermissionRespDto"][];
-		};
-		DepartmentWithParentDto: {
-			/** Format: int64 */
-			id: number;
-			name: string;
-			/** Format: int64 */
-			parentId: number;
-			parentName: string;
-			path: string;
-		};
-		DepartmentQueryDto: {
-			/** Format: int64 */
-			userId?: number;
-			name?: string;
-			enable?: boolean;
-			/** @enum {string} */
-			bindState?: "BIND" | "UNBIND" | "ALL";
-		};
-		DepartmentRespDto: {
-			/** Format: int64 */
-			id: number;
-			name: string;
-			/** Format: int64 */
-			parentId?: number;
-			parentName?: string;
-			isBound?: boolean;
-		};
-		PageResponseDtoListDepartmentRespDto: {
-			/** Format: int64 */
-			total?: number;
-			data?: components["schemas"]["DepartmentRespDto"][];
-		};
-		LlmQueryDto: {
-			name?: string;
-			type?: string;
-		};
-		PageResponseDtoListLlmVm: {
-			/** Format: int64 */
-			total?: number;
-			data?: components["schemas"]["LlmVm"][];
-		};
-	};
-	responses: never;
-	parameters: never;
-	requestBodies: never;
-	headers: never;
-	pathItems: never;
+    schemas: {
+        TriggerKeyDto: {
+            name: string;
+            group: string;
+        };
+        DocUpdateDto: {
+            /** Format: int64 */
+            id: number;
+            /** Format: int64 */
+            libId: number;
+            enable: boolean;
+        };
+        LlmVm: {
+            /** Format: int64 */
+            id: number;
+            name: string;
+            modelName: string;
+            type: string;
+            apiKey: string;
+            url: string;
+            enable: boolean;
+            /** Format: int32 */
+            priority: number;
+        };
+        JobKeyDto: {
+            name: string;
+            group: string;
+        };
+        Position: {
+            /** Format: int64 */
+            id?: number;
+            name?: string;
+        };
+        LibraryUpsertDto: {
+            /** Format: int64 */
+            id?: number;
+            name: string;
+            description?: string;
+        };
+        UserUpsertDto: {
+            /** Format: int64 */
+            id?: number;
+            username: string;
+            password?: string;
+            enable: boolean;
+            avatar?: string;
+        };
+        RoleUpsertDto: {
+            /** Format: int64 */
+            id?: number;
+            code: string;
+            name: string;
+        };
+        RoleBindDto: {
+            /** Format: int64 */
+            userId: number;
+            roleIds: number[];
+        };
+        PositionBindDto: {
+            /** Format: int64 */
+            userId: number;
+            positionIds: number[];
+        };
+        PermissionUpsertDto: {
+            /** Format: int64 */
+            id?: number;
+            code: string;
+            name: string;
+        };
+        PermissionBindDto: {
+            /** Format: int64 */
+            roleId: number;
+            permissionIds: number[];
+        };
+        DepartmentBindDto: {
+            /** Format: int64 */
+            userId: number;
+            departmentIds: number[];
+        };
+        Department: {
+            /** Format: int64 */
+            id?: number;
+            name?: string;
+            /** Format: int64 */
+            parentId?: number;
+        };
+        SignUpDto: {
+            username: string;
+            password: string;
+        };
+        SignInDto: {
+            username: string;
+            password: string;
+        };
+        ChatDto: {
+            /** @enum {string} */
+            mode: "NORMAL" | "WITH_LIBRARY";
+            /** Format: int64 */
+            libraryId?: number;
+            message: string;
+        };
+        PageRequestDto: {
+            /** Format: int64 */
+            page?: number;
+            /** Format: int64 */
+            size?: number;
+            /**
+             * @description 排序字段
+             * @example name:asc,age:desc
+             */
+            sortBy?: string;
+            /** Format: int64 */
+            offset?: number;
+            sortFields?: components["schemas"]["SortFieldObject"][];
+        };
+        SortFieldObject: {
+            name?: string;
+            /** @enum {string} */
+            order?: "ASC" | "DESC" | "DEFAULT";
+        };
+        QueryDto: {
+            name?: string;
+        };
+        JobTriggerDto: {
+            name?: string;
+            group?: string;
+            className?: string;
+            jobDataMap?: {
+                [key: string]: Record<string, never>;
+            };
+            triggerName?: string;
+            triggerGroup?: string;
+            schedulerType?: string;
+            cronExpression?: string;
+            /** Format: int64 */
+            startTime?: number;
+            /** Format: int64 */
+            endTime?: number;
+            /** Format: int64 */
+            nextFireTime?: number;
+            /** Format: int64 */
+            previousFireTime?: number;
+            triggerState?: string;
+            triggerJobDataMap?: {
+                [key: string]: Record<string, never>;
+            };
+        };
+        PageResponseDtoListJobTriggerDto: {
+            /** Format: int64 */
+            total?: number;
+            data?: components["schemas"]["JobTriggerDto"][];
+        };
+        PositionQueryDto: {
+            /** Format: int64 */
+            userId?: number;
+            name?: string;
+            /** @enum {string} */
+            bindState?: "BIND" | "UNBIND" | "ALL";
+        };
+        PageResponseDtoListPositionRespDto: {
+            /** Format: int64 */
+            total?: number;
+            data?: components["schemas"]["PositionRespDto"][];
+        };
+        PositionRespDto: {
+            /** Format: int64 */
+            id: number;
+            name: string;
+            isBound?: boolean;
+        };
+        LibraryDocSegment: {
+            /** Format: int64 */
+            id?: number;
+            /** Format: int64 */
+            docId?: number;
+            embeddingId?: string;
+            content?: string;
+            /** Format: int32 */
+            tokenUsage?: number;
+        };
+        Library: {
+            /** Format: int64 */
+            id?: number;
+            name?: string;
+            description?: string;
+            /** Format: date-time */
+            createTime?: string;
+        };
+        JSON: Record<string, never>;
+        LibraryDoc: {
+            /** Format: int64 */
+            id?: number;
+            /** Format: int64 */
+            libId?: number;
+            name?: string;
+            identify?: string;
+            path?: string;
+            meta?: components["schemas"]["JSON"];
+            enable?: boolean;
+            /** @enum {string} */
+            status?: "SUCCESS" | "INDEXING";
+            /** Format: date-time */
+            createTime?: string;
+            /** Format: date-time */
+            updateTime?: string;
+        };
+        UserQueryDto: {
+            username?: string;
+            /** Format: date-time */
+            startDate?: string;
+            /** Format: date-time */
+            endDate?: string;
+        };
+        PageResponseDtoListUserRolePermissionDto: {
+            /** Format: int64 */
+            total?: number;
+            data?: components["schemas"]["UserRolePermissionDto"][];
+        };
+        PermissionRespDto: {
+            /** Format: int64 */
+            id?: number;
+            code?: string;
+            name?: string;
+            isBound?: boolean;
+        };
+        RoleRespDto: {
+            /** Format: int64 */
+            id: number;
+            code: string;
+            name: string;
+            isBound: boolean;
+            permissions?: components["schemas"]["PermissionRespDto"][];
+        };
+        UserRolePermissionDto: {
+            /** Format: int64 */
+            id: number;
+            username: string;
+            password?: string;
+            avatar?: string;
+            enable: boolean;
+            roles?: components["schemas"]["RoleRespDto"][];
+            /** Format: date-time */
+            createTime: string;
+            permissions?: components["schemas"]["PermissionRespDto"][];
+        };
+        RoleQueryDto: {
+            /** Format: int64 */
+            userId?: number;
+            /** Format: int64 */
+            roleId?: number;
+            roleCode?: string;
+            roleName?: string;
+            roleIdList?: number[];
+            /** @enum {string} */
+            bindState?: "BIND" | "UNBIND" | "ALL";
+        };
+        PageResponseDtoListRoleRespDto: {
+            /** Format: int64 */
+            total?: number;
+            data?: components["schemas"]["RoleRespDto"][];
+        };
+        PermissionQueryDto: {
+            /** Format: int64 */
+            roleId?: number;
+            /** Format: int64 */
+            permissionId?: number;
+            permissionCode?: string;
+            permissionName?: string;
+            permissionIdList?: number[];
+            /** @enum {string} */
+            bindState?: "BIND" | "UNBIND" | "ALL";
+        };
+        PageResponseDtoListPermissionRespDto: {
+            /** Format: int64 */
+            total?: number;
+            data?: components["schemas"]["PermissionRespDto"][];
+        };
+        DepartmentWithParentDto: {
+            /** Format: int64 */
+            id: number;
+            name: string;
+            /** Format: int64 */
+            parentId: number;
+            parentName: string;
+            path: string;
+        };
+        DepartmentQueryDto: {
+            /** Format: int64 */
+            userId?: number;
+            name?: string;
+            enable?: boolean;
+            /** @enum {string} */
+            bindState?: "BIND" | "UNBIND" | "ALL";
+        };
+        DepartmentRespDto: {
+            /** Format: int64 */
+            id: number;
+            name: string;
+            /** Format: int64 */
+            parentId?: number;
+            parentName?: string;
+            isBound?: boolean;
+        };
+        PageResponseDtoListDepartmentRespDto: {
+            /** Format: int64 */
+            total?: number;
+            data?: components["schemas"]["DepartmentRespDto"][];
+        };
+        AopLogRespDto: {
+            /** Format: int64 */
+            id?: number;
+            className?: string;
+            methodName?: string;
+            methodArgs?: string;
+            returnValue?: string;
+            /** Format: int64 */
+            executionTime?: number;
+            success?: boolean;
+            errorMessage?: string;
+            /** Format: int64 */
+            userId?: number;
+            username?: string;
+            ipAddress?: string;
+            userAgent?: string;
+            curl?: string;
+            /** Format: date-time */
+            createTime?: string;
+        };
+        AopLogQueryDto: {
+            /** Format: int64 */
+            id?: number;
+            className?: string;
+            methodName?: string;
+            success?: boolean;
+            /** Format: int64 */
+            userId?: number;
+            ipAddress?: string;
+            /** Format: date-time */
+            startTime?: string;
+            /** Format: date-time */
+            endTime?: string;
+            /** Format: int64 */
+            minExecutionTime?: number;
+            /** Format: int64 */
+            maxExecutionTime?: number;
+        };
+        PageResponseDtoListAopLogRespDto: {
+            /** Format: int64 */
+            total?: number;
+            data?: components["schemas"]["AopLogRespDto"][];
+        };
+        LlmQueryDto: {
+            name?: string;
+            type?: string;
+        };
+        PageResponseDtoListLlmVm: {
+            /** Format: int64 */
+            total?: number;
+            data?: components["schemas"]["LlmVm"][];
+        };
+    };
+    responses: never;
+    parameters: never;
+    requestBodies: never;
+    headers: never;
+    pathItems: never;
 }
 export type $defs = Record<string, never>;
 export interface operations {
-	updateJob: {
-		parameters: {
-			query: {
-				cron: string;
-			};
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": components["schemas"]["TriggerKeyDto"];
-			};
-		};
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-		};
-	};
-	updateLibraryDoc: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": components["schemas"]["DocUpdateDto"];
-			};
-		};
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-		};
-	};
-	deleteLibraryDoc: {
-		parameters: {
-			query: {
-				libraryDocId: number;
-			};
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-		};
-	};
-	updateLlm: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": components["schemas"]["LlmVm"];
-			};
-		};
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-		};
-	};
-	resumeTrigger: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": components["schemas"]["TriggerKeyDto"];
-			};
-		};
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-		};
-	};
-	pauseTrigger: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": components["schemas"]["TriggerKeyDto"];
-			};
-		};
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-		};
-	};
-	triggerJob: {
-		parameters: {
-			query: {
-				startAt: number;
-			};
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": components["schemas"]["JobKeyDto"];
-			};
-		};
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-		};
-	};
-	upsertPosition: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": components["schemas"]["Position"];
-			};
-		};
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-		};
-	};
-	deletePosition: {
-		parameters: {
-			query: {
-				id: number;
-			};
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-		};
-	};
-	upsertLibrary: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": components["schemas"]["LibraryUpsertDto"];
-			};
-		};
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-		};
-	};
-	deleteLibrary: {
-		parameters: {
-			query: {
-				libraryId: number;
-			};
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-		};
-	};
-	uploadLibraryDoc: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: {
-			content: {
-				"application/json": {
-					libraryId: string;
-					/** Format: binary */
-					file: string;
-				};
-			};
-		};
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"text/plain": string;
-				};
-			};
-		};
-	};
-	queryUserWithRolePermission: {
-		parameters: {
-			query: {
-				userId: number;
-			};
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"*/*": components["schemas"]["UserRolePermissionDto"];
-				};
-			};
-		};
-	};
-	upsertUser: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": components["schemas"]["UserUpsertDto"];
-			};
-		};
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-		};
-	};
-	deleteUser: {
-		parameters: {
-			query: {
-				userId: number;
-			};
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-		};
-	};
-	queryRoleWithPermission: {
-		parameters: {
-			query: {
-				roleId: number;
-			};
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"*/*": components["schemas"]["RoleRespDto"];
-				};
-			};
-		};
-	};
-	upsertRole: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": components["schemas"]["RoleUpsertDto"];
-			};
-		};
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-		};
-	};
-	deleteRole: {
-		parameters: {
-			query: {
-				roleId: number;
-			};
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-		};
-	};
-	unBindRoleBy: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": components["schemas"]["RoleBindDto"];
-			};
-		};
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-		};
-	};
-	bindRoleBy: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": components["schemas"]["RoleBindDto"];
-			};
-		};
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-		};
-	};
-	unBindPositionBy: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": components["schemas"]["PositionBindDto"];
-			};
-		};
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-		};
-	};
-	bindPositionBy: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": components["schemas"]["PositionBindDto"];
-			};
-		};
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-		};
-	};
-	upsertPermission: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": components["schemas"]["PermissionUpsertDto"];
-			};
-		};
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-		};
-	};
-	deletePermission: {
-		parameters: {
-			query: {
-				permissionId: number;
-			};
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-		};
-	};
-	unBindPermissionBy: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": components["schemas"]["PermissionBindDto"];
-			};
-		};
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-		};
-	};
-	bindPermissionBy: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": components["schemas"]["PermissionBindDto"];
-			};
-		};
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-		};
-	};
-	currentUser: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"*/*": components["schemas"]["UserRolePermissionDto"];
-				};
-			};
-		};
-	};
-	upsertMe: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": components["schemas"]["UserUpsertDto"];
-			};
-		};
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-		};
-	};
-	unBindDepartmentBy: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": components["schemas"]["DepartmentBindDto"];
-			};
-		};
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-		};
-	};
-	bindDepartmentBy: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": components["schemas"]["DepartmentBindDto"];
-			};
-		};
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-		};
-	};
-	uploadAvatar: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: {
-			content: {
-				"multipart/form-data": {
-					/** Format: binary */
-					file: string;
-				};
-			};
-		};
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"text/plain": string;
-				};
-			};
-		};
-	};
-	upsertDepartment: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": components["schemas"]["Department"];
-			};
-		};
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-		};
-	};
-	deleteDepartment: {
-		parameters: {
-			query: {
-				id: number;
-			};
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-		};
-	};
-	signUp: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": components["schemas"]["SignUpDto"];
-			};
-		};
-		responses: {
-			/** @description Created */
-			201: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-		};
-	};
-	signOut: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-		};
-	};
-	signIn: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": components["schemas"]["SignInDto"];
-			};
-		};
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-		};
-	};
-	chat: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": components["schemas"]["ChatDto"];
-			};
-		};
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"text/event-stream": string[];
-				};
-			};
-		};
-	};
-	createNewConversation: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-		};
-	};
-	searchAction: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": string;
-			};
-		};
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"*/*": {
-						[key: string]: string;
-					};
-				};
-			};
-		};
-	};
-	actionExecute: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": string;
-			};
-		};
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"text/event-stream": string[];
-				};
-			};
-		};
-	};
-	pageQuery: {
-		parameters: {
-			query: {
-				pageRequestDto: components["schemas"]["PageRequestDto"];
-				queryDto: components["schemas"]["QueryDto"];
-			};
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"*/*": components["schemas"]["PageResponseDtoListJobTriggerDto"];
-				};
-			};
-		};
-	};
-	queryPositions: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"*/*": components["schemas"]["Position"][];
-				};
-			};
-		};
-	};
-	pageQueryPositions: {
-		parameters: {
-			query: {
-				pageRequestDto: components["schemas"]["PageRequestDto"];
-				positionQueryDto: components["schemas"]["PositionQueryDto"];
-			};
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"*/*": components["schemas"]["PageResponseDtoListPositionRespDto"];
-				};
-			};
-		};
-	};
-	queryLibraryDocSegments: {
-		parameters: {
-			query: {
-				libraryDocId: number;
-			};
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"*/*": components["schemas"]["LibraryDocSegment"][];
-				};
-			};
-		};
-	};
-	queryLibraries: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"*/*": components["schemas"]["Library"][];
-				};
-			};
-		};
-	};
-	queryLibraryDocs: {
-		parameters: {
-			query: {
-				libraryId: number;
-			};
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"*/*": components["schemas"]["LibraryDoc"][];
-				};
-			};
-		};
-	};
-	queryUsers: {
-		parameters: {
-			query: {
-				pageRequestDto: components["schemas"]["PageRequestDto"];
-				userQueryDto: components["schemas"]["UserQueryDto"];
-			};
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"*/*": components["schemas"]["PageResponseDtoListUserRolePermissionDto"];
-				};
-			};
-		};
-	};
-	queryRoles: {
-		parameters: {
-			query: {
-				pageRequestDto: components["schemas"]["PageRequestDto"];
-				roleQueryDto: components["schemas"]["RoleQueryDto"];
-			};
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"*/*": components["schemas"]["PageResponseDtoListRoleRespDto"];
-				};
-			};
-		};
-	};
-	queryPermissions: {
-		parameters: {
-			query: {
-				pageRequestDto: components["schemas"]["PageRequestDto"];
-				permissionQueryDto: components["schemas"]["PermissionQueryDto"];
-			};
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"*/*": components["schemas"]["PageResponseDtoListPermissionRespDto"];
-				};
-			};
-		};
-	};
-	querySubDepartment: {
-		parameters: {
-			query?: {
-				id?: number;
-			};
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"*/*": components["schemas"]["DepartmentWithParentDto"][];
-				};
-			};
-		};
-	};
-	queryAvailableParentDepartmentsBy: {
-		parameters: {
-			query?: {
-				id?: number;
-			};
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"*/*": components["schemas"]["Department"][];
-				};
-			};
-		};
-	};
-	pageQueryDepartments: {
-		parameters: {
-			query: {
-				pageRequestDto: components["schemas"]["PageRequestDto"];
-				departmentQueryDto: components["schemas"]["DepartmentQueryDto"];
-			};
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"*/*": components["schemas"]["PageResponseDtoListDepartmentRespDto"];
-				};
-			};
-		};
-	};
-	pageQueryLlm: {
-		parameters: {
-			query: {
-				pageRequestDto: components["schemas"]["PageRequestDto"];
-				llmQueryDto: components["schemas"]["LlmQueryDto"];
-			};
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"*/*": components["schemas"]["PageResponseDtoListLlmVm"];
-				};
-			};
-		};
-	};
-	deleteUser_1: {
-		parameters: {
-			query: {
-				username: string;
-			};
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-		};
-	};
-	deleteRole_1: {
-		parameters: {
-			query: {
-				name: string;
-			};
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-		};
-	};
-	deletePosition_1: {
-		parameters: {
-			query: {
-				name: string;
-			};
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-		};
-	};
-	deletePermission_1: {
-		parameters: {
-			query: {
-				name: string;
-			};
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-		};
-	};
-	deleteDepartment_1: {
-		parameters: {
-			query: {
-				name: string;
-			};
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			/** @description OK */
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content?: never;
-			};
-		};
-	};
+    updateJob: {
+        parameters: {
+            query: {
+                cron: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TriggerKeyDto"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    updateLibraryDoc: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DocUpdateDto"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    deleteLibraryDoc: {
+        parameters: {
+            query: {
+                libraryDocId: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    updateLlm: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["LlmVm"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    resumeTrigger: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TriggerKeyDto"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    pauseTrigger: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TriggerKeyDto"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    triggerJob: {
+        parameters: {
+            query: {
+                startAt: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["JobKeyDto"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    upsertPosition: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Position"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    deletePosition: {
+        parameters: {
+            query: {
+                id: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    upsertLibrary: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["LibraryUpsertDto"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    deleteLibrary: {
+        parameters: {
+            query: {
+                libraryId: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    uploadLibraryDoc: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": {
+                    libraryId: string;
+                    /** Format: binary */
+                    file: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "text/plain": string;
+                };
+            };
+        };
+    };
+    queryUserWithRolePermission: {
+        parameters: {
+            query: {
+                userId: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["UserRolePermissionDto"];
+                };
+            };
+        };
+    };
+    upsertUser: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UserUpsertDto"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    deleteUser: {
+        parameters: {
+            query: {
+                userId: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    queryRoleWithPermission: {
+        parameters: {
+            query: {
+                roleId: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["RoleRespDto"];
+                };
+            };
+        };
+    };
+    upsertRole: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RoleUpsertDto"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    deleteRole: {
+        parameters: {
+            query: {
+                roleId: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    unBindRoleBy: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RoleBindDto"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    bindRoleBy: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RoleBindDto"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    unBindPositionBy: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PositionBindDto"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    bindPositionBy: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PositionBindDto"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    upsertPermission: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PermissionUpsertDto"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    deletePermission: {
+        parameters: {
+            query: {
+                permissionId: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    unBindPermissionBy: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PermissionBindDto"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    bindPermissionBy: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PermissionBindDto"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    currentUser: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["UserRolePermissionDto"];
+                };
+            };
+        };
+    };
+    upsertMe: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UserUpsertDto"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    unBindDepartmentBy: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DepartmentBindDto"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    bindDepartmentBy: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DepartmentBindDto"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    uploadAvatar: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "multipart/form-data": {
+                    /** Format: binary */
+                    file: string;
+                };
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "text/plain": string;
+                };
+            };
+        };
+    };
+    upsertDepartment: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Department"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    deleteDepartment: {
+        parameters: {
+            query: {
+                id: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    signUp: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SignUpDto"];
+            };
+        };
+        responses: {
+            /** @description Created */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    signOut: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    signIn: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SignInDto"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    chat: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ChatDto"];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "text/event-stream": string[];
+                };
+            };
+        };
+    };
+    createNewConversation: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    searchAction: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": string;
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": {
+                        [key: string]: string;
+                    };
+                };
+            };
+        };
+    };
+    actionExecute: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": string;
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "text/event-stream": string[];
+                };
+            };
+        };
+    };
+    pageQuery: {
+        parameters: {
+            query: {
+                pageRequestDto: components["schemas"]["PageRequestDto"];
+                queryDto: components["schemas"]["QueryDto"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["PageResponseDtoListJobTriggerDto"];
+                };
+            };
+        };
+    };
+    queryPositions: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["Position"][];
+                };
+            };
+        };
+    };
+    pageQueryPositions: {
+        parameters: {
+            query: {
+                pageRequestDto: components["schemas"]["PageRequestDto"];
+                positionQueryDto: components["schemas"]["PositionQueryDto"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["PageResponseDtoListPositionRespDto"];
+                };
+            };
+        };
+    };
+    queryLibraryDocSegments: {
+        parameters: {
+            query: {
+                libraryDocId: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["LibraryDocSegment"][];
+                };
+            };
+        };
+    };
+    queryLibraries: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["Library"][];
+                };
+            };
+        };
+    };
+    queryLibraryDocs: {
+        parameters: {
+            query: {
+                libraryId: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["LibraryDoc"][];
+                };
+            };
+        };
+    };
+    queryUsers: {
+        parameters: {
+            query: {
+                pageRequestDto: components["schemas"]["PageRequestDto"];
+                userQueryDto: components["schemas"]["UserQueryDto"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["PageResponseDtoListUserRolePermissionDto"];
+                };
+            };
+        };
+    };
+    queryRoles: {
+        parameters: {
+            query: {
+                pageRequestDto: components["schemas"]["PageRequestDto"];
+                roleQueryDto: components["schemas"]["RoleQueryDto"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["PageResponseDtoListRoleRespDto"];
+                };
+            };
+        };
+    };
+    queryPermissions: {
+        parameters: {
+            query: {
+                pageRequestDto: components["schemas"]["PageRequestDto"];
+                permissionQueryDto: components["schemas"]["PermissionQueryDto"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["PageResponseDtoListPermissionRespDto"];
+                };
+            };
+        };
+    };
+    querySubDepartment: {
+        parameters: {
+            query?: {
+                id?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["DepartmentWithParentDto"][];
+                };
+            };
+        };
+    };
+    queryAvailableParentDepartmentsBy: {
+        parameters: {
+            query?: {
+                id?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["Department"][];
+                };
+            };
+        };
+    };
+    pageQueryDepartments: {
+        parameters: {
+            query: {
+                pageRequestDto: components["schemas"]["PageRequestDto"];
+                departmentQueryDto: components["schemas"]["DepartmentQueryDto"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["PageResponseDtoListDepartmentRespDto"];
+                };
+            };
+        };
+    };
+    getAopLogById: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 日志ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["AopLogRespDto"];
+                };
+            };
+        };
+    };
+    deleteAopLog: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 日志ID */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    pageQueryAopLogs: {
+        parameters: {
+            query: {
+                pageRequestDto: components["schemas"]["PageRequestDto"];
+                queryDto: components["schemas"]["AopLogQueryDto"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["PageResponseDtoListAopLogRespDto"];
+                };
+            };
+        };
+    };
+    pageQueryLlm: {
+        parameters: {
+            query: {
+                pageRequestDto: components["schemas"]["PageRequestDto"];
+                llmQueryDto: components["schemas"]["LlmQueryDto"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["PageResponseDtoListLlmVm"];
+                };
+            };
+        };
+    };
+    deleteLogsBeforeTime: {
+        parameters: {
+            query: {
+                /** @description 截止时间 */
+                beforeTime: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": number;
+                };
+            };
+        };
+    };
+    deleteAopLogs: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": number[];
+            };
+        };
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": number;
+                };
+            };
+        };
+    };
+    deleteUser_1: {
+        parameters: {
+            query: {
+                username: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    deleteRole_1: {
+        parameters: {
+            query: {
+                name: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    deletePosition_1: {
+        parameters: {
+            query: {
+                name: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    deletePermission_1: {
+        parameters: {
+            query: {
+                name: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    deleteDepartment_1: {
+        parameters: {
+            query: {
+                name: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
 }

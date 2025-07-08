@@ -176,11 +176,31 @@ export const AiRoutes = {
 	},
 } as const;
 
+// 系统管理相关路由
+export const SystemRoutes = {
+	AOPLOGVIEW: {
+		path: "aop-logs",
+		name: "aop-logs",
+		fullPath: () => `${BaseRoutes.DASHBOARD.path}/aop-logs`,
+		withParams: () => ({ name: "aop-logs" }),
+	},
+	AOPLOGDETAILVIEW: {
+		path: "aop-logs/:id",
+		name: "aop-log-detail",
+		fullPath: () => `${BaseRoutes.DASHBOARD.path}/aop-logs/:id`,
+		withParams: <T extends { id: string | number }>(params: T) => ({
+			name: "aop-log-detail",
+			params: { id: params.id.toString() },
+		}),
+	},
+} as const;
+
 export const Routes = {
 	...BaseRoutes,
 	...DashboardRoutes,
 	...UserRoutes,
 	...AiRoutes,
+	...SystemRoutes,
 } as const;
 
 export enum ERole {

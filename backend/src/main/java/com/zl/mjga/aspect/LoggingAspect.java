@@ -48,17 +48,11 @@ public class LoggingAspect {
     return processWithLogging(joinPoint, aopLog);
   }
 
-  @Around("execution(* com.zl.mjga.service..*(..))")
-  public Object logService(ProceedingJoinPoint joinPoint) throws Throwable {
-    AopLog aopLog = new AopLog();
-    return processWithLogging(joinPoint, aopLog);
-  }
-
-  @Around("execution(* com.zl.mjga.repository..*(..))")
-  public Object logRepository(ProceedingJoinPoint joinPoint) throws Throwable {
-    AopLog aopLog = new AopLog();
-    return processWithLogging(joinPoint, aopLog);
-  }
+//  @Around("execution(* com.zl.mjga.service..*(..))")
+//  public Object logService(ProceedingJoinPoint joinPoint) throws Throwable {
+//    AopLog aopLog = new AopLog();
+//    return processWithLogging(joinPoint, aopLog);
+//  }
 
   private Object processWithLogging(ProceedingJoinPoint joinPoint, AopLog aopLog) throws Throwable {
     if (shouldSkipLogging(joinPoint) || !isUserAuthenticated()) {
@@ -82,7 +76,7 @@ public class LoggingAspect {
 
   private Long getCurrentUserId() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    String username = (String) authentication.getPrincipal();
+    String username = authentication.getName();
     User user = userRepository.fetchOneByUsername(username);
     return user.getId();
   }

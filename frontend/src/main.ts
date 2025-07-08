@@ -33,5 +33,9 @@ enableMocking().then(() => {
 	};
 
 	app.component("VueDatePicker", VueDatePicker);
+	app.provide("vueDatePickerOptions", {
+		teleport: "body",
+		teleportCenter: true,
+	});
 	app.mount("#app");
 });

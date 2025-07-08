@@ -10,6 +10,12 @@
       "description": "Generated server url"
     }
   ],
+  "tags": [
+    {
+      "name": "AOP日志管理",
+      "description": "AOP日志查看和管理接口"
+    }
+  ],
   "paths": {
     "/scheduler/job/update": {
       "put": {
@@ -1406,6 +1412,105 @@
         }
       }
     },
+    "/aop-log/{id}": {
+      "get": {
+        "tags": [
+          "AOP日志管理"
+        ],
+        "summary": "查询日志详情",
+        "description": "根据ID查询单条日志的详细信息",
+        "operationId": "getAopLogById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "日志ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AopLogRespDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "AOP日志管理"
+        ],
+        "summary": "删除单条日志",
+        "description": "根据ID删除单条日志",
+        "operationId": "deleteAopLog",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "日志ID",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/aop-log/page-query": {
+      "get": {
+        "tags": [
+          "AOP日志管理"
+        ],
+        "summary": "分页查询AOP日志",
+        "description": "支持多种条件筛选的分页查询",
+        "operationId": "pageQueryAopLogs",
+        "parameters": [
+          {
+            "name": "pageRequestDto",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/PageRequestDto"
+            }
+          },
+          {
+            "name": "queryDto",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/AopLogQueryDto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageResponseDtoListAopLogRespDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/ai/llm/page-query": {
       "get": {
         "tags": [
@@ -1437,6 +1542,79 @@
               "*/*": {
                 "schema": {
                   "$ref": "#/components/schemas/PageResponseDtoListLlmVm"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/aop-log/before": {
+      "delete": {
+        "tags": [
+          "AOP日志管理"
+        ],
+        "summary": "删除指定时间前的日志",
+        "description": "删除指定时间之前的所有日志",
+        "operationId": "deleteLogsBeforeTime",
+        "parameters": [
+          {
+            "name": "beforeTime",
+            "in": "query",
+            "description": "截止时间",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/aop-log/batch": {
+      "delete": {
+        "tags": [
+          "AOP日志管理"
+        ],
+        "summary": "批量删除日志",
+        "description": "根据ID列表批量删除日志",
+        "operationId": "deleteAopLogs",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "description": "日志ID列表",
+                "items": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "integer",
+                  "format": "int32"
                 }
               }
             }
@@ -2473,6 +2651,113 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/DepartmentRespDto"
+            }
+          }
+        }
+      },
+      "AopLogRespDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "className": {
+            "type": "string"
+          },
+          "methodName": {
+            "type": "string"
+          },
+          "methodArgs": {
+            "type": "string"
+          },
+          "returnValue": {
+            "type": "string"
+          },
+          "executionTime": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "success": {
+            "type": "boolean"
+          },
+          "errorMessage": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "username": {
+            "type": "string"
+          },
+          "ipAddress": {
+            "type": "string"
+          },
+          "userAgent": {
+            "type": "string"
+          },
+          "curl": {
+            "type": "string"
+          },
+          "createTime": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "AopLogQueryDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "className": {
+            "type": "string"
+          },
+          "methodName": {
+            "type": "string"
+          },
+          "success": {
+            "type": "boolean"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "ipAddress": {
+            "type": "string"
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "minExecutionTime": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "maxExecutionTime": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "PageResponseDtoListAopLogRespDto": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AopLogRespDto"
             }
           }
         }

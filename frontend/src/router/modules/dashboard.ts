@@ -2,6 +2,7 @@ import type { RouteRecordRaw } from "vue-router";
 import Dashboard from "../../components/layout/Dashboard.vue";
 import { EPermission, Routes } from "../constants";
 import aiRoutes from "./ai";
+import systemRoutes from "./system";
 import userManagementRoutes from "./user";
 
 const dashboardRoutes: RouteRecordRaw = {
@@ -14,6 +15,7 @@ const dashboardRoutes: RouteRecordRaw = {
 	children: [
 		...userManagementRoutes,
 		...aiRoutes,
+		...systemRoutes,
 		{
 			path: Routes.OVERVIEW.path,
 			name: Routes.OVERVIEW.name,

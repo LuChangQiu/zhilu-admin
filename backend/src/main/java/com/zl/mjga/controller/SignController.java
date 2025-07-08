@@ -1,5 +1,6 @@
 package com.zl.mjga.controller;
 
+import com.zl.mjga.annotation.SkipAopLog;
 import com.zl.mjga.config.security.Jwt;
 import com.zl.mjga.dto.sign.SignInDto;
 import com.zl.mjga.dto.sign.SignUpDto;
@@ -22,6 +23,7 @@ public class SignController {
 
   @ResponseStatus(HttpStatus.OK)
   @PostMapping("/sign-in")
+  @SkipAopLog
   void signIn(
       HttpServletRequest request,
       HttpServletResponse response,

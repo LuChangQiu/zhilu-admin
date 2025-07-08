@@ -34,9 +34,11 @@ import { onMounted, ref } from "vue";
 import { RouterLink, useRoute } from "vue-router";
 
 import {
+	AiChatIcon,
 	DepartmentIcon,
 	KnowledgeIcon,
 	LlmConfigIcon,
+	LogIcon,
 	PermissionIcon,
 	PositionIcon,
 	RoleIcon,
@@ -118,6 +120,11 @@ const menuItems = [
 		title: "知识库管理",
 		path: Routes.KNOWLEDGEVIEW.fullPath(),
 		icon: KnowledgeIcon,
+	},
+	{
+		title: "日志管理",
+		path: Routes.AOPLOGVIEW.fullPath(),
+		icon: LogIcon,
 	},
 ];
 

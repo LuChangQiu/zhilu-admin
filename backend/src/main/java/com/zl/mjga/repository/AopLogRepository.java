@@ -27,7 +27,7 @@ public class AopLogRepository extends AopLogDao {
   }
 
   public Result<Record> pageFetchBy(PageRequestDto pageRequestDto, AopLogQueryDto queryDto) {
-    return selectBy(queryDto)
+    return selectByWithoutReturnValue(queryDto)
         .orderBy(pageRequestDto.getSortFields())
         .limit(pageRequestDto.getSize())
         .offset(pageRequestDto.getOffset())
@@ -45,6 +45,16 @@ public class AopLogRepository extends AopLogDao {
         .leftJoin(USER)
         .on(AOP_LOG.USER_ID.eq(USER.ID))
         .where(buildConditions(queryDto));
+  }
+
+
+  public SelectConditionStep<Record> selectByWithoutReturnValue(AopLogQueryDto queryDto) {
+    return ctx()
+            .select(AOP_LOG.asterisk().except(AOP_LOG.RETURN_VALUE, AOP_LOG.METHOD_ARGS), USER.USERNAME, DSL.count().over().as("total_count"))
+            .from(AOP_LOG)
+            .leftJoin(USER)
+            .on(AOP_LOG.USER_ID.eq(USER.ID))
+            .where(buildConditions(queryDto));
   }
 
   private Condition buildConditions(AopLogQueryDto queryDto) {

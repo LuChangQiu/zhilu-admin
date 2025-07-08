@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-y-3 sm:gap-y-0">
     <form
-      class="grid grid-cols-2 sm:grid-cols-1 w-full min-w-[200px] sm:w-auto gap-2 xs:gap-3 items-stretch xs:items-center">
+      class="grid grid-cols-2 sm:grid-cols-2 w-full min-w-[200px] sm:w-auto gap-2 xs:gap-3 items-stretch xs:items-center">
       <template v-for="(filter, index) in filters" :key="index">
         <!-- 输入框类型 -->
         <div v-if="filter.type === 'input'" class="flex-grow">
@@ -17,10 +17,11 @@
         </div>
 
         <!-- 日期范围选择器 -->
-        <div v-else-if="filter.type === 'date-range'" class="flex-grow">
+        <div v-else-if="filter.type === 'date-range'" class="flex-grow datepicker-container">
           <VueDatePicker v-model="filterValues[filter.name]" locale="zh-CN" range
             :format="filter.format || 'yyyy/MM/dd HH:mm:ss - yyy/MM/dd HH:mm:ss'" :placeholder="filter.placeholder"
-            :enable-time-picker="filter.enableTimePicker !== false" :auto-apply="filter.autoApply !== false" />
+            :enable-time-picker="filter.enableTimePicker !== false" :auto-apply="filter.autoApply !== false"
+            class="filter-datepicker" teleport="body" />
         </div>
 
         <!-- 选择器 -->
@@ -33,15 +34,17 @@
           </select>
         </div>
       </template>
-      <Button variant="primary" size="sm" @click.prevent="handleSearch">
-        <template #icon>
-          <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-          </svg>
-        </template>
-        搜索
-      </Button>
+      <div class="col-span-full flex mt-2">
+        <Button variant="primary" size="sm" @click.prevent="handleSearch" class="w-full sm:w-1/2">
+          <template #icon>
+            <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+            </svg>
+          </template>
+          <span class="ps-1.5">搜索</span>
+        </Button>
+      </div>
     </form>
 
     <!-- 额外操作按钮插槽 -->
@@ -52,8 +55,8 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, watch } from "vue";
 import { Button } from "@/components/ui";
+import { onMounted, reactive, watch } from "vue";
 
 export interface FilterOption {
 	value: string | number | boolean;
@@ -129,3 +132,36 @@ const handleSearch = () => {
 	emit("search", { ...filterValues });
 };
 </script>
+
+<style>
+/* 调整日期选择器的高度与其他输入框一致 */
+.datepicker-container .dp__main {
+  width: 100%;
+}
+
+.datepicker-container .dp__input {
+  height: 42px;
+  /* 与input的p-2.5相匹配 */
+  padding: 0.625rem 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  border-radius: 0.5rem;
+  border: 1px solid #d1d5db;
+  /* gray-300 */
+  background-color: #f9fafb;
+  /* gray-50 */
+}
+
+.datepicker-container .dp__input:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  border-color: #3b82f6;
+  /* blue-500 */
+  box-shadow: 0 0 0 1px #3b82f6;
+  /* blue-500 */
+}
+
+.datepicker-container .dp__input_icon {
+  right: 0.75rem;
+}
+</style>

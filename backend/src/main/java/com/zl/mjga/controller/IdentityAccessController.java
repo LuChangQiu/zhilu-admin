@@ -1,5 +1,6 @@
 package com.zl.mjga.controller;
 
+import com.zl.mjga.annotation.SkipAopLog;
 import com.zl.mjga.dto.PageRequestDto;
 import com.zl.mjga.dto.PageResponseDto;
 import com.zl.mjga.dto.department.DepartmentBindDto;
@@ -56,6 +57,7 @@ public class IdentityAccessController {
   }
 
   @PostMapping("/me")
+  @SkipAopLog
   void upsertMe(Principal principal, @RequestBody UserUpsertDto userUpsertDto) {
     String name = principal.getName();
     User user = userRepository.fetchOneByUsername(name);
@@ -65,6 +67,7 @@ public class IdentityAccessController {
 
   @PreAuthorize("hasAuthority(T(com.zl.mjga.model.urp.EPermission).WRITE_USER_ROLE_PERMISSION)")
   @PostMapping("/user")
+  @SkipAopLog
   void upsertUser(@RequestBody @Valid UserUpsertDto userUpsertDto) {
     identityAccessService.upsertUser(userUpsertDto);
   }
