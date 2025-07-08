@@ -48,6 +48,9 @@ public class AopLogRespDto {
   /** 用户代理 */
   private String userAgent;
 
+  /** curl命令 */
+  private String curl;
+
   /** 创建时间 */
   private OffsetDateTime createTime;
 }

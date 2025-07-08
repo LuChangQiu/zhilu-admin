@@ -22,6 +22,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -47,11 +48,10 @@ class LoggingAspectTest {
   @Mock private ServletRequestAttributes servletRequestAttributes;
   @Mock private HttpServletRequest httpServletRequest;
 
-  private LoggingAspect loggingAspect;
+  @InjectMocks LoggingAspect loggingAspect;
 
   @BeforeEach
   void setUp() {
-    loggingAspect = new LoggingAspect(aopLogService, objectMapper, userRepository);
     SecurityContextHolder.setContext(securityContext);
   }
 
@@ -149,7 +149,6 @@ class LoggingAspectTest {
           assertThat(log.getMethodName()).isEqualTo("serviceMethod");
           assertThat(log.getSuccess()).isTrue();
           assertThat(log.getUserId()).isEqualTo(123L);
-          // Service层不应该有请求信息
           assertThat(log.getIpAddress()).isNull();
           assertThat(log.getUserAgent()).isNull();
         });
@@ -179,7 +178,6 @@ class LoggingAspectTest {
           assertThat(log.getMethodName()).isEqualTo("findById");
           assertThat(log.getSuccess()).isTrue();
           assertThat(log.getUserId()).isEqualTo(123L);
-          // Repository层不应该有请求信息
           assertThat(log.getIpAddress()).isNull();
           assertThat(log.getUserAgent()).isNull();
         });
@@ -412,6 +410,51 @@ class LoggingAspectTest {
 
   private java.lang.reflect.Method getSkipLogMethod() throws NoSuchMethodException {
     return TestController.class.getMethod("skipLogMethod");
+  }
+
+  @Test
+  void logController_givenHttpRequest_shouldGenerateCurlCommand() throws Throwable {
+    // arrange
+    TestController target = new TestController();
+    Object[] args = {"arg1"};
+    String expectedResult = "success";
+    User mockUser = createMockUser(123L, "testUser");
+
+    setupAuthenticatedUser("testUser", mockUser);
+    setupJoinPoint(target, "testMethod", args, expectedResult);
+    setupSerialization("[\"arg1\"]", "\"success\"");
+
+    // Setup HTTP request mocks before setupRequestContext
+    when(httpServletRequest.getMethod()).thenReturn("POST");
+    when(httpServletRequest.getScheme()).thenReturn("http");
+    when(httpServletRequest.getServerName()).thenReturn("localhost");
+    when(httpServletRequest.getServerPort()).thenReturn(8080);
+    when(httpServletRequest.getRequestURI()).thenReturn("/api/test");
+    when(httpServletRequest.getQueryString()).thenReturn("param1=value1");
+    when(httpServletRequest.getContentType()).thenReturn("application/json");
+    when(httpServletRequest.getHeaderNames())
+        .thenReturn(
+            java.util.Collections.enumeration(
+                java.util.Arrays.asList("Content-Type", "Authorization")));
+    when(httpServletRequest.getHeader("Content-Type")).thenReturn("application/json");
+    when(httpServletRequest.getHeader("Authorization")).thenReturn("Bearer token123");
+
+    try (MockedStatic<RequestContextHolder> mockedRequestContextHolder =
+        setupRequestContext("127.0.0.1", "Test-Agent")) {
+      // action
+      Object result = loggingAspect.logController(joinPoint);
+
+      // assert
+      assertThat(result).isEqualTo(expectedResult);
+      verifyLogSaved(
+          log -> {
+            assertThat(log.getCurl()).isNotNull();
+            assertThat(log.getCurl()).contains("curl -X POST");
+            assertThat(log.getCurl()).contains("'http://localhost:8080/api/test?param1=value1'");
+            assertThat(log.getCurl()).contains("-H 'Content-Type: application/json'");
+            assertThat(log.getCurl()).contains("-H 'Authorization: Bearer token123'");
+          });
+    }
   }
 
   // Test classes for mocking

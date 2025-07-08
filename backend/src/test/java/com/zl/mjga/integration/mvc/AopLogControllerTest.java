@@ -180,6 +180,7 @@ public class AopLogControllerTest {
         .username("testUser")
         .ipAddress("127.0.0.1")
         .userAgent("Test Agent")
+        .curl("curl -X GET 'http://localhost:8080/test' -H 'Content-Type: application/json'")
         .createTime(OffsetDateTime.now())
         .build();
   }

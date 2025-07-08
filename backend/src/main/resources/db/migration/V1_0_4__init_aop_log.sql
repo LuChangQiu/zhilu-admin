@@ -10,6 +10,7 @@ CREATE TABLE mjga.aop_log (
     user_id BIGINT,
     ip_address VARCHAR,
     user_agent VARCHAR,
+    curl VARCHAR,
     create_time TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES mjga.user(id) ON DELETE SET NULL
 );
