@@ -55,7 +55,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-	'change-page': [page: number];
+	"change-page": [page: number];
 }>();
 
 // 创建一个本地的totalPages引用
@@ -74,20 +74,20 @@ const {
 } = usePagination({
 	initialPage: props.currentPage,
 	initialTotal: props.total,
-	maxVisiblePages: props.maxVisiblePages || 7 // 默认显示7个页码
+	maxVisiblePages: props.maxVisiblePages || 7, // 默认显示7个页码
 });
 
 const handlePageChangeClick = async (page: number) => {
 	if (page < 1 || page > totalPages.value) return;
-	
+
 	if (props.pageChange) {
 		// 如果传入了pageChange函数，则调用它
 		await props.pageChange(page, pageSize.value);
 	} else {
 		// 否则触发change-page事件
-		emit('change-page', page);
+		emit("change-page", page);
 	}
-	
+
 	updatePaginationState({
 		currentPage: page,
 		pageSize: pageSize.value,
@@ -116,7 +116,7 @@ watch(
 				total: props.total,
 			});
 		}
-	}
+	},
 );
 
 watch(
@@ -125,6 +125,6 @@ watch(
 		if (newVal !== undefined) {
 			localTotalPages.value = newVal;
 		}
-	}
+	},
 );
 </script>

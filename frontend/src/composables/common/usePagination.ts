@@ -7,11 +7,11 @@ export interface PaginationState {
 }
 
 export interface UsePaginationOptions {
-		initialPage?: number;
-		initialPageSize?: number;
-		initialTotal?: number;
-		maxVisiblePages?: number;
-	}
+	initialPage?: number;
+	initialPageSize?: number;
+	initialTotal?: number;
+	maxVisiblePages?: number;
+}
 
 /**
  * 分页逻辑Composable - 提供分页相关的状态和操作

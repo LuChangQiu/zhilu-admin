@@ -1,70 +1,69 @@
 /* 日期选择器亮色主题 - 与 Flowbite 蓝色主题匹配 */ .dp__theme_light {
-		/* 基础颜色 */
-		--dp-background-color: #fff;
-		--dp-text-color: #1f2937; /* 对应 Flowbite 的 gray-800 */
+	/* 基础颜色 */
+	--dp-background-color: #fff;
+	--dp-text-color: #1f2937; /* 对应 Flowbite 的 gray-800 */
 
-		/* 主色调 */
-		--dp-primary-color: #2563eb; /* 对应 Flowbite 的 primary-600 */
-		--dp-primary-disabled-color: #93c5fd; /* 对应 Flowbite 的 primary-300 */
-		--dp-primary-text-color: #fff;
+	/* 主色调 */
+	--dp-primary-color: #2563eb; /* 对应 Flowbite 的 primary-600 */
+	--dp-primary-disabled-color: #93c5fd; /* 对应 Flowbite 的 primary-300 */
+	--dp-primary-text-color: #fff;
 
-		/* 次要颜色 */
-		--dp-secondary-color: #9ca3af; /* 对应 Flowbite 的 gray-400 */
+	/* 次要颜色 */
+	--dp-secondary-color: #9ca3af; /* 对应 Flowbite 的 gray-400 */
 
-		/* 背景颜色 */
-		--dp-background-color: var(--color-gray-50);
+	/* 背景颜色 */
+	--dp-background-color: var(--color-gray-50);
 
-		/* 边框颜色 */
-		--dp-border-color: var(--color-gray-300); /* 对应 Flowbite 的 gray-200 */
-		--dp-menu-border-color: #e5e7eb;
+	/* 边框颜色 */
+	--dp-border-color: var(--color-gray-300); /* 对应 Flowbite 的 gray-200 */
+	--dp-menu-border-color: #e5e7eb;
 
-		/* 禁用状态 */
-		--dp-disabled-color: #f3f4f6; /* 对应 Flowbite 的 gray-100 */
-		--dp-disabled-color-text: #9ca3af; /* 对应 Flowbite 的 gray-400 */
+	/* 禁用状态 */
+	--dp-disabled-color: #f3f4f6; /* 对应 Flowbite 的 gray-100 */
+	--dp-disabled-color-text: #9ca3af; /* 对应 Flowbite 的 gray-400 */
 
-		/* 滚动条 */
-		--dp-scroll-bar-background: #f3f4f6; /* 对应 Flowbite 的 gray-100 */
-		--dp-scroll-bar-color: #9ca3af; /* 对应 Flowbite 的 gray-400 */
+	/* 滚动条 */
+	--dp-scroll-bar-background: #f3f4f6; /* 对应 Flowbite 的 gray-100 */
+	--dp-scroll-bar-color: #9ca3af; /* 对应 Flowbite 的 gray-400 */
 
-		/* 成功状态 */
-		--dp-success-color: #10b981; /* 对应 Tailwind 的 emerald-500 */
-		--dp-success-color-disabled: #6ee7b7; /* 对应 Tailwind 的 emerald-300 */
+	/* 成功状态 */
+	--dp-success-color: #10b981; /* 对应 Tailwind 的 emerald-500 */
+	--dp-success-color-disabled: #6ee7b7; /* 对应 Tailwind 的 emerald-300 */
 
-		/* 图标颜色 */
-		--dp-icon-color: #6b7280; /* 对应 Flowbite 的 gray-500 */
+	/* 图标颜色 */
+	--dp-icon-color: #6b7280; /* 对应 Flowbite 的 gray-500 */
 
-		/* 危险/错误状态 */
-		--dp-danger-color: #ef4444; /* 对应 Tailwind 的 red-500 */
-		--dp-marker-color: #ef4444;
+	/* 危险/错误状态 */
+	--dp-danger-color: #ef4444; /* 对应 Tailwind 的 red-500 */
+	--dp-marker-color: #ef4444;
 
-		/* 提示颜色 */
-		--dp-tooltip-color: #f9fafb; /* 对应 Flowbite 的 gray-50 */
+	/* 提示颜色 */
+	--dp-tooltip-color: #f9fafb; /* 对应 Flowbite 的 gray-50 */
 
-		/* 高亮颜色 */
-		--dp-highlight-color: rgb(37 99 235 / 10%); /* 对应 Flowbite 的 primary-600 透明度 */
+	/* 高亮颜色 */
+	--dp-highlight-color: rgb(37 99 235 / 10%); /* 对应 Flowbite 的 primary-600 透明度 */
 
-		/* 日期范围相关 */
-		--dp-range-between-dates-background-color: var(--dp-hover-color, #eff6ff);
-		--dp-range-between-dates-text-color: var(--dp-hover-text-color, #1f2937);
-		--dp-range-between-border-color: var(--dp-hover-color, #eff6ff);
+	/* 日期范围相关 */
+	--dp-range-between-dates-background-color: var(--dp-hover-color, #eff6ff);
+	--dp-range-between-dates-text-color: var(--dp-hover-text-color, #1f2937);
+	--dp-range-between-border-color: var(--dp-hover-color, #eff6ff);
 
-		/* 圆角设置 - 匹配项目中的 rounded-lg */
-		--dp-border-radius: 0.5rem; /* 8px，匹配 Tailwind 的 rounded-lg */
-		--dp-cell-border-radius: 0.375rem; /* 6px，稍微小一点，更美观 */
-	}
+	/* 圆角设置 - 匹配项目中的 rounded-lg */
+	--dp-border-radius: 0.5rem; /* 8px，匹配 Tailwind 的 rounded-lg */
+	--dp-cell-border-radius: 0.375rem; /* 6px，稍微小一点，更美观 */
+}
 
-	/* 修复日期文本与图标重叠的问题 */
-		.dp__input_wrap {
-		position: relative;
-	}
+/* 修复日期文本与图标重叠的问题 */
+.dp__input_wrap {
+	position: relative;
+}
 
-	.dp__input {
-		padding-left: 2rem !important; /* 确保文本不会与图标重叠 */
-	}
+.dp__input {
+	padding-left: 2rem !important; /* 确保文本不会与图标重叠 */
+}
 
-	.dp__input_icon {
-		position: absolute;
-		/* left: 0.75rem !important; */
-		right: auto !important;
-	}
-
+.dp__input_icon {
+	position: absolute;
+	/* left: 0.75rem !important; */
+	right: auto !important;
+}

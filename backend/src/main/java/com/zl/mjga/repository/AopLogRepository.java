@@ -96,13 +96,11 @@ public class AopLogRepository extends AopLogDao {
 
     // 时间范围查询
     if (queryDto.getStartTime() != null) {
-      OffsetDateTime startTime = queryDto.getStartTime().atOffset(OffsetDateTime.now().getOffset());
-      condition = condition.and(AOP_LOG.CREATE_TIME.ge(startTime));
+      condition = condition.and(AOP_LOG.CREATE_TIME.ge(queryDto.getStartTime()));
     }
 
     if (queryDto.getEndTime() != null) {
-      OffsetDateTime endTime = queryDto.getEndTime().atOffset(OffsetDateTime.now().getOffset());
-      condition = condition.and(AOP_LOG.CREATE_TIME.le(endTime));
+      condition = condition.and(AOP_LOG.CREATE_TIME.le(queryDto.getEndTime()));
     }
 
     // 执行时间范围

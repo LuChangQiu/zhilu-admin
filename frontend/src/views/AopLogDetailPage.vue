@@ -6,7 +6,8 @@
       <div class="mt-2 sm:mt-0">
         <Button variant="secondary" size="sm" @click="navigateBack">
           <template #icon>
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18">
               </path>
             </svg>
@@ -27,12 +28,12 @@
       <div v-if="currentLog.curl" class="p-4 border-b border-gray-200">
         <div class="flex justify-between items-center mb-4">
           <h2 class="text-lg font-medium text-gray-900">CURL</h2>
-          <button 
-            @click="copyCurl"
-            class="text-sm font-medium text-blue-600 hover:text-blue-800 flex items-center"
-          >
-            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+          <button @click="copyCurl" class="text-sm font-medium text-blue-600 hover:text-blue-800 flex items-center">
+            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z">
+              </path>
             </svg>
             {{ isCopied ? '已复制' : '复制' }}
           </button>
@@ -41,7 +42,7 @@
           <pre class="text-sm text-gray-800 overflow-x-auto whitespace-pre-wrap">{{ currentLog.curl }}</pre>
         </div>
       </div>
-      
+
       <!-- 基本信息 -->
       <div class="p-4 border-b border-gray-200">
         <div class="flex justify-between items-center mb-4">
@@ -90,12 +91,11 @@
       <div class="p-4 border-b border-gray-200">
         <h2 class="text-lg font-medium text-gray-900 mb-4">方法参数</h2>
         <div class="bg-gray-50 p-4 rounded-lg">
-          <pre class="text-sm text-gray-800 overflow-x-auto whitespace-pre-wrap">{{ isMethodArgsExpanded ? formatJson(currentLog.methodArgs) : methodArgsPreview }}</pre>
+          <pre class="text-sm text-gray-800 overflow-x-auto whitespace-pre-wrap">{{ isMethodArgsExpanded ?
+        formatJson(currentLog.methodArgs) : methodArgsPreview }}</pre>
           <div v-if="shouldCollapseMethodArgs" class="mt-2 flex justify-end">
-            <button 
-              @click="isMethodArgsExpanded = !isMethodArgsExpanded"
-              class="text-blue-600 hover:text-blue-800 text-sm font-medium"
-            >
+            <button @click="isMethodArgsExpanded = !isMethodArgsExpanded"
+              class="text-blue-600 hover:text-blue-800 text-sm font-medium">
               {{ isMethodArgsExpanded ? '折叠' : '展开' }}
             </button>
           </div>
@@ -106,12 +106,11 @@
       <div class="p-4 border-b border-gray-200">
         <h2 class="text-lg font-medium text-gray-900 mb-4">返回值</h2>
         <div class="bg-gray-50 p-4 rounded-lg">
-          <pre class="text-sm text-gray-800 overflow-x-auto whitespace-pre-wrap">{{ isReturnValueExpanded ? formatJson(currentLog.returnValue) : returnValuePreview }}</pre>
+          <pre class="text-sm text-gray-800 overflow-x-auto whitespace-pre-wrap">{{ isReturnValueExpanded ?
+        formatJson(currentLog.returnValue) : returnValuePreview }}</pre>
           <div v-if="shouldCollapseReturnValue" class="mt-2 flex justify-end">
-            <button 
-              @click="isReturnValueExpanded = !isReturnValueExpanded"
-              class="text-blue-600 hover:text-blue-800 text-sm font-medium"
-            >
+            <button @click="isReturnValueExpanded = !isReturnValueExpanded"
+              class="text-blue-600 hover:text-blue-800 text-sm font-medium">
               {{ isReturnValueExpanded ? '折叠' : '展开' }}
             </button>
           </div>
@@ -122,12 +121,11 @@
       <div v-if="currentLog.errorMessage" class="p-4 border-b border-gray-200">
         <h2 class="text-lg font-medium text-gray-900 mb-4">错误信息</h2>
         <div class="bg-red-50 p-4 rounded-lg">
-          <pre class="text-sm text-red-800 overflow-x-auto whitespace-pre-wrap">{{ isErrorMessageExpanded ? currentLog.errorMessage : errorMessagePreview }}</pre>
+          <pre class="text-sm text-red-800 overflow-x-auto whitespace-pre-wrap">{{ isErrorMessageExpanded ?
+        currentLog.errorMessage : errorMessagePreview }}</pre>
           <div v-if="shouldCollapseErrorMessage" class="mt-2 flex justify-end">
-            <button 
-              @click="isErrorMessageExpanded = !isErrorMessageExpanded"
-              class="text-blue-600 hover:text-blue-800 text-sm font-medium"
-            >
+            <button @click="isErrorMessageExpanded = !isErrorMessageExpanded"
+              class="text-blue-600 hover:text-blue-800 text-sm font-medium">
               {{ isErrorMessageExpanded ? '折叠' : '展开' }}
             </button>
           </div>
@@ -138,7 +136,8 @@
       <div class="p-4 bg-gray-50 rounded-b-lg flex justify-end">
         <Button variant="danger" @click="handleDeleteClick">
           <template #icon>
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
               </path>
@@ -156,7 +155,7 @@
     </div>
 
     <!-- 删除确认对话框 -->
-    <ConfirmationDialog id="delete-log-modal" title="删除日志" content="确定要删除此日志吗？此操作不可撤销。" 
+    <ConfirmationDialog id="delete-log-modal" title="删除日志" content="确定要删除此日志吗？此操作不可撤销。"
       :closeModal="() => deleteLogModal?.hide()" :onSubmit="confirmDelete" />
   </div>
 </template>
@@ -173,7 +172,6 @@ import { Button } from "@/components/ui";
 
 import { useAopLogDelete } from "@/composables/aop/useAopLogDelete";
 import { useAopLogQuery } from "@/composables/aop/useAopLogQuery";
-import { useErrorHandling } from "@/composables/common/useErrorHandling";
 import { Routes } from "@/router/constants";
 
 // 路由
@@ -181,17 +179,14 @@ const route = useRoute();
 const router = useRouter();
 const logId = Number(route.params.id);
 
-// 获取错误处理
-const { handleError } = useErrorHandling();
-
 // 获取日志查询和删除的composables
 const {
-  currentLog,
-  loading,
-  fetchLogDetail,
-  formatDateTime,
-  formatExecutionTime,
-  formatJson,
+	currentLog,
+	loading,
+	fetchLogDetail,
+	formatDateTime,
+	formatExecutionTime,
+	formatJson,
 } = useAopLogQuery();
 
 const { deleteLog } = useAopLogDelete();
@@ -211,90 +206,83 @@ const isCopied = ref(false);
 const previewLength = 300;
 
 const methodArgsPreview = computed(() => {
-  const content = formatJson(currentLog.value?.methodArgs);
-  return content && content.length > previewLength 
-    ? `${content.substring(0, previewLength)}...` 
-    : content;
+	const content = formatJson(currentLog.value?.methodArgs);
+	return content && content.length > previewLength
+		? `${content.substring(0, previewLength)}...`
+		: content;
 });
 
 const returnValuePreview = computed(() => {
-  const content = formatJson(currentLog.value?.returnValue);
-  return content && content.length > previewLength 
-    ? `${content.substring(0, previewLength)}...` 
-    : content;
+	const content = formatJson(currentLog.value?.returnValue);
+	return content && content.length > previewLength
+		? `${content.substring(0, previewLength)}...`
+		: content;
 });
 
 const errorMessagePreview = computed(() => {
-  const content = currentLog.value?.errorMessage;
-  return content && content.length > previewLength 
-    ? `${content.substring(0, previewLength)}...` 
-    : content;
+	const content = currentLog.value?.errorMessage;
+	return content && content.length > previewLength
+		? `${content.substring(0, previewLength)}...`
+		: content;
 });
 
 // 判断是否需要折叠
 const shouldCollapseMethodArgs = computed(() => {
-  const content = formatJson(currentLog.value?.methodArgs);
-  return content && content.length > previewLength;
+	const content = formatJson(currentLog.value?.methodArgs);
+	return content && content.length > previewLength;
 });
 
 const shouldCollapseReturnValue = computed(() => {
-  const content = formatJson(currentLog.value?.returnValue);
-  return content && content.length > previewLength;
+	const content = formatJson(currentLog.value?.returnValue);
+	return content && content.length > previewLength;
 });
 
 const shouldCollapseErrorMessage = computed(() => {
-  const content = currentLog.value?.errorMessage;
-  return content && content.length > previewLength;
+	const content = currentLog.value?.errorMessage;
+	return content && content.length > previewLength;
 });
 
 // 复制CURL命令
 const copyCurl = () => {
-  if (currentLog.value?.curl) {
-    navigator.clipboard.writeText(currentLog.value.curl);
-    isCopied.value = true;
-    setTimeout(() => {
-      isCopied.value = false;
-    }, 2000);
-  }
+	if (currentLog.value?.curl) {
+		navigator.clipboard.writeText(currentLog.value.curl);
+		isCopied.value = true;
+		setTimeout(() => {
+			isCopied.value = false;
+		}, 2000);
+	}
 };
 
 // 返回日志列表
 const navigateBack = () => {
-  router.push(Routes.AOPLOGVIEW.fullPath());
+	router.push(Routes.AOPLOGVIEW.fullPath());
 };
 
 // 处理删除点击
 const handleDeleteClick = () => {
-  deleteLogModal.value?.show();
+	deleteLogModal.value?.show();
 };
 
 // 确认删除
 const confirmDelete = async () => {
-  try {
-    if (currentLog.value?.id) {
-      await deleteLog(currentLog.value.id);
-      navigateBack();
-    }
-  } catch (error) {
-    handleError(error);
-  }
+	if (currentLog.value?.id) {
+		await deleteLog(currentLog.value.id);
+		navigateBack();
+	}
 };
 
 onMounted(async () => {
-  try {
-    // 初始化Flowbite
-    initFlowbite();
+	// 初始化Flowbite
+	initFlowbite();
 
-    // 初始化模态框
-    const $deleteModalElement = document.querySelector<HTMLElement>("#delete-log-modal");
-    if ($deleteModalElement) {
-      deleteLogModal.value = new Modal($deleteModalElement);
-    }
+	// 初始化模态框
+	const $deleteModalElement =
+		document.querySelector<HTMLElement>("#delete-log-modal");
+	if ($deleteModalElement) {
+		deleteLogModal.value = new Modal($deleteModalElement);
+	}
 
-    // 加载日志详情
-    await fetchLogDetail(logId);
-  } catch (error) {
-    handleError(error);
-  }
+	// 加载日志详情
+	await fetchLogDetail(logId);
 });
-</script> 
+</script>

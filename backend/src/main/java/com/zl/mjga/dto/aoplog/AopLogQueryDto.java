@@ -1,6 +1,8 @@
 package com.zl.mjga.dto.aoplog;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,10 +32,10 @@ public class AopLogQueryDto {
   private String ipAddress;
 
   /** 开始时间 */
-  private LocalDateTime startTime;
+  private OffsetDateTime startTime;
 
   /** 结束时间 */
-  private LocalDateTime endTime;
+  private OffsetDateTime endTime;
 
   /** 最小执行时间（毫秒） */
   private Long minExecutionTime;

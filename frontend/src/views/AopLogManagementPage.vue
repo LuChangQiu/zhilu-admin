@@ -92,7 +92,7 @@
     <!-- 移动端卡片列表 -->
     <div class="md:hidden mt-4">
       <MobileCardListWithCheckbox :items="logs" v-model="selectedLogs" idField="id">
-        <template #item="{ item }">
+        <template v-for="item in logs" :key="item.id">
           <div class="flex flex-col gap-2">
             <div class="flex justify-between items-start">
               <div class="font-medium text-gray-900 truncate max-w-[200px]" :title="item.className">
@@ -108,10 +108,6 @@
               <div>
                 <div class="text-gray-500">执行时间</div>
                 <div>{{ formatExecutionTime(item.executionTime) }}</div>
-              </div>
-              <div>
-                <div class="text-gray-500">用户</div>
-                <div>{{ item.username || '-' }}</div>
               </div>
               <div>
                 <div class="text-gray-500">创建时间</div>
@@ -172,8 +168,8 @@
             删除此日期之前的所有日志
           </label>
           <div class="datepicker-container">
-            <VueDatePicker v-model="clearBeforeDate" locale="zh-CN" format="yyyy-MM-dd" :enable-time-picker="false"
-              :auto-apply="true" class="filter-datepicker" teleport="body" />
+            <VueDatePicker v-model="clearBeforeDate" locale="zh-CN" format="yyyy/MM/dd HH:mm:ss"
+              :enable-time-picker="false" :auto-apply="true" class="filter-datepicker" teleport="body" />
           </div>
         </div>
         <div class="flex justify-end gap-2">
@@ -214,6 +210,7 @@ import { useErrorHandling } from "@/composables/common/useErrorHandling";
 import { useActionExcStore } from "@/composables/store/useActionExcStore";
 import { Routes } from "@/router/constants";
 import type { AopLogQueryParams } from "@/types/AlertTypes";
+import { formatDate } from "@/utils";
 
 // 路由
 const router = useRouter();
@@ -223,16 +220,14 @@ const { handleError } = useErrorHandling();
 
 // 获取日志查询和删除的composables
 const {
-  logs,
-  currentPage,
-  pageSize,
-  total,
-  loading,
-  fetchLogs,
-  formatDateTime,
-  formatExecutionTime,
-  handleSort,
-  getSortField,
+	logs,
+	currentPage,
+	pageSize,
+	total,
+	loading,
+	fetchLogs,
+	formatDateTime,
+	formatExecutionTime,
 } = useAopLogQuery();
 
 const { deleteLog, batchDeleteLogs, deleteLogsBefore } = useAopLogDelete();
@@ -253,230 +248,212 @@ const currentLogToDelete = ref<components["schemas"]["AopLogRespDto"]>();
 
 // 筛选配置
 const filterConfig = [
-  {
-    type: "input",
-    name: "className",
-    placeholder: "类名",
-  },
-  {
-    type: "input",
-    name: "methodName",
-    placeholder: "方法名",
-  },
-  {
-    type: "select",
-    name: "success",
-    placeholder: "状态",
-    options: [
-      { value: "", label: "全部" },
-      { value: "true", label: "成功" },
-      { value: "false", label: "失败" },
-    ],
-  },
-  {
-    type: "input",
-    name: "username",
-    placeholder: "用户名",
-  },
-  {
-    type: "date-range",
-    name: "dateRange",
-  },
+	{
+		type: "input",
+		name: "className",
+		placeholder: "类名",
+	},
+	{
+		type: "input",
+		name: "methodName",
+		placeholder: "方法名",
+	},
+	{
+		type: "select",
+		name: "success",
+		placeholder: "状态",
+		options: [
+			{ value: "", label: "全部" },
+			{ value: "true", label: "成功" },
+			{ value: "false", label: "失败" },
+		],
+	},
+	{
+		type: "input",
+		name: "username",
+		placeholder: "用户名",
+	},
+	{
+		type: "date-range",
+		name: "dateRange",
+	},
 ] as FilterItem[];
 
 // 筛选值
 const filterValues = reactive<{
-  className: string;
-  methodName: string;
-  success: string;
-  username: string;
-  dateRange: Date[];
+	className: string;
+	methodName: string;
+	success: string;
+	username: string;
+	dateRange: Date[];
 }>({
-  className: "",
-  methodName: "",
-  success: "",
-  username: "",
-  dateRange: [],
+	className: "",
+	methodName: "",
+	success: "",
+	username: "",
+	dateRange: [],
 });
 
 // 表格列配置
 const columns = [
-  { title: "类名", field: "className", sortable: true },
-  { title: "方法名", field: "methodName", sortable: true },
-  { title: "执行时间", field: "executionTime", sortable: true },
-  { title: "状态", field: "success" },
-  { title: "用户", field: "username" },
-  { title: "创建时间", field: "createTime", sortable: true },
-  { title: "操作", field: "actions" },
+	{ title: "类名", field: "className", sortable: true },
+	{ title: "方法名", field: "methodName", sortable: true },
+	{ title: "执行时间", field: "executionTime", sortable: true },
+	{ title: "状态", field: "success" },
+	{ title: "用户", field: "username" },
+	{ title: "创建时间", field: "createTime", sortable: true },
+	{ title: "操作", field: "actions" },
 ];
 
 // 更新筛选值
 const updateFilterValues = (
-  values: Record<string, string | number | boolean | Date[] | undefined>
+	values: Record<string, string | number | boolean | Date[] | undefined>,
 ) => {
-  if (values.className !== undefined) {
-    filterValues.className = values.className as string;
-  }
-  if (values.methodName !== undefined) {
-    filterValues.methodName = values.methodName as string;
-  }
-  if (values.success !== undefined) {
-    filterValues.success = values.success as string;
-  }
-  if (values.username !== undefined) {
-    filterValues.username = values.username as string;
-  }
-  if (values.dateRange !== undefined) {
-    filterValues.dateRange = values.dateRange as Date[];
-  }
+	if (values.className !== undefined) {
+		filterValues.className = values.className as string;
+	}
+	if (values.methodName !== undefined) {
+		filterValues.methodName = values.methodName as string;
+	}
+	if (values.success !== undefined) {
+		filterValues.success = values.success as string;
+	}
+	if (values.username !== undefined) {
+		filterValues.username = values.username as string;
+	}
+	if (values.dateRange !== undefined) {
+		filterValues.dateRange = values.dateRange as Date[];
+	}
 };
 
 // 处理搜索
 const handleSearch = async () => {
-  try {
-    const params: AopLogQueryParams = {
-      className: filterValues.className || undefined,
-      methodName: filterValues.methodName || undefined,
-      success: filterValues.success ? filterValues.success === "true" : undefined,
-      username: filterValues.username || undefined,
-    };
+	const params: AopLogQueryParams = {
+		className: filterValues.className || undefined,
+		methodName: filterValues.methodName || undefined,
+		success: filterValues.success ? filterValues.success === "true" : undefined,
+	};
 
-    // 处理日期范围
-    if (filterValues.dateRange && filterValues.dateRange.length === 2) {
-      params.startTime = filterValues.dateRange[0].toISOString();
-      params.endTime = filterValues.dateRange[1].toISOString();
-    }
+	// 处理日期范围
+	if (filterValues.dateRange && filterValues.dateRange.length === 2) {
+		params.startTime = formatDate(filterValues.dateRange[0]);
+		params.endTime = formatDate(filterValues.dateRange[1]);
+	}
 
-    await fetchLogs(params);
-    selectedLogs.value = [];
-  } catch (error) {
-    handleError(error);
-  }
+	await fetchLogs(params);
+	selectedLogs.value = [];
 };
 
 // 处理页码变化
 const handlePageChange = async (page: number) => {
-  try {
-    currentPage.value = page;
-    await handleSearch();
-  } catch (error) {
-    handleError(error);
-  }
+	currentPage.value = page;
+	await handleSearch();
 };
 
 // 处理查看详情
 const handleViewDetail = (log: components["schemas"]["AopLogRespDto"]) => {
-  if (log.id) {
-    router.push(Routes.AOPLOGDETAILVIEW.withParams({ id: log.id }));
-  }
+	if (log.id) {
+		router.push(Routes.AOPLOGDETAILVIEW.withParams({ id: log.id }));
+	}
 };
 
 // 处理删除点击
 const handleDeleteClick = (log: components["schemas"]["AopLogRespDto"]) => {
-  currentLogToDelete.value = log;
-  deleteLogModal.value?.show();
+	currentLogToDelete.value = log;
+	deleteLogModal.value?.show();
 };
 
 // 确认删除
 const confirmDelete = async () => {
-  try {
-    if (currentLogToDelete.value?.id) {
-      await deleteLog(currentLogToDelete.value.id);
-      await handleSearch();
-      deleteLogModal.value?.hide();
-    }
-  } catch (error) {
-    handleError(error);
-  }
+	if (currentLogToDelete.value?.id) {
+		await deleteLog(currentLogToDelete.value.id);
+		await handleSearch();
+		deleteLogModal.value?.hide();
+	}
 };
 
 // 处理批量删除点击
 const handleBatchDeleteClick = () => {
-  if (selectedLogs.value.length > 0) {
-    batchDeleteLogsModal.value?.show();
-  }
+	if (selectedLogs.value.length > 0) {
+		batchDeleteLogsModal.value?.show();
+	}
 };
 
 // 确认批量删除
 const confirmBatchDelete = async () => {
-  try {
-    if (selectedLogs.value.length > 0) {
-      await batchDeleteLogs(selectedLogs.value);
-      await handleSearch();
-      batchDeleteLogsModal.value?.hide();
-    }
-  } catch (error) {
-    handleError(error);
-  }
+	if (selectedLogs.value.length > 0) {
+		await batchDeleteLogs(selectedLogs.value);
+		await handleSearch();
+		batchDeleteLogsModal.value?.hide();
+	}
 };
 
 // 处理清理历史日志点击
 const handleClearBeforeClick = () => {
-  clearBeforeModal.value?.show();
+	clearBeforeModal.value?.show();
 };
 
 // 关闭清理历史日志对话框
 const closeClearBeforeModal = () => {
-  clearBeforeModal.value?.hide();
+	clearBeforeModal.value?.hide();
 };
 
 // 确认清理历史日志
 const confirmClearBefore = async () => {
-  try {
-    if (clearBeforeDate.value) {
-      const dateString = clearBeforeDate.value.toISOString().split("T")[0];
-      await deleteLogsBefore(dateString);
-      await handleSearch();
-      clearBeforeModal.value?.hide();
-    }
-  } catch (error) {
-    handleError(error);
-  }
+	if (clearBeforeDate.value) {
+		const dateString = formatDate(clearBeforeDate.value);
+		await deleteLogsBefore(dateString!);
+		await handleSearch();
+		clearBeforeModal.value?.hide();
+	}
 };
 
 // 处理全选
 const handleSelectAll = (selected: boolean) => {
-  if (selected) {
-    selectedLogs.value = logs.value.map(log => log.id).filter((id): id is number => id !== undefined);
-  } else {
-    selectedLogs.value = [];
-  }
+	if (selected) {
+		selectedLogs.value = logs.value
+			.map((log) => log.id)
+			.filter((id): id is number => id !== undefined);
+	} else {
+		selectedLogs.value = [];
+	}
 };
 
 // 初始化
 const actionExcStore = useActionExcStore();
 
 onMounted(async () => {
-  try {
-    // 初始化Flowbite
-    initFlowbite();
+	// 初始化Flowbite
+	initFlowbite();
 
-    // 初始化模态框
-    const $deleteModalElement = document.querySelector<HTMLElement>("#delete-log-modal");
-    const $batchDeleteModalElement = document.querySelector<HTMLElement>("#batch-delete-logs-modal");
-    const $clearBeforeModalElement = document.querySelector<HTMLElement>("#clear-before-modal");
+	// 初始化模态框
+	const $deleteModalElement =
+		document.querySelector<HTMLElement>("#delete-log-modal");
+	const $batchDeleteModalElement = document.querySelector<HTMLElement>(
+		"#batch-delete-logs-modal",
+	);
+	const $clearBeforeModalElement = document.querySelector<HTMLElement>(
+		"#clear-before-modal",
+	);
 
-    if ($deleteModalElement) {
-      deleteLogModal.value = new Modal($deleteModalElement);
-    }
-    if ($batchDeleteModalElement) {
-      batchDeleteLogsModal.value = new Modal($batchDeleteModalElement);
-    }
-    if ($clearBeforeModalElement) {
-      clearBeforeModal.value = new Modal($clearBeforeModalElement);
-    }
+	if ($deleteModalElement) {
+		deleteLogModal.value = new Modal($deleteModalElement);
+	}
+	if ($batchDeleteModalElement) {
+		batchDeleteLogsModal.value = new Modal($batchDeleteModalElement);
+	}
+	if ($clearBeforeModalElement) {
+		clearBeforeModal.value = new Modal($clearBeforeModalElement);
+	}
 
-    // 加载日志数据
-    await fetchLogs();
+	// 加载日志数据
+	await fetchLogs();
 
-    // 设置刷新回调
-    actionExcStore.setCallback((result) => {
-      if (result) {
-        handleSearch();
-      }
-    });
-  } catch (error) {
-    handleError(error);
-  }
+	// 设置刷新回调
+	actionExcStore.setCallback((result) => {
+		if (result) {
+			handleSearch();
+		}
+	});
 });
 </script>

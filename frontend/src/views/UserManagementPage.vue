@@ -164,7 +164,6 @@ import type { components } from "@/api/types/schema";
 import PromotionBanner from "@/components/common/PromotionBanner.vue";
 import { PlusIcon } from "@/components/icons";
 import Breadcrumbs from "@/components/layout/Breadcrumbs.vue";
-import ConfirmationDialog from "@/components/modals/ConfirmationDialog.vue";
 import UserDeleteModal from "@/components/modals/ConfirmationDialog.vue";
 import UserFormDialog from "@/components/modals/UserFormDialog.vue";
 import TableButton from "@/components/tables/TableButton.vue";
