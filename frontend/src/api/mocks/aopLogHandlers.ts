@@ -72,17 +72,6 @@ export default [
 	http.delete("/aop-log/batch", async ({ request }) => {
 		const ids = await request.json();
 		console.log(`Captured a "DELETE /aop-log/batch" request with ids: ${ids}`);
-		return HttpResponse.json(ids.length);
-	}),
-
-	// 删除指定时间前的日志
-	http.delete("/aop-log/before", ({ params }) => {
-		const { beforeTime } = Object.fromEntries(
-			new URL(params.request.url).searchParams,
-		);
-		console.log(
-			`Captured a "DELETE /aop-log/before" request with time: ${beforeTime}`,
-		);
-		return HttpResponse.json(faker.number.int({ min: 5, max: 50 }));
+		return HttpResponse.json(1);
 	}),
 ];

@@ -1,6 +1,5 @@
 import client from "@/api/client";
 import type { components } from "@/api/types/schema";
-import { useErrorHandling } from "@/composables/common/useErrorHandling";
 import { usePagination } from "@/composables/common/usePagination";
 import { useSorting } from "@/composables/common/useSorting";
 import type { AopLogQueryParams } from "@/types/AlertTypes";
