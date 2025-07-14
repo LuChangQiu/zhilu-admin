@@ -1,10 +1,10 @@
 <template>
   <div class="flex justify-center items-center my-4">
-    <a class="group relative w-full sm:w-2/3 md:w-1/2 lg:w-2/5 xl:w-1/3 max-w-xs overflow-hidden rounded-lg border border-gray-200 shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-[1.02]"
+    <a class="group relative w-full max-w-xs overflow-hidden rounded-lg border border-gray-200 shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-[1.02]"
       :href="href" target="_blank">
       <div class="absolute top-0 right-0 bg-blue-600 text-white text-xs px-2 py-1 rounded-bl-lg z-10">{{ label }}</div>
       <img :src="imageSrc" :alt="imageAlt"
-        class="w-full h-auto transition-transform duration-500 group-hover:scale-105">
+        class="w-full h-52 transition-transform duration-500 group-hover:scale-105">
       <div
         class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-3 transform transition-all duration-300">
         <span class="text-white text-sm font-medium group-hover:underline flex items-center">

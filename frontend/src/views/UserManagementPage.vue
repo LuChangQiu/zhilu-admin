@@ -1,7 +1,11 @@
 <template>
   <div class="px-2 sm:px-4 pt-6 sm:rounded-lg">
-    <PromotionBanner href="https://www.bilibili.com/cheese/play/ss198449120" imageSrc="/ai-tdd.png"
-      imageAlt="ai-tdd-tutorial" label="官方教程" text="无幻觉式 AI 编程方法论" />
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+      <PromotionBanner href="https://www.bilibili.com/cheese/play/ss198449120" imageSrc="/ai-tdd.png"
+        imageAlt="ai-tdd-tutorial" label="官方教程" text="无幻觉式 AI 编程方法论" />
+      <PromotionBanner href="https://www.mjga.cc" imageSrc="/mjga.png" imageAlt="后端脚手架" label="后端脚手架"
+        text="国内唯一可选配组件和元信息的脚手架" />
+    </div>
     <div class="mb-4">
       <Breadcrumbs :names="['用户管理']" />
       <h1 class="text-xl font-semibold text-gray-900 sm:text-2xl">用户管理</h1>

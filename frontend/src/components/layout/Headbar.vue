@@ -29,7 +29,7 @@
               </svg>
               <span class="text-sm pl-0.5 pr-2 font-medium">Star</span>
             </span>
-            <span class="text-sm py-0.5 px-2 font-medium">0.2k</span>
+            <span class="text-sm py-0.5 px-2 font-medium">0.3k</span>
           </a>
           <button class="cursor-pointer pt-1" @click="changeAssistantVisible">
             <AiChatIcon />
