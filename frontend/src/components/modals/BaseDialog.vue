@@ -26,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-import { Modal, initFlowbite } from "flowbite";
+import { initFlowbite } from "flowbite";
 import { computed, onMounted } from "vue";
 
 export type ModalSize =
@@ -72,7 +72,6 @@ const maxWidthClass = computed(() => {
 	return sizes[props.size || "md"];
 });
 
-// 确保Flowbite初始化，这对于PopupModal的正常工作至关重要
 onMounted(() => {
 	initFlowbite();
 });

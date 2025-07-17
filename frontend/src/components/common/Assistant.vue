@@ -445,10 +445,7 @@ onMounted(async () => {
 	if ($userDeleteModalElement) {
 		userDeleteModal.value = new Modal(
 			$userDeleteModalElement,
-			{},
-			{
-				id: "user-delete-modal",
-			},
+			{}
 		);
 	}
 	const $departmentDeleteModalElement: HTMLElement | null =
