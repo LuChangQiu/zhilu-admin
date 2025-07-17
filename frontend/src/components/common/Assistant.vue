@@ -443,10 +443,7 @@ onMounted(async () => {
 	const $userDeleteModalElement: HTMLElement | null =
 		document.querySelector("#user-delete-modal");
 	if ($userDeleteModalElement) {
-		userDeleteModal.value = new Modal(
-			$userDeleteModalElement,
-			{}
-		);
+		userDeleteModal.value = new Modal($userDeleteModalElement, {});
 	}
 	const $departmentDeleteModalElement: HTMLElement | null =
 		document.querySelector("#department-delete-modal");

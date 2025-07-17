@@ -111,19 +111,23 @@ export const useAiChat = () => {
 	const searchAction = async (message: string) => {
 		isLoading.value = true;
 		try {
-			const { data } = await client.POST("/ai/action/search", {
-				body: message,
-			});
 			messages.value.push({
-				content: data?.action
-					? "搜索到功能，请您执行。"
-					: "未搜索到指定功能，请告诉我更加准确的信息。",
+				content: "",
 				type: "action",
 				isUser: false,
 				username: "知路智能体",
-				command: data?.action,
+				command: undefined,
 			});
-			return data;
+			const { data } = await client.POST("/ai/action/search", {
+				body: message,
+			});
+			messages.value[messages.value.length - 1].content = data?.action
+				? "搜索到功能，请您执行。"
+				: "未搜索到指定功能，请告诉我更加准确的信息。";
+			messages.value[messages.value.length - 1].command = data?.action;
+		} catch (error) {
+			messages.value.pop();
+			throw error;
 		} finally {
 			isLoading.value = false;
 		}
