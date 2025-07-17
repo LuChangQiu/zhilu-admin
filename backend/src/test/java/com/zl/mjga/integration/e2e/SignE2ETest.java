@@ -53,7 +53,7 @@ public class SignE2ETest {
         .uri("/auth/sign-up")
         .contentType(MediaType.APPLICATION_JSON)
         .bodyValue(
-            """
+"""
 {
   "username": "test_5fab32c22a3e",
   "password": "test_eab28b939ba1"
@@ -75,7 +75,7 @@ public class SignE2ETest {
         .uri("/auth/sign-in")
         .contentType(MediaType.APPLICATION_JSON)
         .bodyValue(
-            """
+"""
 {
   "username": "test_5fab32c22a3e",
   "password": "test_eab28b939ba1"

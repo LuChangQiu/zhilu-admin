@@ -1,8 +1,6 @@
 package com.zl.mjga.dto.aoplog;
 
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

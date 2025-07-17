@@ -47,14 +47,16 @@ public class AopLogRepository extends AopLogDao {
         .where(buildConditions(queryDto));
   }
 
-
   public SelectConditionStep<Record> selectByWithoutReturnValue(AopLogQueryDto queryDto) {
     return ctx()
-            .select(AOP_LOG.asterisk().except(AOP_LOG.RETURN_VALUE, AOP_LOG.METHOD_ARGS), USER.USERNAME, DSL.count().over().as("total_count"))
-            .from(AOP_LOG)
-            .leftJoin(USER)
-            .on(AOP_LOG.USER_ID.eq(USER.ID))
-            .where(buildConditions(queryDto));
+        .select(
+            AOP_LOG.asterisk().except(AOP_LOG.RETURN_VALUE, AOP_LOG.METHOD_ARGS),
+            USER.USERNAME,
+            DSL.count().over().as("total_count"))
+        .from(AOP_LOG)
+        .leftJoin(USER)
+        .on(AOP_LOG.USER_ID.eq(USER.ID))
+        .where(buildConditions(queryDto));
   }
 
   private Condition buildConditions(AopLogQueryDto queryDto) {

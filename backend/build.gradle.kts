@@ -102,14 +102,14 @@ tasks.jacocoTestReport {
 }
 
 jacoco {
-    toolVersion = "0.8.12"
+    toolVersion = "0.8.13"
     reportsDirectory.set(layout.buildDirectory.dir("reports/jacoco"))
 }
 
 pmd {
     sourceSets = listOf(java.sourceSets.findByName("main"))
     isConsoleOutput = true
-    toolVersion = "7.9.0"
+    toolVersion = "7.15.0"
     rulesMinimumPriority.set(5)
     ruleSetFiles = files("pmd-rules.xml")
 }
@@ -125,7 +125,7 @@ spotless {
     }
 
     java {
-        googleJavaFormat("1.25.2").reflowLongStrings()
+        googleJavaFormat("1.28.0").reflowLongStrings()
         formatAnnotations()
     }
 

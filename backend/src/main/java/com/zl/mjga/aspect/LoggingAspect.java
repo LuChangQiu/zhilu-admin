@@ -48,11 +48,11 @@ public class LoggingAspect {
     return processWithLogging(joinPoint, aopLog);
   }
 
-//  @Around("execution(* com.zl.mjga.service..*(..))")
-//  public Object logService(ProceedingJoinPoint joinPoint) throws Throwable {
-//    AopLog aopLog = new AopLog();
-//    return processWithLogging(joinPoint, aopLog);
-//  }
+  //  @Around("execution(* com.zl.mjga.service..*(..))")
+  //  public Object logService(ProceedingJoinPoint joinPoint) throws Throwable {
+  //    AopLog aopLog = new AopLog();
+  //    return processWithLogging(joinPoint, aopLog);
+  //  }
 
   private Object processWithLogging(ProceedingJoinPoint joinPoint, AopLog aopLog) throws Throwable {
     if (shouldSkipLogging(joinPoint) || !isUserAuthenticated()) {
