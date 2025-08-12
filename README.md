@@ -54,7 +54,7 @@
 
 已上线：
 
-- [《国内首个无幻觉式 AI 编程指南》](https://www.bilibili.com/cheese/play/ep1615343)
+- [《AI 时代的 Java 测试驱动开发》](https://www.bilibili.com/cheese/play/ep1615343)
 
 敬请期待：（加群获取）
 
