@@ -1,6 +1,6 @@
-# 🎯 知路框架开发规范文档
+# 🎯 知路框架后端开发规范文档
 
-> **基于知路AI驱动后台管理系统的完整开发规范**
+> **基于知路AI驱动后台管理系统的后端开发规范**  
 > **版本**: v1.0.0 | **更新时间**: 2025-01-20
 
 ---
@@ -207,6 +207,45 @@
 现在可以开始规划具体的实现步骤了...
 ```
 
+```thinking
+需要实现一个文件上传组件...首先分析需求特点：
+- 支持拖拽上传
+- 需要预览功能
+- 要求进度显示
+- 支持大文件断点续传
+
+技术选型考虑：
+1. 基础框架已定是React
+2. 文件处理可以用File API
+3. 上传可能需要考虑分片上传
+4. 预览功能需要处理不同文件类型
+
+让我思考一下实现策略...文件分片是个重点，需要考虑：
+- 如何确定合适的分片大小
+- 服务器如何处理分片合并
+- 断点续传的状态保存
+- 错误重试机制
+
+UI交互方面，拖拽区域的实现有几种方案：
+1. 使用原生drag&drop API
+2. 使用现成的库如react-dropzone
+3. 自己实现拖拽逻辑
+
+等等，还需要考虑安全性：
+- 文件类型验证
+- 大小限制
+- 文件名安全处理
+- MIME类型检查
+
+性能优化也很关键：
+- 使用Web Worker处理分片
+- 实现并发上传
+- 添加预览图片压缩
+- 优化进度计算
+
+让我规划下具体实现步骤...
+```
+
 ### 其他要求
 1. **Always respond in 中文**
 2. **创建目录或者使用目录前，先检查目录位置和目录下内容，避免操作错误**
@@ -317,16 +356,25 @@ JaCoCo: 0.8.13 (测试覆盖率)
 #### Gradle配置示例
 ```kotlin
 // build.gradle.kts
+val jooqVersion by extra("3.19.22")
+val testcontainersVersion by extra("1.20.6")
+val flywayVersion by extra("11.4.0")
+
 plugins {
     java
+    `java-library`
     jacoco
     id("org.springframework.boot") version "3.3.9"
     id("io.spring.dependency-management") version "1.1.7"
+    id("org.springdoc.openapi-gradle-plugin") version "1.9.0"
+    id("pmd")
     id("org.jooq.jooq-codegen-gradle") version "3.19.22"
     id("com.diffplug.spotless") version "7.0.2"
-    id("pmd")
 }
 
+group = "com.zl.mjga"
+version = "1.0.0"
+description = "make java great again!"
 java.sourceCompatibility = JavaVersion.VERSION_21
 
 // 质量检查配置
@@ -360,12 +408,12 @@ graph TB
     C --> D[Service层]
     D --> E[Repository层]
     E --> F[数据库 PostgreSQL]
-    
+
     C --> G[AI服务层]
     G --> H[LangChain4j]
     H --> I[LLM模型]
     H --> J[向量数据库]
-    
+
     D --> K[缓存层 Caffeine]
     D --> L[对象存储 MinIO]
 ```
@@ -422,21 +470,21 @@ backend/src/main/java/com/zl/mjga/
 @Slf4j
 @Tag(name = "用户管理", description = "用户相关API")
 public class UserController {
-    
+
     private final UserService userService;
-    
+
     @PostMapping
     @Operation(summary = "创建用户", description = "创建新用户账号")
     public ResponseEntity<ApiResponse<UserResponseDto>> createUser(
             @RequestBody @Valid UserCreateDto createDto,
             Principal principal) {
-        
+
         log.info("创建用户请求: {}, 操作人: {}", createDto.getUsername(), principal.getName());
-        
+
         UserResponseDto user = userService.createUser(createDto);
         return ResponseEntity.ok(ApiResponse.success(user));
     }
-    
+
     @GetMapping("/{id}")
     @Operation(summary = "获取用户详情")
     @PreAuthorize("hasAuthority('READ_USER')")
@@ -468,7 +516,7 @@ public interface UserService {
      * @throws BusinessException 当用户名已存在时
      */
     UserResponseDto createUser(UserCreateDto createDto);
-    
+
     /**
      * 根据ID获取用户
      * @param id 用户ID
@@ -486,10 +534,10 @@ public interface UserService {
 @Slf4j
 @Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
-    
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    
+
     @Override
     @Transactional
     public UserResponseDto createUser(UserCreateDto createDto) {
@@ -497,7 +545,7 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsByUsername(createDto.getUsername())) {
             throw new BusinessException("用户名已存在: " + createDto.getUsername());
         }
-        
+
         // 2. 数据转换
         User user = User.builder()
             .username(createDto.getUsername())
@@ -505,14 +553,14 @@ public class UserServiceImpl implements UserService {
             .email(createDto.getEmail())
             .enabled(true)
             .build();
-        
+
         // 3. 数据持久化
         User savedUser = userRepository.save(user);
-        
+
         // 4. 返回DTO
         return UserResponseDto.fromEntity(savedUser);
     }
-    
+
     @Override
     public UserResponseDto getUserById(Long id) {
         User user = userRepository.findById(id)
@@ -595,9 +643,10 @@ public class ChatModelInitializer {
 @Component
 @RequiredArgsConstructor
 @Description("用户管理相关的AI工具")
-public class UserOperatorTool {
+public class UserRolePermissionOperatorTool {
 
-    private final UserService userService;
+    private final IdentityAccessService identityAccessService;
+    private final UserRepository userRepository;
 
     @Tool(value = {"创建用户", "新建用户", "添加用户"})
     public void createUser(
@@ -605,18 +654,22 @@ public class UserOperatorTool {
             @P(value = "邮箱地址") @Email String email,
             @P(value = "密码", required = false) String password) {
 
-        UserCreateDto createDto = UserCreateDto.builder()
+        UserUpsertDto createDto = UserUpsertDto.builder()
             .username(username)
             .email(email)
             .password(StringUtils.isNotEmpty(password) ? password : "123456")
             .build();
 
-        userService.createUser(createDto);
+        identityAccessService.upsertUser(createDto);
     }
 
     @Tool(value = {"删除用户", "移除用户"})
     public void deleteUser(@P(value = "用户名") String username) {
-        userService.deleteUserByUsername(username);
+        User user = userRepository.fetchOneByUsername(username);
+        if (user == null) {
+            throw new BusinessException("用户不存在: " + username);
+        }
+        identityAccessService.deleteUser(user.getId());
     }
 }
 ```
@@ -638,16 +691,17 @@ public class UserOperatorTool {
 @Slf4j
 public class RagService {
 
-    private final EmbeddingModel zhipuEmbeddingModel;
-    private final EmbeddingStore<TextSegment> zhiPuLibraryEmbeddingStore;
+    private final ZhipuAiEmbeddingModel zhipuEmbeddingModel;
+    private final ZhiPuLibraryEmbeddingStore zhiPuLibraryEmbeddingStore;
     private final AmazonS3DocumentLoader amazonS3DocumentLoader;
+    private final MinIoConfig minIoConfig;
 
     @Async
     public void embeddingAndCreateDocSegment(Long libraryId, Long docId, String objectName) {
         try {
             // 1. 加载文档
             Document document = amazonS3DocumentLoader.loadDocument(
-                bucket, objectName, new ApacheTikaDocumentParser());
+                minIoConfig.getDefaultBucket(), objectName, new ApacheTikaDocumentParser());
 
             // 2. 文档分割
             DocumentByParagraphSplitter splitter =
@@ -684,7 +738,7 @@ public interface UserRepository {
     /**
      * 根据用户名查找用户
      */
-    Optional<User> findByUsername(String username);
+    Optional<User> fetchOneByUsername(String username);
 
     /**
      * 检查用户名是否存在
@@ -699,7 +753,7 @@ public interface UserRepository {
     /**
      * 分页查询用户
      */
-    Page<User> findAll(Pageable pageable);
+    PageResponse<User> findAll(PageRequestDto pageRequest);
 }
 ```
 
@@ -712,7 +766,7 @@ public class UserRepositoryImpl implements UserRepository {
     private final DSLContext dsl;
 
     @Override
-    public Optional<User> findByUsername(String username) {
+    public Optional<User> fetchOneByUsername(String username) {
         return dsl.selectFrom(USER)
             .where(USER.USERNAME.eq(username))
             .and(USER.DELETED.eq(false))
@@ -751,9 +805,9 @@ public class UserRepositoryImpl implements UserRepository {
 }
 ```
 
-### 6.2 数据库规范
+### 6.2 实体类规范
 
-#### 实体类规范
+#### 实体类示例
 ```java
 @Data
 @Builder
@@ -797,106 +851,11 @@ public class User {
 }
 ```
 
-#### 数据库迁移规范
-```sql
--- V1_0_1__create_user_table.sql
-CREATE TABLE mjga.user (
-    id BIGSERIAL PRIMARY KEY,
-    username VARCHAR(50) NOT NULL UNIQUE,
-    email VARCHAR(100) NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    enabled BOOLEAN NOT NULL DEFAULT true,
-    deleted BOOLEAN NOT NULL DEFAULT false,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP
-);
-
--- 创建索引
-CREATE INDEX idx_user_username ON mjga.user(username) WHERE deleted = false;
-CREATE INDEX idx_user_email ON mjga.user(email) WHERE deleted = false;
-
--- 添加注释
-COMMENT ON TABLE mjga.user IS '用户表';
-COMMENT ON COLUMN mjga.user.username IS '用户名';
-COMMENT ON COLUMN mjga.user.email IS '邮箱地址';
-```
-
 ---
 
-## 七、安全与权限规范
+## 七、异常处理规范
 
-### 7.1 Spring Security配置
-
-#### 安全配置示例
-```java
-@Configuration
-@EnableWebSecurity
-@EnableMethodSecurity
-@RequiredArgsConstructor
-public class WebSecurityConfig {
-
-    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    private final UserDetailsService userDetailsService;
-    private final JwtConfig jwtConfig;
-
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.cors(corsConfigurer -> corsConfigurer.configurationSource(corsConfigurationSource()))
-            .csrf(AbstractHttpConfigurer::disable)
-            .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers(publicEndpoints()).permitAll()
-                .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
-                .anyRequest().authenticated())
-            .sessionManagement(session ->
-                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .exceptionHandling(exception -> exception
-                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-                .accessDeniedHandler(jwtAccessDeniedHandler()))
-            .addFilterBefore(jwtAuthenticationFilter(),
-                UsernamePasswordAuthenticationFilter.class);
-
-        return http.build();
-    }
-
-    private String[] publicEndpoints() {
-        return new String[]{
-            "/api/v1/auth/**",
-            "/swagger-ui/**",
-            "/v3/api-docs/**",
-            "/actuator/health"
-        };
-    }
-}
-```
-
-### 7.2 权限控制规范
-
-#### 权限注解使用
-```java
-@RestController
-@RequestMapping("/api/v1/users")
-@PreAuthorize("hasRole('USER_MANAGER')")
-public class UserController {
-
-    @PostMapping
-    @PreAuthorize("hasAuthority('CREATE_USER')")
-    public ResponseEntity<ApiResponse<UserResponseDto>> createUser(@RequestBody @Valid UserCreateDto createDto) {
-        // 创建用户逻辑
-    }
-
-    @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('DELETE_USER') and #id != authentication.principal.id")
-    public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable Long id) {
-        // 删除用户逻辑（不能删除自己）
-    }
-}
-```
-
----
-
-## 八、异常处理规范
-
-### 8.1 异常分层设计
+### 7.1 异常分层设计
 
 #### 业务异常定义
 ```java
@@ -966,7 +925,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 }
 ```
 
-### 8.2 统一响应格式
+### 7.2 统一响应格式
 
 #### ApiResponse定义
 ```java
@@ -1002,22 +961,22 @@ public class ApiResponse<T> {
 
 ---
 
-## 九、测试规范
+## 八、测试规范
 
-### 9.1 测试分层策略
+### 8.1 测试分层策略
 
 #### 测试金字塔
 ```mermaid
 graph TB
-    A[E2E Tests<br/>端到端测试] --> B[Integration Tests<br/>集成测试]
-    B --> C[Unit Tests<br/>单元测试]
+    A[E2E Tests<br/>端到端测试<br/>10%] --> B[Integration Tests<br/>集成测试<br/>20%]
+    B --> C[Unit Tests<br/>单元测试<br/>70%]
 
     style A fill:#ff9999
     style B fill:#ffcc99
     style C fill:#99ff99
 ```
 
-### 9.2 单元测试规范
+### 8.2 单元测试规范
 
 #### Service层单元测试
 ```java
@@ -1091,7 +1050,7 @@ class UserServiceImplTest {
 }
 ```
 
-### 9.3 集成测试规范
+### 8.3 集成测试规范
 
 #### TestContainers集成测试
 ```java
@@ -1139,25 +1098,28 @@ class UserIntegrationTest {
         assertThat(response.getBody().getCode()).isEqualTo("SUCCESS");
 
         // 验证数据库
-        Optional<User> savedUser = userRepository.findByUsername("integrationtest");
+        Optional<User> savedUser = userRepository.fetchOneByUsername("integrationtest");
         assertThat(savedUser).isPresent();
         assertThat(savedUser.get().getEmail()).isEqualTo("integration@test.com");
     }
 }
 ```
 
-### 9.4 AI系统测试规范
+### 8.4 AI系统测试规范
 
 #### AI工具测试
 ```java
 @ExtendWith(MockitoExtension.class)
-class UserOperatorToolTest {
+class UserRolePermissionOperatorToolTest {
 
     @Mock
-    private UserService userService;
+    private IdentityAccessService identityAccessService;
+
+    @Mock
+    private UserRepository userRepository;
 
     @InjectMocks
-    private UserOperatorTool userOperatorTool;
+    private UserRolePermissionOperatorTool userOperatorTool;
 
     @Test
     @DisplayName("AI创建用户工具 - 成功场景")
@@ -1172,10 +1134,10 @@ class UserOperatorToolTest {
             userOperatorTool.createUser(username, email, password));
 
         // Then
-        ArgumentCaptor<UserCreateDto> captor = ArgumentCaptor.forClass(UserCreateDto.class);
-        verify(userService).createUser(captor.capture());
+        ArgumentCaptor<UserUpsertDto> captor = ArgumentCaptor.forClass(UserUpsertDto.class);
+        verify(identityAccessService).upsertUser(captor.capture());
 
-        UserCreateDto captured = captor.getValue();
+        UserUpsertDto captured = captor.getValue();
         assertThat(captured.getUsername()).isEqualTo(username);
         assertThat(captured.getEmail()).isEqualTo(email);
         assertThat(captured.getPassword()).isEqualTo(password);
@@ -1185,7 +1147,7 @@ class UserOperatorToolTest {
     @DisplayName("AI创建用户工具 - 业务异常传播")
     void createUser_BusinessException_Propagated() {
         // Given
-        when(userService.createUser(any(UserCreateDto.class)))
+        when(identityAccessService.upsertUser(any(UserUpsertDto.class)))
             .thenThrow(new BusinessException("用户名已存在"));
 
         // When & Then
@@ -1199,9 +1161,9 @@ class UserOperatorToolTest {
 
 ---
 
-## 十、代码质量规范
+## 九、代码质量规范
 
-### 10.1 静态代码分析
+### 9.1 静态代码分析
 
 #### PMD规则配置
 ```xml
@@ -1240,7 +1202,7 @@ class UserOperatorToolTest {
 </ruleset>
 ```
 
-### 10.2 代码格式化配置
+### 9.2 代码格式化配置
 
 #### Spotless配置
 ```kotlin
@@ -1264,21 +1226,10 @@ spotless {
             content
         }
     }
-
-    kotlin {
-        ktlint("1.0.1")
-    }
-
-    format("misc") {
-        target("*.gradle.kts", "*.md", ".gitignore")
-        trimTrailingWhitespace()
-        leadingTabsToSpaces()
-        endWithNewline()
-    }
 }
 ```
 
-### 10.3 测试覆盖率配置
+### 9.3 测试覆盖率配置
 
 #### JaCoCo配置
 ```kotlin
@@ -1329,9 +1280,9 @@ tasks.jacocoTestCoverageVerification {
 
 ---
 
-## 十一、部署与运维规范
+## 十、部署与运维规范
 
-### 11.1 Docker化部署
+### 10.1 Docker化部署
 
 #### Dockerfile规范
 ```dockerfile
@@ -1376,74 +1327,7 @@ EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
 ```
 
-#### Docker Compose配置
-```yaml
-# docker-compose.yml
-version: '3.8'
-
-services:
-  backend:
-    build: ./backend
-    ports:
-      - "8080:8080"
-    environment:
-      - DATABASE_HOST_PORT=postgres:5432
-      - DATABASE_DB=zhilu
-      - DATABASE_USER=zhilu
-      - DATABASE_PASSWORD=zhilu123
-      - JWT_SECRET=your-secret-key
-      - MINIO_ENDPOINT=http://minio:9000
-    depends_on:
-      postgres:
-        condition: service_healthy
-      minio:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
-
-  postgres:
-    image: pgvector/pgvector:pg17
-    environment:
-      POSTGRES_DB: zhilu
-      POSTGRES_USER: zhilu
-      POSTGRES_PASSWORD: zhilu123
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U zhilu"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  minio:
-    image: minio/minio:latest
-    command: server /data --console-address ":9001"
-    environment:
-      MINIO_ROOT_USER: minioadmin
-      MINIO_ROOT_PASSWORD: minioadmin123
-    ports:
-      - "9000:9000"
-      - "9001:9001"
-    volumes:
-      - minio_data:/data
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
-      interval: 30s
-      timeout: 20s
-      retries: 3
-
-volumes:
-  postgres_data:
-  minio_data:
-```
-
-### 11.2 环境配置管理
+### 10.2 环境配置管理
 
 #### 环境变量配置
 ```bash
@@ -1466,257 +1350,16 @@ MINIO_ROOT_USER=minioadmin
 MINIO_ROOT_PASSWORD=minioadmin123
 MINIO_DEFAULT_BUCKETS=zhilu-bucket
 
-# CORS配置
-ALLOWED_ORIGINS=http://localhost:5173,http://localhost:4173
-ALLOWED_METHODS=GET,POST,PUT,DELETE,OPTIONS
-ALLOWED_HEADERS=*
-ALLOWED_EXPOSE_HEADERS=*
-
 # AI模型配置
 DEEPSEEK_API_KEY=your-deepseek-api-key
 ZHIPU_API_KEY=your-zhipu-api-key
 ```
 
-### 11.3 监控与日志
-
-#### 应用监控配置
-```yaml
-# application.yml
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info,metrics,prometheus
-  endpoint:
-    health:
-      show-details: always
-  metrics:
-    export:
-      prometheus:
-        enabled: true
-
-logging:
-  level:
-    com.zl.mjga: INFO
-    dev.langchain4j: DEBUG
-    org.springframework.security: WARN
-  pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
-    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
-  file:
-    name: /var/log/zhilu/application.log
-    max-size: 100MB
-    max-history: 30
-```
-
 ---
 
-## 十二、代码风格规范
+## 十一、最佳实践总结
 
-### 12.1 命名规范
-
-| 类型 | 规范 | 示例 |
-|------|------|------|
-| 类名 | UpperCamelCase | `UserService`, `AiChatController` |
-| 方法名 | lowerCamelCase | `createUser`, `findByUsername` |
-| 变量名 | lowerCamelCase | `userName`, `apiResponse` |
-| 常量 | UPPER_SNAKE_CASE | `MAX_RETRY_COUNT`, `DEFAULT_PAGE_SIZE` |
-| 包名 | lowercase | `com.zl.mjga.service` |
-| 枚举 | UpperCamelCase | `UserStatus`, `LlmCodeEnum` |
-
-### 12.2 注释规范
-
-#### Javadoc注释
-```java
-/**
- * 用户服务接口
- *
- * <p>提供用户相关的业务操作，包括用户的创建、查询、更新和删除等功能。
- * 所有方法都会进行权限验证和数据校验。</p>
- *
- * @author 知路团队
- * @version 1.0.0
- * @since 2025-01-20
- */
-public interface UserService {
-
-    /**
-     * 创建新用户
-     *
-     * @param createDto 用户创建信息，不能为null
-     * @return 创建成功的用户信息
-     * @throws BusinessException 当用户名已存在或数据验证失败时
-     * @throws IllegalArgumentException 当参数为null时
-     */
-    UserResponseDto createUser(@NonNull UserCreateDto createDto);
-}
-```
-
-#### 行内注释规范
-```java
-public class UserServiceImpl implements UserService {
-
-    @Override
-    public UserResponseDto createUser(UserCreateDto createDto) {
-        // TODO: 添加用户创建事件发布
-        // FIXME: 需要优化密码加密性能
-
-        // 1. 验证用户名唯一性
-        if (userRepository.existsByUsername(createDto.getUsername())) {
-            throw new BusinessException("用户名已存在");
-        }
-
-        // 2. 加密密码
-        String encodedPassword = passwordEncoder.encode(createDto.getPassword());
-
-        // 3. 构建用户实体
-        User user = User.builder()
-            .username(createDto.getUsername())
-            .password(encodedPassword)
-            .build();
-
-        return UserResponseDto.fromEntity(userRepository.save(user));
-    }
-}
-```
-
-### 12.3 代码组织规范
-
-#### 类内部结构顺序
-```java
-public class UserController {
-
-    // 1. 静态常量
-    private static final String API_PREFIX = "/api/v1/users";
-
-    // 2. 实例字段
-    private final UserService userService;
-    private final UserMapper userMapper;
-
-    // 3. 构造函数
-    public UserController(UserService userService, UserMapper userMapper) {
-        this.userService = userService;
-        this.userMapper = userMapper;
-    }
-
-    // 4. 公共方法
-    @PostMapping
-    public ResponseEntity<ApiResponse<UserResponseDto>> createUser(@RequestBody @Valid UserCreateDto createDto) {
-        // 实现逻辑
-    }
-
-    // 5. 私有方法
-    private void validateUserData(UserCreateDto createDto) {
-        // 验证逻辑
-    }
-
-    // 6. 静态方法
-    public static String formatUsername(String username) {
-        return username.toLowerCase().trim();
-    }
-}
-```
-
----
-
-## 十三、性能优化规范
-
-### 13.1 数据库性能优化
-
-#### 查询优化规范
-```java
-@Repository
-public class UserRepositoryImpl implements UserRepository {
-
-    // ✅ 正确：使用索引字段查询
-    public Optional<User> findByUsername(String username) {
-        return dsl.selectFrom(USER)
-            .where(USER.USERNAME.eq(username))
-            .and(USER.DELETED.eq(false))
-            .fetchOptionalInto(User.class);
-    }
-
-    // ✅ 正确：批量查询避免N+1问题
-    public List<User> findUsersWithRoles(List<Long> userIds) {
-        return dsl.select()
-            .from(USER)
-            .leftJoin(USER_ROLE_MAP).on(USER.ID.eq(USER_ROLE_MAP.USER_ID))
-            .leftJoin(ROLE).on(USER_ROLE_MAP.ROLE_ID.eq(ROLE.ID))
-            .where(USER.ID.in(userIds))
-            .fetchInto(User.class);
-    }
-
-    // ❌ 错误：在循环中执行查询
-    public void updateUserRoles(List<Long> userIds, Long roleId) {
-        for (Long userId : userIds) {
-            // 这会导致N次数据库查询
-            dsl.insertInto(USER_ROLE_MAP)
-                .set(USER_ROLE_MAP.USER_ID, userId)
-                .set(USER_ROLE_MAP.ROLE_ID, roleId)
-                .execute();
-        }
-    }
-
-    // ✅ 正确：批量操作
-    public void updateUserRolesBatch(List<Long> userIds, Long roleId) {
-        List<UserRoleMapRecord> records = userIds.stream()
-            .map(userId -> {
-                UserRoleMapRecord record = dsl.newRecord(USER_ROLE_MAP);
-                record.setUserId(userId);
-                record.setRoleId(roleId);
-                return record;
-            })
-            .toList();
-
-        dsl.batchInsert(records).execute();
-    }
-}
-```
-
-### 13.2 缓存策略
-
-#### 缓存配置
-```java
-@Configuration
-@EnableCaching
-public class CacheConfig {
-
-    @Bean
-    public CacheManager cacheManager() {
-        CaffeineCacheManager cacheManager = new CaffeineCacheManager();
-        cacheManager.setCaffeine(Caffeine.newBuilder()
-            .maximumSize(1000)
-            .expireAfterWrite(Duration.ofMinutes(30))
-            .recordStats());
-        return cacheManager;
-    }
-}
-
-@Service
-public class UserServiceImpl implements UserService {
-
-    @Cacheable(value = "users", key = "#username")
-    public UserResponseDto getUserByUsername(String username) {
-        // 查询逻辑
-    }
-
-    @CacheEvict(value = "users", key = "#user.username")
-    public UserResponseDto updateUser(UserUpdateDto updateDto) {
-        // 更新逻辑
-    }
-
-    @CacheEvict(value = "users", allEntries = true)
-    public void clearUserCache() {
-        // 清除所有用户缓存
-    }
-}
-```
-
----
-
-## 十四、最佳实践总结
-
-### 14.1 开发流程检查清单
+### 11.1 开发流程检查清单
 
 #### 代码提交前检查
 - [ ] 代码格式化：运行 `./gradlew spotlessApply`
@@ -1736,7 +1379,7 @@ public class UserServiceImpl implements UserService {
 - [ ] 测试用例是否充分
 - [ ] 文档是否完整
 
-### 14.2 常见问题与解决方案
+### 11.2 常见问题与解决方案
 
 #### 问题1：AI工具调用失败
 ```java
@@ -1780,9 +1423,9 @@ public class UserRoleService {
 
 ---
 
-## 十五、附录
+## 十二、附录
 
-### 15.1 开发工具推荐
+### 12.1 开发工具推荐
 
 #### IDE配置
 - **IntelliJ IDEA Ultimate** (推荐)
@@ -1806,7 +1449,7 @@ docker-compose --version  # 2.0+
 psql --version  # PostgreSQL 17+
 ```
 
-### 15.2 参考资源
+### 12.2 参考资源
 
 - [Spring Boot官方文档](https://spring.io/projects/spring-boot)
 - [LangChain4j文档](https://docs.langchain4j.dev/)
@@ -1818,5 +1461,5 @@ psql --version  # PostgreSQL 17+
 
 **📝 文档维护**：本规范文档应随项目发展持续更新，确保与实际代码保持一致。
 
-**🎯 目标**：通过遵循本规范，确保知路项目代码质量高、可维护性强、安全性好。
+**🎯 目标**：通过遵循本规范，确保知路项目后端代码质量高、可维护性强、安全性好。
 ```
