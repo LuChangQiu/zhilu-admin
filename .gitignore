@@ -4,6 +4,11 @@
 .LSOverride
 .vscode
 
+
+# 忽略IDEA项目文件
+.idea/
+*.iml
+
 # Icon must end with two \r
 Icon
 
