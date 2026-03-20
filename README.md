@@ -30,24 +30,20 @@
   - [🍑 更多](#-更多)
   - [🍒 部分技术选型](#-部分技术选型)
   - [🔮 防失联，关注各大社区账号](#-防失联关注各大社区账号)
-  - [💌 微信打赏](#-微信打赏)
 
 ## 🥝 产品社群
 
-**加 QQ 群或微信群立送以下装备，瞬间秒杀全服！！**
 1. 一键部署脚本（包含数据库 Redis 消息队列等所有中间件！）
 2. 永久免费的 Https 证书
 3. 永久免费的分布式对象存储
 4. 永久免费的 AI 模型
 5. 永久免费的 Node、Docker、Maven 国内镜像仓库
 
-![group](assets/group.png)
   
 [![点击按钮加入 QQ群](https://img.shields.io/badge/-white?style=social&logo=QQ&label=或点击按钮加入QQ群)](https://qm.qq.com/q/9mvVC57jPO)
 
 
-- QQ群：638254979(目前人较多)
-- 微信：Chuck9996(若微信群已过期可以加我 vx)
+- QQ群：638254979
 
 
 ## 🍅 相关课程
@@ -209,9 +205,3 @@
 [![Github](https://img.shields.io/badge/-white?style=social&logo=github&label=github)](https://github.com/ccmjga)
 
 [![QQ](https://img.shields.io/badge/-white?style=social&logo=QQ&label=QQ群)](https://qm.qq.com/q/9mvVC57jPO)
-
-## 💌 微信打赏
-
-知路管理后台的发展离不开您的支持；再次对所有支持本项目的人们致以诚挚的谢意～
-
-![pay](/assets/pay.png)
